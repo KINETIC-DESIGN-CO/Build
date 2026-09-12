@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:scripts/validate_coordination.py",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "a4e9919d-ddcb-4c1f-9e98-afde68173c91",
   "worker": {
     "kind": "chatgpt",
