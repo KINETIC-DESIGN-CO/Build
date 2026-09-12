@@ -1,0 +1,225 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import json
+import re
+import subprocess
+import sys
+from datetime import datetime
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+PROTOCOL_PATH = ROOT / "coordination" / "protocol.json"
+
+UUID4_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+LOCK_BRANCH_RE = re.compile(r"^refs/heads/(lock/[0-9a-f]{64})$")
+LOCK_KEYS = {
+    "schema_version", "resource_key", "generation", "state", "work_id", "worker",
+    "implementation_branch", "lease_id", "base_sha", "acquired_at", "heartbeat_at",
+    "expires_at", "runtime_control_authority",
+}
+
+
+class ValidationError(RuntimeError):
+    pass
+
+
+def fail(message: str) -> None:
+    raise ValidationError(message)
+
+
+def run_git(*args: str, check: bool = True) -> str:
+    proc = subprocess.run(["git", *args], cwd=ROOT, text=True, capture_output=True)
+    if check and proc.returncode != 0:
+        fail(f"git {' '.join(args)} failed: {proc.stderr.strip()}")
+    return proc.stdout.strip()
+
+
+def parse_utc(value: object) -> datetime:
+    if not isinstance(value, str) or not value.endswith("Z"):
+        fail(f"timestamp must be RFC3339 UTC ending Z: {value!r}")
+    try:
+        return datetime.fromisoformat(value[:-1] + "+00:00")
+    except ValueError:
+        fail(f"invalid timestamp: {value!r}")
+
+
+def validate_worker(worker: object) -> None:
+    if not isinstance(worker, dict) or set(worker) != {"kind", "session_id"}:
+        fail("worker must contain exactly kind and session_id")
+    if not UUID4_RE.fullmatch(str(worker["session_id"])):
+        fail("worker.session_id must be lowercase UUIDv4")
+    if worker["kind"] not in {"chatgpt", "claude", "grok", "codex", "human", "other_ai"}:
+        fail("worker.kind invalid")
+
+
+def validate_snapshot(lock: dict, protocol: dict) -> None:
+    if not isinstance(lock, dict) or set(lock) != LOCK_KEYS:
+        fail("lock snapshot keys mismatch")
+    if lock["schema_version"] != 1 or lock["runtime_control_authority"] != "NONE":
+        fail("lock snapshot schema/authority mismatch")
+    if lock["state"] not in {"ACTIVE", "RELEASED"}:
+        fail("lock state invalid")
+    if not isinstance(lock["resource_key"], str) or not lock["resource_key"]:
+        fail("resource_key must be nonempty")
+    if not isinstance(lock["generation"], int) or lock["generation"] < 1:
+        fail("generation must be integer >= 1")
+    if not UUID4_RE.fullmatch(str(lock["work_id"])) or not UUID4_RE.fullmatch(str(lock["lease_id"])):
+        fail("work_id/lease_id must be lowercase UUIDv4")
+    validate_worker(lock["worker"])
+    if lock["implementation_branch"] != f"work/{lock['work_id']}":
+        fail("implementation_branch must match work_id")
+    if not SHA_RE.fullmatch(str(lock["base_sha"])):
+        fail("base_sha invalid")
+    acquired = parse_utc(lock["acquired_at"])
+    heartbeat = parse_utc(lock["heartbeat_at"])
+    expires = parse_utc(lock["expires_at"])
+    if not (acquired <= heartbeat < expires):
+        fail("lock timestamp ordering invalid")
+    if int((expires - heartbeat).total_seconds()) != protocol["lease_duration_seconds"]:
+        fail("lock lease duration must equal protocol.lease_duration_seconds")
+
+
+def immutable_owner_fields(lock: dict) -> tuple:
+    return (
+        lock["resource_key"], lock["generation"], lock["work_id"], lock["worker"],
+        lock["implementation_branch"], lock["lease_id"], lock["base_sha"], lock["acquired_at"],
+        lock["heartbeat_at"], lock["expires_at"], lock["runtime_control_authority"],
+    )
+
+
+def validate_transition(previous: dict, current: dict, protocol: dict) -> None:
+    validate_snapshot(previous, protocol)
+    validate_snapshot(current, protocol)
+    if previous["resource_key"] != current["resource_key"]:
+        fail("resource_key cannot change within lock history")
+
+    prev_state = previous["state"]
+    curr_state = current["state"]
+    prev_heartbeat = parse_utc(previous["heartbeat_at"])
+    prev_expires = parse_utc(previous["expires_at"])
+    curr_acquired = parse_utc(current["acquired_at"])
+    curr_heartbeat = parse_utc(current["heartbeat_at"])
+
+    if prev_state == "ACTIVE" and curr_state == "RELEASED":
+        if immutable_owner_fields(previous) != immutable_owner_fields(current):
+            fail("release must preserve prior owner and timestamps")
+        return
+
+    if prev_state == "RELEASED" and curr_state == "ACTIVE":
+        if current["generation"] != previous["generation"] + 1:
+            fail("released reacquisition must increment generation by exactly one")
+        if current["work_id"] == previous["work_id"] or current["lease_id"] == previous["lease_id"]:
+            fail("released reacquisition must use new work_id and lease_id")
+        if curr_acquired != curr_heartbeat:
+            fail("released reacquisition must start with acquired_at == heartbeat_at")
+        if curr_acquired < prev_heartbeat:
+            fail("released reacquisition cannot predate predecessor heartbeat")
+        return
+
+    if prev_state == "ACTIVE" and curr_state == "ACTIVE":
+        same_owner = (
+            current["work_id"] == previous["work_id"]
+            and current["lease_id"] == previous["lease_id"]
+            and current["generation"] == previous["generation"]
+        )
+        if same_owner:
+            fixed_fields = ("worker", "implementation_branch", "base_sha", "acquired_at")
+            if any(current[field] != previous[field] for field in fixed_fields):
+                fail("renewal changed immutable ownership field")
+            if curr_heartbeat <= prev_heartbeat:
+                fail("renewal heartbeat must advance")
+            remaining = int((prev_expires - curr_heartbeat).total_seconds())
+            if remaining < 0:
+                fail("renewal cannot occur after predecessor expiry")
+            if remaining > protocol["renew_when_remaining_seconds_lte"]:
+                fail("renewal occurred before configured renewal window")
+            return
+
+        if curr_acquired < prev_expires:
+            fail("takeover cannot occur before predecessor expiry")
+        if current["generation"] != previous["generation"] + 1:
+            fail("takeover must increment generation by exactly one")
+        if current["work_id"] == previous["work_id"] or current["lease_id"] == previous["lease_id"]:
+            fail("takeover must use new work_id and lease_id")
+        if curr_acquired != curr_heartbeat:
+            fail("takeover must start with acquired_at == heartbeat_at")
+        return
+
+    fail(f"illegal lock transition {prev_state}->{curr_state}")
+
+
+def validate_history(history: list[dict], protocol: dict) -> None:
+    if not history:
+        fail("lock history must contain at least one snapshot")
+    first = history[0]
+    validate_snapshot(first, protocol)
+    if first["state"] != "ACTIVE" or first["generation"] != 1:
+        fail("initial lock snapshot must be ACTIVE generation 1")
+    if first["acquired_at"] != first["heartbeat_at"]:
+        fail("initial lock snapshot must have acquired_at == heartbeat_at")
+    for previous, current in zip(history, history[1:]):
+        validate_transition(previous, current, protocol)
+
+
+def load_protocol() -> dict:
+    protocol = json.loads(PROTOCOL_PATH.read_text(encoding="utf-8"))
+    if protocol.get("protocol_id") != "life-source-coordination-v2":
+        fail("lock-history validator requires life-source-coordination-v2")
+    if protocol.get("lease_duration_seconds") != 14400:
+        fail("unexpected lease_duration_seconds")
+    if protocol.get("renew_when_remaining_seconds_lte") != 1800:
+        fail("unexpected renew_when_remaining_seconds_lte")
+    return protocol
+
+
+def remote_lock_branches() -> list[str]:
+    output = run_git("ls-remote", "--heads", "origin", "refs/heads/lock/*")
+    branches = []
+    for line in output.splitlines():
+        if not line:
+            continue
+        parts = line.split()
+        if len(parts) != 2:
+            fail("malformed git ls-remote output")
+        match = LOCK_BRANCH_RE.fullmatch(parts[1])
+        if not match:
+            fail(f"unexpected lock ref: {parts[1]}")
+        branches.append(match.group(1))
+    return sorted(branches)
+
+
+def history_for_branch(branch: str) -> list[dict]:
+    remote_ref = f"refs/remotes/origin/{branch}"
+    run_git("fetch", "--quiet", "origin", f"refs/heads/{branch}:{remote_ref}")
+    commits = [
+        line for line in run_git(
+            "log", "--reverse", "--format=%H", remote_ref, "--", "coordination/lock.json"
+        ).splitlines() if line
+    ]
+    history = []
+    for commit in commits:
+        raw = run_git("show", f"{commit}:coordination/lock.json")
+        try:
+            history.append(json.loads(raw))
+        except Exception as exc:
+            fail(f"{branch} commit {commit} has invalid lock JSON: {exc}")
+    return history
+
+
+def main() -> int:
+    try:
+        protocol = load_protocol()
+        for branch in remote_lock_branches():
+            history = history_for_branch(branch)
+            validate_history(history, protocol)
+    except ValidationError as exc:
+        print(f"LOCK_HISTORY_INVALID: {exc}", file=sys.stderr)
+        return 1
+    print("LOCK_HISTORY_VALID")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
