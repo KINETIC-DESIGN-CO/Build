@@ -16,7 +16,8 @@
     "governance/work-selection-policy.json",
     "scripts/select_work.py",
     "tests/test_continuity.py",
-    "tests/test_work_selection.py"
+    "tests/test_work_selection.py",
+    "watchdog/spec.json"
   ],
   "external_targets": [],
   "claims": [
@@ -79,6 +80,12 @@
       "lock_branch": "lock/a608d761f2463304b71abc37aae77de4d28c41fc052348d78d6ef1236ee9f1f2",
       "lease_id": "47164db4-1814-4edb-9fd9-d289bc88232f",
       "generation": 1
+    },
+    {
+      "resource_key": "repo-file:watchdog/spec.json",
+      "lock_branch": "lock/9b26dcc011156c23399cddff948f79a68075708993b34c9d772511a6c8edaa2d",
+      "lease_id": "59cbe360-a23a-4397-b10f-b6423ec84801",
+      "generation": 2
     }
   ],
   "runtime_control_authority": "NONE"
