@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "work_id": "d04b15a2-43f5-4aa9-912a-fda08074058f",
+  "title": "Verify and complete Issue 15 schema enforcement",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "9c5999e0-b2a7-44d6-8a78-c5ea18780678"
+  },
+  "implementation_branch": "work/d04b15a2-43f5-4aa9-912a-fda08074058f",
+  "base_sha": "2d67cacdfe8c725970a5da4bdaa739404cc44f89",
+  "component_id": "issue_15",
+  "repo_paths": [
+    "governance/work-admissions.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_15",
+      "lock_branch": "lock/9d2d67391fdccea8d9371e7139cfced4484a6280e2d715393dc97ba5aa623ad0",
+      "lease_id": "08042640-a2ed-45ab-9a57-724585ee2153",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:governance/work-admissions.json",
+      "lock_branch": "lock/5c5c41709e99037181ffe1cea5564fe25c180219dd5ff4c49aa465abb9038061",
+      "lease_id": "ba152f7f-212e-4762-b327-48c17019e208",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
