@@ -13,7 +13,8 @@
     "continuity/context.md",
     "continuity/current.json",
     "continuity/decisions.jsonl",
-    "continuity/events.jsonl"
+    "continuity/events.jsonl",
+    "tests/test_continuity.py"
   ],
   "external_targets": [],
   "claims": [
@@ -51,6 +52,12 @@
       "resource_key": "repo-file:continuity/events.jsonl",
       "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
       "lease_id": "36d7377d-2a3f-43a3-9a9a-d2bbdf64f946",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:tests/test_continuity.py",
+      "lock_branch": "lock/64bf054ef760683d2a8577dbf8970e81aaba5e4f7b24c4c32aa9760493cc1017",
+      "lease_id": "4363f3be-5479-4e50-94a1-e29105577f8d",
       "generation": 2
     }
   ],
