@@ -10,7 +10,8 @@
   "base_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
   "component_id": "issue_15",
   "repo_paths": [
-    "governance/work-admissions.json"
+    "governance/work-admissions.json",
+    "tests/test_issue_15_schema_falsification.py"
   ],
   "external_targets": [],
   "claims": [
@@ -25,6 +26,12 @@
       "lock_branch": "lock/5c5c41709e99037181ffe1cea5564fe25c180219dd5ff4c49aa465abb9038061",
       "lease_id": "570e2444-fee0-4a88-a8f5-30de2dd373f7",
       "generation": 3
+    },
+    {
+      "resource_key": "repo-file:tests/test_issue_15_schema_falsification.py",
+      "lock_branch": "lock/f868b2b765deb9d6d7aa40be50e14c006d3bdee575b1f34bed388a2fc674caa7",
+      "lease_id": "6a261e74-15ee-4994-9e08-c262e55d2975",
+      "generation": 1
     }
   ],
   "runtime_control_authority": "NONE"
