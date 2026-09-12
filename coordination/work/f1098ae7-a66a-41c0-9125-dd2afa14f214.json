@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_id": "f1098ae7-a66a-41c0-9125-dd2afa14f214",
+  "title": "Version life.invoke v1 Supabase invocation foundation",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"
+  },
+  "implementation_branch": "work/f1098ae7-a66a-41c0-9125-dd2afa14f214",
+  "base_sha": "18da7242120b84af4b61a93f3be8d2b6dff50bfb",
+  "component_id": "canonical_invocation_database_source",
+  "repo_paths": [
+    ".github/workflows/continuity.yml",
+    "supabase/config.toml",
+    "supabase/migrations/20260912042500_life_invocation_v1.sql",
+    "supabase/tests/database/life_invocation_v1_test.sql"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:canonical_invocation_database_source",
+      "lock_branch": "lock/79e24fddc5d965f4f2194d6470c5634c47c62272463ee1a877acf3b2087cd932",
+      "lease_id": "8187a4cf-90e1-4349-b17e-bc42f51c9725",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "9fb08cce-3cf8-49d5-8b64-00f7c17275ca",
+      "generation": 6
+    },
+    {
+      "resource_key": "repo-file:.github/workflows/continuity.yml",
+      "lock_branch": "lock/00f987781a44716a2501b39c58085c5e00bb6b8089d0883f660f4a0980d3bf3a",
+      "lease_id": "7f71d3a2-d614-42a3-890b-b6e84b9ff2f1",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:supabase/config.toml",
+      "lock_branch": "lock/3389b1c3dc8458dda0f7e03098d9bcf687d9e1f00d3611643f942dbb0cbfb2fb",
+      "lease_id": "25d7a391-1931-4d5c-a287-b6e32fa576b0",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:supabase/migrations/20260912042500_life_invocation_v1.sql",
+      "lock_branch": "lock/f4fe581376e584419d6c8fdd7afdcb6d67ebb41a890bcc29063cf026568e1c11",
+      "lease_id": "a4848ff5-db40-4f12-b2bc-ae87c005c043",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:supabase/tests/database/life_invocation_v1_test.sql",
+      "lock_branch": "lock/355979aa5e4155f35d24b17ea169d9a738bfbe95f45a61ffffcff5f0757e3578",
+      "lease_id": "a887f0c7-3b04-4a3f-82d8-840ed9fe8967",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
