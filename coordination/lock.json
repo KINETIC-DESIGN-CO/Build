@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:scripts/validate_continuity.py",
   "generation": 6,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "01e1a66f-3474-4274-9e86-9a9074202df6",
   "worker": {"kind": "chatgpt", "session_id": "6f63f5f4-c8cc-49a1-a3a4-689f75682c0a"},
   "implementation_branch": "work/01e1a66f-3474-4274-9e86-9a9074202df6",
