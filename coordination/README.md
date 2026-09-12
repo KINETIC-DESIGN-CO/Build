@@ -39,9 +39,11 @@ The `Protect-main` ruleset must also use strict required checks: **Require branc
 
 ## Continuity interaction
 
-Mutations confined to `work/<UUIDv4>` or `lock/<64hex>` branches do not update canonical Life state and do not require a continuity synchronization solely because they occurred. Their branch history and live machine state are the exact evidence. A PR merge or any other update to `main` is never exempt and must be synchronized under `continuity/bootstrap.json`.
+Mutations confined to `work/<UUIDv4>` or `lock/<64hex>` branches do not update canonical Life state and do not require a continuity synchronization solely because they occurred. Their branch history and live machine state are the exact evidence.
 
-This exception is what allows actual parallel work: lease heartbeats and intermediate work commits do not serialize every worker through `continuity/current.json`.
+A normal source PR merge or other update to `main` requires continuity synchronization. The synchronization itself is recursion-safe: `continuity/bootstrap.json` includes `coordination/work/**` in `continuity_sync_paths`, so a validated continuity-sync PR whose changed paths are a nonempty subset of those exact paths is `CONTINUITY_SYNC` and its merge to `main` does not require another synchronization solely because that synchronization merged. An update to `main` outside that exact path set is never exempt.
+
+This distinction allows actual parallel work without creating an infinite sequence of continuity-only PRs.
 
 ## Visibility
 
