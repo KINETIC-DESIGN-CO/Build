@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:tests/test_continuity.py",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "a4e9919d-ddcb-4c1f-9e98-afde68173c91",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "47cba161-0959-49e7-bb68-acd033661043"
+  },
+  "implementation_branch": "work/a4e9919d-ddcb-4c1f-9e98-afde68173c91",
+  "lease_id": "86a2d5f1-5af6-4cb7-84fc-f1d945f41028",
+  "base_sha": "9535ba7efd1aceec752c4f88324620f66e3f8c51",
+  "acquired_at": "2026-09-12T03:22:48Z",
+  "heartbeat_at": "2026-09-12T03:22:48Z",
+  "expires_at": "2026-09-12T07:22:48Z",
+  "runtime_control_authority": "NONE"
+}
