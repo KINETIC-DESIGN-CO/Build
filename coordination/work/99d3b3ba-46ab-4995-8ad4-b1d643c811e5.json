@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_id": "99d3b3ba-46ab-4995-8ad4-b1d643c811e5",
+  "title": "Synchronize continuity after multi-agent coordination completion",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "47cba161-0959-49e7-bb68-acd033661043"
+  },
+  "implementation_branch": "work/99d3b3ba-46ab-4995-8ad4-b1d643c811e5",
+  "base_sha": "4478966f70941d258c818f97d4ba841ac58604a7",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/context.md",
+    "continuity/current.json",
+    "continuity/decisions.jsonl",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "8df9ed4e-5f4a-4e14-b8ab-d739e433cff3",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "0fabbaa6-6711-44c6-b7f0-e95f968d5939",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:continuity/context.md",
+      "lock_branch": "lock/b54a87ae0c6695df543fd900938bab73cecc8c48f4a9bca7bda091ece106a073",
+      "lease_id": "eaf1a11b-6ef1-4275-a04b-0146428fca4b",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "9da552f2-9e5a-452c-80a5-bb8f3eef8788",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:continuity/decisions.jsonl",
+      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
+      "lease_id": "852c8038-9012-470c-90d4-759e9957a0b7",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "534cd659-821c-40f3-ae7a-b942f4d36eb0",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
