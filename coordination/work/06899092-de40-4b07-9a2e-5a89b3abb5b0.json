@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "work_id": "06899092-de40-4b07-9a2e-5a89b3abb5b0",
+  "title": "Define released-lease reacquisition generation semantics",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "47cba161-0959-49e7-bb68-acd033661043"
+  },
+  "implementation_branch": "work/06899092-de40-4b07-9a2e-5a89b3abb5b0",
+  "base_sha": "a2d3a0468760933c98171c0ef7b9c1808b1f3323",
+  "component_id": "multi_agent_coordination",
+  "repo_paths": [
+    "coordination/README.md",
+    "coordination/protocol.json",
+    "tests/test_coordination.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:multi_agent_coordination",
+      "lock_branch": "lock/e530c334d008ac45e9d85b07280b0146c10f315f480c5577a977e3f6c7f22005",
+      "lease_id": "9efb8732-8ae2-4a12-b1a9-bb8091308ad6",
+      "generation": 2
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "7c6ad0ed-f49d-41d3-ae87-32c05aff6c66",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:coordination/README.md",
+      "lock_branch": "lock/b3a4f82dc74f1f37129f24434062580457898bbf5b243fe0c221d2b8a7c97198",
+      "lease_id": "1a73cb2f-fcd5-4af4-b31f-a3d76f442e5b",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:coordination/protocol.json",
+      "lock_branch": "lock/9c6ddcd29016358f183405bba8ecbf3d19eb80c4e9344eddfc07287935e9e141",
+      "lease_id": "1881bd4e-b040-4848-8b7e-899e0654a059",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:tests/test_coordination.py",
+      "lock_branch": "lock/f3e5d80d2849bc9659003a08d149c03f0770e90592d628de93bccca45134cb8e",
+      "lease_id": "57e726a8-55f2-465e-b6f1-5488f782acff",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
