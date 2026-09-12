@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:supabase/migrations/20260912052949_life_invocation_v1_alignment.sql",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "cb09da63-4d29-483c-b82e-c973e78f30c9",
+  "worker": {"kind": "chatgpt", "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"},
+  "implementation_branch": "work/cb09da63-4d29-483c-b82e-c973e78f30c9",
+  "lease_id": "9bcad65c-c2ec-4151-9c81-974cc8218ee7",
+  "base_sha": "883c7aea6ff228baac9acc6515233919fa5e9225",
+  "acquired_at": "2026-09-12T05:30:44Z",
+  "heartbeat_at": "2026-09-12T05:30:44Z",
+  "expires_at": "2026-09-12T09:30:44Z",
+  "runtime_control_authority": "NONE"
+}
