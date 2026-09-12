@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:scripts/select_work.py",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "7ad745fe-9a42-4932-8a95-bdf4b108e21c",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "99bb66fd-01ae-4de5-ba47-744bf2491791"
+  },
+  "implementation_branch": "work/7ad745fe-9a42-4932-8a95-bdf4b108e21c",
+  "lease_id": "104f38c2-496a-4615-8e2f-ee5c65122764",
+  "base_sha": "b2cc6ab9ed12b32f8f6688840400068d11375d77",
+  "acquired_at": "2026-09-12T10:21:43Z",
+  "heartbeat_at": "2026-09-12T10:21:43Z",
+  "expires_at": "2026-09-12T14:21:43Z",
+  "runtime_control_authority": "NONE"
+}
