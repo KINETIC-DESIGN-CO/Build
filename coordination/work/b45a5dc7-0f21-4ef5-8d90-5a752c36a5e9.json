@@ -10,7 +10,6 @@
   "base_sha": "43de56f2894a4d7c53e37cc957a9a27babb17a6f",
   "component_id": "life_governance_policy_bundle",
   "repo_paths": [
-    "continuity/context.md",
     "continuity/current.json",
     "continuity/events.jsonl",
     "continuity/schema/response-contract.schema.json",
@@ -30,12 +29,6 @@
       "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
       "lease_id": "90f39fab-885b-4435-850b-f7862cfd520e",
       "generation": 15
-    },
-    {
-      "resource_key": "repo-file:continuity/context.md",
-      "lock_branch": "lock/b54a87ae0c6695df543fd900938bab73cecc8c48f4a9bca7bda091ece106a073",
-      "lease_id": "1397070f-8aae-4c90-9dc5-33fbdcfeb21b",
-      "generation": 7
     },
     {
       "resource_key": "repo-file:continuity/current.json",
