@@ -77,18 +77,6 @@
       "generation": 2
     },
     {
-      "resource_key": "repo-file:scripts/validate_continuity.py",
-      "lock_branch": "lock/c3ba09fe16c3d5cbac4245dda1c8fa038874176e688f6addbd52e0e31d2acc8b",
-      "lease_id": "e8f3530c-584e-420c-adb1-de4cb7a7c3fa",
-      "generation": 3
-    },
-    {
-      "resource_key": "repo-file:scripts/validate_coordination.py",
-      "lock_branch": "lock/0d7cf6ac6a3f6ab9cca29d8e5e98cac953f7ec3f1a9acb5dcb4a065dc2f91146",
-      "lease_id": "f681a0c6-616e-4fcb-bc03-ca89c3ebf2c4",
-      "generation": 3
-    },
-    {
       "resource_key": "repo-file:tests/test_continuity.py",
       "lock_branch": "lock/64bf054ef760683d2a8577dbf8970e81aaba5e4f7b24c4c32aa9760493cc1017",
       "lease_id": "0aaf01a8-d379-4131-93de-80457deb067b",
