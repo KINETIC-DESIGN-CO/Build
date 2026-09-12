@@ -59,9 +59,9 @@ class WatchdogValidationTests(unittest.TestCase):
         with self.assertRaises(vw.ValidationError):
             vw.validate_registry(broken, BASE_SPEC)
 
-    def test_self_audit_findings_are_mandatory(self):
+    def test_required_findings_are_mandatory(self):
         broken = copy.deepcopy(BASE_REGISTRY)
-        broken["findings"] = [f for f in broken["findings"] if f["finding_type_id"] != "WATCHDOG_EXECUTOR_STALE"]
+        broken["findings"] = [f for f in broken["findings"] if f["finding_type_id"] != "MERGE_TIME_INTEGRATION_FRESHNESS_GAP"]
         with self.assertRaises(vw.ValidationError):
             vw.validate_registry(broken, BASE_SPEC)
 
