@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "work_id": "fb709410-b64d-40c1-829e-f52b74f11380",
+  "title": "Synchronize PR #34 multi-thread dispatcher milestone",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "c831568e-5f88-467f-8e63-67e10a4dd1fc"
+  },
+  "implementation_branch": "work/fb709410-b64d-40c1-829e-f52b74f11380",
+  "base_sha": "8fa0818d95322d4fe829e9fafc58e39fefe292ad",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "0579b91b-5443-43c4-8540-99ab66a09170",
+      "generation": 15
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "d2a50802-fdbf-4431-832e-3e6bb11d125c",
+      "generation": 6
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "aa33f8da-399d-4b98-aa5a-50867f81bf94",
+      "generation": 29
+    },
+    {
+      "resource_key": "repo-file:continuity/context.md",
+      "lock_branch": "lock/b54a87ae0c6695df543fd900938bab73cecc8c48f4a9bca7bda091ece106a073",
+      "lease_id": "ff621f66-a46e-4201-b717-70674955659d",
+      "generation": 12
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "a8de9b5a-3b92-4316-9bf1-50a0c8f19a56",
+      "generation": 18
+    },
+    {
+      "resource_key": "repo-file:continuity/decisions.jsonl",
+      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
+      "lease_id": "66aab866-6266-4b87-801e-d99377bead88",
+      "generation": 10
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "20b149a0-d4a4-48ae-a422-424068ce25c4",
+      "generation": 16
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
