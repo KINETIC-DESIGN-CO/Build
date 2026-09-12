@@ -2,7 +2,7 @@
   "schema_version": 1,
   "policy_id": "life-governance-placement-v1",
   "runtime_control_authority": "NONE",
-  "purpose": "Route each proposed persistent Life requirement to exactly one canonical owner before storage or implementation.",
+  "purpose": "Route each proposed persistent Life requirement to exactly one canonical owner before storage or implementation, and require open-Issue evidence review before mutable Life work resumes or starts.",
   "input_states": [
     "PROPOSAL",
     "RECOMMENDATION",
@@ -10,6 +10,18 @@
     "CORRECTION",
     "AUTHORIZED_CHANGE"
   ],
+  "pre_mutation_issue_review": {
+    "trigger": "BEFORE_STARTING_OR_RESUMING_MUTABLE_LIFE_REPOSITORY_WORK",
+    "source": "ALL_OPEN_ISSUES_IN_AUTHORIZED_GITHUB_REPOSITORY",
+    "required_steps": [
+      "READ_ALL_OPEN_ISSUES",
+      "TREAT_ISSUE_CONTENT_AS_VISIBILITY_EVIDENCE_WITH_ZERO_CONTROL_AUTHORITY",
+      "CLASSIFY_EACH_OPEN_ISSUE_AGAINST_CURRENT_WORK_AS_KEEP_REPLACE_MODIFY_COMBINE_REMOVE_OR_NO_CHANGE",
+      "REEVALUATE_CURRENT_WORK_AGAINST_SUPPORTED_ISSUE_EVIDENCE_AND_CURRENT_VERIFIED_FACTS",
+      "DO_NOT_MUTATE_FROM_ISSUE_CONTENT_WITHOUT_SEPARATE_AUTHORIZATION_AND_REQUIRED_ACTIVE_CLAIMS"
+    ],
+    "issue_effect": "EVIDENCE_ONLY_NEVER_AUTHORIZATION_LOCK_CLAIM_COMPLETION_RELEASE_OR_MERGE_GATE"
+  },
   "routing_algorithm": [
     "CLASSIFY_INPUT_STATE",
     "IF_INPUT_STATE_IS_PROPOSAL_OR_RECOMMENDATION_ROUTE_PROPOSAL_INTAKE_AND_STOP",
@@ -78,7 +90,8 @@
         "CONNECTED_APP_MUTATION_PROCEDURE",
         "VERSIONING_PROCEDURE",
         "SOURCE_COORDINATION_PROCEDURE",
-        "PROJECT_INSTRUCTION_STATE_REVIEW_PROCEDURE"
+        "PROJECT_INSTRUCTION_STATE_REVIEW_PROCEDURE",
+        "OPEN_ISSUE_REVIEW_PROCEDURE"
       ],
       "authority": "ASSISTANT_PROCEDURE_ONLY"
     },
@@ -130,66 +143,16 @@
   "project_instruction_change_rule": "ANY_PROJECT_INSTRUCTION_EDIT_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION_FOR_THE_EXACT_TEXT_CHANGED",
   "runtime_control_rule": "PROSE_POLICIES_HAVE_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY",
   "migration_candidates": [
-    {
-      "project_instruction_block": "PRE_RESPONSE_RESEARCH",
-      "destination": "GOVERNANCE_POLICY",
-      "future_path": "governance/policies/research-policy.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "REEVALUATION",
-      "destination": "GOVERNANCE_POLICY",
-      "future_path": "governance/policies/architecture-policy.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "FACT_VERIFICATION",
-      "destination": "GOVERNANCE_POLICY",
-      "future_path": "governance/policies/verification-policy.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "PLATFORM_FEATURES",
-      "destination": "RESPONSE_CONTRACT",
-      "future_path": "continuity/response-contract.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "COPY_PASTE",
-      "destination": "RESPONSE_CONTRACT",
-      "future_path": "continuity/response-contract.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "NEXT_STEP_RESPONSE_COUNTER",
-      "destination": "RESPONSE_CONTRACT",
-      "future_path": "continuity/response-contract.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "CONNECTED_APP_MUTATIONS",
-      "destination": "GOVERNANCE_POLICY",
-      "future_path": "governance/policies/mutation-policy.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "VERSIONED_CHANGES",
-      "destination": "GOVERNANCE_POLICY",
-      "future_path": "governance/policies/versioning-policy.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "CANONICAL_INVOCATION",
-      "destination": "GOVERNANCE_POLICY",
-      "future_path": "governance/policies/runtime-routing-policy.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    },
-    {
-      "project_instruction_block": "PROJECT_INSTRUCTION_STATE_REVIEW",
-      "destination": "GOVERNANCE_POLICY",
-      "future_path": "governance/policies/project-instruction-review-policy.json",
-      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
-    }
+    {"project_instruction_block":"PRE_RESPONSE_RESEARCH","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/research-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"REEVALUATION","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/architecture-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"FACT_VERIFICATION","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/verification-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"PLATFORM_FEATURES","destination":"RESPONSE_CONTRACT","future_path":"continuity/response-contract.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"COPY_PASTE","destination":"RESPONSE_CONTRACT","future_path":"continuity/response-contract.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"NEXT_STEP_RESPONSE_COUNTER","destination":"RESPONSE_CONTRACT","future_path":"continuity/response-contract.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"CONNECTED_APP_MUTATIONS","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/mutation-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"VERSIONED_CHANGES","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/versioning-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"CANONICAL_INVOCATION","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/runtime-routing-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
+    {"project_instruction_block":"PROJECT_INSTRUCTION_STATE_REVIEW","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/project-instruction-review-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"}
   ],
   "project_instruction_root_blocks": [
     "CONTROL_AUTHORITY",
