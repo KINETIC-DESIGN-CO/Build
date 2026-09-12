@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "policy_id": "life-engineering-work-selection-v1",
+  "runtime_control_authority": "NONE",
+  "engineering_work_selection_authority": "DETERMINISTIC_EVALUATION_ONLY",
+  "continuity_barrier_resource_key": "continuity:sync",
+  "worker_lanes": [
+    "FOREGROUND",
+    "PARALLEL_ASSIGNED"
+  ],
+  "priority_order": [
+    {
+      "rank": 0,
+      "condition_id": "CONTINUITY_SYNC_REQUIRED",
+      "selected_work": "CONTINUITY_SYNC"
+    },
+    {
+      "rank": 1,
+      "condition_id": "INTERRUPTED_OPERATION_UNRESOLVED",
+      "selected_work": "RESUME_INTERRUPTED_OPERATION"
+    },
+    {
+      "rank": 2,
+      "condition_id": "FOREGROUND_CURRENT_WORK_BLOCKED",
+      "selected_work": "CLEAR_CURRENT_BLOCKERS"
+    },
+    {
+      "rank": 3,
+      "condition_id": "FOREGROUND_CURRENT_NEXT_ACTION_PRESENT",
+      "selected_work": "CURRENT_NEXT_ACTION"
+    },
+    {
+      "rank": 4,
+      "condition_id": "PARALLEL_ASSIGNED_REQUEST_RESOURCE_INTERSECTION_EMPTY",
+      "selected_work": "PARALLEL_ASSIGNED_WORK"
+    }
+  ],
+  "preemption_rule": "ONLY_STRICTLY_LOWER_NUMERIC_RANK_MAY_PREEMPT_A_NONTERMINAL_SELECTED_WORK",
+  "same_or_lower_priority_rule": "KEEP_NONTERMINAL_SELECTED_WORK_AND_RECORD_OR_QUEUE_NEW_EVIDENCE",
+  "novelty_rule": "NEWLY_OBSERVED_WORK_OR_EVENT_HAS_ZERO_PREEMPTION_EFFECT_UNLESS_EXACT_EVIDENCE_ACTIVATES_A_STRICTLY_LOWER_NUMERIC_RANK",
+  "continuity_sync": {
+    "sync_required_if_any": [
+      "PENDING_CONTINUITY_EVENT_IDS_NONEMPTY",
+      "CANONICAL_LIVE_MISMATCH_IDS_NONEMPTY",
+      "CONTINUITY_SYNC_CLAIM_STATE_ACTIVE_UNEXPIRED",
+      "CONTINUITY_SYNC_CLAIM_STATE_ACTIVE_EXPIRED"
+    ],
+    "prearm_rule": "BEFORE_AN_ASSISTANT_INITIATED_OPERATION_THAT_CAN_EMIT_A_BOOTSTRAP_CONTINUITY_UPDATE_EVENT_THE_WORK_ITEM_MUST_HOLD_ACTIVE_UNEXPIRED_CONTINUITY_SYNC",
+    "fresh_mismatch_rule": "WHEN_A_CURRENT_AUTHORIZED_SYSTEM_READ_FIRST_PROVES_A_TRACKED_CANONICAL_VALUE_DIFFERS_FROM_LIVE_STATE_AND_THE_DELTA_IS_NOT_CONTINUITY_SYNC_EXEMPT_ACQUIRE_CONTINUITY_SYNC_BEFORE_ANY_OTHER_MUTABLE_OPERATION",
+    "mutation_gate": "WHEN_CONTINUITY_SYNC_REQUIRED_NO_RANK_1_TO_4_MUTABLE_WORK_MAY_START_OR_RESUME",
+    "completion_requires": [
+      "CONTINUITY_SYNC_PR_MERGED_TO_MAIN",
+      "MERGED_MAIN_READBACK_VERIFIED",
+      "POST_MERGE_VALIDATE_SUCCESS",
+      "CONTINUITY_SYNC_CLAIMS_RELEASED_AND_READ_BACK"
+    ],
+    "continuity_sync_exempt_source": "continuity/bootstrap.json:continuity_sync_rule"
+  },
+  "interruption": {
+    "unresolved_states": [
+      "PENDING",
+      "NO_RESULT",
+      "TIMEOUT",
+      "UNKNOWN"
+    ],
+    "terminal_states": [
+      "NONE",
+      "SUCCESS",
+      "FAILURE"
+    ],
+    "resume_cue_effect": "ZERO_PRIORITY_EFFECT",
+    "resume_rule": "WHEN_RANK_0_IS_INACTIVE_AND_INTERRUPTED_OPERATION_STATE_IS_UNRESOLVED_RESUME_THE_SAME_OPERATION_OR_WORK_ITEM_BEFORE_RANK_2_TO_4_WORK"
+  },
+  "foreground_blocker_rule": "WHEN_WORKER_LANE_IS_FOREGROUND_AND_CURRENT_STATUS_IS_BLOCKED_AND_OPEN_BLOCKER_IDS_IS_NONEMPTY_SELECT_CLEAR_CURRENT_BLOCKERS_BEFORE_CURRENT_NEXT_ACTION",
+  "parallel_rule": "PARALLEL_ASSIGNED_LANE_MAY_SELECT_RANK_4_ONLY_WHEN_RANK_0_AND_RANK_1_ARE_INACTIVE_AND_PARALLEL_REQUEST_STATE_IS_REQUESTED_AND_RESOURCE_INTERSECTION_IS_INTERSECTION_EMPTY",
+  "evidence_contract": {
+    "required_fields": [
+      "worker_lane",
+      "pending_continuity_event_ids",
+      "canonical_live_mismatch_ids",
+      "continuity_sync_claim_state",
+      "interrupted_operation_state",
+      "current_status",
+      "open_blocker_ids",
+      "current_next_action_id",
+      "parallel_request_state",
+      "parallel_resource_intersection",
+      "selected_rank_before",
+      "selected_work_terminal"
+    ],
+    "worker_lane": [
+      "FOREGROUND",
+      "PARALLEL_ASSIGNED"
+    ],
+    "continuity_sync_claim_state": [
+      "NONE",
+      "ACTIVE_UNEXPIRED",
+      "ACTIVE_EXPIRED",
+      "RELEASED"
+    ],
+    "interrupted_operation_state": [
+      "NONE",
+      "PENDING",
+      "NO_RESULT",
+      "TIMEOUT",
+      "UNKNOWN",
+      "SUCCESS",
+      "FAILURE"
+    ],
+    "current_status": [
+      "ACTIVE",
+      "BLOCKED",
+      "COMPLETE"
+    ],
+    "parallel_request_state": [
+      "NONE",
+      "REQUESTED"
+    ],
+    "parallel_resource_intersection": [
+      "NOT_EVALUATED",
+      "INTERSECTION_EMPTY",
+      "INTERSECTION_NONEMPTY"
+    ],
+    "selected_rank_before": [
+      null,
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "selected_work_terminal": [
+      false,
+      true
+    ]
+  }
+}
