@@ -16,7 +16,10 @@
   "schedule": {
     "timezone": "America/Denver",
     "cadence": "HOURLY",
-    "deep_audit_local_hours": [2, 14],
+    "deep_audit_local_hours": [
+      2,
+      14
+    ],
     "daily_summary_local_hour": 14,
     "schedule_contract_id": "build-watchdog-hourly-denver-v1"
   },
@@ -109,7 +112,7 @@
     "source_contract_fingerprints": [
       {
         "path": "continuity/bootstrap.json",
-        "git_blob_sha": "ee32002e104894dc230a925ba13cabf559730677"
+        "git_blob_sha": "e22235071f1f3c7a70acf8ee5510b613f034e609"
       },
       {
         "path": "continuity/response-contract.json",
