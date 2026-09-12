@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:tests/test_issue_15_schema_falsification.py",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "d0053b35-1e1b-4fea-9076-d6598af746ea",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "aa2461bc-0cc2-4b8b-8dfc-7991167c4753"
+  },
+  "implementation_branch": "work/d0053b35-1e1b-4fea-9076-d6598af746ea",
+  "lease_id": "6a261e74-15ee-4994-9e08-c262e55d2975",
+  "base_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
+  "acquired_at": "2026-09-12T23:26:29Z",
+  "heartbeat_at": "2026-09-12T23:26:29Z",
+  "expires_at": "2026-09-13T03:26:29Z",
+  "runtime_control_authority": "NONE"
+}
