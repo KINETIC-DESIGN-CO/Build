@@ -13,6 +13,8 @@
     "continuity/bootstrap.json",
     "continuity/context.md",
     "continuity/current.json",
+    "continuity/schema/bootstrap.schema.json",
+    "continuity/schema/current.schema.json",
     "scripts/validate_continuity.py"
   ],
   "external_targets": [],
@@ -52,6 +54,18 @@
       "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
       "lease_id": "fe5c932b-0aa2-4d32-a150-3bb61f1557d4",
       "generation": 20
+    },
+    {
+      "resource_key": "repo-file:continuity/schema/bootstrap.schema.json",
+      "lock_branch": "lock/d06dc7330b16b36032a7d6b51809230f3b3a8e20b0447e843495064417d9c071",
+      "lease_id": "68078560-2bbb-4e3f-b9d4-711cc989d10b",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:continuity/schema/current.schema.json",
+      "lock_branch": "lock/f13d99fe4ea6bbf328e04a5856b349962157757515a9b54e16cf798874c0f68c",
+      "lease_id": "94df7ff6-f927-4cf0-9646-d90c99fe58da",
+      "generation": 1
     },
     {
       "resource_key": "repo-file:scripts/validate_continuity.py",
