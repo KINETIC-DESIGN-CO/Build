@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "work_id": "be4aea6b-d532-4383-933f-e66f73e728b8",
+  "title": "Synchronize PR 36 completion and merge queue decision",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "3d2ece6a-2fc2-44e2-a610-4f950f9c1ab6"
+  },
+  "implementation_branch": "work/be4aea6b-d532-4383-933f-e66f73e728b8",
+  "base_sha": "a2cf6fd8f762dc8639dfa29164652a9744732775",
+  "component_id": "repository_identity_sync_followup",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/decisions.jsonl",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:repository_identity_sync_followup",
+      "lock_branch": "lock/b0ba58afbb1a61352d47c0e0a0e69e97dee3efff7bc70ce27242f6e68be951d3",
+      "lease_id": "c8d7cda0-5751-4f09-8c11-5bc6f5fa33cf",
+      "generation": 1
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "b4d9ec8c-85e3-4b53-8b88-a83ddb9ca100",
+      "generation": 9
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "f33d1422-48e2-485c-96c7-61c3e200d05d",
+      "generation": 32
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "970ba885-f52e-45a1-9e5b-959db0b2592e",
+      "generation": 21
+    },
+    {
+      "resource_key": "repo-file:continuity/decisions.jsonl",
+      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
+      "lease_id": "af8e77aa-408c-4159-a066-0d795585c3d7",
+      "generation": 12
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "fd3d379d-f87a-4d2b-9e2a-dea5d8b56deb",
+      "generation": 18
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
