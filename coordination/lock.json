@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:continuity/current.json",
   "generation": 13,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "20594ada-caee-4e26-8cf5-178ef9fce9a8",
   "worker": {
     "kind": "chatgpt",
