@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_id": "01e1a66f-3474-4274-9e86-9a9074202df6",
-  "title": "Synchronize organization repository identity",
+  "title": "Synchronize organization repository identity and retry required validation",
   "worker": {
     "kind": "chatgpt",
     "session_id": "6f63f5f4-c8cc-49a1-a3a4-689f75682c0a"
