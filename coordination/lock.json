@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:canonical_invocation_database_alignment_source",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "cb09da63-4d29-483c-b82e-c973e78f30c9",
   "worker": {"kind": "chatgpt", "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"},
   "implementation_branch": "work/cb09da63-4d29-483c-b82e-c973e78f30c9",
