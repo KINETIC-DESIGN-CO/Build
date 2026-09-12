@@ -120,8 +120,8 @@ def validate_registry(registry, spec):
         expect(finding.get("close_policy") == "REVIEW_REQUIRED", f"registry:close-policy:{fid}")
     expect(len(ids) == len(set(ids)), "registry:duplicate-finding-id")
     expect(len(detectors) == len(set(detectors)), "registry:duplicate-detector-id")
-    required_self = {"WATCHDOG_EXECUTOR_STALE","WATCHDOG_SCHEDULE_STALE","WATCHDOG_SOURCE_INVALID","WATCHDOG_CAPABILITY_DRIFT","WATCHDOG_OBSERVABILITY_LOSS"}
-    expect(required_self <= set(ids), "registry:self-audit-findings")
+    required_findings = {"WATCHDOG_EXECUTOR_STALE","WATCHDOG_SCHEDULE_STALE","WATCHDOG_SOURCE_INVALID","WATCHDOG_CAPABILITY_DRIFT","WATCHDOG_OBSERVABILITY_LOSS","SCHEMA_VALIDATION_COVERAGE_GAP","LEASE_DURATION_ENFORCEMENT_GAP","LOCK_TRANSITION_ENFORCEMENT_GAP","MERGE_TIME_INTEGRATION_FRESHNESS_GAP"}
+    expect(required_findings <= set(ids), "registry:required-findings")
 
 def validate_schema_envelopes():
     for path, title in [(SPEC_SCHEMA_PATH,"Build Repository Watchdog Specification"),(REGISTRY_SCHEMA_PATH,"Build Repository Watchdog Finding Registry")]:
