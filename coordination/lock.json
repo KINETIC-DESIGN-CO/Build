@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:coordination/protocol.json",
   "generation": 4,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "c5a637f5-94bf-4b4a-9182-ff5f9809d9e3",
   "worker": {
     "kind": "chatgpt",
