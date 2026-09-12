@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_id": "cb09da63-4d29-483c-b82e-c973e78f30c9",
+  "title": "Align life.invoke v1 Supabase invocation database",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"
+  },
+  "implementation_branch": "work/cb09da63-4d29-483c-b82e-c973e78f30c9",
+  "base_sha": "883c7aea6ff228baac9acc6515233919fa5e9225",
+  "component_id": "canonical_invocation_database_alignment_source",
+  "repo_paths": [
+    "supabase/migrations/20260912052949_life_invocation_v1_alignment.sql",
+    "supabase/tests/database/life_invocation_v1_test.sql"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:canonical_invocation_database_alignment_source",
+      "lock_branch": "lock/99f2a66dbf77945dab93302fed52150ff579c792a2e3ec0dc4f22d9b5ad7a728",
+      "lease_id": "8a808860-848c-4ccb-8466-4ef1a3428d09",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "592da02e-62dd-456a-8e40-949482a574d7",
+      "generation": 10
+    },
+    {
+      "resource_key": "repo-file:supabase/migrations/20260912052949_life_invocation_v1_alignment.sql",
+      "lock_branch": "lock/3fc944407e7af184731d0511774fde77f966041cd96299039dc5313bed2ee427",
+      "lease_id": "9bcad65c-c2ec-4151-9c81-974cc8218ee7",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:supabase/tests/database/life_invocation_v1_test.sql",
+      "lock_branch": "lock/355979aa5e4155f35d24b17ea169d9a738bfbe95f45a61ffffcff5f0757e3578",
+      "lease_id": "f3a356e8-7768-4ed3-a9d8-bf359325240f",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
