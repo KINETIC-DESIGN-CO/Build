@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Vinanonymous/Build/blob/main/continuity/schema/event.schema.json",
+  "title": "Life Continuity Event Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id","event_type","occurred_at","summary","targets","result","verification_status","related_decision_ids","runtime_control_authority"],
+  "properties": {
+    "id": {"type":"string","pattern":"^E-[0-9]{4}$"},
+    "event_type": {"enum":["VINCE_DIRECTIVE","ARCHITECTURE_DECISION","GITHUB_MUTATION","SUPABASE_MUTATION","VERCEL_MUTATION","PROJECT_INSTRUCTION_CHANGE","VERIFICATION_TRANSITION","BLOCKER_TRANSITION","NEXT_ACTION_CHANGE","COMPONENT_TRANSITION","CONTINUITY_SYNC"]},
+    "occurred_at": {"type":"string","format":"date-time"},
+    "summary": {"type":"string","minLength":1},
+    "targets": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "result": {"type":"string","minLength":1},
+    "verification_status": {"enum":["VERIFIED","UNVERIFIED","UNKNOWN","NOT_RUN"]},
+    "related_decision_ids": {"type":"array","uniqueItems":true,"items":{"type":"string","pattern":"^D-[0-9]{4}$"}},
+    "runtime_control_authority": {"const":"NONE"}
+  }
+}
