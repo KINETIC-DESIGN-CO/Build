@@ -1,0 +1,4 @@
+project_id = "life"
+
+[db]
+major_version = 17
