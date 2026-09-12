@@ -7,7 +7,7 @@
     "session_id": "64b4642b-3eae-406a-a54e-2e11634789e8"
   },
   "implementation_branch": "work/7d4017b9-6e67-4d9c-a0a3-7c85784cba08",
-  "base_sha": "daf1ba47bbba7bb836e7fba54a87bba29d6a01d1",
+  "base_sha": "6f84e6563c05a5c4b7517cd2509403fb2c51896f",
   "component_id": "build_repository_watchdog",
   "repo_paths": [
     "scripts/validate_watchdog.py",
