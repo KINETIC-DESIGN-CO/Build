@@ -17,6 +17,7 @@
     "coordination/protocol.json",
     "governance/placement-policy.json",
     "governance/schema/placement-policy.schema.json",
+    "scripts/validate_continuity.py",
     "tests/test_continuity.py",
     "tests/test_coordination.py"
   ],
@@ -75,6 +76,12 @@
       "lock_branch": "lock/67e257f04b5e099f9642aa35343e9f7370b056693ba949e16ae41eede186c453",
       "lease_id": "c1590ea8-757b-4d54-b85d-51a5edbe89e4",
       "generation": 2
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_continuity.py",
+      "lock_branch": "lock/c3ba09fe16c3d5cbac4245dda1c8fa038874176e688f6addbd52e0e31d2acc8b",
+      "lease_id": "01a336d4-fb68-46da-bbfb-b1be55fbfeca",
+      "generation": 4
     },
     {
       "resource_key": "repo-file:tests/test_continuity.py",
