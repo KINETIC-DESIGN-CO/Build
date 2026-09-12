@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_id": "065d9c73-54f9-433a-98e4-9af79537af4a",
+  "title": "Reconcile post-A-0006 continuity",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "9a1c20d6-b52f-4834-be50-35f18f97406d"
+  },
+  "implementation_branch": "work/065d9c73-54f9-433a-98e4-9af79537af4a",
+  "base_sha": "d4173ac0d8e6808d5023fc51e770a4540d10456f",
+  "component_id": "continuity_reconciliation",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_reconciliation",
+      "lock_branch": "lock/2370e45e99d1f2f0db23195acad2e97f6fdecc7eff0fe9c7ad3a3d2b4182dd5b",
+      "lease_id": "8613b551-b829-4e4b-837a-ac7e7423172a",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "c7ec6848-0c6c-4fd6-a0c9-58a16cb3d429",
+      "generation": 11
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "bb772fc3-ccdd-4508-965a-376f61c85510",
+      "generation": 6
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "59ead472-746c-4263-8ae3-a3319758b670",
+      "generation": 4
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
