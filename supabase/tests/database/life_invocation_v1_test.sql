@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = extensions, pg_catalog, public;
 
-select plan(30);
+select plan(31);
 
 select ok(
   pg_catalog.to_regnamespace('life') is not null,
