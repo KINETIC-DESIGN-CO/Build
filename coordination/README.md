@@ -8,9 +8,11 @@ The authoritative source-coordination protocol is `coordination/protocol.json`. 
 
 Each mutable work item gets one UUIDv4 `work_id` and one branch named exactly `work/<work_id>`. Local coding agents use one Git worktree for that branch. Remote agents write only to that branch.
 
+Creating the empty work branch from current `main`, creating/updating/releasing lock branches, and creating/updating the work record are coordination operations. They do not require a pre-existing claim for the coordination object they create. Implementation repository-content changes and connected-app mutations do require all affected claims first.
+
 ## Resource claims
 
-A work item must hold an ACTIVE, unexpired claim for every resource it can mutate. Resource keys are acquired in ascending UTF-8 order.
+A work item must hold an ACTIVE, unexpired claim for every implementation resource it can mutate. Resource keys are acquired in ascending UTF-8 order.
 
 Required keys include:
 
@@ -34,6 +36,12 @@ Every post-bootstrap PR to `main` must add or modify exactly one `coordination/w
 The required GitHub Actions job remains named `validate`. It validates continuity and coordination, verifies that the PR branch contains the current `main` as an ancestor, fetches every live lock branch, verifies each lease against the work record, and rejects unclaimed changed paths.
 
 The `Protect-main` ruleset must also use strict required checks: **Require branches to be up to date before merging** must be enabled. That GitHub-side setting invalidates a previously green PR when another PR changes `main`.
+
+## Continuity interaction
+
+Mutations confined to `work/<UUIDv4>` or `lock/<64hex>` branches do not update canonical Life state and do not require a continuity synchronization solely because they occurred. Their branch history and live machine state are the exact evidence. A PR merge or any other update to `main` is never exempt and must be synchronized under `continuity/bootstrap.json`.
+
+This exception is what allows actual parallel work: lease heartbeats and intermediate work commits do not serialize every worker through `continuity/current.json`.
 
 ## Visibility
 
