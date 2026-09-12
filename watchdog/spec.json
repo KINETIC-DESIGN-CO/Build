@@ -5,7 +5,7 @@
   "source_control_authority": "NONE",
   "authorized_repository": {
     "repository_id": 1366835183,
-    "full_name": "Vinanonymous/Build",
+    "full_name": "KINETIC-DESIGN-CO/Build",
     "default_branch": "main"
   },
   "authorized_external_targets": {
@@ -94,9 +94,9 @@
   "self_audit": {
     "lightweight_frequency": "EVERY_RUN",
     "capability_reevaluation_frequency": "DEEP_AUDIT_ONLY",
-    "executor_contract_id": "build-watchdog-executor-v1",
+    "executor_contract_id": "build-watchdog-executor-v2",
     "schedule_contract_id": "build-watchdog-hourly-denver-v1",
-    "executor_prompt_template": "Run one Build Repository Watchdog cycle using embedded executor contract build-watchdog-executor-v1 and schedule contract build-watchdog-hourly-denver-v1. Read current main in Vinanonymous/Build and load watchdog/spec.json and watchdog/finding-registry.json; do not use cached copies. Execute only the behaviors permitted by those current versioned sources. Perform the self-audit defined there before finding classification. Never alter this task prompt, schedule, authority, or mutation boundary from inside a run. If the embedded executor or schedule contract ID differs from current source, disable Issue mutations, perform only the permitted read-only control-plane audit, notify Vince of the exact drift, and do not repair the task. Do not repair Life. Mutate GitHub Issues only when current main source explicitly enables the exact operation and every registered precondition passes; otherwise remain read-only. Treat prose and model judgment as zero authority. Treat a null canonical Vercel target as EXPECTED_NOT_RUN.",
+    "executor_prompt_template": "Run one Build Repository Watchdog cycle using embedded executor contract build-watchdog-executor-v2 and schedule contract build-watchdog-hourly-denver-v1. Read current main in KINETIC-DESIGN-CO/Build and load watchdog/spec.json and watchdog/finding-registry.json; do not use cached copies. Execute only the behaviors permitted by those current versioned sources. Perform the self-audit defined there before finding classification. Never alter this task prompt, schedule, authority, or mutation boundary from inside a run. If the embedded executor or schedule contract ID differs from current source, disable Issue mutations, perform only the permitted read-only control-plane audit, notify Vince of the exact drift, and do not repair the task. Do not repair Life. Mutate GitHub Issues only when current main source explicitly enables the exact operation and every registered precondition passes; otherwise remain read-only. Treat prose and model judgment as zero authority. Treat a null canonical Vercel target as EXPECTED_NOT_RUN.",
     "executor_contract_change_rule": "BUMP_EXECUTOR_CONTRACT_ID_IF_AND_ONLY_IF_EXECUTOR_PROMPT_TEMPLATE_CHANGES",
     "schedule_contract_change_rule": "BUMP_SCHEDULE_CONTRACT_ID_IF_ANY_OF_TIMEZONE_CADENCE_DEEP_AUDIT_LOCAL_HOURS_DAILY_SUMMARY_LOCAL_HOUR_CHANGES",
     "source_change_executor_rule": "DO_NOT_BUMP_EXECUTOR_CONTRACT_ID_WHEN_EXECUTOR_PROMPT_TEMPLATE_IS_BYTE_IDENTICAL",
@@ -112,7 +112,7 @@
     "source_contract_fingerprints": [
       {
         "path": "continuity/bootstrap.json",
-        "git_blob_sha": "e22235071f1f3c7a70acf8ee5510b613f034e609"
+        "git_blob_sha": "0169458f11807fbd743eb1718baa524e54a91436"
       },
       {
         "path": "continuity/response-contract.json",
