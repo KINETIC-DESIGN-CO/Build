@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "work_id": "7d4017b9-6e67-4d9c-a0a3-7c85784cba08",
+  "title": "Version Build repository watchdog and self-audit contract",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "64b4642b-3eae-406a-a54e-2e11634789e8"
+  },
+  "implementation_branch": "work/7d4017b9-6e67-4d9c-a0a3-7c85784cba08",
+  "base_sha": "43de56f2894a4d7c53e37cc957a9a27babb17a6f",
+  "component_id": "build_repository_watchdog",
+  "repo_paths": [
+    "scripts/validate_watchdog.py",
+    "tests/test_watchdog.py",
+    "watchdog/finding-registry.json",
+    "watchdog/schema/finding-registry.schema.json",
+    "watchdog/schema/spec.schema.json",
+    "watchdog/spec.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {"resource_key":"component:build_repository_watchdog","lock_branch":"lock/18dbc0e06b5d03f8c62c82fe5eb133981351a3da6b84579e1079d3428b1efaf4","lease_id":"2bf50103-65c7-4b94-a913-1edc1294f3cd","generation":1},
+    {"resource_key":"repo-file:scripts/validate_watchdog.py","lock_branch":"lock/2b611dd1065265c31260d008e979f3e22858ab81c44cd2a284d0eb244e139cd0","lease_id":"fac18bd9-efcc-40be-9f7c-57aa5c181a3d","generation":1},
+    {"resource_key":"repo-file:tests/test_watchdog.py","lock_branch":"lock/75202059010bda3283f91e4b21bc887165ea825eec9047db19534a654800803a","lease_id":"c4d1c5b8-1926-4d91-8f88-3f08aeedc817","generation":1},
+    {"resource_key":"repo-file:watchdog/finding-registry.json","lock_branch":"lock/03d78b27d342e0e2e100cf205adef6272c44b688e5d0688dba48b09713f5fc7f","lease_id":"921be001-436c-4dc8-a1ff-5836e6409aaf","generation":1},
+    {"resource_key":"repo-file:watchdog/schema/finding-registry.schema.json","lock_branch":"lock/bafdb486114e50453497c8045535856a1c35f9d3e5314e88e47baba41f515dd0","lease_id":"cb448eda-c774-4425-b3e1-aa4262fa82f7","generation":1},
+    {"resource_key":"repo-file:watchdog/schema/spec.schema.json","lock_branch":"lock/a148b2fe655ac07ce88c99ab7252aea8cf8542ffb7a8b580df40b1d96b193f68","lease_id":"c64af2cd-2f36-42bb-a229-10a30b84559f","generation":1},
+    {"resource_key":"repo-file:watchdog/spec.json","lock_branch":"lock/9b26dcc011156c23399cddff948f79a68075708993b34c9d772511a6c8edaa2d","lease_id":"2ec6f362-5685-4ac0-92b6-5db80b12dd4d","generation":1}
+  ],
+  "runtime_control_authority": "NONE"
+}
