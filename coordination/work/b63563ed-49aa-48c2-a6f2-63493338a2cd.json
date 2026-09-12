@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_id": "b63563ed-49aa-48c2-a6f2-63493338a2cd",
+  "title": "Persist legacy Life repository audit and salvage map",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "49fc71d5-2b22-4336-b578-bf90a62426ca"
+  },
+  "implementation_branch": "work/b63563ed-49aa-48c2-a6f2-63493338a2cd",
+  "base_sha": "107156b6660aeeb88fea0c036d84e694b9860e80",
+  "component_id": "legacy_repository_salvage_reference",
+  "repo_paths": [
+    "architecture/reference/legacy-life-repository-audit-2026-09-12.md"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:legacy_repository_salvage_reference",
+      "lock_branch": "lock/2781b7c028b3a6eb0e92b395f1a5ceeb5c1055eb4980a4c4bb2091224407c256",
+      "lease_id": "8c5ae04b-3585-43ba-8afa-5779cdf30ea1",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "9ca298fc-25f0-4fb6-a334-304cfa346b15",
+      "generation": 24
+    },
+    {
+      "resource_key": "repo-file:architecture/reference/legacy-life-repository-audit-2026-09-12.md",
+      "lock_branch": "lock/9752f59f45ecac7e8583a1c4f3dd2fdd365a39856f716ff6d4d92f8664cef2d3",
+      "lease_id": "d57ef3a6-ceda-4d16-8c4b-6b04de46cb28",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
