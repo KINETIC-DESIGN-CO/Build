@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "work_id": "e5d15f24-6814-4b63-9352-95af6752fefb",
+  "title": "Audit Supabase Architecture project for Life migration",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "f919d16c-ce99-462c-81e0-7deb9306bc5c"
+  },
+  "implementation_branch": "work/e5d15f24-6814-4b63-9352-95af6752fefb",
+  "base_sha": "107156b6660aeeb88fea0c036d84e694b9860e80",
+  "component_id": "architecture_migration_audit",
+  "repo_paths": [
+    "architecture/audits/supabase-architecture-migration-audit-2026-09-12.md"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:architecture_migration_audit",
+      "lock_branch": "lock/a790dea6f026542a1623e057f99e4cc57a1c144c7563e5b795b8ed846cf1e59a",
+      "lease_id": "4e09aff1-57a1-4f3c-bef9-dd4d2f22eb49",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:architecture/audits/supabase-architecture-migration-audit-2026-09-12.md",
+      "lock_branch": "lock/d75abdfa2e0422b18833dffdafeaf058081e5acbe99c54408c83b19d163c739c",
+      "lease_id": "4d4331a9-931f-45e1-8848-e220813aa58e",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
