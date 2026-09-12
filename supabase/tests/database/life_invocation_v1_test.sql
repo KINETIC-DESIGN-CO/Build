@@ -113,8 +113,6 @@ select ok(
 insert into life.oauth_callers_v1 (auth_subject, oauth_client_id, state)
 values ('subject-1', 'client-1', 'DISABLED');
 
-set local role life_runtime_v1;
-
 select throws_ok(
   $$select * from life.record_invocation_v1(
       'subject-1',
@@ -127,12 +125,10 @@ select throws_ok(
   'disabled caller cannot record an invocation'
 );
 
-reset role;
 update life.oauth_callers_v1
 set state = 'ACTIVE'
 where auth_subject = 'subject-1'
   and oauth_client_id = 'client-1';
-set local role life_runtime_v1;
 
 select results_eq(
   $$select schema_version, replayed, state, input_provenance, request_utf8_bytes
@@ -145,8 +141,6 @@ select results_eq(
   $$values (1, false, 'RECORDED'::text, 'MCP_TOOL_ARGUMENT'::text, 5)$$,
   'first invocation records exact success semantics'
 );
-
-reset role;
 
 select is(
   (select pg_catalog.count(*)::bigint from life.invocations),
@@ -177,8 +171,6 @@ select is(
   'ledger stores exact UTF-8 byte length'
 );
 
-set local role life_runtime_v1;
-
 select results_eq(
   $$select replayed, state
     from life.record_invocation_v1(
@@ -191,15 +183,11 @@ select results_eq(
   'same idempotency key and same request replays existing invocation'
 );
 
-reset role;
-
 select is(
   (select pg_catalog.count(*)::bigint from life.invocations),
   1::bigint,
   'idempotent replay does not add a second ledger row'
 );
-
-set local role life_runtime_v1;
 
 select throws_ok(
   $$select * from life.record_invocation_v1(
@@ -237,8 +225,6 @@ select throws_ok(
   'request text above 262144 UTF-8 bytes is rejected'
 );
 
-reset role;
-
 select throws_ok(
   $$update life.invocations set request_text = 'changed'$$,
   '55000',
@@ -265,8 +251,6 @@ set state = 'DISABLED'
 where auth_subject = 'subject-1'
   and oauth_client_id = 'client-1';
 
-set local role life_runtime_v1;
-
 select throws_ok(
   $$select * from life.record_invocation_v1(
       'subject-1',
@@ -278,8 +262,6 @@ select throws_ok(
   'CALLER_NOT_ALLOWED',
   'caller must still be ACTIVE for a new invocation'
 );
-
-reset role;
 
 select * from finish();
 rollback;
