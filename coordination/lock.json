@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:governance/ci-dependency-policy.json",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "03026c62-2249-4385-819b-4f3e95c2848a",
   "worker": {
     "kind": "chatgpt",
