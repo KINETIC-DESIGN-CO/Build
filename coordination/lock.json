@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:repository_identity_followup_sync",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "dee6e1a9-8803-487c-bc6f-a85224d35e09",
   "worker": {"kind": "chatgpt", "session_id": "31abdbbe-71fd-4753-9447-fc901194e0a4"},
   "implementation_branch": "work/dee6e1a9-8803-487c-bc6f-a85224d35e09",
