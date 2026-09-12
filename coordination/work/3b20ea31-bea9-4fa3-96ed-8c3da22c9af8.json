@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_id": "3b20ea31-bea9-4fa3-96ed-8c3da22c9af8",
+  "title": "Select canonical life.invoke v1 architecture and exact contract",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "44ea1892-1766-46dc-af1b-88660450929a"
+  },
+  "implementation_branch": "work/3b20ea31-bea9-4fa3-96ed-8c3da22c9af8",
+  "base_sha": "e65871200f7c0a8b965543e76111d1332ba2a4ff",
+  "component_id": "canonical_invocation_architecture",
+  "repo_paths": [
+    "architecture/canonical-invocation-v1.md",
+    "contracts/life.invoke.contract.json",
+    "contracts/life.invoke.input.schema.json",
+    "contracts/life.invoke.output.schema.json",
+    "tests/test_life_invoke_contract.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:canonical_invocation_architecture",
+      "lock_branch": "lock/df582184caa65fc6f0094cb21e95d4edea1b51006f73045f4a1234723ce44386",
+      "lease_id": "e8430ea3-473f-498c-a233-7549701bac54",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "e99769c8-613d-4dcc-b7c8-a53aefda90fc",
+      "generation": 4
+    },
+    {
+      "resource_key": "repo-file:architecture/canonical-invocation-v1.md",
+      "lock_branch": "lock/be063f87feccb0e9b5677050cf298b7575c7ffcf500e48fa19271185c2439a1e",
+      "lease_id": "81cbbb4a-93ce-4b8e-b78e-7594fa31f505",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:contracts/life.invoke.contract.json",
+      "lock_branch": "lock/baed517975e5eb4df3974d3a977798ba8066fbdb0a9514f52191b9144f4fbeaf",
+      "lease_id": "01ed73fe-a597-4a1d-b89d-c128a6d5e4fc",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:contracts/life.invoke.input.schema.json",
+      "lock_branch": "lock/9bdbe6d381ea79404535c390e23a6940c09c1588f3950c858a753526a33c44d0",
+      "lease_id": "7ee6257a-b3f6-4b30-8973-cc273f800e1b",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:contracts/life.invoke.output.schema.json",
+      "lock_branch": "lock/a72e650c9c38c48993bf8ddb1c7d8b65362b04b789ce3eae809f17977ec9c73e",
+      "lease_id": "e225fd68-7415-4f55-9506-536975d8fdb9",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:tests/test_life_invoke_contract.py",
+      "lock_branch": "lock/f48d69ebb39b900e532676756ecbaf09a5a963d010b63512aa4680f4e68f8738",
+      "lease_id": "2cbdaf3b-ea4d-4c70-80bb-785d64206b78",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
