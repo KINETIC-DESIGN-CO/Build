@@ -32,6 +32,11 @@ class CoordinationTests(unittest.TestCase):
         rule = "CONTINUITY_SYNC_PR_MAY_MERGE_MAIN_WITHOUT_SECOND_SYNC_ONLY_WHEN_CHANGED_PATHS_ARE_NONEMPTY_SUBSET_OF_BOOTSTRAP_CONTINUITY_SYNC_PATHS"
         self.assertEqual(protocol["mutation_rules"].count(rule), 1)
 
+    def test_protocol_declares_released_reacquisition_generation(self):
+        protocol = json.loads((Path(__file__).resolve().parents[1] / "coordination" / "protocol.json").read_text())
+        rule = "LEASE_REACQUISITION_AFTER_RELEASE_INCREMENTS_GENERATION_BY_EXACTLY_ONE"
+        self.assertEqual(protocol["mutation_rules"].count(rule), 1)
+
     def test_worker_requires_exact_keys(self):
         with self.assertRaises(mod.ValidationError):
             mod.validate_worker({"kind": "chatgpt", "session_id": "00000000-0000-4000-8000-000000000000", "extra": 1})
