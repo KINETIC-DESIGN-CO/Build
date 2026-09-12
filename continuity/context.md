@@ -39,7 +39,7 @@ The working conceptual sequence is:
 
 The current Project Instructions require `life.invoke` only when fresh authorized-system reads show a deployed Life MCP endpoint and exact tool `life.invoke`. If that condition is not verified, invocation is `NOT_RUN` and no runtime output may be fabricated.
 
-As of the last observation recorded in `current.json`, the authorized Supabase project had zero deployed Edge Functions, so canonical invocation is not yet deployed.
+Fresh authorized reads on `2026-09-12T02:23:00Z` showed zero deployed Edge Functions and no `life.invoke` database function in the authorized Supabase project, so canonical invocation remains `NOT_RUN`.
 
 ## Context pipeline versus control pipeline
 
@@ -68,7 +68,7 @@ GitHub is the source/build plane: source code, migrations, tests, CI, schemas, h
 
 The repository was intentionally created public because GitHub Free can enforce repository rulesets on public repositories and standard GitHub-hosted Actions are free for public repositories. The previous private repository did not provide the same Free-plan enforcement.
 
-At continuity-bootstrap start, the new repository was empty, had zero rulesets, and had no observed pull requests.
+At continuity-bootstrap start, the new repository was empty, had zero rulesets, and had no observed pull requests. Fresh direct reads on `2026-09-12T02:23:00Z` showed `main` at `0c58ebdca68bd641e5d9c83dbaafda930b57b6a9`, zero repository rulesets, zero open pull requests, and a successful continuity workflow on that head.
 
 ### Supabase
 
@@ -79,7 +79,7 @@ Current organization plan at last verification: Free
 
 Supabase remains the leading runtime/data candidate because its current platform offers Postgres, Auth, vector capabilities, and Edge Functions that may fit Life. However, clean-slate reevaluation means the exact permanent MCP/runtime host is still an open question.
 
-At continuity-bootstrap start, direct reads showed zero public tables and zero deployed Edge Functions.
+Fresh direct reads on `2026-09-12T02:23:00Z` showed the project `ACTIVE_HEALTHY` with zero public tables, zero deployed Edge Functions, no `life.invoke` database function, and the `vector` extension not installed.
 
 ### Vercel
 
@@ -199,13 +199,21 @@ Do not silently resolve these from prior implementation history.
 
 ## Current immediate sequence
 
-The continuity bundle has been bootstrapped and verified first so every later Life component can benefit from deterministic recovery.
+The continuity bundle is installed and verified, and the continuity bootstrap rule is now present in the current Life Project Instructions. The Project Instruction installation blocker is resolved.
 
-The bundle is installed and read back. The next required step is to update the Life Project Instructions so every future Life response is forced to read and validate the continuity bundle before continuing. The complete Project Instructions must remain at or below 8,000 characters.
+The active component is `github_source_protection`. Fresh current research confirms that GitHub Free repository rulesets are available for public repositories and that standard GitHub-hosted Actions on public repositories do not consume private-repository Actions minutes. The selected minimum source-plane rule candidate for `main` is:
 
-After the Project Instruction pointer is installed, configure the minimum machine-enforced protections for `Vinanonymous/Build`, including the rules/CI structure selected under fresh research.
+- no bypass actors;
+- restrict deletions;
+- require a pull request before merging with zero required approvals;
+- require the existing `validate` status check;
+- block force pushes.
 
-After that, return to the first-event problem and rederive the permanent `life.invoke` architecture.
+This ruleset would have zero Life runtime control authority. Its only purpose is to protect the engineering source plane and ensure the existing continuity validator/tests cannot be bypassed by ordinary changes to `main`.
+
+The connected GitHub integration currently exposes ruleset reads but no ruleset write operation. Browser automation is available only through a metered path, and no metered charge is authorized. `B-0002` therefore remains open until the exact ruleset is created through an authorized write path and read back.
+
+After source protections are applied and verified, return to the first-event problem and rederive the permanent `life.invoke` architecture.
 
 ## Cost and platform constraints
 
@@ -230,4 +238,4 @@ If live state conflicts with continuity, live authorized-system reads determine 
 
 ## Last bundle-authoring timestamp
 
-`2026-09-12T02:11:13Z`
+`2026-09-12T02:23:00Z`
