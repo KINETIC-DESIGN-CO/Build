@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:scripts/validate_lock_history.py",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "0f9e3588-59b1-4201-9a59-04d88b074157",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "bff53a65-649c-43d7-ac92-1e0a3d3bb89e"
+  },
+  "implementation_branch": "work/0f9e3588-59b1-4201-9a59-04d88b074157",
+  "lease_id": "fe0c5901-0d3a-4662-82ed-7f7cdf4bd8f3",
+  "base_sha": "2d67cacdfe8c725970a5da4bdaa739404cc44f89",
+  "acquired_at": "2026-09-12T19:07:49Z",
+  "heartbeat_at": "2026-09-12T19:07:49Z",
+  "expires_at": "2026-09-12T23:07:49Z",
+  "runtime_control_authority": "NONE"
+}
