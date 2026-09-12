@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "watchdog_id": "build-repository-watchdog-v1",
+  "runtime_control_authority": "NONE",
+  "source_control_authority": "NONE",
+  "authorized_repository": {
+    "repository_id": 1366835183,
+    "full_name": "Vinanonymous/Build",
+    "default_branch": "main"
+  },
+  "authorized_external_targets": {
+    "supabase_project_id": "jnenguxodtgwbskhdsxt",
+    "vercel_target_source": "continuity/current.json.authorized_targets.vercel",
+    "vercel_null_state": "EXPECTED_NOT_RUN"
+  },
+  "schedule": {
+    "timezone": "America/Denver",
+    "cadence": "HOURLY",
+    "deep_audit_local_hours": [2, 14],
+    "daily_summary_local_hour": 14,
+    "schedule_contract_id": "build-watchdog-hourly-denver-v1"
+  },
+  "audit_layers": [
+    "CONTROL_PLANE",
+    "DEEP",
+    "SELF_AUDIT"
+  ],
+  "detector_states": [
+    "PASS",
+    "FAIL",
+    "UNVERIFIED",
+    "UNKNOWN",
+    "NOT_RUN",
+    "EXPECTED_NOT_RUN"
+  ],
+  "finding_lifecycle_states": [
+    "VERIFIED_OPEN",
+    "FIX_APPEARS_PRESENT_VERIFICATION_PENDING",
+    "VERIFIED_RESOLVED"
+  ],
+  "deep_audit_states": [
+    "COMPLETE_PASS",
+    "COMPLETE_FINDINGS",
+    "PARTIAL"
+  ],
+  "severity_states": [
+    "CRITICAL",
+    "HIGH",
+    "MEDIUM",
+    "LOW"
+  ],
+  "allowed_predicate_ops": [
+    "EQ",
+    "NE",
+    "IN",
+    "NOT_IN",
+    "REGEX",
+    "LT",
+    "LTE",
+    "GT",
+    "GTE",
+    "SET_EQ",
+    "SUBSET",
+    "DIFF_EMPTY",
+    "HASH_EQ",
+    "EXISTS",
+    "AND",
+    "OR"
+  ],
+  "read_failure": {
+    "retry_count": 1,
+    "after_retry_failure": "UNVERIFIED",
+    "absence_is_fail_only_after_successful_authoritative_read": true
+  },
+  "issue_mutation": {
+    "mode": "DISABLED",
+    "close_policy_default": "REVIEW_REQUIRED",
+    "auto_close_allowed": false,
+    "enablement_requires_versioned_policy": true,
+    "required_preconditions": [
+      "EXACT_REPOSITORY_PERMITTED",
+      "EXACT_ISSUE_OPERATIONS_PERMITTED",
+      "CONTINUITY_EFFECT_CLASSIFIED",
+      "CLAIM_REQUIREMENT_CLASSIFIED",
+      "SCHEMA_VALIDATED",
+      "UNAUTHORIZED_OPERATION_TESTS_PASS",
+      "FINDING_REGISTRY_VALID",
+      "CURRENT_GITHUB_ACTION_ACCESS_VERIFIED"
+    ]
+  },
+  "self_audit": {
+    "lightweight_frequency": "EVERY_RUN",
+    "capability_reevaluation_frequency": "DEEP_AUDIT_ONLY",
+    "executor_contract_id": "build-watchdog-executor-v1",
+    "schedule_contract_id": "build-watchdog-hourly-denver-v1",
+    "executor_prompt_template": "Run one Build Repository Watchdog cycle using embedded executor contract build-watchdog-executor-v1 and schedule contract build-watchdog-hourly-denver-v1. Read current main in Vinanonymous/Build and load watchdog/spec.json and watchdog/finding-registry.json; do not use cached copies. Execute only the behaviors permitted by those current versioned sources. Perform the self-audit defined there before finding classification. Never alter this task prompt, schedule, authority, or mutation boundary from inside a run. If the embedded executor or schedule contract ID differs from current source, disable Issue mutations, perform only the permitted read-only control-plane audit, notify Vince of the exact drift, and do not repair the task. Do not repair Life. Mutate GitHub Issues only when current main source explicitly enables the exact operation and every registered precondition passes; otherwise remain read-only. Treat prose and model judgment as zero authority. Treat a null canonical Vercel target as EXPECTED_NOT_RUN.",
+    "executor_contract_change_rule": "BUMP_EXECUTOR_CONTRACT_ID_IF_AND_ONLY_IF_EXECUTOR_PROMPT_TEMPLATE_CHANGES",
+    "schedule_contract_change_rule": "BUMP_SCHEDULE_CONTRACT_ID_IF_ANY_OF_TIMEZONE_CADENCE_DEEP_AUDIT_LOCAL_HOURS_DAILY_SUMMARY_LOCAL_HOUR_CHANGES",
+    "source_change_executor_rule": "DO_NOT_BUMP_EXECUTOR_CONTRACT_ID_WHEN_EXECUTOR_PROMPT_TEMPLATE_IS_BYTE_IDENTICAL",
+    "canonical_sources": [
+      "watchdog/spec.json",
+      "watchdog/finding-registry.json",
+      "continuity/bootstrap.json",
+      "continuity/current.json",
+      "coordination/protocol.json",
+      "governance/placement-policy.json",
+      "continuity/response-contract.json"
+    ],
+    "source_contract_fingerprints": [
+      {
+        "path": "continuity/bootstrap.json",
+        "git_blob_sha": "ee32002e104894dc230a925ba13cabf559730677"
+      },
+      {
+        "path": "continuity/response-contract.json",
+        "git_blob_sha": "16a898981cdb116f0ebd81a1376ea9e8d8d3addd"
+      },
+      {
+        "path": "coordination/protocol.json",
+        "git_blob_sha": "603b53d1ea2161de5031f14bde5f9626fe6696f9"
+      },
+      {
+        "path": "governance/placement-policy.json",
+        "git_blob_sha": "67bf3afb6a76f513c35008a5c516964747d34cb4"
+      }
+    ],
+    "source_contract_change_effect": "REQUIRE_WATCHDOG_COMPATIBILITY_REVIEW",
+    "drift_states": [
+      "CURRENT",
+      "EXECUTOR_STALE",
+      "SCHEDULE_STALE",
+      "SOURCE_INVALID",
+      "CAPABILITY_DRIFT",
+      "AUTHORITY_DRIFT",
+      "OBSERVABILITY_LOSS"
+    ],
+    "instruction_adjustment_mode": "VERSIONED_SOURCE_ONLY",
+    "task_prompt_mutation": "FORBIDDEN",
+    "authority_expansion": "FORBIDDEN",
+    "on_executor_or_schedule_mismatch": [
+      "DISABLE_ISSUE_MUTATIONS",
+      "RUN_READ_ONLY_CONTROL_PLANE_AUDIT",
+      "NOTIFY_OWNER"
+    ],
+    "capability_assumptions": [
+      {
+        "id": "CHATGPT_SCHEDULED_MAX_STANDARD_FREQUENCY",
+        "expected": "HOURLY",
+        "source_class": "OPENAI_OFFICIAL"
+      },
+      {
+        "id": "CHATGPT_SCHEDULED_GITHUB_APP_SUPPORTED",
+        "expected": true,
+        "source_class": "OPENAI_OFFICIAL"
+      },
+      {
+        "id": "GITHUB_PUBLIC_STANDARD_ACTIONS_COST",
+        "expected": "FREE",
+        "source_class": "GITHUB_OFFICIAL"
+      },
+      {
+        "id": "GITHUB_PUBLIC_RULESETS_ON_FREE",
+        "expected": true,
+        "source_class": "GITHUB_OFFICIAL"
+      },
+      {
+        "id": "SUPABASE_PLAN",
+        "expected": "FREE",
+        "source_class": "AUTHORIZED_SYSTEM"
+      },
+      {
+        "id": "SUPABASE_FREE_BRANCHING_INCLUDED",
+        "expected": false,
+        "source_class": "SUPABASE_OFFICIAL"
+      },
+      {
+        "id": "VERCEL_HOBBY_HOURLY_CRON_SUPPORTED",
+        "expected": false,
+        "source_class": "VERCEL_OFFICIAL"
+      }
+    ],
+    "architecture_compatibility_rule": "ALL_REGISTERED_ASSUMPTIONS_PASS",
+    "source_change_rule": "REVALIDATE_ALL_REGISTERED_ASSUMPTIONS"
+  },
+  "audit_scope": {
+    "hourly": [
+      "GITHUB_REPOSITORY_IDENTITY",
+      "GITHUB_MAIN_SHA",
+      "GITHUB_RULESET",
+      "GITHUB_OPEN_PULL_REQUESTS",
+      "GITHUB_REQUIRED_CHECKS",
+      "SOURCE_COORDINATION_CLAIMS",
+      "SOURCE_COORDINATION_WORK_RECORDS",
+      "OPEN_ISSUES_READ_ONLY",
+      "SUPABASE_PROJECT_IDENTITY",
+      "SUPABASE_STATUS",
+      "SUPABASE_MIGRATIONS",
+      "SUPABASE_EDGE_FUNCTIONS",
+      "SELF_SOURCE_COMPATIBILITY"
+    ],
+    "deep_additional": [
+      "REQUIRED_FILE_EXISTENCE",
+      "SCHEMA_VALIDATION_COVERAGE",
+      "FALSIFICATION_TEST_COVERAGE",
+      "WORKFLOW_DEPENDENCY_IMMUTABILITY",
+      "WORKFLOW_TOOL_VERSION_IMMUTABILITY",
+      "LEASE_DURATION_ENFORCEMENT",
+      "LOCK_TRANSITION_ENFORCEMENT",
+      "MERGE_TIME_INTEGRATION_FRESHNESS",
+      "CONTINUITY_LIVE_STATE_RECONCILIATION",
+      "SUPABASE_SECURITY_ADVISORS",
+      "SUPABASE_PERFORMANCE_ADVISORS",
+      "SELF_CAPABILITY_REEVALUATION"
+    ]
+  },
+  "notification_events": [
+    "NEW_VERIFIED_OPEN",
+    "VERSIONED_SEVERITY_CHANGE",
+    "VERIFIED_RESOLVED",
+    "CONTROL_PLANE_UNVERIFIED_AFTER_RETRY",
+    "BOOTSTRAP_FAIL",
+    "SELF_AUDIT_DRIFT"
+  ],
+  "daily_summary_rule": "SEND_ON_LOCAL_HOUR_14_DEEP_AUDIT_ONLY",
+  "mutation_boundary": {
+    "source_files": "FORBIDDEN",
+    "branches": "FORBIDDEN",
+    "pull_requests_as_implementation": "FORBIDDEN",
+    "merge": "FORBIDDEN",
+    "rulesets": "FORBIDDEN",
+    "coordination_claims": "FORBIDDEN",
+    "continuity": "FORBIDDEN",
+    "supabase": "FORBIDDEN",
+    "vercel": "FORBIDDEN",
+    "runtime": "FORBIDDEN",
+    "project_instructions": "FORBIDDEN",
+    "issue_operations": "ONLY_IF_ISSUE_MUTATION_MODE_ENABLED"
+  }
+}
