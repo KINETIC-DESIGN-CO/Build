@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:scripts/validate_watchdog.py",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "7d4017b9-6e67-4d9c-a0a3-7c85784cba08",
   "worker": {"kind": "chatgpt", "session_id": "64b4642b-3eae-406a-a54e-2e11634789e8"},
   "implementation_branch": "work/7d4017b9-6e67-4d9c-a0a3-7c85784cba08",
