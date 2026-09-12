@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:multi_thread_coordination_hardening",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "3cfa10f7-b801-4028-9556-1cbef6026b36",
   "worker": {
     "kind": "chatgpt",
