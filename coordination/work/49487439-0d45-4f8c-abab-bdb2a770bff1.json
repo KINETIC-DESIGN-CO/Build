@@ -10,6 +10,7 @@
   "base_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
   "component_id": "issue_21",
   "repo_paths": [
+    "continuity/bootstrap.json",
     "governance/user-observation-policy.json",
     "scripts/evaluate_user_observation.py",
     "tests/test_user_observation.py"
@@ -21,6 +22,18 @@
       "lock_branch": "lock/3193a55f9456d3ece2a30033010c4f6116751aad61410c06945be459de3227eb",
       "lease_id": "49cad60a-c0c5-435c-b509-3218e34c4876",
       "generation": 2
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "03117ce4-e917-41ff-b939-1fb78691da79",
+      "generation": 11
+    },
+    {
+      "resource_key": "repo-file:continuity/bootstrap.json",
+      "lock_branch": "lock/adb1a84970cd6bbc087153eb338011aafb8107b0a0ecfd96691e16905a0b49de",
+      "lease_id": "7ed4cbc8-3846-4c9b-bc64-218e43099035",
+      "generation": 8
     },
     {
       "resource_key": "repo-file:governance/user-observation-policy.json",
