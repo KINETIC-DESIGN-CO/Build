@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:continuity_sync",
   "generation": 5,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "2fa4738a-856c-41b7-9f43-c785d0191fd3",
   "worker": {"kind": "chatgpt", "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"},
   "implementation_branch": "work/2fa4738a-856c-41b7-9f43-c785d0191fd3",
