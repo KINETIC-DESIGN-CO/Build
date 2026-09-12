@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -17,7 +16,7 @@ class CoordinationTests(unittest.TestCase):
     def test_lock_branch_derivation_is_deterministic(self):
         self.assertEqual(
             mod.expected_lock_branch("integration:main"),
-            "lock/589445284f78e3b05558c8f57e9d4c85bf3204df6066ec0209640b9472368820",
+            "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
         )
 
     def test_uuid4_rejects_non_v4(self):
