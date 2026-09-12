@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:governance/placement-policy.json",
   "generation": 2,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "9f8d2f55-23c2-4b87-9bba-726f7f4b6868",
   "worker": {"kind": "chatgpt", "session_id": "bfb40184-68cc-430b-8767-94ff191a296e"},
   "implementation_branch": "work/9f8d2f55-23c2-4b87-9bba-726f7f4b6868",
