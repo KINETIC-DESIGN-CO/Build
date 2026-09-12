@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "component:repository_identity_sync_followup",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "be4aea6b-d532-4383-933f-e66f73e728b8",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "3d2ece6a-2fc2-44e2-a610-4f950f9c1ab6"
+  },
+  "implementation_branch": "work/be4aea6b-d532-4383-933f-e66f73e728b8",
+  "lease_id": "c8d7cda0-5751-4f09-8c11-5bc6f5fa33cf",
+  "base_sha": "a2cf6fd8f762dc8639dfa29164652a9744732775",
+  "acquired_at": "2026-09-12T22:07:44Z",
+  "heartbeat_at": "2026-09-12T22:07:44Z",
+  "expires_at": "2026-09-13T02:07:44Z",
+  "runtime_control_authority": "NONE"
+}
