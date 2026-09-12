@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:legacy_repository_salvage_reference",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "b63563ed-49aa-48c2-a6f2-63493338a2cd",
   "worker": {
     "kind": "chatgpt",
