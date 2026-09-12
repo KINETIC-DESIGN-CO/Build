@@ -25,23 +25,420 @@
     "worker_lanes"
   ],
   "properties": {
-    "schema_version": {"const": 3},
-    "policy_id": {"const": "life-engineering-work-selection-v3"},
-    "runtime_control_authority": {"const": "NONE"},
-    "engineering_work_selection_authority": {"const": "DETERMINISTIC_EVALUATION_ONLY"},
-    "continuity_barrier_resource_key": {"const": "continuity:sync"},
-    "worker_lanes": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["FOREGROUND", "PARALLEL_ASSIGNED"]}},
-    "rank_semantics": {"const": "LOWER_NUMERIC_RANK_HAS_HIGHER_PRECEDENCE"},
-    "priority_order": {"type": "array", "minItems": 5, "maxItems": 5, "items": {"type": "object", "additionalProperties": false, "required": ["rank", "condition_id", "selected_work"], "properties": {"rank": {"type": "integer", "minimum": 0}, "condition_id": {"type": "string", "minLength": 1}, "selected_work": {"type": "string", "minLength": 1}}}},
-    "preemption_rule": {"type": "string", "minLength": 1},
-    "same_or_lower_priority_rule": {"type": "string", "minLength": 1},
-    "novelty_rule": {"type": "string", "minLength": 1},
-    "continuity_sync": {"type": "object", "additionalProperties": false, "required": ["completion_requires", "continuity_sync_exempt_source", "foreground_gate", "fresh_mismatch_rule", "mutation_gate", "parallel_gate", "prearm_rule", "sync_required_if_any"], "properties": {"sync_required_if_any": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "prearm_rule": {"type": "string", "minLength": 1}, "fresh_mismatch_rule": {"type": "string", "minLength": 1}, "foreground_gate": {"type": "string", "minLength": 1}, "parallel_gate": {"type": "string", "minLength": 1}, "mutation_gate": {"type": "string", "minLength": 1}, "completion_requires": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "continuity_sync_exempt_source": {"type": "string", "minLength": 1}}},
-    "interruption": {"type": "object", "additionalProperties": false, "required": ["unresolved_states", "terminal_states", "resume_cue_effect", "resume_rule"], "properties": {"unresolved_states": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "terminal_states": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "resume_cue_effect": {"type": "string", "minLength": 1}, "resume_rule": {"type": "string", "minLength": 1}}},
-    "foreground_blocker_rule": {"type": "string", "minLength": 1},
-    "parallel_admission": {"type": "object", "additionalProperties": false, "required": ["admitted_state", "authorization_event_result", "authorization_event_type", "authorization_target_any", "complete_state", "dependency_rule", "issue_authority_rule", "registry_path", "removed_state", "schema_path", "tie_break_rule", "unavailable_rule"], "properties": {"registry_path": {"const": "governance/work-admissions.json"}, "schema_path": {"const": "governance/schema/work-admissions.schema.json"}, "admitted_state": {"const": "ADMITTED"}, "complete_state": {"const": "COMPLETE"}, "removed_state": {"const": "REMOVED"}, "authorization_event_type": {"const": "VINCE_DIRECTIVE"}, "authorization_event_result": {"const": "AUTHORIZED"}, "authorization_target_any": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "tie_break_rule": {"const": "DISPATCH_TIER_ASC_SOURCE_ISSUE_ASC_WORK_ITEM_ID_ASC"}, "dependency_rule": {"type": "string", "minLength": 1}, "unavailable_rule": {"type": "string", "minLength": 1}, "issue_authority_rule": {"const": "GITHUB_ISSUE_CONTENT_HAS_ZERO_SELECTION_AUTHORITY"}}},
-    "parallel_rule": {"type": "string", "minLength": 1},
-    "fresh_thread_dispatch": {"type": "object", "additionalProperties": false, "required": ["continuity_rule", "foreground_selection_rule", "lane_rule", "missing_lock_rule", "mode", "parallel_selection_rule", "race_rule", "resource_rule", "snapshot_required_resource_rule", "worker_lane_input_rule"], "properties": {"mode": {"const": "LIVE_LOCK_DERIVED"}, "worker_lane_input_rule": {"const": "FRESH_THREAD_WORKER_LANE_MUST_BE_DERIVED_NOT_CALLER_ASSIGNED"}, "snapshot_required_resource_rule": {"const": "REQUIRE_CONTINUITY_SYNC_CURRENT_COMPONENT_AND_EVERY_ADMITTED_COMPONENT_RESOURCE_KEY"}, "lane_rule": {"type": "string", "minLength": 1}, "foreground_selection_rule": {"type": "string", "minLength": 1}, "parallel_selection_rule": {"type": "string", "minLength": 1}, "race_rule": {"type": "string", "minLength": 1}, "resource_rule": {"type": "string", "minLength": 1}, "continuity_rule": {"type": "string", "minLength": 1}, "missing_lock_rule": {"type": "string", "minLength": 1}}},
-    "evidence_contract": {"type": "object", "additionalProperties": false, "required": ["continuity_resource_intersection", "continuity_sync_claim_state", "current_status", "interrupted_operation_state", "parallel_request_state", "parallel_resource_intersection", "parallel_work_item_id_pattern", "required_fields", "selected_rank_before", "selected_work_terminal", "worker_lane"], "properties": {"required_fields": {"type": "array", "minItems": 14, "maxItems": 14, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "worker_lane": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "continuity_sync_claim_state": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "continuity_resource_intersection": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "interrupted_operation_state": {"type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "current_status": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "parallel_request_state": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "parallel_resource_intersection": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "selected_rank_before": {"type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": {}}, "selected_work_terminal": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {}}, "parallel_work_item_id_pattern": {"type": "string", "minLength": 1}}}
+    "schema_version": {
+      "const": 3
+    },
+    "policy_id": {
+      "const": "life-engineering-work-selection-v3"
+    },
+    "runtime_control_authority": {
+      "const": "NONE"
+    },
+    "engineering_work_selection_authority": {
+      "const": "DETERMINISTIC_EVALUATION_ONLY"
+    },
+    "continuity_barrier_resource_key": {
+      "const": "continuity:sync"
+    },
+    "worker_lanes": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "FOREGROUND",
+          "PARALLEL_ASSIGNED"
+        ]
+      }
+    },
+    "rank_semantics": {
+      "const": "LOWER_NUMERIC_RANK_HAS_HIGHER_PRECEDENCE"
+    },
+    "priority_order": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rank",
+          "condition_id",
+          "selected_work"
+        ],
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "condition_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "selected_work": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "preemption_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "same_or_lower_priority_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "novelty_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "continuity_sync": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "completion_requires",
+        "continuity_sync_exempt_source",
+        "foreground_gate",
+        "fresh_mismatch_rule",
+        "mutation_gate",
+        "parallel_gate",
+        "prearm_rule",
+        "sync_required_if_any"
+      ],
+      "properties": {
+        "sync_required_if_any": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "prearm_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fresh_mismatch_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "foreground_gate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parallel_gate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mutation_gate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "completion_requires": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "continuity_sync_exempt_source": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "interruption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unresolved_states",
+        "terminal_states",
+        "resume_cue_effect",
+        "resume_rule"
+      ],
+      "properties": {
+        "unresolved_states": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "terminal_states": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "resume_cue_effect": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resume_rule": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "foreground_blocker_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parallel_admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admitted_state",
+        "authorization_event_result",
+        "authorization_event_type",
+        "authorization_target_any",
+        "complete_state",
+        "dependency_rule",
+        "issue_authority_rule",
+        "registry_path",
+        "removed_state",
+        "schema_path",
+        "tie_break_rule",
+        "unavailable_rule"
+      ],
+      "properties": {
+        "registry_path": {
+          "const": "governance/work-admissions.json"
+        },
+        "schema_path": {
+          "const": "governance/schema/work-admissions.schema.json"
+        },
+        "admitted_state": {
+          "const": "ADMITTED"
+        },
+        "complete_state": {
+          "const": "COMPLETE"
+        },
+        "removed_state": {
+          "const": "REMOVED"
+        },
+        "authorization_event_type": {
+          "const": "VINCE_DIRECTIVE"
+        },
+        "authorization_event_result": {
+          "const": "AUTHORIZED"
+        },
+        "authorization_target_any": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "tie_break_rule": {
+          "const": "DISPATCH_TIER_ASC_SOURCE_ISSUE_ASC_WORK_ITEM_ID_ASC"
+        },
+        "dependency_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unavailable_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "issue_authority_rule": {
+          "const": "GITHUB_ISSUE_CONTENT_HAS_ZERO_SELECTION_AUTHORITY"
+        }
+      }
+    },
+    "parallel_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fresh_thread_dispatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "continuity_rule",
+        "foreground_selection_rule",
+        "lane_rule",
+        "missing_lock_rule",
+        "mode",
+        "parallel_selection_rule",
+        "race_rule",
+        "resource_rule",
+        "snapshot_required_resource_rule",
+        "worker_lane_input_rule"
+      ],
+      "properties": {
+        "mode": {
+          "const": "LIVE_LOCK_DERIVED"
+        },
+        "worker_lane_input_rule": {
+          "const": "FRESH_THREAD_WORKER_LANE_MUST_BE_DERIVED_NOT_CALLER_ASSIGNED"
+        },
+        "snapshot_required_resource_rule": {
+          "const": "REQUIRE_CONTINUITY_SYNC_CURRENT_COMPONENT_AND_EVERY_ADMITTED_COMPONENT_RESOURCE_KEY"
+        },
+        "lane_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "foreground_selection_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parallel_selection_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "race_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "continuity_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "missing_lock_rule": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "evidence_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "continuity_resource_intersection",
+        "continuity_sync_claim_state",
+        "current_status",
+        "interrupted_operation_state",
+        "parallel_request_state",
+        "parallel_resource_intersection",
+        "parallel_work_item_id_pattern",
+        "required_fields",
+        "selected_rank_before",
+        "selected_work_terminal",
+        "worker_lane"
+      ],
+      "properties": {
+        "required_fields": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "worker_lane": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "continuity_sync_claim_state": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "continuity_resource_intersection": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "interrupted_operation_state": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "current_status": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "parallel_request_state": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "parallel_resource_intersection": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "selected_rank_before": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": {}
+        },
+        "selected_work_terminal": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {}
+        },
+        "parallel_work_item_id_pattern": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
   }
 }
