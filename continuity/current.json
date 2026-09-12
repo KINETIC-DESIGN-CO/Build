@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "manifest_revision": 8,
+  "manifest_revision": 9,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T04:10:52Z",
+  "updated_at": "2026-09-12T05:08:16Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
-  "current_component": "canonical_invocation_database_source",
+  "current_component": "canonical_invocation_database_alignment_source",
   "current_status": "ACTIVE",
   "authorized_targets": {
     "github": {
@@ -23,14 +23,14 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Version and validate the Supabase database foundation for life.invoke v1 before any remote Supabase mutation.",
+    "goal": "Version and validate one forward Supabase migration that aligns the already-applied invocation database foundation with D-0015 and removes the unversioned legacy RLS auto-enable mechanism before any further authorized-project mutation.",
     "completion_conditions": [
-      "INVOCATION_MIGRATION_VERSIONED",
-      "CALLER_ALLOWLIST_SCHEMA_VERSIONED",
-      "RECORD_FUNCTION_VERSIONED",
-      "RUNTIME_ROLE_GRANTS_VERSIONED",
-      "APPEND_ONLY_GUARDS_VERSIONED",
-      "DATABASE_TESTS_PASS"
+      "FORWARD_ALIGNMENT_MIGRATION_VERSIONED",
+      "CANONICAL_LEDGER_REQUIRED_FIELDS_VERSIONED",
+      "REQUEST_SHA256_STORAGE_TYPE_ALIGNED",
+      "RECORD_FUNCTION_V1_ALIGNED",
+      "LEGACY_RLS_AUTO_ENABLE_REMOVAL_VERSIONED",
+      "DATABASE_ALIGNMENT_TESTS_PASS"
     ]
   },
   "active_decision_ids": [
@@ -46,7 +46,8 @@
     "D-0012",
     "D-0013",
     "D-0014",
-    "D-0015"
+    "D-0015",
+    "D-0016"
   ],
   "retired_decision_ids": [
     "D-0101",
@@ -96,31 +97,53 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T04:10:52Z",
+      "observed_at": "2026-09-12T05:03:20Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "5d69173f8a3a46a0d8c161ca089e7295ea08fcbf",
+      "head_sha": "0934c5e1ff4a6632afb93d86263e284920f3f8d7",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": true,
       "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34672133627,
+      "latest_continuity_workflow_run_id": 34673627298,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T04:09:04Z",
+      "observed_at": "2026-09-12T05:03:20Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
       "public_table_count": 0,
       "edge_function_count": 0,
-      "life_invoke_proc_count": 0,
-      "vector_extension_installed": 0
+      "migration_version": "20260912042500",
+      "migration_name": "life_invocation_v1",
+      "caller_table_count": 1,
+      "invocation_table_count": 1,
+      "record_invocation_v1_proc_count": 1,
+      "runtime_role_count": 1,
+      "caller_row_count": 0,
+      "invocation_row_count": 0,
+      "record_contract_alignment_status": "MISMATCH_VERIFIED",
+      "missing_required_ledger_columns": [
+        "schema_version",
+        "auth_issuer",
+        "audience",
+        "tool_name",
+        "mcp_protocol_version",
+        "runtime_build_sha"
+      ],
+      "request_sha256_actual_type": "bytea",
+      "request_sha256_required_type": "text",
+      "legacy_rls_auto_enable_function_present": 1,
+      "legacy_ensure_rls_event_trigger_present": 1,
+      "security_advisor_warning_count_for_legacy_rls_auto_enable": 2,
+      "remote_migration_provenance_status": "UNKNOWN",
+      "remote_migration_provenance_reason": "Migration 20260912042500 is present, but no deterministic lock branch exists for external:supabase:jnenguxodtgwbskhdsxt and no machine-verifiable evidence identifies the original remote mutation as having held the required global Supabase production claim."
     },
     "vercel": {
       "status": "NOT_RUN",
@@ -130,15 +153,15 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T04:09:04Z",
-      "reason": "Authorized Supabase reads show zero deployed Edge Functions and no life.invoke database function, and no exact Life Vercel target is authorized; no deployed Life MCP endpoint and exact tool life.invoke are verified."
+      "observed_at": "2026-09-12T05:03:20Z",
+      "reason": "No exact Life Vercel target or deployed Life MCP endpoint is authorized-system verified, the exact tool life.invoke is not verified live, and the deployed Supabase invocation ledger does not yet match all D-0015 required record fields."
     }
   },
   "next_action": {
-    "id": "A-0005",
+    "id": "A-0006",
     "kind": "IMPLEMENT",
-    "target": "SUPABASE_INVOCATION_FOUNDATION_SOURCE",
-    "description": "Create the versioned Supabase migration and database tests for the life schema, exact caller allowlist, append-only invocation ledger, dedicated runtime role/grants, and life.record_invocation_v1; validate in GitHub before any Supabase mutation.",
+    "target": "SUPABASE_INVOCATION_ALIGNMENT_SOURCE",
+    "description": "Create one new forward Supabase migration and pgTAP test update that adds the D-0015 ledger fields missing from the already-applied invocation schema, aligns request_sha256 storage and life.record_invocation_v1 with the canonical record contract, and removes the unversioned ensure_rls event trigger plus public.rls_auto_enable(); validate and merge in GitHub before any further Supabase mutation.",
     "authorization_effect": "NONE"
   }
 }
