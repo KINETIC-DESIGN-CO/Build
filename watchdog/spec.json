@@ -120,7 +120,7 @@
       },
       {
         "path": "coordination/protocol.json",
-        "git_blob_sha": "603b53d1ea2161de5031f14bde5f9626fe6696f9"
+        "git_blob_sha": "02d0a3c2a93eb2aa380eabcd45a84513b28c9b21"
       },
       {
         "path": "governance/placement-policy.json",
@@ -167,6 +167,11 @@
         "source_class": "GITHUB_OFFICIAL"
       },
       {
+        "id": "GITHUB_PUBLIC_ORGANIZATION_MERGE_QUEUE_SUPPORTED",
+        "expected": true,
+        "source_class": "GITHUB_OFFICIAL"
+      },
+      {
         "id": "SUPABASE_PLAN",
         "expected": "FREE",
         "source_class": "AUTHORIZED_SYSTEM"
@@ -209,7 +214,7 @@
       "WORKFLOW_TOOL_VERSION_IMMUTABILITY",
       "LEASE_DURATION_ENFORCEMENT",
       "LOCK_TRANSITION_ENFORCEMENT",
-      "MERGE_TIME_INTEGRATION_FRESHNESS",
+      "MERGE_QUEUE_ENFORCEMENT",
       "CONTINUITY_LIVE_STATE_RECONCILIATION",
       "SUPABASE_SECURITY_ADVISORS",
       "SUPABASE_PERFORMANCE_ADVISORS",
