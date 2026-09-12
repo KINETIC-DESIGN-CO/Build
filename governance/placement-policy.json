@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "policy_id": "life-governance-placement-v1",
+  "runtime_control_authority": "NONE",
+  "purpose": "Route each proposed persistent Life requirement to exactly one canonical owner before storage or implementation.",
+  "input_states": [
+    "PROPOSAL",
+    "RECOMMENDATION",
+    "DIRECTIVE",
+    "CORRECTION",
+    "AUTHORIZED_CHANGE"
+  ],
+  "routing_algorithm": [
+    "CLASSIFY_INPUT_STATE",
+    "IF_INPUT_STATE_IS_PROPOSAL_OR_RECOMMENDATION_ROUTE_PROPOSAL_INTAKE_AND_STOP",
+    "CLASSIFY_EXACT_CONDITION_IDS",
+    "EVALUATE_DESTINATIONS_IN_ROUTING_PRECEDENCE",
+    "ROUTE_TO_FIRST_DESTINATION_WITH_MATCHING_EXACT_CONDITION",
+    "IF_NO_DESTINATION_MATCHES_ROUTE_UNROUTED"
+  ],
+  "routing_precedence": [
+    "EXECUTABLE_CONTROL",
+    "PROJECT_INSTRUCTIONS_ROOT",
+    "RESPONSE_CONTRACT",
+    "GOVERNANCE_POLICY",
+    "CONTINUITY_CURRENT",
+    "CONTINUITY_DECISION",
+    "CONTINUITY_EVENT",
+    "COMPONENT_SPECIFICATION",
+    "PROPOSAL_INTAKE",
+    "UNROUTED"
+  ],
+  "control_decision_kinds": [
+    "AUTHORIZATION",
+    "ROUTING",
+    "PRIORITY",
+    "STATE_TRANSITION",
+    "COMPLETION",
+    "VERIFICATION",
+    "ESCALATION",
+    "RELEASE",
+    "MUTATION",
+    "EFFECT_EXECUTION"
+  ],
+  "destinations": {
+    "EXECUTABLE_CONTROL": {
+      "canonical_owner": "EXECUTABLE_MECHANISM_WITH_VERSIONED_SOURCE_AND_TESTS",
+      "match_condition_ids": [
+        "RUNTIME_CONTROL_DECISION_KIND"
+      ],
+      "authority": "MACHINE_VERIFIABLE_CONTROL_ONLY"
+    },
+    "PROJECT_INSTRUCTIONS_ROOT": {
+      "canonical_owner": "PROJECT_INSTRUCTIONS",
+      "match_condition_ids": [
+        "AUTHORIZED_SYSTEM_IDENTITY",
+        "MANDATORY_BOOTSTRAP_LOADER",
+        "PROJECT_INSTRUCTION_EDIT_PROTECTION",
+        "PROJECT_INSTRUCTION_LENGTH_PROTECTION",
+        "COST_COMMITMENT_AUTHORIZATION_ROOT"
+      ],
+      "authority": "ASSISTANT_PROCEDURE_ROOT_ONLY"
+    },
+    "RESPONSE_CONTRACT": {
+      "canonical_owner": "continuity/response-contract.json",
+      "match_condition_ids": [
+        "ASSISTANT_TO_VINCE_PRESENTATION_BEHAVIOR"
+      ],
+      "authority": "ASSISTANT_PROCEDURE_ONLY"
+    },
+    "GOVERNANCE_POLICY": {
+      "canonical_owner": "BOOTSTRAP_REQUIRED_GOVERNANCE_POLICY",
+      "match_condition_ids": [
+        "PLACEMENT_PROCEDURE",
+        "PRE_RESPONSE_RESEARCH_PROCEDURE",
+        "FACT_VERIFICATION_PROCEDURE",
+        "REEVALUATION_PROCEDURE",
+        "CONNECTED_APP_MUTATION_PROCEDURE",
+        "VERSIONING_PROCEDURE",
+        "SOURCE_COORDINATION_PROCEDURE"
+      ],
+      "authority": "ASSISTANT_PROCEDURE_ONLY"
+    },
+    "CONTINUITY_CURRENT": {
+      "canonical_owner": "continuity/current.json",
+      "match_condition_ids": [
+        "CURRENT_STATE",
+        "CURRENT_NEXT_ACTION",
+        "CURRENT_BLOCKER",
+        "CURRENT_VERIFICATION_SNAPSHOT"
+      ],
+      "authority": "CANONICAL_ENGINEERING_CONTINUITY_STATE_ONLY"
+    },
+    "CONTINUITY_DECISION": {
+      "canonical_owner": "continuity/decisions.jsonl",
+      "match_condition_ids": [
+        "ADOPTED_ARCHITECTURE_DECISION"
+      ],
+      "authority": "CANONICAL_ENGINEERING_DECISION_HISTORY_ONLY"
+    },
+    "CONTINUITY_EVENT": {
+      "canonical_owner": "continuity/events.jsonl",
+      "match_condition_ids": [
+        "OCCURRED_EVENT"
+      ],
+      "authority": "CANONICAL_ENGINEERING_EVENT_HISTORY_ONLY"
+    },
+    "COMPONENT_SPECIFICATION": {
+      "canonical_owner": "VERSIONED_COMPONENT_ARCHITECTURE_CONTRACT_SCHEMA_OR_SOURCE",
+      "match_condition_ids": [
+        "COMPONENT_LOCAL_TECHNICAL_CONTRACT"
+      ],
+      "authority": "COMPONENT_SPECIFICATION_ONLY"
+    },
+    "PROPOSAL_INTAKE": {
+      "canonical_owner": "ZERO_AUTHORITY_PROPOSAL_RECORD",
+      "match_condition_ids": [],
+      "authority": "ZERO"
+    },
+    "UNROUTED": {
+      "canonical_owner": "NONE",
+      "match_condition_ids": [],
+      "authority": "ZERO"
+    }
+  },
+  "canonical_owner_rule": "ONE_REQUIREMENT_ONE_CANONICAL_OWNER_OTHER_SURFACES_REFERENCE_ONLY",
+  "proposal_rule": "PROPOSAL_AND_RECOMMENDATION_INPUT_STATES_HAVE_ZERO_AUTHORITY_UNTIL_VINCE_ADOPTS_OR_AUTHORIZES_THEM",
+  "unrouted_rule": "UNROUTED_HAS_ZERO_AUTHORITY_AND_MUST_NOT_BE_STORED_AS_AN_ACTIVE_REQUIREMENT",
+  "project_instruction_change_rule": "ANY_PROJECT_INSTRUCTION_EDIT_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION_FOR_THE_EXACT_TEXT_CHANGED",
+  "runtime_control_rule": "PROSE_POLICIES_HAVE_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY",
+  "migration_candidates": [
+    {
+      "project_instruction_block": "PRE_RESPONSE_RESEARCH",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/research-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "REEVALUATION",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/architecture-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "FACT_VERIFICATION",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/verification-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "PLATFORM_FEATURES",
+      "destination": "RESPONSE_CONTRACT",
+      "future_path": "continuity/response-contract.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "CONNECTED_APP_MUTATIONS",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/mutation-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "VERSIONED_CHANGES",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/versioning-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "CANONICAL_INVOCATION",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/runtime-routing-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    }
+  ],
+  "project_instruction_root_blocks": [
+    "CONTROL_AUTHORITY",
+    "REQUIREMENT_PRECISION",
+    "ARTIFACT_SEMANTIC_MATURITY",
+    "AUTHORIZED_SYSTEMS",
+    "CONVERSATION_CONTINUITY_BOOTSTRAP_LOADER",
+    "PROJECT_INSTRUCTION_LENGTH",
+    "PROJECT_INSTRUCTION_EDITS",
+    "COST"
+  ]
+}
