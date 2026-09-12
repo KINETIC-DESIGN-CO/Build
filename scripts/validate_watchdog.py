@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -16,6 +17,27 @@ NOTIFICATION_EVENTS = {
     "NEW_VERIFIED_OPEN","VERSIONED_SEVERITY_CHANGE","VERIFIED_RESOLVED",
     "CONTROL_PLANE_UNVERIFIED_AFTER_RETRY","BOOTSTRAP_FAIL","SELF_AUDIT_DRIFT"
 }
+EXPECTED_SOURCE_CONTRACT_PATHS = {
+    "continuity/bootstrap.json",
+    "continuity/response-contract.json",
+    "coordination/protocol.json",
+    "governance/placement-policy.json",
+}
+EXPECTED_EXECUTOR_PROMPT = (
+    "Run one Build Repository Watchdog cycle using embedded executor contract "
+    "build-watchdog-executor-v1 and schedule contract build-watchdog-hourly-denver-v1. "
+    "Read current main in Vinanonymous/Build and load watchdog/spec.json and "
+    "watchdog/finding-registry.json; do not use cached copies. Execute only the behaviors "
+    "permitted by those current versioned sources. Perform the self-audit defined there "
+    "before finding classification. Never alter this task prompt, schedule, authority, or "
+    "mutation boundary from inside a run. If the embedded executor or schedule contract ID "
+    "differs from current source, disable Issue mutations, perform only the permitted "
+    "read-only control-plane audit, notify Vince of the exact drift, and do not repair the "
+    "task. Do not repair Life. Mutate GitHub Issues only when current main source explicitly "
+    "enables the exact operation and every registered precondition passes; otherwise remain "
+    "read-only. Treat prose and model judgment as zero authority. Treat a null canonical "
+    "Vercel target as EXPECTED_NOT_RUN."
+)
 
 class ValidationError(Exception):
     pass
@@ -31,6 +53,11 @@ def load_json(path):
 def expect(condition, message):
     if not condition:
         raise ValidationError(message)
+
+def git_blob_sha(path):
+    data = path.read_bytes()
+    header = f"blob {len(data)}\0".encode("ascii")
+    return hashlib.sha1(header + data).hexdigest()
 
 def validate_predicate(node, allowed_ops):
     expect(isinstance(node, dict), "predicate:not-object")
@@ -82,9 +109,21 @@ def validate_spec(spec):
     expect(sa.get("capability_reevaluation_frequency") == "DEEP_AUDIT_ONLY", "spec:self-capability-frequency")
     expect(sa.get("executor_contract_id") == "build-watchdog-executor-v1", "spec:executor-contract")
     expect(sa.get("schedule_contract_id") == schedule.get("schedule_contract_id"), "spec:self-schedule-contract")
+    expect(sa.get("executor_prompt_template") == EXPECTED_EXECUTOR_PROMPT, "spec:executor-prompt")
+    expect(sa.get("executor_contract_change_rule") == "BUMP_EXECUTOR_CONTRACT_ID_IF_AND_ONLY_IF_EXECUTOR_PROMPT_TEMPLATE_CHANGES", "spec:executor-change-rule")
+    expect(sa.get("schedule_contract_change_rule") == "BUMP_SCHEDULE_CONTRACT_ID_IF_ANY_OF_TIMEZONE_CADENCE_DEEP_AUDIT_LOCAL_HOURS_DAILY_SUMMARY_LOCAL_HOUR_CHANGES", "spec:schedule-change-rule")
+    expect(sa.get("source_change_executor_rule") == "DO_NOT_BUMP_EXECUTOR_CONTRACT_ID_WHEN_EXECUTOR_PROMPT_TEMPLATE_IS_BYTE_IDENTICAL", "spec:source-executor-rule")
     expect(sa.get("instruction_adjustment_mode") == "VERSIONED_SOURCE_ONLY", "spec:self-adjustment")
     expect(sa.get("task_prompt_mutation") == "FORBIDDEN", "spec:self-task-mutation")
     expect(sa.get("authority_expansion") == "FORBIDDEN", "spec:self-authority-expansion")
+    expect(sa.get("source_contract_change_effect") == "REQUIRE_WATCHDOG_COMPATIBILITY_REVIEW", "spec:source-change-effect")
+    fingerprints = sa.get("source_contract_fingerprints")
+    expect(isinstance(fingerprints, list) and len(fingerprints) == len(EXPECTED_SOURCE_CONTRACT_PATHS), "spec:source-fingerprints")
+    paths = [item.get("path") for item in fingerprints if isinstance(item, dict)]
+    expect(set(paths) == EXPECTED_SOURCE_CONTRACT_PATHS and len(paths) == len(set(paths)), "spec:source-fingerprint-paths")
+    for item in fingerprints:
+        expect(set(item) == {"path","git_blob_sha"}, "spec:source-fingerprint-keys")
+        expect(re.fullmatch(r"[0-9a-f]{40}", item.get("git_blob_sha", "")) is not None, f"spec:source-fingerprint-sha:{item.get('path')}")
     expect(sa.get("architecture_compatibility_rule") == "ALL_REGISTERED_ASSUMPTIONS_PASS", "spec:self-compat-rule")
     expect(sa.get("source_change_rule") == "REVALIDATE_ALL_REGISTERED_ASSUMPTIONS", "spec:self-source-rule")
     assumption_ids = [x.get("id") for x in sa.get("capability_assumptions", [])]
@@ -93,6 +132,15 @@ def validate_spec(spec):
     for key in ["source_files","branches","pull_requests_as_implementation","merge","rulesets","coordination_claims","continuity","supabase","vercel","runtime","project_instructions"]:
         expect(boundary.get(key) == "FORBIDDEN", f"spec:boundary:{key}")
     expect(boundary.get("issue_operations") == "ONLY_IF_ISSUE_MUTATION_MODE_ENABLED", "spec:boundary:issues")
+
+def validate_source_contracts(spec):
+    fingerprints = {item["path"]: item["git_blob_sha"] for item in spec["self_audit"]["source_contract_fingerprints"]}
+    for rel_path in sorted(EXPECTED_SOURCE_CONTRACT_PATHS):
+        path = ROOT / rel_path
+        if not path.exists():
+            continue
+        actual = git_blob_sha(path)
+        expect(actual == fingerprints[rel_path], f"source-contract-drift:{rel_path}:{actual}")
 
 def validate_registry(registry, spec):
     expect(registry.get("schema_version") == 1, "registry:schema-version")
@@ -137,6 +185,7 @@ def validate():
     spec = load_json(SPEC_PATH)
     registry = load_json(REGISTRY_PATH)
     validate_spec(spec)
+    validate_source_contracts(spec)
     validate_registry(registry, spec)
     validate_schema_envelopes()
     return True
