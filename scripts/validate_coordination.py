@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL_PATH = ROOT / "coordination" / "protocol.json"
 LOCK_SCHEMA_PATH = ROOT / "coordination" / "schema" / "lock.schema.json"
 WORK_SCHEMA_PATH = ROOT / "coordination" / "schema" / "work-record.schema.json"
+
 UUID4_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 COMPONENT_RE = re.compile(r"^[a-z0-9]+(?:_[a-z0-9]+)*$")
@@ -22,10 +23,8 @@ WORKER_KINDS = {"chatgpt", "claude", "grok", "codex", "human", "other_ai"}
 class ValidationError(RuntimeError):
     pass
 
-
 def fail(message: str) -> None:
     raise ValidationError(message)
-
 
 def load_json(path: Path) -> dict:
     try:
@@ -33,13 +32,11 @@ def load_json(path: Path) -> dict:
     except Exception as exc:
         fail(f"invalid JSON {path.relative_to(ROOT)}: {exc}")
 
-
 def canonical_json(path: Path) -> None:
     obj = load_json(path)
     expected = json.dumps(obj, indent=2, ensure_ascii=False) + "\n"
     if path.read_text(encoding="utf-8") != expected:
         fail(f"{path.relative_to(ROOT)} must be canonical indent=2 JSON with LF and final newline")
-
 
 def git(*args: str, check: bool = True) -> str:
     proc = subprocess.run(["git", *args], cwd=ROOT, text=True, capture_output=True)
@@ -47,21 +44,16 @@ def git(*args: str, check: bool = True) -> str:
         fail(f"git {' '.join(args)} failed: {proc.stderr.strip()}")
     return proc.stdout.strip()
 
-
 def parse_utc(value: str) -> datetime:
     if not isinstance(value, str) or not value.endswith("Z"):
         fail(f"timestamp must be RFC3339 UTC ending Z: {value!r}")
     try:
-        parsed = datetime.fromisoformat(value[:-1] + "+00:00")
+        return datetime.fromisoformat(value[:-1] + "+00:00")
     except ValueError:
         fail(f"invalid RFC3339 timestamp: {value!r}")
-    return parsed
-
 
 def expected_lock_branch(resource_key: str) -> str:
-    digest = hashlib.sha256(resource_key.encode("utf-8")).hexdigest()
-    return f"lock/{digest}"
-
+    return "lock/" + hashlib.sha256(resource_key.encode("utf-8")).hexdigest()
 
 def validate_worker(worker: object) -> None:
     if not isinstance(worker, dict) or set(worker) != {"kind", "session_id"}:
@@ -71,6 +63,63 @@ def validate_worker(worker: object) -> None:
     if not UUID4_RE.fullmatch(str(worker["session_id"])):
         fail("worker.session_id must be lowercase UUIDv4")
 
+def validate_acquisition_attempt_order(resource_keys: list[str]) -> None:
+    if not isinstance(resource_keys, list) or not resource_keys:
+        fail("acquisition attempt resource keys must be nonempty array")
+    if any(not isinstance(key, str) or not key for key in resource_keys):
+        fail("acquisition attempt resource keys must be nonempty strings")
+    if len(resource_keys) != len(set(resource_keys)) or resource_keys != sorted(resource_keys):
+        fail("each acquisition attempt must use unique RESOURCE_KEY_ASCENDING_UTF8 order")
+
+def blocking_resource_keys(
+    requested_resource_keys: list[str],
+    live_locks: list[dict],
+    requesting_work_id: str,
+    now: datetime,
+) -> list[str]:
+    if not UUID4_RE.fullmatch(str(requesting_work_id)):
+        fail("requesting_work_id must be lowercase UUIDv4")
+    if not isinstance(requested_resource_keys, list) or len(requested_resource_keys) != len(set(requested_resource_keys)):
+        fail("requested_resource_keys must be a unique array")
+    if any(not isinstance(key, str) or not key for key in requested_resource_keys):
+        fail("requested_resource_keys must contain nonempty strings")
+    requested = set(requested_resource_keys)
+    blockers: set[str] = set()
+    for lock in live_locks:
+        if not isinstance(lock, dict):
+            fail("live lock evidence must be object")
+        required = {"resource_key", "work_id", "state", "expires_at"}
+        if not required <= set(lock):
+            fail("live lock evidence missing resource_key/work_id/state/expires_at")
+        key = lock["resource_key"]
+        if key not in requested:
+            continue
+        if lock["work_id"] == requesting_work_id:
+            continue
+        if lock["state"] == "ACTIVE" and now < parse_utc(lock["expires_at"]):
+            blockers.add(key)
+    return sorted(blockers)
+
+def classify_operation_resource_sets(
+    operation_resource_sets: dict[str, list[str]],
+    live_locks: list[dict],
+    requesting_work_id: str,
+    now: datetime,
+) -> dict[str, dict[str, object]]:
+    if not isinstance(operation_resource_sets, dict) or not operation_resource_sets:
+        fail("operation_resource_sets must be nonempty object")
+    result = {}
+    for operation_id in sorted(operation_resource_sets):
+        if not isinstance(operation_id, str) or not operation_id:
+            fail("operation id must be nonempty string")
+        blockers = blocking_resource_keys(
+            operation_resource_sets[operation_id], live_locks, requesting_work_id, now
+        )
+        result[operation_id] = {
+            "intersection_state": "INTERSECTION_NONEMPTY" if blockers else "INTERSECTION_EMPTY",
+            "blocking_resource_keys": blockers,
+        }
+    return result
 
 def validate_protocol(protocol: dict) -> None:
     required = {
@@ -78,7 +127,7 @@ def validate_protocol(protocol: dict) -> None:
         "canonical_repository", "default_branch", "work_branch_prefix", "lock_branch_prefix",
         "lock_branch_derivation", "lease_duration_seconds", "renew_when_remaining_seconds_lte",
         "expiration_rule", "resource_acquisition_order", "worker_kinds", "required_claims",
-        "mutation_rules", "integration_rules", "coordination_surfaces"
+        "parallel_work", "mutation_rules", "integration_rules", "coordination_surfaces"
     }
     if set(protocol) != required:
         fail(f"protocol keys mismatch: missing={sorted(required-set(protocol))} extra={sorted(set(protocol)-required)}")
@@ -95,22 +144,47 @@ def validate_protocol(protocol: dict) -> None:
         "lease_duration_seconds": 14400,
         "renew_when_remaining_seconds_lte": 1800,
         "expiration_rule": "EXPIRED_WHEN_UTC_NOW_GTE_EXPIRES_AT",
-        "resource_acquisition_order": "RESOURCE_KEY_ASCENDING_UTF8"
+        "resource_acquisition_order": "PER_ACQUISITION_ATTEMPT_RESOURCE_KEY_ASCENDING_UTF8",
     }
     for key, value in exact.items():
         if protocol.get(key) != value:
             fail(f"protocol.{key} mismatch")
     if set(protocol["worker_kinds"]) != WORKER_KINDS or len(protocol["worker_kinds"]) != len(WORKER_KINDS):
         fail("protocol.worker_kinds mismatch")
-    required_claims = protocol["required_claims"]
-    if required_claims != {
+    if protocol["required_claims"] != {
         "component": "component:<component_id>",
         "repository_file": "repo-file:<exact_repo_path>",
         "main_integration": "integration:main",
-        "supabase_production": "external:supabase:jnenguxodtgwbskhdsxt"
+        "supabase_production": "external:supabase:jnenguxodtgwbskhdsxt",
     }:
         fail("protocol.required_claims mismatch")
-
+    if protocol["parallel_work"] != {
+        "blocking_claim_state": "ACTIVE",
+        "unexpired_rule": "UTC_NOW_LT_EXPIRES_AT",
+        "blocking_owner_rule": "CLAIM_WORK_ID_NE_REQUESTING_WORK_ID",
+        "blocking_set_rule": "REQUESTED_RESOURCE_KEYS_INTERSECTION_OTHER_ACTIVE_UNEXPIRED_RESOURCE_KEYS",
+        "empty_intersection_result": "INTERSECTION_EMPTY",
+        "nonempty_intersection_result": "INTERSECTION_NONEMPTY",
+        "integration_main_required_for": ["CREATE_PR_TO_MAIN", "MERGE_PR_TO_MAIN"],
+        "integration_main_not_required_for": ["WORK_BRANCH_IMPLEMENTATION_REPOSITORY_CONTENT_MUTATION"],
+        "continuity_fields_with_zero_claim_effect": ["current_component", "current_work", "next_action"],
+        "partial_execution_rule": "EVALUATE_EACH_OPERATION_USING_ITS_EXACT_REQUIRED_RESOURCE_SET_AND_LEAVE_INTERSECTING_OPERATIONS_UNEXECUTED",
+        "late_claim_rule": "LATER_ACQUISITION_ATTEMPT_MAY_ACQUIRE_INTEGRATION_MAIN_AFTER_IMPLEMENTATION_CLAIMS_IF_ATTEMPT_KEYS_ARE_SORTED_AND_INTEGRATION_MAIN_HAS_EMPTY_BLOCKING_INTERSECTION",
+    }:
+        fail("protocol.parallel_work mismatch")
+    required_rules = {
+        "ALL_RESOURCE_CLAIMS_IN_ONE_ACQUISITION_ATTEMPT_ARE_ACQUIRED_IN_RESOURCE_KEY_ASCENDING_UTF8_ORDER",
+        "EXISTING_ACTIVE_CLAIMS_DO_NOT_PARTICIPATE_IN_LATER_ACQUISITION_ATTEMPT_ORDERING",
+        "ACTIVE_UNEXPIRED_CLAIM_INTERSECTION_IS_THE_CROSS_WORK_ITEM_RESOURCE_BLOCKER",
+        "CURRENT_COMPONENT_CURRENT_WORK_AND_NEXT_ACTION_HAVE_ZERO_SOURCE_CLAIM_EFFECT",
+        "INTEGRATION_MAIN_CLAIM_CONFLICT_BLOCKS_PR_CREATION_AND_MAIN_INTEGRATION_NOT_WORK_BRANCH_IMPLEMENTATION",
+        "PARTIAL_REQUEST_EXECUTION_EVALUATES_EACH_OPERATION_EXACT_RESOURCE_SET_AND_DOES_NOT_DROP_INTERSECTING_OPERATIONS",
+    }
+    rules = protocol["mutation_rules"]
+    if any(rules.count(rule) != 1 for rule in required_rules):
+        fail("protocol parallel-work mutation rules mismatch")
+    if "ALL_RESOURCE_CLAIMS_FOR_ONE_WORK_ITEM_ARE_ACQUIRED_IN_RESOURCE_KEY_ASCENDING_UTF8_ORDER" in rules:
+        fail("obsolete work-item-global acquisition ordering rule remains")
 
 def validate_schema_headers() -> None:
     for path in (LOCK_SCHEMA_PATH, WORK_SCHEMA_PATH):
@@ -119,7 +193,6 @@ def validate_schema_headers() -> None:
             fail(f"{path.relative_to(ROOT)} must use JSON Schema draft 2020-12")
         if obj.get("additionalProperties") is not False:
             fail(f"{path.relative_to(ROOT)} must forbid root additionalProperties")
-
 
 def validate_claim_shape(claim: object) -> None:
     if not isinstance(claim, dict) or set(claim) != {"resource_key", "lock_branch", "lease_id", "generation"}:
@@ -132,7 +205,6 @@ def validate_claim_shape(claim: object) -> None:
         fail("claim.lease_id must be lowercase UUIDv4")
     if not isinstance(claim["generation"], int) or claim["generation"] < 1:
         fail("claim.generation must be integer >= 1")
-
 
 def validate_work_record(record: dict, changed_files: list[str], head_branch: str, current_main: str) -> None:
     required = {"schema_version", "work_id", "title", "worker", "implementation_branch", "base_sha", "component_id", "repo_paths", "external_targets", "claims", "runtime_control_authority"}
@@ -180,7 +252,6 @@ def validate_work_record(record: dict, changed_files: list[str], head_branch: st
     if repo_paths != expected_changed:
         fail(f"repo_paths must exactly cover changed paths except work record; expected {expected_changed}")
 
-
 def load_live_lock(claim: dict) -> dict:
     branch = claim["lock_branch"]
     remote_ref = f"refs/remotes/origin/{branch}"
@@ -196,7 +267,6 @@ def load_live_lock(claim: dict) -> dict:
     except Exception as exc:
         fail(f"invalid coordination/lock.json on {branch}: {exc}")
 
-
 def validate_live_lock(lock: dict, claim: dict, record: dict, now: datetime) -> None:
     required = {"schema_version", "resource_key", "generation", "state", "work_id", "worker", "implementation_branch", "lease_id", "base_sha", "acquired_at", "heartbeat_at", "expires_at", "runtime_control_authority"}
     if set(lock) != required:
@@ -211,7 +281,7 @@ def validate_live_lock(lock: dict, claim: dict, record: dict, now: datetime) -> 
         "worker": record["worker"],
         "implementation_branch": record["implementation_branch"],
         "lease_id": claim["lease_id"],
-        "base_sha": record["base_sha"]
+        "base_sha": record["base_sha"],
     }
     for key, value in exact_pairs.items():
         if lock[key] != value:
@@ -224,7 +294,6 @@ def validate_live_lock(lock: dict, claim: dict, record: dict, now: datetime) -> 
     if now >= expires:
         fail(f"live lock expired: {claim['resource_key']}")
 
-
 def validate_pull_request(protocol: dict) -> None:
     event_path = os.environ.get("GITHUB_EVENT_PATH")
     if not event_path:
@@ -236,7 +305,6 @@ def validate_pull_request(protocol: dict) -> None:
     head_branch = str((pr.get("head") or {}).get("ref") or "")
     if not SHA_RE.fullmatch(base_sha) or not SHA_RE.fullmatch(head_sha):
         fail("pull_request base/head SHA missing or invalid")
-
     base_has_protocol = subprocess.run(
         ["git", "cat-file", "-e", f"{base_sha}:coordination/protocol.json"],
         cwd=ROOT, capture_output=True
@@ -245,12 +313,10 @@ def validate_pull_request(protocol: dict) -> None:
         if not PROTOCOL_PATH.is_file():
             fail("coordination bootstrap PR must add coordination/protocol.json")
         return
-
     git("fetch", "--quiet", "origin", "main")
     current_main = git("rev-parse", "origin/main")
     if subprocess.run(["git", "merge-base", "--is-ancestor", current_main, head_sha], cwd=ROOT).returncode != 0:
         fail("PR head does not contain current main as an ancestor; update/rebase before integration")
-
     changed = [p for p in git("diff", "--name-only", f"{base_sha}...{head_sha}").splitlines() if p]
     work_paths = [p for p in changed if re.fullmatch(r"coordination/work/[0-9a-f-]{36}\.json", p)]
     if len(work_paths) != 1:
@@ -262,7 +328,6 @@ def validate_pull_request(protocol: dict) -> None:
     now = datetime.now(timezone.utc)
     for claim in record["claims"]:
         validate_live_lock(load_live_lock(claim), claim, record, now)
-
 
 def main() -> int:
     try:
