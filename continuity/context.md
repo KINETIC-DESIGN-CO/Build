@@ -199,9 +199,9 @@ Do not silently resolve these from prior implementation history.
 
 ## Current immediate sequence
 
-The continuity bundle is being bootstrapped first because every later Life component should benefit from deterministic recovery.
+The continuity bundle has been bootstrapped and verified first so every later Life component can benefit from deterministic recovery.
 
-After the bundle is installed and read back, the next required step is to update the Life Project Instructions so every future Life response is forced to read and validate the continuity bundle before continuing. The complete Project Instructions must remain at or below 8,000 characters.
+The bundle is installed and read back. The next required step is to update the Life Project Instructions so every future Life response is forced to read and validate the continuity bundle before continuing. The complete Project Instructions must remain at or below 8,000 characters.
 
 After the Project Instruction pointer is installed, configure the minimum machine-enforced protections for `Vinanonymous/Build`, including the rules/CI structure selected under fresh research.
 
@@ -230,4 +230,4 @@ If live state conflicts with continuity, live authorized-system reads determine 
 
 ## Last bundle-authoring timestamp
 
-`2026-09-12T02:02:16Z`
+`2026-09-12T02:11:13Z`
