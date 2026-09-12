@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:continuity/events.jsonl",
-  "generation": 7,
-  "state": "RELEASED",
-  "work_id": "be1781b1-d089-40ba-bcfd-53438eff122d",
+  "generation": 8,
+  "state": "ACTIVE",
+  "work_id": "1b678d59-f16b-4689-aebd-6cefee81f1c2",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "944b31f3-98c0-4480-ad90-7cb083f9fab3"
+    "session_id": "4cc916d2-6c84-4e59-8d48-5abd137fffce"
   },
-  "implementation_branch": "work/be1781b1-d089-40ba-bcfd-53438eff122d",
-  "lease_id": "ba047082-2f1d-4f25-badd-a9eb8e9ffddd",
+  "implementation_branch": "work/1b678d59-f16b-4689-aebd-6cefee81f1c2",
+  "lease_id": "fd7a45b6-20e5-4754-94db-3d1e34239b51",
   "base_sha": "daf1ba47bbba7bb836e7fba54a87bba29d6a01d1",
-  "acquired_at": "2026-09-12T08:38:15Z",
-  "heartbeat_at": "2026-09-12T08:38:15Z",
-  "expires_at": "2026-09-12T12:38:15Z",
+  "acquired_at": "2026-09-12T09:05:47Z",
+  "heartbeat_at": "2026-09-12T09:05:47Z",
+  "expires_at": "2026-09-12T13:05:47Z",
   "runtime_control_authority": "NONE"
 }
