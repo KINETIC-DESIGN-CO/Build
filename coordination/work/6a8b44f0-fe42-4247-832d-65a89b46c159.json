@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "work_id": "6a8b44f0-fe42-4247-832d-65a89b46c159",
+  "title": "Scope continuity barriers and add deterministic work admission",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "b66f7aed-e157-4ea4-b29e-bf9f22a82dd6"
+  },
+  "implementation_branch": "work/6a8b44f0-fe42-4247-832d-65a89b46c159",
+  "base_sha": "bc28376c90eda974ccf3a33561bedcc863e002ad",
+  "component_id": "engineering_work_selection",
+  "repo_paths": [
+    "governance/schema/work-admissions.schema.json",
+    "governance/schema/work-selection-policy.schema.json",
+    "governance/work-admissions.json",
+    "governance/work-selection-policy.json",
+    "scripts/select_work.py",
+    "tests/test_work_selection.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:engineering_work_selection",
+      "lock_branch": "lock/25f9e669704aeec5ab7fe855f06906d66956ec98311c1fa76be80ef2470ff8ab",
+      "lease_id": "15ee9334-e723-414c-8159-df1c766baa10",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:governance/schema/work-admissions.schema.json",
+      "lock_branch": "lock/373ea5ae4d9fd0f1c20b0f5b8c3f447cbae9323a76e54966a9984c2a0f70446c",
+      "lease_id": "097bcaf3-da66-475b-b7b4-6e42ed11ca04",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:governance/schema/work-selection-policy.schema.json",
+      "lock_branch": "lock/56a3a0a1ac9bf96d76cf0dd6f22d4d2346db0b6f82077bd3b599878ad819f89c",
+      "lease_id": "e7733ee3-6afa-4493-8a90-5d1a6b464175",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:governance/work-admissions.json",
+      "lock_branch": "lock/5c5c41709e99037181ffe1cea5564fe25c180219dd5ff4c49aa465abb9038061",
+      "lease_id": "9f8bc324-e71d-44bb-a08f-15ace2a49ee0",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:governance/work-selection-policy.json",
+      "lock_branch": "lock/54cd0d89ab7419602e771a9ee5f0ec5e8d721f3b61daf72c8975261bd4906dd4",
+      "lease_id": "c58bbd4c-6fa7-49f7-8ef4-52f35004576e",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:scripts/select_work.py",
+      "lock_branch": "lock/589bfc31eab7c7dd61ee306fc74039bd0fde845a4895a52618f856ccf91a9eb6",
+      "lease_id": "17a77ce5-b513-4dd3-a3c7-643a576abfa8",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:tests/test_work_selection.py",
+      "lock_branch": "lock/a608d761f2463304b71abc37aae77de4d28c41fc052348d78d6ef1236ee9f1f2",
+      "lease_id": "f952d7c6-ceb1-4733-88a7-e48ea727d67a",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
