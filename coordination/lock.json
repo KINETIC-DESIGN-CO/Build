@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:tests/test_coordination.py",
   "generation": 2,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "06899092-de40-4b07-9a2e-5a89b3abb5b0",
   "worker": {
     "kind": "chatgpt",
