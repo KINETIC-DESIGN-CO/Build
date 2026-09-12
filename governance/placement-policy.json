@@ -143,16 +143,66 @@
   "project_instruction_change_rule": "ANY_PROJECT_INSTRUCTION_EDIT_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION_FOR_THE_EXACT_TEXT_CHANGED",
   "runtime_control_rule": "PROSE_POLICIES_HAVE_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY",
   "migration_candidates": [
-    {"project_instruction_block":"PRE_RESPONSE_RESEARCH","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/research-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"REEVALUATION","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/architecture-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"FACT_VERIFICATION","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/verification-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"PLATFORM_FEATURES","destination":"RESPONSE_CONTRACT","future_path":"continuity/response-contract.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"COPY_PASTE","destination":"RESPONSE_CONTRACT","future_path":"continuity/response-contract.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"NEXT_STEP_RESPONSE_COUNTER","destination":"RESPONSE_CONTRACT","future_path":"continuity/response-contract.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"CONNECTED_APP_MUTATIONS","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/mutation-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"VERSIONED_CHANGES","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/versioning-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"CANONICAL_INVOCATION","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/runtime-routing-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"},
-    {"project_instruction_block":"PROJECT_INSTRUCTION_STATE_REVIEW","destination":"GOVERNANCE_POLICY","future_path":"governance/policies/project-instruction-review-policy.json","status":"CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"}
+    {
+      "project_instruction_block": "PRE_RESPONSE_RESEARCH",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/research-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "REEVALUATION",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/architecture-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "FACT_VERIFICATION",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/verification-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "PLATFORM_FEATURES",
+      "destination": "RESPONSE_CONTRACT",
+      "future_path": "continuity/response-contract.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "COPY_PASTE",
+      "destination": "RESPONSE_CONTRACT",
+      "future_path": "continuity/response-contract.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "NEXT_STEP_RESPONSE_COUNTER",
+      "destination": "RESPONSE_CONTRACT",
+      "future_path": "continuity/response-contract.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "CONNECTED_APP_MUTATIONS",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/mutation-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "VERSIONED_CHANGES",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/versioning-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "CANONICAL_INVOCATION",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/runtime-routing-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    },
+    {
+      "project_instruction_block": "PROJECT_INSTRUCTION_STATE_REVIEW",
+      "destination": "GOVERNANCE_POLICY",
+      "future_path": "governance/policies/project-instruction-review-policy.json",
+      "status": "CANDIDATE_REQUIRES_EXPLICIT_VINCE_AUTHORIZATION"
+    }
   ],
   "project_instruction_root_blocks": [
     "CONTROL_AUTHORITY",
