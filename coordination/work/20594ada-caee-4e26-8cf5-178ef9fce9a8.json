@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "work_id": "20594ada-caee-4e26-8cf5-178ef9fce9a8",
+  "title": "Synchronize deterministic priority control",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "5099e8b3-3d43-4ebb-8f49-ac5fccd1d90a"
+  },
+  "implementation_branch": "work/20594ada-caee-4e26-8cf5-178ef9fce9a8",
+  "base_sha": "6fe494a235fc78d3db809500f9fb8c94d9e0e72c",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/decisions.jsonl",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "590644f5-20f5-4258-95c1-9f7de417ccc3",
+      "generation": 10
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "ca47d713-1f07-40f7-aac1-d507dc0dd1db",
+      "generation": 22
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "f0bf945f-97f2-4638-ace7-85638c70ee97",
+      "generation": 13
+    },
+    {
+      "resource_key": "repo-file:continuity/decisions.jsonl",
+      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
+      "lease_id": "11a6e66d-8721-45d9-9f2c-05f727338225",
+      "generation": 8
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "3daf3254-ef91-439d-b7b8-0c6be2e89437",
+      "generation": 11
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
