@@ -5,7 +5,7 @@
   "source_control_authority": "NONE",
   "authorized_repository": {
     "repository_id": 1366835183,
-    "full_name": "Vinanonymous/Build",
+    "full_name": "KINETIC-DESIGN-CO/Build",
     "default_branch": "main"
   },
   "authorized_external_targets": {
@@ -112,7 +112,7 @@
     "source_contract_fingerprints": [
       {
         "path": "continuity/bootstrap.json",
-        "git_blob_sha": "e22235071f1f3c7a70acf8ee5510b613f034e609"
+        "git_blob_sha": "0169458f11807fbd743eb1718baa524e54a91436"
       },
       {
         "path": "continuity/response-contract.json",
