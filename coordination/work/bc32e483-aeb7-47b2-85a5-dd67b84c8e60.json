@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "work_id": "bc32e483-aeb7-47b2-85a5-dd67b84c8e60",
+  "title": "Synchronize multi-thread hardening priority",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "58f80bcd-a59a-4573-bdf8-2f59bbb7d1c2"
+  },
+  "implementation_branch": "work/bc32e483-aeb7-47b2-85a5-dd67b84c8e60",
+  "base_sha": "3f8009cf7d2db6e265ccf78df141265856eead83",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "3dcc8a66-315a-4f08-a2b2-ab01f168c737",
+      "generation": 14
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "f4d2d56f-6ce6-4fbe-938b-e92090ce9bbe",
+      "generation": 5
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "050c8e83-0de2-45ab-aab5-946427a63860",
+      "generation": 27
+    },
+    {
+      "resource_key": "repo-file:continuity/context.md",
+      "lock_branch": "lock/b54a87ae0c6695df543fd900938bab73cecc8c48f4a9bca7bda091ece106a073",
+      "lease_id": "512ef96e-31ac-487c-908f-c1046dc1e4f9",
+      "generation": 11
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "c8efa39f-aa46-4e97-abb8-5382fd1f91c0",
+      "generation": 17
+    },
+    {
+      "resource_key": "repo-file:continuity/decisions.jsonl",
+      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
+      "lease_id": "efd555ff-e465-40de-a345-da3ca288f3ff",
+      "generation": 9
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "f024412b-8828-4407-9a60-616aad83a74c",
+      "generation": 15
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
