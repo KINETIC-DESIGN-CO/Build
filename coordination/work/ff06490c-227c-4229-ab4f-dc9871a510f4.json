@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_id": "ff06490c-227c-4229-ab4f-dc9871a510f4",
+  "title": "Record watchdog run observability blocker",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "c715be8b-e064-4029-94dc-c732b40bb6c3"
+  },
+  "implementation_branch": "work/ff06490c-227c-4229-ab4f-dc9871a510f4",
+  "base_sha": "107156b6660aeeb88fea0c036d84e694b9860e80",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "d339a61c-c20a-4c33-a99e-63456ba6a276",
+      "generation": 12
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "2b2b2343-7e92-4146-a5a5-6909a5181d39",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "c146f03f-aa9b-4a74-8c89-2bef314afe48",
+      "generation": 15
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "4b883d39-7fd1-4e1c-9444-36941b0121b5",
+      "generation": 13
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
