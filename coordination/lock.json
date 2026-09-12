@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:.github/workflows/continuity.yml",
-  "generation": 2,
-  "state": "RELEASED",
-  "work_id": "0f9e3588-59b1-4201-9a59-04d88b074157",
+  "generation": 3,
+  "state": "ACTIVE",
+  "work_id": "f9d2c3ad-4584-4b3b-8bd7-cea1180c8c44",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "bff53a65-649c-43d7-ac92-1e0a3d3bb89e"
+    "session_id": "019402a4-c330-417d-b739-a7bb2187877c"
   },
-  "implementation_branch": "work/0f9e3588-59b1-4201-9a59-04d88b074157",
-  "lease_id": "3356c7b7-a4ec-4855-a877-32441972224d",
-  "base_sha": "2d67cacdfe8c725970a5da4bdaa739404cc44f89",
-  "acquired_at": "2026-09-12T19:07:49Z",
-  "heartbeat_at": "2026-09-12T19:07:49Z",
-  "expires_at": "2026-09-12T23:07:49Z",
+  "implementation_branch": "work/f9d2c3ad-4584-4b3b-8bd7-cea1180c8c44",
+  "lease_id": "6228ffa1-b054-45d7-aabf-7f415e0fdc7c",
+  "base_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
+  "acquired_at": "2026-09-12T22:32:35Z",
+  "heartbeat_at": "2026-09-12T22:32:35Z",
+  "expires_at": "2026-09-13T02:32:35Z",
   "runtime_control_authority": "NONE"
 }
