@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_id": "3cfa10f7-b801-4028-9556-1cbef6026b36",
+  "title": "Derive fresh-thread dispatch from live claims",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "1302ac3d-d1ff-4546-b80f-fd32159c659b"
+  },
+  "implementation_branch": "work/3cfa10f7-b801-4028-9556-1cbef6026b36",
+  "base_sha": "df5adb5fc3d1ce37569e52c2ebf641a6d55525fe",
+  "component_id": "multi_thread_coordination_hardening",
+  "repo_paths": [
+    "governance/schema/work-selection-policy.schema.json",
+    "governance/work-selection-policy.json",
+    "scripts/select_work.py",
+    "tests/test_work_selection.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:multi_thread_coordination_hardening",
+      "lock_branch": "lock/59cb0115181bd2c23a385594018248f94c140e7c29c394c3def5d23c0dfa90d8",
+      "lease_id": "0bbfe08e-9473-4c15-9d0c-5484355ffb43",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "c179efa7-b971-4ec2-8909-49b61663d21a",
+      "generation": 28
+    },
+    {
+      "resource_key": "repo-file:governance/schema/work-selection-policy.schema.json",
+      "lock_branch": "lock/56a3a0a1ac9bf96d76cf0dd6f22d4d2346db0b6f82077bd3b599878ad819f89c",
+      "lease_id": "b3cba867-8d09-40a1-a614-894a8c4ac0a6",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:governance/work-selection-policy.json",
+      "lock_branch": "lock/54cd0d89ab7419602e771a9ee5f0ec5e8d721f3b61daf72c8975261bd4906dd4",
+      "lease_id": "79f21217-8c03-49f4-b77f-9c7353a7de9e",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:scripts/select_work.py",
+      "lock_branch": "lock/589bfc31eab7c7dd61ee306fc74039bd0fde845a4895a52618f856ccf91a9eb6",
+      "lease_id": "1bbbbe7d-29ef-4f25-a1dd-cc248ae56b05",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:tests/test_work_selection.py",
+      "lock_branch": "lock/a608d761f2463304b71abc37aae77de4d28c41fc052348d78d6ef1236ee9f1f2",
+      "lease_id": "5ff53c69-7e49-4802-b0e4-701be7c77616",
+      "generation": 3
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
