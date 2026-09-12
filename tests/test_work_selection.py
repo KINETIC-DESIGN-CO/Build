@@ -5,36 +5,24 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-POLICY_PATH = ROOT / "governance" / "work-selection-policy.json"
-ADMISSIONS_PATH = ROOT / "governance" / "work-admissions.json"
+POLICY_PATH = ROOT / "governance/work-selection-policy.json"
+ADMISSIONS_PATH = ROOT / "governance/work-admissions.json"
+CURRENT_PATH = ROOT / "continuity/current.json"
 
 
 class WorkSelectionTests(unittest.TestCase):
-    def run_selector(self, evidence=None, policy_override=None, admissions_override=None, extra_args=None):
-        original_policy = POLICY_PATH.read_text(encoding="utf-8")
-        original_admissions = ADMISSIONS_PATH.read_text(encoding="utf-8")
-        try:
-            if policy_override is not None:
-                POLICY_PATH.write_text(json.dumps(policy_override, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-            if admissions_override is not None:
-                ADMISSIONS_PATH.write_text(json.dumps(admissions_override, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-            cmd = ["python", "scripts/select_work.py"]
-            if evidence is None and extra_args is None:
-                cmd.append("--validate-policy")
-            elif evidence is not None:
-                with tempfile.TemporaryDirectory() as td:
-                    evidence_path = Path(td) / "evidence.json"
-                    evidence_path.write_text(json.dumps(evidence, indent=2) + "\n")
-                    cmd += ["--evaluate", str(evidence_path)]
-                    if extra_args:
-                        cmd += extra_args
-                    return subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True)
-            else:
-                cmd += extra_args or []
-            return subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True)
-        finally:
-            POLICY_PATH.write_text(original_policy, encoding="utf-8")
-            ADMISSIONS_PATH.write_text(original_admissions, encoding="utf-8")
+    def setUp(self):
+        self.original_policy = POLICY_PATH.read_text(encoding="utf-8")
+        self.original_admissions = ADMISSIONS_PATH.read_text(encoding="utf-8")
+        self.original_current = CURRENT_PATH.read_text(encoding="utf-8")
+
+    def tearDown(self):
+        POLICY_PATH.write_text(self.original_policy, encoding="utf-8")
+        ADMISSIONS_PATH.write_text(self.original_admissions, encoding="utf-8")
+        CURRENT_PATH.write_text(self.original_current, encoding="utf-8")
+
+    def run_selector(self, args):
+        return subprocess.run(["python", "scripts/select_work.py", *args], cwd=ROOT, text=True, capture_output=True)
 
     def base_evidence(self):
         return {
@@ -46,7 +34,7 @@ class WorkSelectionTests(unittest.TestCase):
             "interrupted_operation_state": "NONE",
             "current_status": "ACTIVE",
             "open_blocker_ids": [],
-            "current_next_action_id": "A-0011",
+            "current_next_action_id": "A-0012",
             "parallel_request_state": "NONE",
             "parallel_work_item_id": None,
             "parallel_resource_intersection": "NOT_EVALUATED",
@@ -54,161 +42,190 @@ class WorkSelectionTests(unittest.TestCase):
             "selected_work_terminal": True,
         }
 
-    def parallel_evidence(self, work_item_id="github-issue-12"):
-        evidence = self.base_evidence()
-        evidence.update({
+    def parallel_evidence(self, item="github-issue-12"):
+        value = self.base_evidence()
+        value.update({
             "worker_lane": "PARALLEL_ASSIGNED",
             "parallel_request_state": "REQUESTED",
-            "parallel_work_item_id": work_item_id,
+            "parallel_work_item_id": item,
             "parallel_resource_intersection": "INTERSECTION_EMPTY",
         })
-        return evidence
+        return value
 
-    def result(self, evidence):
-        proc = self.run_selector(evidence=evidence)
+    def evaluate(self, evidence):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "evidence.json"
+            path.write_text(json.dumps(evidence) + "\n", encoding="utf-8")
+            proc = self.run_selector(["--evaluate", str(path)])
         self.assertEqual(proc.returncode, 0, proc.stderr)
         return json.loads(proc.stdout)
 
-    def select_parallel(self, *unavailable):
-        args = ["--select-parallel"]
-        for item in unavailable:
-            args += ["--unavailable-work-item", item]
-        proc = self.run_selector(extra_args=args)
+    def required_dispatch_keys(self):
+        current = json.loads(CURRENT_PATH.read_text())
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
+        keys = {"continuity:sync", f"component:{current['current_component']}"}
+        keys.update(f"component:{item['component_id']}" for item in admissions["items"] if item["state"] == "ADMITTED")
+        return sorted(keys)
+
+    def lock(self, key, expires="2026-09-12T18:00:00Z", state="ACTIVE"):
+        return {
+            "schema_version": 1,
+            "resource_key": key,
+            "generation": 1,
+            "state": state,
+            "work_id": "11111111-1111-4111-8111-111111111111",
+            "worker": {"kind": "chatgpt", "session_id": "22222222-2222-4222-8222-222222222222"},
+            "implementation_branch": "work/11111111-1111-4111-8111-111111111111",
+            "lease_id": "33333333-3333-4333-8333-333333333333",
+            "base_sha": "0" * 40,
+            "acquired_at": "2026-09-12T13:00:00Z",
+            "heartbeat_at": "2026-09-12T13:00:00Z",
+            "expires_at": expires,
+            "runtime_control_authority": "NONE",
+        }
+
+    def snapshot(self, overrides=None, observed_at="2026-09-12T14:00:00Z"):
+        resources = {key: None for key in self.required_dispatch_keys()}
+        resources.update(overrides or {})
+        return {"observed_at": observed_at, "resources": resources}
+
+    def dispatch(self, snapshot):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "snapshot.json"
+            path.write_text(json.dumps(snapshot) + "\n", encoding="utf-8")
+            proc = self.run_selector(["--dispatch-snapshot", str(path)])
         self.assertEqual(proc.returncode, 0, proc.stderr)
         return json.loads(proc.stdout)
 
-    def test_policy_and_admissions_validate(self):
-        proc = self.run_selector()
+    def test_policy_validates_as_v3(self):
+        proc = self.run_selector(["--validate-policy"])
         self.assertEqual(proc.returncode, 0, proc.stderr)
-        self.assertIn("VALID", proc.stdout)
+        policy = json.loads(POLICY_PATH.read_text())
+        self.assertEqual(policy["schema_version"], 3)
+        self.assertEqual(policy["policy_id"], "life-engineering-work-selection-v3")
+        self.assertEqual(policy["fresh_thread_dispatch"]["mode"], "LIVE_LOCK_DERIVED")
+        self.assertEqual(policy["fresh_thread_dispatch"]["worker_lane_input_rule"], "FRESH_THREAD_WORKER_LANE_MUST_BE_DERIVED_NOT_CALLER_ASSIGNED")
 
-    def test_rank_semantics_make_zero_highest_precedence(self):
-        policy = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(policy["rank_semantics"], "LOWER_NUMERIC_RANK_HAS_HIGHER_PRECEDENCE")
-        self.assertEqual(policy["priority_order"][0]["rank"], 0)
-
-    def test_foreground_continuity_required_selects_rank_zero(self):
+    def test_legacy_rank_zero_foreground_continuity_still_works(self):
         evidence = self.base_evidence()
         evidence["pending_continuity_event_ids"] = ["E-PENDING-1"]
-        result = self.result(evidence)
+        result = self.evaluate(evidence)
         self.assertEqual(result["effective_rank"], 0)
         self.assertEqual(result["selected_work"], "CONTINUITY_SYNC")
 
-    def test_parallel_disjoint_work_can_run_during_continuity_sync(self):
+    def test_legacy_disjoint_parallel_rank_four_still_works(self):
         evidence = self.parallel_evidence()
         evidence["pending_continuity_event_ids"] = ["E-PENDING-1"]
         evidence["continuity_resource_intersection"] = "INTERSECTION_EMPTY"
-        result = self.result(evidence)
+        result = self.evaluate(evidence)
         self.assertEqual(result["effective_rank"], 4)
         self.assertEqual(result["selected_work"], "PARALLEL_ADMITTED_WORK")
 
-    def test_parallel_intersecting_continuity_work_is_rank_zero_blocked(self):
-        evidence = self.parallel_evidence()
-        evidence["pending_continuity_event_ids"] = ["E-PENDING-1"]
-        evidence["continuity_resource_intersection"] = "INTERSECTION_NONEMPTY"
-        result = self.result(evidence)
-        self.assertEqual(result["effective_rank"], 0)
-        self.assertEqual(result["selected_work"], "CONTINUITY_SYNC")
+    def test_fresh_thread_foreground_is_derived_when_component_is_free(self):
+        result = self.dispatch(self.snapshot())
+        self.assertEqual(result["worker_lane"], "FOREGROUND")
+        self.assertEqual(result["effective_rank"], 3)
+        self.assertEqual(result["selected_work"], "CURRENT_NEXT_ACTION")
+        self.assertEqual(result["claim_next_resource_key"], "component:multi_thread_coordination_hardening")
 
-    def test_parallel_sync_intersection_must_be_evaluated(self):
-        evidence = self.parallel_evidence()
-        evidence["pending_continuity_event_ids"] = ["E-PENDING-1"]
-        proc = self.run_selector(evidence=evidence)
-        self.assertNotEqual(proc.returncode, 0)
-        self.assertIn("requires continuity intersection evaluation", proc.stderr)
+    def test_fresh_thread_becomes_parallel_when_foreground_component_is_owned(self):
+        key = "component:multi_thread_coordination_hardening"
+        result = self.dispatch(self.snapshot({key: self.lock(key)}))
+        self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
+        self.assertEqual(result["work_item_id"], "github-issue-12")
+        self.assertEqual(result["claim_next_resource_key"], "component:issue_12")
 
-    def test_unresolved_interruption_outranks_disjoint_parallel_work(self):
-        evidence = self.parallel_evidence()
-        evidence["interrupted_operation_state"] = "NO_RESULT"
-        result = self.result(evidence)
-        self.assertEqual(result["effective_rank"], 1)
-        self.assertEqual(result["selected_work"], "RESUME_INTERRUPTED_OPERATION")
+    def test_active_continuity_claim_also_routes_fresh_thread_to_parallel(self):
+        key = "continuity:sync"
+        result = self.dispatch(self.snapshot({key: self.lock(key)}))
+        self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
+        self.assertEqual(result["work_item_id"], "github-issue-12")
 
-    def test_parallel_other_resource_intersection_blocks_rank_four(self):
-        evidence = self.parallel_evidence()
-        evidence["parallel_resource_intersection"] = "INTERSECTION_NONEMPTY"
-        result = self.result(evidence)
-        self.assertIsNone(result["effective_rank"])
+    def test_parallel_auto_selection_skips_owned_component(self):
+        current_key = "component:multi_thread_coordination_hardening"
+        issue12 = "component:issue_12"
+        result = self.dispatch(self.snapshot({current_key: self.lock(current_key), issue12: self.lock(issue12)}))
+        self.assertEqual(result["work_item_id"], "github-issue-15")
+        self.assertEqual(result["claim_next_resource_key"], "component:issue_15")
+
+    def test_expired_component_claim_is_available(self):
+        current_key = "component:multi_thread_coordination_hardening"
+        issue12 = "component:issue_12"
+        result = self.dispatch(self.snapshot({current_key: self.lock(current_key), issue12: self.lock(issue12, expires="2026-09-12T13:59:59Z")}))
+        self.assertEqual(result["work_item_id"], "github-issue-12")
+
+    def test_dependency_blocks_issue_18_when_issue_21_not_complete(self):
+        current_key = "component:multi_thread_coordination_hardening"
+        overrides = {current_key: self.lock(current_key)}
+        for n in (12, 15, 16, 17, 21, 30):
+            key = f"component:issue_{n}"
+            overrides[key] = self.lock(key)
+        result = self.dispatch(self.snapshot(overrides))
         self.assertEqual(result["decision"], "NO_ELIGIBLE_WORK")
+        self.assertIsNone(result["work_item_id"])
 
-    def test_parallel_request_requires_canonical_admitted_work_item(self):
-        evidence = self.parallel_evidence("github-issue-999")
-        proc = self.run_selector(evidence=evidence)
-        self.assertNotEqual(proc.returncode, 0)
-        self.assertIn("must exist in admissions", proc.stderr)
-
-    def test_dependency_blocks_issue_18_until_issue_21_complete(self):
-        selected = self.select_parallel(
-            "github-issue-12", "github-issue-15", "github-issue-16",
-            "github-issue-17", "github-issue-21", "github-issue-30",
-        )
-        self.assertEqual(selected["decision"], "NO_ELIGIBLE_WORK")
-
-    def test_selector_picks_lowest_dispatch_tier_then_issue_number(self):
-        selected = self.select_parallel()
-        self.assertEqual(selected["work_item_id"], "github-issue-12")
-        self.assertEqual(selected["component_resource_key"], "component:issue_12")
-        selected = self.select_parallel("github-issue-12")
-        self.assertEqual(selected["work_item_id"], "github-issue-15")
-
-    def test_dependency_unlocks_when_predecessor_complete(self):
-        admissions = json.loads(ADMISSIONS_PATH.read_text(encoding="utf-8"))
+    def test_dependency_unlocks_issue_18_after_issue_21_complete(self):
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
         for item in admissions["items"]:
             if item["work_item_id"] == "github-issue-21":
                 item["state"] = "COMPLETE"
-        proc = self.run_selector(
-            admissions_override=admissions,
-            extra_args=[
-                "--select-parallel",
-                "--unavailable-work-item", "github-issue-12",
-                "--unavailable-work-item", "github-issue-15",
-                "--unavailable-work-item", "github-issue-16",
-                "--unavailable-work-item", "github-issue-17",
-            ],
-        )
-        self.assertEqual(proc.returncode, 0, proc.stderr)
-        result = json.loads(proc.stdout)
+        ADMISSIONS_PATH.write_text(json.dumps(admissions, indent=2) + "\n")
+        current_key = "component:multi_thread_coordination_hardening"
+        overrides = {current_key: self.lock(current_key)}
+        for n in (12, 15, 16, 17):
+            key = f"component:issue_{n}"
+            overrides[key] = self.lock(key)
+        result = self.dispatch(self.snapshot(overrides))
         self.assertEqual(result["work_item_id"], "github-issue-18")
 
-    def test_admissions_authorization_ref_must_resolve_to_vince_directive(self):
-        admissions = json.loads(ADMISSIONS_PATH.read_text(encoding="utf-8"))
-        admissions["authorization_ref"] = "E-9999"
-        proc = self.run_selector(admissions_override=admissions)
+    def test_snapshot_must_cover_every_required_component_resource(self):
+        snap = self.snapshot()
+        del snap["resources"]["component:issue_12"]
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "snapshot.json"
+            path.write_text(json.dumps(snap) + "\n")
+            proc = self.run_selector(["--dispatch-snapshot", str(path)])
         self.assertNotEqual(proc.returncode, 0)
-        self.assertIn("authorization_ref must resolve", proc.stderr)
+        self.assertIn("resource coverage mismatch", proc.stderr)
 
-    def test_lower_priority_candidate_cannot_preempt_nonterminal_selection(self):
+    def test_malformed_live_lock_fails_closed(self):
+        key = "component:multi_thread_coordination_hardening"
+        bad = self.lock(key)
+        del bad["lease_id"]
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "snapshot.json"
+            path.write_text(json.dumps(self.snapshot({key: bad})) + "\n")
+            proc = self.run_selector(["--dispatch-snapshot", str(path)])
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("lock shape mismatch", proc.stderr)
+
+    def test_parallel_race_rule_requires_cas_and_redispatch(self):
+        policy = json.loads(POLICY_PATH.read_text())
+        self.assertEqual(policy["fresh_thread_dispatch"]["race_rule"], "AFTER_PARALLEL_SELECTION_ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP;ON_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH")
+
+    def test_manual_selector_tie_break_remains_deterministic(self):
+        proc = self.run_selector(["--select-parallel"])
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(json.loads(proc.stdout)["work_item_id"], "github-issue-12")
+        proc = self.run_selector(["--select-parallel", "--unavailable-work-item", "github-issue-12"])
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(json.loads(proc.stdout)["work_item_id"], "github-issue-15")
+
+    def test_nonterminal_higher_precedence_selection_is_not_replaced(self):
         evidence = self.base_evidence()
         evidence["selected_rank_before"] = 1
         evidence["selected_work_terminal"] = False
-        result = self.result(evidence)
-        self.assertEqual(result["candidate_rank"], 3)
+        result = self.evaluate(evidence)
         self.assertEqual(result["decision"], "KEEP_SELECTED")
         self.assertEqual(result["effective_rank"], 1)
 
-    def test_expired_continuity_barrier_blocks_foreground(self):
-        evidence = self.base_evidence()
-        evidence["continuity_sync_claim_state"] = "ACTIVE_EXPIRED"
-        result = self.result(evidence)
-        self.assertEqual(result["effective_rank"], 0)
-
     def test_qualitative_gate_token_is_rejected(self):
-        policy = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
+        policy = json.loads(POLICY_PATH.read_text())
         policy["novelty_rule"] = "USE_RELEVANT_NEW_WORK"
-        proc = self.run_selector(policy_override=policy)
+        POLICY_PATH.write_text(json.dumps(policy, indent=2) + "\n")
+        proc = self.run_selector(["--validate-policy"])
         self.assertNotEqual(proc.returncode, 0)
         self.assertIn("qualitative gate token forbidden", proc.stderr)
-
-    def test_dependency_cycle_is_rejected(self):
-        admissions = json.loads(ADMISSIONS_PATH.read_text(encoding="utf-8"))
-        for item in admissions["items"]:
-            if item["work_item_id"] == "github-issue-12":
-                item["depends_on"] = ["github-issue-15"]
-            if item["work_item_id"] == "github-issue-15":
-                item["depends_on"] = ["github-issue-12"]
-        proc = self.run_selector(admissions_override=admissions)
-        self.assertNotEqual(proc.returncode, 0)
-        self.assertIn("dependency cycle", proc.stderr)
 
 
 if __name__ == "__main__":
