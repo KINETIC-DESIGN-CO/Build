@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "manifest_revision": 1,
+  "manifest_revision": 2,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T02:02:16Z",
+  "updated_at": "2026-09-12T02:11:13Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
   "current_component": "continuity_bootstrap",
-  "current_status": "ACTIVE",
+  "current_status": "COMPLETE",
   "authorized_targets": {
     "github": {
       "repository_id": 1366835183,
@@ -23,7 +23,7 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Install the first canonical continuity bundle in Vinanonymous/Build so a new thread can reconstruct Life's objective, constraints, decisions, retired interpretations, verified system state, unresolved questions, and next action without relying on ChatGPT memory.",
+    "goal": "Continuity bootstrap is installed and verified in Vinanonymous/Build. The next step is to make future Life threads consume it through Project Instructions.",
     "completion_conditions": [
       "ALL_REQUIRED_FILES_EXIST",
       "VALIDATOR_EXIT_ZERO",
@@ -32,62 +32,31 @@
       "PROJECT_INSTRUCTION_POINTER_PENDING_USER_INSTALLATION"
     ]
   },
-  "active_decision_ids": [
-    "D-0001",
-    "D-0002",
-    "D-0003",
-    "D-0004",
-    "D-0005",
-    "D-0006",
-    "D-0007",
-    "D-0008",
-    "D-0009",
-    "D-0010"
-  ],
-  "retired_decision_ids": [
-    "D-0101",
-    "D-0102",
-    "D-0103"
-  ],
+  "active_decision_ids": ["D-0001","D-0002","D-0003","D-0004","D-0005","D-0006","D-0007","D-0008","D-0009","D-0010"],
+  "retired_decision_ids": ["D-0101","D-0102","D-0103"],
   "open_questions": [
-    {
-      "id": "Q-0001",
-      "state": "OPEN",
-      "question": "Which permanent runtime host should expose the canonical Life MCP endpoint after fresh clean-slate comparison: Supabase Edge Functions, Vercel Functions, or another authorized mechanism?",
-      "resolution_decision_id": null
-    },
-    {
-      "id": "Q-0002",
-      "state": "OPEN",
-      "question": "Which exact deterministic runtime control implementation should satisfy CONTROL AUTHORITY for the ten enumerated decision kinds?",
-      "resolution_decision_id": null
-    },
-    {
-      "id": "Q-0003",
-      "state": "OPEN",
-      "question": "Which parts of the legacy invocation implementation should be rebuilt, modified, or discarded after clean-slate reevaluation?",
-      "resolution_decision_id": null
-    }
+    {"id":"Q-0001","state":"OPEN","question":"Which permanent runtime host should expose the canonical Life MCP endpoint after fresh clean-slate comparison: Supabase Edge Functions, Vercel Functions, or another authorized mechanism?","resolution_decision_id":null},
+    {"id":"Q-0002","state":"OPEN","question":"Which exact deterministic runtime control implementation should satisfy CONTROL AUTHORITY for the ten enumerated decision kinds?","resolution_decision_id":null},
+    {"id":"Q-0003","state":"OPEN","question":"Which parts of the legacy invocation implementation should be rebuilt, modified, or discarded after clean-slate reevaluation?","resolution_decision_id":null}
   ],
   "blockers": [
-    {
-      "id": "B-0001",
-      "state": "OPEN",
-      "condition": "Project Instructions do not yet require future threads to read and validate the continuity bundle.",
-      "clears_when": "VINCE_INSTALLS_CONTINUITY_PROJECT_INSTRUCTION"
-    }
+    {"id":"B-0001","state":"OPEN","condition":"Project Instructions do not yet require future threads to read and validate the continuity bundle.","clears_when":"VINCE_INSTALLS_CONTINUITY_PROJECT_INSTRUCTION"}
   ],
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T02:02:16Z",
+      "observed_at": "2026-09-12T02:11:13Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
       "ruleset_count": 0,
       "pull_request_count_observed": 0,
-      "note": "Repository was verified empty before continuity bootstrap began."
+      "bundle_file_count": 12,
+      "validated_bundle_head_sha": "e7402f294ec0001f04c18f753f80ae2bd39a2a81",
+      "continuity_workflow_run_id": 34666929796,
+      "continuity_workflow_conclusion": "success",
+      "note": "All required continuity files were present at the validated bundle head. Later continuity-sync commits may advance main without changing non-continuity work."
     },
     "supabase": {
       "status": "VERIFIED",
@@ -98,17 +67,8 @@
       "public_table_count": 0,
       "edge_function_count": 0
     },
-    "vercel": {
-      "status": "NOT_RUN",
-      "observed_at": null,
-      "target": null,
-      "reason": "No exact Life Vercel infrastructure target is authorized."
-    },
-    "canonical_invocation": {
-      "status": "NOT_RUN",
-      "observed_at": "2026-09-12T02:02:16Z",
-      "reason": "Authorized Supabase reads show zero deployed Edge Functions, so no deployed Life MCP endpoint and exact tool life.invoke are verified."
-    }
+    "vercel": {"status":"NOT_RUN","observed_at":null,"target":null,"reason":"No exact Life Vercel infrastructure target is authorized."},
+    "canonical_invocation": {"status":"NOT_RUN","observed_at":"2026-09-12T02:02:16Z","reason":"Authorized Supabase reads show zero deployed Edge Functions, so no deployed Life MCP endpoint and exact tool life.invoke are verified."}
   },
   "next_action": {
     "id": "A-0001",
