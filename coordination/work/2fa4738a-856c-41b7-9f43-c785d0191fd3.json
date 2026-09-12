@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_id": "2fa4738a-856c-41b7-9f43-c785d0191fd3",
+  "title": "Synchronize invocation database state and reevaluation",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"
+  },
+  "implementation_branch": "work/2fa4738a-856c-41b7-9f43-c785d0191fd3",
+  "base_sha": "0934c5e1ff4a6632afb93d86263e284920f3f8d7",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/context.md",
+    "continuity/current.json",
+    "continuity/decisions.jsonl",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "dac35be3-cfdf-4555-8a60-cfadcd5a6f70",
+      "generation": 5
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "46641c9c-51d2-4589-87aa-93a32dbc1da7",
+      "generation": 9
+    },
+    {
+      "resource_key": "repo-file:continuity/context.md",
+      "lock_branch": "lock/b54a87ae0c6695df543fd900938bab73cecc8c48f4a9bca7bda091ece106a073",
+      "lease_id": "91875159-5f80-4e22-88bc-7dccd6eee96f",
+      "generation": 5
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "90f9d644-ed8d-4366-94c4-89b16e269149",
+      "generation": 5
+    },
+    {
+      "resource_key": "repo-file:continuity/decisions.jsonl",
+      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
+      "lease_id": "5a42c168-c823-4402-830a-069c76dfbd79",
+      "generation": 5
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "56246037-ed4d-40f7-9374-2dd26105dd3b",
+      "generation": 3
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
