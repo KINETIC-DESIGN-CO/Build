@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_id": "1b678d59-f16b-4689-aebd-6cefee81f1c2",
+  "title": "Reconcile continuity and advance to watchdog",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "4cc916d2-6c84-4e59-8d48-5abd137fffce"
+  },
+  "implementation_branch": "work/1b678d59-f16b-4689-aebd-6cefee81f1c2",
+  "base_sha": "daf1ba47bbba7bb836e7fba54a87bba29d6a01d1",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "d114335f-0b6d-49a2-9e11-270182b3d192",
+      "generation": 7
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "85152a7b-5fc3-4314-a36b-993278ce22cd",
+      "generation": 17
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "a2ee9878-276b-4794-867b-b367e79b8c45",
+      "generation": 10
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
