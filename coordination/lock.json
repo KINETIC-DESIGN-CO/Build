@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:life_governance_policy_bundle",
   "generation": 4,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "b45a5dc7-0f21-4ef5-8d90-5a752c36a5e9",
   "worker": {
     "kind": "chatgpt",
