@@ -33,6 +33,12 @@
       "generation": 1
     },
     {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "e573cde4-a6d0-400a-a429-7e30955973d1",
+      "generation": 21
+    },
+    {
       "resource_key": "repo-file:continuity/bootstrap.json",
       "lock_branch": "lock/adb1a84970cd6bbc087153eb338011aafb8107b0a0ecfd96691e16905a0b49de",
       "lease_id": "bc7605e8-d9e7-4419-817c-aeb447e38edc",
