@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "manifest_revision": 12,
+  "manifest_revision": 13,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T08:51:42Z",
+  "updated_at": "2026-09-12T09:34:58Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
   "current_component": "build_repository_watchdog",
@@ -23,13 +23,8 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Integrate the permanent self-auditing Build Repository Watchdog against the current parallel-work coordination contract, verify it through protected CI, and create the exact hourly ChatGPT Scheduled task only after every versioned pre-install gate passes.",
+    "goal": "Create and read back the exact hourly America/Denver Build Repository Watchdog Scheduled task from the watchdog source now verified on main.",
     "completion_conditions": [
-      "WATCHDOG_SPEC_VERSIONED_ON_MAIN",
-      "WATCHDOG_FINDING_REGISTRY_VERSIONED_ON_MAIN",
-      "WATCHDOG_VALIDATOR_AND_FALSIFICATION_TESTS_PASS_PROTECTED_CI",
-      "WATCHDOG_SELF_AUDIT_COMPATIBILITY_MATCHES_CURRENT_CANONICAL_CONTRACTS",
-      "WATCHDOG_ISSUE_MUTATION_POLICY_IS_EXACTLY_VERSIONED_OR_REMAINS_DISABLED",
       "WATCHDOG_SCHEDULED_TASK_CREATED_HOURLY_AMERICA_DENVER",
       "WATCHDOG_SCHEDULED_TASK_READBACK_VERIFIED"
     ]
@@ -98,24 +93,24 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T08:51:42Z",
+      "observed_at": "2026-09-12T09:34:58Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "daf1ba47bbba7bb836e7fba54a87bba29d6a01d1",
+      "head_sha": "e6e8ad4d7cc5d5a12cb2399ca5c40c6d34e65c9d",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": true,
       "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34683460385,
+      "latest_continuity_workflow_run_id": 34686031274,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T08:51:42Z",
+      "observed_at": "2026-09-12T09:25:14Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
@@ -150,15 +145,15 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T08:51:42Z",
+      "observed_at": "2026-09-12T09:34:58Z",
       "reason": "No exact Life Vercel target or deployed Life MCP endpoint is authorized-system verified and the exact tool life.invoke is not verified live."
     }
   },
   "next_action": {
-    "id": "A-0008",
+    "id": "A-0009",
     "kind": "IMPLEMENT",
-    "target": "BUILD_REPOSITORY_WATCHDOG",
-    "description": "Reconcile the versioned watchdog source against the current source-coordination protocol, refresh its self-audit compatibility contract, pass protected CI, integrate it to main, and create the exact hourly America/Denver ChatGPT Scheduled task only if all pre-install gates pass.",
+    "target": "BUILD_REPOSITORY_WATCHDOG_SCHEDULED_TASK",
+    "description": "Create one hourly America/Denver ChatGPT Scheduled task using the exact executor prompt and schedule contract versioned in watchdog/spec.json on main, read the created task back, and record completion only when the returned task fields match that versioned contract.",
     "authorization_effect": "NONE"
   }
 }
