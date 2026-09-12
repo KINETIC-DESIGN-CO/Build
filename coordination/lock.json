@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:governance/placement-policy.json",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "36558251-8826-429d-a17d-e0b195084cd1",
+  "worker": {"kind": "chatgpt", "session_id": "9a1c20d6-b52f-4834-be50-35f18f97406d"},
+  "implementation_branch": "work/36558251-8826-429d-a17d-e0b195084cd1",
+  "lease_id": "1e55bd42-4dc5-446f-9164-392df2d7d5cd",
+  "base_sha": "807af80e9b2f87406e8031f16505aad9b1a77258",
+  "acquired_at": "2026-09-12T06:11:35Z",
+  "heartbeat_at": "2026-09-12T06:11:35Z",
+  "expires_at": "2026-09-12T10:11:35Z",
+  "runtime_control_authority": "NONE"
+}
