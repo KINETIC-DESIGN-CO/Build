@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_id": "a502772c-ed2f-4f77-9e7d-52a3212f29b4",
+  "title": "Synchronize watchdog source installation",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "build-watchdog-continuity-sync-20260912"
+  },
+  "implementation_branch": "work/a502772c-ed2f-4f77-9e7d-52a3212f29b4",
+  "base_sha": "e6e8ad4d7cc5d5a12cb2399ca5c40c6d34e65c9d",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "8ba9669c-ed97-4ba8-911c-4e9f715cbfd6",
+      "generation": 8
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "6f06405c-b4ef-4b7b-b977-60e9502b9d95",
+      "generation": 19
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "6b5b586a-8858-48bc-b535-950100b32f28",
+      "generation": 11
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "c831da56-1e25-4790-b975-49bfa95b37a2",
+      "generation": 9
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
