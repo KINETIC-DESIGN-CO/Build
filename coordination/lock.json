@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:continuity/context.md",
-  "generation": 8,
-  "state": "RELEASED",
-  "work_id": "7b1dc4ed-5f79-4ff6-a08a-20323a7f0142",
+  "generation": 9,
+  "state": "ACTIVE",
+  "work_id": "20594ada-caee-4e26-8cf5-178ef9fce9a8",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "2c0d2c4c-7b6a-4692-9f2e-857529778482"
+    "session_id": "5099e8b3-3d43-4ebb-8f49-ac5fccd1d90a"
   },
-  "implementation_branch": "work/7b1dc4ed-5f79-4ff6-a08a-20323a7f0142",
-  "lease_id": "36825eac-3e6a-4905-a45d-1788bbd8e3da",
-  "base_sha": "c11e85020e2520fe33c39374cea3876b52969d5f",
-  "acquired_at": "2026-09-12T08:08:42Z",
-  "heartbeat_at": "2026-09-12T08:08:42Z",
-  "expires_at": "2026-09-12T12:08:42Z",
+  "implementation_branch": "work/20594ada-caee-4e26-8cf5-178ef9fce9a8",
+  "lease_id": "48041dd2-9607-4ea4-8776-69a50ab83374",
+  "base_sha": "6fe494a235fc78d3db809500f9fb8c94d9e0e72c",
+  "acquired_at": "2026-09-12T10:57:01Z",
+  "heartbeat_at": "2026-09-12T10:57:01Z",
+  "expires_at": "2026-09-12T14:57:01Z",
   "runtime_control_authority": "NONE"
 }
