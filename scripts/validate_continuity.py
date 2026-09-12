@@ -434,7 +434,7 @@ def validate_bootstrap(b):
     repo = b.get("canonical_repository")
     if repo != {
         "repository_id": 1366835183,
-        "full_name": "Vinanonymous/Build",
+        "full_name": "KINETIC-DESIGN-CO/Build",
         "default_branch": "main",
     }:
         fail("C003_TARGET", "bootstrap canonical_repository mismatch")
@@ -524,7 +524,7 @@ def validate_current(c, decision_by_id):
     sb = targets.get("supabase", {}) if isinstance(targets, dict) else {}
     if gh != {
         "repository_id": 1366835183,
-        "full_name": "Vinanonymous/Build",
+        "full_name": "KINETIC-DESIGN-CO/Build",
         "visibility": "public",
         "default_branch": "main",
     }:
