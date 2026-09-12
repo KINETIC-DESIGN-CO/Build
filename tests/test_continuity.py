@@ -211,7 +211,7 @@ class ContinuityTests(unittest.TestCase):
             self.write_json(p, obj)
             result = self.run_validator(dst)
             self.assert_schema_rejected(result)
-            self.assertIn("items must be unique", result.stderr)
+            self.assertIn("required const", result.stderr)
         finally:
             td.cleanup()
 
@@ -252,6 +252,60 @@ class ContinuityTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("C011_SCHEMA_DEFINITION", result.stderr)
             self.assertIn("unsupported keywords", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_response_contract_schema_rejects_required_section_drift(self):
+        td, dst = self.copy_repo()
+        try:
+            p = dst / "continuity/response-contract.json"
+            obj = json.loads(p.read_text())
+            obj["required_sections"][-1] = "WRONG_SECTION"
+            self.write_json(p, obj)
+            result = self.run_validator(dst)
+            self.assert_schema_rejected(result)
+            self.assertIn("required const", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_governance_schema_rejects_routing_precedence_drift(self):
+        td, dst = self.copy_repo()
+        try:
+            p = dst / "governance/placement-policy.json"
+            obj = json.loads(p.read_text())
+            obj["routing_precedence"][0] = "WRONG_DESTINATION"
+            self.write_json(p, obj)
+            result = self.run_validator(dst)
+            self.assert_schema_rejected(result)
+            self.assertIn("required const", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_governance_schema_rejects_destination_key_drift(self):
+        td, dst = self.copy_repo()
+        try:
+            p = dst / "governance/placement-policy.json"
+            obj = json.loads(p.read_text())
+            obj["destinations"]["WRONG_DESTINATION"] = obj["destinations"].pop(
+                "EXECUTABLE_CONTROL"
+            )
+            self.write_json(p, obj)
+            result = self.run_validator(dst)
+            self.assert_schema_rejected(result)
+            self.assertIn("required const", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_governance_schema_rejects_destination_nested_drift(self):
+        td, dst = self.copy_repo()
+        try:
+            p = dst / "governance/placement-policy.json"
+            obj = json.loads(p.read_text())
+            obj["destinations"]["EXECUTABLE_CONTROL"]["canonical_owner"] = "WRONG"
+            self.write_json(p, obj)
+            result = self.run_validator(dst)
+            self.assert_schema_rejected(result)
+            self.assertIn("required const", result.stderr)
         finally:
             td.cleanup()
 
