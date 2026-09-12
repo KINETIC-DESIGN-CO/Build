@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:governance/ci-dependency-policy.json",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "03026c62-2249-4385-819b-4f3e95c2848a",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "acc10adb-4559-4ec7-abd4-4272c65d3c67"
+  },
+  "implementation_branch": "work/03026c62-2249-4385-819b-4f3e95c2848a",
+  "lease_id": "4a2f15f7-c9ab-4fc2-bb05-f4236fae5199",
+  "base_sha": "2d67cacdfe8c725970a5da4bdaa739404cc44f89",
+  "acquired_at": "2026-09-12T20:10:02Z",
+  "heartbeat_at": "2026-09-12T20:10:02Z",
+  "expires_at": "2026-09-13T00:10:02Z",
+  "runtime_control_authority": "NONE"
+}
