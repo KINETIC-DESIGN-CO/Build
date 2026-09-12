@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:architecture/audits/supabase-architecture-migration-audit-2026-09-12-addendum.md",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "e5d15f24-6814-4b63-9352-95af6752fefb",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "f919d16c-ce99-462c-81e0-7deb9306bc5c"
+  },
+  "implementation_branch": "work/e5d15f24-6814-4b63-9352-95af6752fefb",
+  "lease_id": "e1fccad6-d8d5-4eb8-a488-a1485349fd61",
+  "base_sha": "107156b6660aeeb88fea0c036d84e694b9860e80",
+  "acquired_at": "2026-09-12T11:49:30Z",
+  "heartbeat_at": "2026-09-12T11:49:30Z",
+  "expires_at": "2026-09-12T15:49:30Z",
+  "runtime_control_authority": "NONE"
+}
