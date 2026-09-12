@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:continuity/decisions.jsonl",
-  "generation": 2,
-  "state": "RELEASED",
-  "work_id": "d18f66a2-25f7-493c-8828-886dcd774fa1",
+  "generation": 3,
+  "state": "ACTIVE",
+  "work_id": "5bfd4f7e-ff45-4359-b15c-b3c957dfd3db",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "075c447d-996a-4724-a91b-14007d1a4827"
+    "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"
   },
-  "implementation_branch": "work/d18f66a2-25f7-493c-8828-886dcd774fa1",
-  "lease_id": "f5f6abd3-c2f0-4168-bf95-b54555009f64",
-  "base_sha": "5d69173f8a3a46a0d8c161ca089e7295ea08fcbf",
-  "acquired_at": "2026-09-12T04:10:52Z",
-  "heartbeat_at": "2026-09-12T04:10:52Z",
-  "expires_at": "2026-09-12T08:10:52Z",
+  "implementation_branch": "work/5bfd4f7e-ff45-4359-b15c-b3c957dfd3db",
+  "lease_id": "47a6e7c9-ba01-4c42-b59a-2d491ce7b3af",
+  "base_sha": "0934c5e1ff4a6632afb93d86263e284920f3f8d7",
+  "acquired_at": "2026-09-12T04:57:54Z",
+  "heartbeat_at": "2026-09-12T04:57:54Z",
+  "expires_at": "2026-09-12T08:57:54Z",
   "runtime_control_authority": "NONE"
 }
