@@ -2,9 +2,12 @@
   "schema_version": 1,
   "resource_key": "repo-file:scripts/validate_coordination.py",
   "generation": 3,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "9f8d2f55-23c2-4b87-9bba-726f7f4b6868",
-  "worker": {"kind": "chatgpt", "session_id": "bfb40184-68cc-430b-8767-94ff191a296e"},
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "bfb40184-68cc-430b-8767-94ff191a296e"
+  },
   "implementation_branch": "work/9f8d2f55-23c2-4b87-9bba-726f7f4b6868",
   "lease_id": "f681a0c6-616e-4fcb-bc03-ca89c3ebf2c4",
   "base_sha": "807af80e9b2f87406e8031f16505aad9b1a77258",
