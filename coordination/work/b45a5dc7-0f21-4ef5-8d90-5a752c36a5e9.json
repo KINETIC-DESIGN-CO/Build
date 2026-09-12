@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_id": "b45a5dc7-0f21-4ef5-8d90-5a752c36a5e9",
+  "title": "Harden Life governance schemas after PR 14 review",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "92b9cce9-5db7-4e6f-bf81-6b9052899e3f"
+  },
+  "implementation_branch": "work/b45a5dc7-0f21-4ef5-8d90-5a752c36a5e9",
+  "base_sha": "43de56f2894a4d7c53e37cc957a9a27babb17a6f",
+  "component_id": "life_governance_policy_bundle",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/events.jsonl",
+    "continuity/schema/response-contract.schema.json",
+    "governance/schema/placement-policy.schema.json",
+    "tests/test_continuity.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:life_governance_policy_bundle",
+      "lock_branch": "lock/f0de5dd243c49c43cbdc751e4879a3b5ff74295b968450028140d2c2d531e5d3",
+      "lease_id": "21f26dd4-1a63-4559-9f16-12150a9f90dd",
+      "generation": 4
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "90f39fab-885b-4435-850b-f7862cfd520e",
+      "generation": 15
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "ecea8a29-6601-4717-a662-b9a0b94cf997",
+      "generation": 7
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "9dec3df2-976d-4aef-969f-2e86cbeb2343",
+      "generation": 5
+    },
+    {
+      "resource_key": "repo-file:continuity/schema/response-contract.schema.json",
+      "lock_branch": "lock/283ac8c70c3b085b41687e7a54c4f7982a308ae7a8776724c57227f12d338fc9",
+      "lease_id": "305cdf40-9f3f-41f3-ac35-13c187fc3aad",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:governance/schema/placement-policy.schema.json",
+      "lock_branch": "lock/67e257f04b5e099f9642aa35343e9f7370b056693ba949e16ae41eede186c453",
+      "lease_id": "e658943b-726d-4be7-909c-be9a125ce1fd",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:tests/test_continuity.py",
+      "lock_branch": "lock/64bf054ef760683d2a8577dbf8970e81aaba5e4f7b24c4c32aa9760493cc1017",
+      "lease_id": "de579c76-628a-410b-a837-8ba01202dc7c",
+      "generation": 5
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
