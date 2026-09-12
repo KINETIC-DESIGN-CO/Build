@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "component:canonical_invocation_database_source",
+  "generation": 1,
+  "state": "RELEASED",
+  "work_id": "f1098ae7-a66a-41c0-9125-dd2afa14f214",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"
+  },
+  "implementation_branch": "work/f1098ae7-a66a-41c0-9125-dd2afa14f214",
+  "lease_id": "8187a4cf-90e1-4349-b17e-bc42f51c9725",
+  "base_sha": "18da7242120b84af4b61a93f3be8d2b6dff50bfb",
+  "acquired_at": "2026-09-12T04:26:23Z",
+  "heartbeat_at": "2026-09-12T04:26:23Z",
+  "expires_at": "2026-09-12T08:26:23Z",
+  "runtime_control_authority": "NONE"
+}
