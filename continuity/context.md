@@ -46,7 +46,7 @@ Decision `D-0015` selects a combined architecture:
 - **Vercel Functions**: remote Streamable HTTP MCP transport and OAuth resource-server boundary;
 - **Supabase Auth**: OAuth 2.1 authorization server and identity provider;
 - **Supabase Postgres** in project `jnenguxodtgwbskhdsxt`: exact append-only invocation ledger;
-- **GitHub `Vinanonymous/Build`**: source, tests, CI, engineering history, and source coordination only;
+- **GitHub `KINETIC-DESIGN-CO/Build`**: source, tests, CI, engineering history, and source coordination only;
 - embeddings/vector retrieval: outside canonical invocation v1.
 
 The Vercel host class is selected, but no exact Life Vercel project is authorized. Vercel deployment remains `NOT_RUN` until Vince authorizes an exact target.
@@ -234,7 +234,7 @@ No retrieval score, model confidence, prose label, approval, comment, review, or
 
 ### GitHub
 
-Authorized Build/Engineering repository: `Vinanonymous/Build`
+Authorized Build/Engineering repository: `KINETIC-DESIGN-CO/Build`
 Repository ID: `1366835183`
 Visibility: public
 Default branch: `main`

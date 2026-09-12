@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_id": "01e1a66f-3474-4274-9e86-9a9074202df6",
+  "title": "Synchronize organization repository identity",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "6f63f5f4-c8cc-49a1-a3a4-689f75682c0a"
+  },
+  "implementation_branch": "work/01e1a66f-3474-4274-9e86-9a9074202df6",
+  "base_sha": "2d67cacdfe8c725970a5da4bdaa739404cc44f89",
+  "component_id": "repository_identity_sync",
+  "repo_paths": [
+    "continuity/bootstrap.json",
+    "continuity/context.md",
+    "continuity/current.json",
+    "scripts/validate_continuity.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:repository_identity_sync",
+      "lock_branch": "lock/5a518a7004da7f30a282c8c4533fcbd7420873c85b032ac934cab7df6b675406",
+      "lease_id": "b4eb42e0-df08-4cda-b5ab-debdf3d4d570",
+      "generation": 1
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "e5645ac9-da2b-4b1a-9725-853124953e12",
+      "generation": 8
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "054c297b-7939-44dc-a2e0-da825e5ce8cd",
+      "generation": 31
+    },
+    {
+      "resource_key": "repo-file:continuity/bootstrap.json",
+      "lock_branch": "lock/adb1a84970cd6bbc087153eb338011aafb8107b0a0ecfd96691e16905a0b49de",
+      "lease_id": "140b69ae-0f0a-43f8-8ea0-b988a5f78033",
+      "generation": 7
+    },
+    {
+      "resource_key": "repo-file:continuity/context.md",
+      "lock_branch": "lock/b54a87ae0c6695df543fd900938bab73cecc8c48f4a9bca7bda091ece106a073",
+      "lease_id": "9b9764ad-3769-4e9d-8dc8-64b61e409c11",
+      "generation": 14
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "fe5c932b-0aa2-4d32-a150-3bb61f1557d4",
+      "generation": 20
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_continuity.py",
+      "lock_branch": "lock/c3ba09fe16c3d5cbac4245dda1c8fa038874176e688f6addbd52e0e31d2acc8b",
+      "lease_id": "60eda64b-38c8-43e7-b702-136adaac2f19",
+      "generation": 6
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
