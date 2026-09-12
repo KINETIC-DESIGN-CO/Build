@@ -26,6 +26,12 @@
       "generation": 1
     },
     {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "66b3cb40-a666-4abf-aa41-14c51d805236",
+      "generation": 26
+    },
+    {
       "resource_key": "repo-file:governance/schema/work-admissions.schema.json",
       "lock_branch": "lock/373ea5ae4d9fd0f1c20b0f5b8c3f447cbae9323a76e54966a9984c2a0f70446c",
       "lease_id": "097bcaf3-da66-475b-b7b4-6e42ed11ca04",
