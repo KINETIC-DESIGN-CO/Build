@@ -16,6 +16,7 @@
     "continuity/schema/bootstrap.schema.json",
     "continuity/schema/current.schema.json",
     "scripts/validate_continuity.py",
+    "scripts/validate_watchdog.py",
     "watchdog/spec.json"
   ],
   "external_targets": [],
@@ -73,6 +74,12 @@
       "lock_branch": "lock/c3ba09fe16c3d5cbac4245dda1c8fa038874176e688f6addbd52e0e31d2acc8b",
       "lease_id": "60eda64b-38c8-43e7-b702-136adaac2f19",
       "generation": 6
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_watchdog.py",
+      "lock_branch": "lock/2b611dd1065265c31260d008e979f3e22858ab81c44cd2a284d0eb244e139cd0",
+      "lease_id": "225fff16-1109-4abe-a128-60e4f2975362",
+      "generation": 3
     },
     {
       "resource_key": "repo-file:watchdog/spec.json",
