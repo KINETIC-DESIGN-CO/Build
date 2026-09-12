@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:source_coordination_parallel_resource_gating",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "7b1dc4ed-5f79-4ff6-a08a-20323a7f0142",
   "worker": {
     "kind": "chatgpt",
