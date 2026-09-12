@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "work_id": "49487439-0d45-4f8c-abab-bdb2a770bff1",
+  "title": "Define Issue 21 user-observation provenance",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "0a48db51-6d14-4530-b533-1fa0034f31c7"
+  },
+  "implementation_branch": "work/49487439-0d45-4f8c-abab-bdb2a770bff1",
+  "base_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
+  "component_id": "issue_21",
+  "repo_paths": [
+    "governance/user-observation-policy.json",
+    "scripts/evaluate_user_observation.py",
+    "tests/test_user_observation.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_21",
+      "lock_branch": "lock/3193a55f9456d3ece2a30033010c4f6116751aad61410c06945be459de3227eb",
+      "lease_id": "49cad60a-c0c5-435c-b509-3218e34c4876",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:governance/user-observation-policy.json",
+      "lock_branch": "lock/bfac932c2a11bca3626b5f3e859b0f6ff8b6d2fd4e4f93c5f240e244e53d9231",
+      "lease_id": "f4833b4d-db00-40bd-af7b-3e5ebbc75304",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:scripts/evaluate_user_observation.py",
+      "lock_branch": "lock/6bc7a3677aab7ee7111c9e69a61eda4ad002361009c9f0bbe9140147c040bd93",
+      "lease_id": "eda2fc29-cc90-412d-8cc7-03bff0dc7d97",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:tests/test_user_observation.py",
+      "lock_branch": "lock/b2ad93176cc633fec4537bcb0c45096b063fabbbec22f316119796fd8965df04",
+      "lease_id": "a3bd9c82-9d1e-4c00-8625-986d04110404",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
