@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:tests/test_life_invoke_contract.py",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "3b20ea31-bea9-4fa3-96ed-8c3da22c9af8",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "44ea1892-1766-46dc-af1b-88660450929a"
+  },
+  "implementation_branch": "work/3b20ea31-bea9-4fa3-96ed-8c3da22c9af8",
+  "lease_id": "2cbdaf3b-ea4d-4c70-80bb-785d64206b78",
+  "base_sha": "e65871200f7c0a8b965543e76111d1332ba2a4ff",
+  "acquired_at": "2026-09-12T03:59:38Z",
+  "heartbeat_at": "2026-09-12T03:59:38Z",
+  "expires_at": "2026-09-12T07:59:38Z",
+  "runtime_control_authority": "NONE"
+}
