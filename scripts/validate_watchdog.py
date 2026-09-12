@@ -25,8 +25,8 @@ EXPECTED_SOURCE_CONTRACT_PATHS = {
 }
 EXPECTED_EXECUTOR_PROMPT = (
     "Run one Build Repository Watchdog cycle using embedded executor contract "
-    "build-watchdog-executor-v1 and schedule contract build-watchdog-hourly-denver-v1. "
-    "Read current main in Vinanonymous/Build and load watchdog/spec.json and "
+    "build-watchdog-executor-v2 and schedule contract build-watchdog-hourly-denver-v1. "
+    "Read current main in KINETIC-DESIGN-CO/Build and load watchdog/spec.json and "
     "watchdog/finding-registry.json; do not use cached copies. Execute only the behaviors "
     "permitted by those current versioned sources. Perform the self-audit defined there "
     "before finding classification. Never alter this task prompt, schedule, authority, or "
@@ -81,7 +81,7 @@ def validate_spec(spec):
     expect(spec.get("runtime_control_authority") == "NONE", "spec:runtime-authority")
     expect(spec.get("source_control_authority") == "NONE", "spec:source-authority")
     repo = spec.get("authorized_repository", {})
-    expect(repo == {"repository_id":1366835183,"full_name":"Vinanonymous/Build","default_branch":"main"}, "spec:repository")
+    expect(repo == {"repository_id":1366835183,"full_name":"KINETIC-DESIGN-CO/Build","default_branch":"main"}, "spec:repository")
     ext = spec.get("authorized_external_targets", {})
     expect(ext.get("supabase_project_id") == "jnenguxodtgwbskhdsxt", "spec:supabase-target")
     expect(ext.get("vercel_target_source") == "continuity/current.json.authorized_targets.vercel", "spec:vercel-source")
@@ -107,7 +107,7 @@ def validate_spec(spec):
     sa = spec.get("self_audit", {})
     expect(sa.get("lightweight_frequency") == "EVERY_RUN", "spec:self-lightweight")
     expect(sa.get("capability_reevaluation_frequency") == "DEEP_AUDIT_ONLY", "spec:self-capability-frequency")
-    expect(sa.get("executor_contract_id") == "build-watchdog-executor-v1", "spec:executor-contract")
+    expect(sa.get("executor_contract_id") == "build-watchdog-executor-v2", "spec:executor-contract")
     expect(sa.get("schedule_contract_id") == schedule.get("schedule_contract_id"), "spec:self-schedule-contract")
     expect(sa.get("executor_prompt_template") == EXPECTED_EXECUTOR_PROMPT, "spec:executor-prompt")
     expect(sa.get("executor_contract_change_rule") == "BUMP_EXECUTOR_CONTRACT_ID_IF_AND_ONLY_IF_EXECUTOR_PROMPT_TEMPLATE_CHANGES", "spec:executor-change-rule")
