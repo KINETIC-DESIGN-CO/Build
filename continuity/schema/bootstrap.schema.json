@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Vinanonymous/Build/blob/main/continuity/schema/bootstrap.schema.json",
+  "title": "Life Continuity Bootstrap",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","project_id","runtime_control_authority","bundle_version","canonical_repository","required_files","required_read_order","resume_algorithm","continuity_update_event_types","continuity_sync_paths","continuity_sync_rule","validation_command"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "project_id": {"const": "life"},
+    "runtime_control_authority": {"const": "NONE"},
+    "bundle_version": {"type": "integer", "minimum": 1},
+    "canonical_repository": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository_id","full_name","default_branch"],
+      "properties": {
+        "repository_id": {"const": 1366835183},
+        "full_name": {"const": "Vinanonymous/Build"},
+        "default_branch": {"const": "main"}
+      }
+    },
+    "required_files": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "required_read_order": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "resume_algorithm": {"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["READ_REQUIRED_FILES","VALIDATE_BUNDLE","READ_CURRENT_THREAD","RUN_REQUIRED_FRESH_RESEARCH","READ_AUTHORIZED_SYSTEMS","VERIFY_REFERENCED_LIVE_OBJECTS","MARK_STALE_OR_MISMATCHED_STATE_NOT_RUN","APPLY_LATER_VINCE_CORRECTIONS","CONTINUE_FROM_NEXT_ACTION"]}},
+    "continuity_update_event_types": {"type":"array","minItems":10,"uniqueItems":true,"items":{"enum":["VINCE_DIRECTIVE","ARCHITECTURE_DECISION","GITHUB_MUTATION","SUPABASE_MUTATION","VERCEL_MUTATION","PROJECT_INSTRUCTION_CHANGE","VERIFICATION_TRANSITION","BLOCKER_TRANSITION","NEXT_ACTION_CHANGE","COMPONENT_TRANSITION"]}},
+    "continuity_sync_paths": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "continuity_sync_rule": {"type":"string","minLength":1},
+    "validation_command": {"type":"string","minLength":1}
+  }
+}
