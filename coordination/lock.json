@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:scripts/evaluate_user_observation.py",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "9b6aa68c-30b6-47dc-97a6-de061d96b91c",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "f1acc080-34a8-4c62-ba76-5fa6bba24793"
+  },
+  "implementation_branch": "work/9b6aa68c-30b6-47dc-97a6-de061d96b91c",
+  "lease_id": "3aefbbf5-3a3f-48d7-8be0-90e192a7dce2",
+  "base_sha": "2d67cacdfe8c725970a5da4bdaa739404cc44f89",
+  "acquired_at": "2026-09-12T20:18:14Z",
+  "heartbeat_at": "2026-09-12T20:18:14Z",
+  "expires_at": "2026-09-13T00:18:14Z",
+  "runtime_control_authority": "NONE"
+}
