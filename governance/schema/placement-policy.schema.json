@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Governance Placement Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_id",
+    "runtime_control_authority",
+    "purpose",
+    "input_states",
+    "pre_mutation_issue_review",
+    "routing_algorithm",
+    "routing_precedence",
+    "control_decision_kinds",
+    "destinations",
+    "canonical_owner_rule",
+    "proposal_rule",
+    "unrouted_rule",
+    "project_instruction_change_rule",
+    "runtime_control_rule",
+    "migration_candidates",
+    "project_instruction_root_blocks"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "policy_id": {
+      "const": "life-governance-placement-v1"
+    },
+    "runtime_control_authority": {
+      "const": "NONE"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_states": {
+      "type": "array",
+      "minItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "pre_mutation_issue_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trigger",
+        "source",
+        "required_steps",
+        "issue_effect"
+      ],
+      "properties": {
+        "trigger": {
+          "const": "BEFORE_STARTING_OR_RESUMING_MUTABLE_LIFE_REPOSITORY_WORK"
+        },
+        "source": {
+          "const": "ALL_OPEN_ISSUES_IN_AUTHORIZED_GITHUB_REPOSITORY"
+        },
+        "required_steps": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "issue_effect": {
+          "const": "EVIDENCE_ONLY_NEVER_AUTHORIZATION_LOCK_CLAIM_COMPLETION_RELEASE_OR_MERGE_GATE"
+        }
+      }
+    },
+    "routing_algorithm": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "routing_precedence": {
+      "type": "array",
+      "minItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "control_decision_kinds": {
+      "type": "array",
+      "minItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "destinations": {
+      "type": "object",
+      "minProperties": 10
+    },
+    "canonical_owner_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposal_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unrouted_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_instruction_change_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtime_control_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "migration_candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object"
+      }
+    },
+    "project_instruction_root_blocks": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

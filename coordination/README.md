@@ -10,6 +10,8 @@ Each mutable work item gets one UUIDv4 `work_id` and one branch named exactly `w
 
 Creating the empty work branch from current `main`, creating/updating/releasing lock branches, and creating/updating the work record are coordination operations. They do not require a pre-existing claim for the coordination object they create. Implementation repository-content changes and connected-app mutations do require all affected claims first.
 
+`worker.session_id` is an audit label only. It may repeat across separate work items and does not identify the owner of a claim. Claim ownership is determined by the exact `resource_key`, `work_id`, `lease_id`, and `generation` recorded in live GitHub machine state.
+
 ## Resource claims
 
 A work item must hold an ACTIVE, unexpired claim for every implementation resource it can mutate. Resource keys are acquired in ascending UTF-8 order.
@@ -26,6 +28,8 @@ A resource's lock branch is deterministic:
 `lock/` + lowercase SHA-256 hex digest of the UTF-8 resource key.
 
 The branch contains `coordination/lock.json`, validated by `coordination/schema/lock.schema.json`. GitHub's file-SHA update semantics provide optimistic compare-and-swap behavior: competing claim updates based on the same prior lock version cannot both succeed.
+
+If a lock update fails because the live file changed, the worker must read the live lock again before any retry or new acquisition attempt for that resource. A stale compare-and-swap result is never retried from the stale snapshot.
 
 Claims last exactly 14,400 seconds. Renew a claim when it has 1,800 seconds or less remaining. A takeover is eligible only when current UTC is greater than or equal to `expires_at`; takeover increments `generation` by exactly one. Release sets `state` to `RELEASED` and preserves the last owner for audit. A later acquisition from `RELEASED` increments `generation` by exactly one and receives a new `work_id`, `lease_id`, base SHA, and lease timestamps.
 
@@ -47,7 +51,9 @@ This distinction allows actual parallel work without creating an infinite sequen
 
 ## Visibility
 
-A GitHub Issue may be created for a work item so Vince and other agents can see what is happening. The Issue is not a lock, authorization record, completion record, or merge gate.
+A GitHub Issue may be created for a work item so Vince and other agents can see what is happening. The Issue is not a lock, authorization record, completion record, release record, or merge gate.
+
+The bootstrap-required governance placement policy requires all open Issues in the authorized repository to be read before mutable Life repository work starts or resumes. That review is an evidence-discovery procedure only: every Issue is reevaluated against verified state, and Issue content cannot authorize a mutation or override an active claim.
 
 ## Supabase
 

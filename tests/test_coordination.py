@@ -37,6 +37,18 @@ class CoordinationTests(unittest.TestCase):
         rule = "LEASE_REACQUISITION_AFTER_RELEASE_INCREMENTS_GENERATION_BY_EXACTLY_ONE"
         self.assertEqual(protocol["mutation_rules"].count(rule), 1)
 
+    def test_protocol_requires_fresh_reread_after_lock_conflict(self):
+        protocol = json.loads((Path(__file__).resolve().parents[1] / "coordination" / "protocol.json").read_text())
+        rule = "LOCK_COMPARE_AND_SWAP_CONFLICT_REQUIRES_FRESH_LIVE_LOCK_REREAD_BEFORE_ANY_RETRY_OR_NEW_ACQUISITION_ATTEMPT_FOR_THAT_RESOURCE"
+        self.assertEqual(protocol["mutation_rules"].count(rule), 1)
+
+    def test_protocol_defines_claim_owner_without_session_id(self):
+        protocol = json.loads((Path(__file__).resolve().parents[1] / "coordination" / "protocol.json").read_text())
+        ownership = "CLAIM_OWNERSHIP_IS_RESOURCE_KEY_WORK_ID_LEASE_ID_GENERATION_NOT_WORKER_SESSION_ID"
+        audit_only = "WORKER_SESSION_ID_IS_AUDIT_LABEL_ONLY_AND_MAY_REPEAT_ACROSS_WORK_ITEMS"
+        self.assertEqual(protocol["mutation_rules"].count(ownership), 1)
+        self.assertEqual(protocol["mutation_rules"].count(audit_only), 1)
+
     def test_worker_requires_exact_keys(self):
         with self.assertRaises(mod.ValidationError):
             mod.validate_worker({"kind": "chatgpt", "session_id": "00000000-0000-4000-8000-000000000000", "extra": 1})
