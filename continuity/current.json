@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "manifest_revision": 4,
+  "manifest_revision": 5,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T02:46:00Z",
+  "updated_at": "2026-09-12T02:50:04Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "DESIGN",
   "current_component": "canonical_invocation_architecture",
@@ -88,7 +88,7 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T02:46:00Z",
+      "observed_at": "2026-09-12T02:50:04Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
@@ -104,7 +104,7 @@
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T02:46:00Z",
+      "observed_at": "2026-09-12T02:50:04Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
@@ -121,7 +121,7 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T02:46:00Z",
+      "observed_at": "2026-09-12T02:50:04Z",
       "reason": "Authorized Supabase reads show zero deployed Edge Functions and no life.invoke database function, so no deployed Life MCP endpoint and exact tool life.invoke are verified."
     }
   },
