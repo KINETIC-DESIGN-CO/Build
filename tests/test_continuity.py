@@ -37,7 +37,7 @@ class ContinuityTests(unittest.TestCase):
 
     def test_bootstrap_loads_governance_before_current_state(self):
         bootstrap = json.loads((ROOT / "continuity/bootstrap.json").read_text())
-        self.assertEqual(bootstrap["bundle_version"], 2)
+        self.assertEqual(bootstrap["bundle_version"], 3)
         self.assertEqual(
             bootstrap["required_read_order"][:4],
             [
@@ -47,11 +47,27 @@ class ContinuityTests(unittest.TestCase):
                 "continuity/current.json",
             ],
         )
+        self.assertEqual(
+            bootstrap["required_read_order"][4],
+            "governance/work-selection-policy.json",
+        )
+        self.assertEqual(
+            bootstrap["resume_algorithm"][-2:],
+            ["EVALUATE_WORK_SELECTION", "CONTINUE_FROM_NEXT_ACTION"],
+        )
+        self.assertIn(
+            "python scripts/select_work.py --validate-policy",
+            bootstrap["validation_command"],
+        )
         for required in (
             "governance/placement-policy.json",
             "continuity/response-contract.json",
             "governance/schema/placement-policy.schema.json",
             "continuity/schema/response-contract.schema.json",
+            "governance/work-selection-policy.json",
+            "governance/schema/work-selection-policy.schema.json",
+            "scripts/select_work.py",
+            "tests/test_work_selection.py",
         ):
             self.assertIn(required, bootstrap["required_files"])
 
