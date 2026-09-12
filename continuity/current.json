@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "manifest_revision": 10,
+  "manifest_revision": 11,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T05:57:57Z",
+  "updated_at": "2026-09-12T07:51:25Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
   "current_component": "life_governance_policy_bundle",
@@ -23,7 +23,7 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Install and validate the permanent governance placement router, response contract, and source-coordination hardening without changing Project Instructions or Life runtime control authority.",
+    "goal": "Complete A-0007 by validating the permanent governance placement router, response contract, source-coordination identity semantics, claim-conflict reread rule, and exact governance schema constraints without changing Project Instructions or Life runtime control authority.",
     "completion_conditions": [
       "GOVERNANCE_PLACEMENT_POLICY_VERSIONED",
       "RESPONSE_CONTRACT_VERSIONED",
@@ -97,24 +97,24 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T05:57:57Z",
+      "observed_at": "2026-09-12T07:51:25Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "d4173ac0d8e6808d5023fc51e770a4540d10456f",
+      "head_sha": "43de56f2894a4d7c53e37cc957a9a27babb17a6f",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": true,
       "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34676104963,
+      "latest_continuity_workflow_run_id": 34680169138,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T05:57:57Z",
+      "observed_at": "2026-09-12T07:51:25Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
@@ -146,7 +146,7 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T05:57:57Z",
+      "observed_at": "2026-09-12T07:51:25Z",
       "reason": "Authorized Supabase reads verify the database alignment, but no exact Life Vercel target or deployed Life MCP endpoint is authorized-system verified and the exact tool life.invoke is not verified live."
     }
   },
@@ -154,7 +154,7 @@
     "id": "A-0007",
     "kind": "IMPLEMENT",
     "target": "LIFE_GOVERNANCE_POLICY_BUNDLE",
-    "description": "Version and validate a permanent governance placement router and response contract, load both through continuity/bootstrap.json, and harden source-coordination identity and claim-conflict reread semantics without changing Project Instructions or Life runtime control authority.",
+    "description": "Finish validation and integration of the governance placement router, response contract, source-coordination identity and compare-and-swap reread semantics, including exact schema enforcement, before starting the separately claimed resource-intersection coordination correction.",
     "authorization_effect": "NONE"
   }
 }
