@@ -32,15 +32,50 @@
       "PROJECT_INSTRUCTION_POINTER_PENDING_USER_INSTALLATION"
     ]
   },
-  "active_decision_ids": ["D-0001","D-0002","D-0003","D-0004","D-0005","D-0006","D-0007","D-0008","D-0009","D-0010"],
-  "retired_decision_ids": ["D-0101","D-0102","D-0103"],
+  "active_decision_ids": [
+    "D-0001",
+    "D-0002",
+    "D-0003",
+    "D-0004",
+    "D-0005",
+    "D-0006",
+    "D-0007",
+    "D-0008",
+    "D-0009",
+    "D-0010"
+  ],
+  "retired_decision_ids": [
+    "D-0101",
+    "D-0102",
+    "D-0103"
+  ],
   "open_questions": [
-    {"id":"Q-0001","state":"OPEN","question":"Which permanent runtime host should expose the canonical Life MCP endpoint after fresh clean-slate comparison: Supabase Edge Functions, Vercel Functions, or another authorized mechanism?","resolution_decision_id":null},
-    {"id":"Q-0002","state":"OPEN","question":"Which exact deterministic runtime control implementation should satisfy CONTROL AUTHORITY for the ten enumerated decision kinds?","resolution_decision_id":null},
-    {"id":"Q-0003","state":"OPEN","question":"Which parts of the legacy invocation implementation should be rebuilt, modified, or discarded after clean-slate reevaluation?","resolution_decision_id":null}
+    {
+      "id": "Q-0001",
+      "state": "OPEN",
+      "question": "Which permanent runtime host should expose the canonical Life MCP endpoint after fresh clean-slate comparison: Supabase Edge Functions, Vercel Functions, or another authorized mechanism?",
+      "resolution_decision_id": null
+    },
+    {
+      "id": "Q-0002",
+      "state": "OPEN",
+      "question": "Which exact deterministic runtime control implementation should satisfy CONTROL AUTHORITY for the ten enumerated decision kinds?",
+      "resolution_decision_id": null
+    },
+    {
+      "id": "Q-0003",
+      "state": "OPEN",
+      "question": "Which parts of the legacy invocation implementation should be rebuilt, modified, or discarded after clean-slate reevaluation?",
+      "resolution_decision_id": null
+    }
   ],
   "blockers": [
-    {"id":"B-0001","state":"OPEN","condition":"Project Instructions do not yet require future threads to read and validate the continuity bundle.","clears_when":"VINCE_INSTALLS_CONTINUITY_PROJECT_INSTRUCTION"}
+    {
+      "id": "B-0001",
+      "state": "OPEN",
+      "condition": "Project Instructions do not yet require future threads to read and validate the continuity bundle.",
+      "clears_when": "VINCE_INSTALLS_CONTINUITY_PROJECT_INSTRUCTION"
+    }
   ],
   "last_observed": {
     "github": {
@@ -67,8 +102,17 @@
       "public_table_count": 0,
       "edge_function_count": 0
     },
-    "vercel": {"status":"NOT_RUN","observed_at":null,"target":null,"reason":"No exact Life Vercel infrastructure target is authorized."},
-    "canonical_invocation": {"status":"NOT_RUN","observed_at":"2026-09-12T02:02:16Z","reason":"Authorized Supabase reads show zero deployed Edge Functions, so no deployed Life MCP endpoint and exact tool life.invoke are verified."}
+    "vercel": {
+      "status": "NOT_RUN",
+      "observed_at": null,
+      "target": null,
+      "reason": "No exact Life Vercel infrastructure target is authorized."
+    },
+    "canonical_invocation": {
+      "status": "NOT_RUN",
+      "observed_at": "2026-09-12T02:02:16Z",
+      "reason": "Authorized Supabase reads show zero deployed Edge Functions, so no deployed Life MCP endpoint and exact tool life.invoke are verified."
+    }
   },
   "next_action": {
     "id": "A-0001",
