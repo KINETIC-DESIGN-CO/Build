@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:issue_21",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "9b6aa68c-30b6-47dc-97a6-de061d96b91c",
   "worker": {
     "kind": "chatgpt",
