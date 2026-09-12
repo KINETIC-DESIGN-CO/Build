@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "bundle_version": 1,
+  "bundle_version": 2,
   "canonical_repository": {
     "repository_id": 1366835183,
     "full_name": "Vinanonymous/Build",
@@ -10,6 +10,8 @@
   },
   "required_files": [
     "continuity/bootstrap.json",
+    "governance/placement-policy.json",
+    "continuity/response-contract.json",
     "continuity/current.json",
     "continuity/context.md",
     "continuity/decisions.jsonl",
@@ -22,6 +24,8 @@
     "continuity/schema/current.schema.json",
     "continuity/schema/decision.schema.json",
     "continuity/schema/event.schema.json",
+    "continuity/schema/response-contract.schema.json",
+    "governance/schema/placement-policy.schema.json",
     "scripts/validate_continuity.py",
     "scripts/validate_coordination.py",
     "tests/test_continuity.py",
@@ -30,6 +34,8 @@
   ],
   "required_read_order": [
     "continuity/bootstrap.json",
+    "governance/placement-policy.json",
+    "continuity/response-contract.json",
     "continuity/current.json",
     "continuity/context.md",
     "continuity/decisions.jsonl",
