@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "work_id": "36558251-8826-429d-a17d-e0b195084cd1",
+  "title": "Install Life governance placement and response policies",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "9a1c20d6-b52f-4834-be50-35f18f97406d"
+  },
+  "implementation_branch": "work/36558251-8826-429d-a17d-e0b195084cd1",
+  "base_sha": "807af80e9b2f87406e8031f16505aad9b1a77258",
+  "component_id": "life_governance_policy_bundle",
+  "repo_paths": [
+    "continuity/bootstrap.json",
+    "continuity/response-contract.json",
+    "continuity/schema/response-contract.schema.json",
+    "coordination/README.md",
+    "coordination/protocol.json",
+    "governance/placement-policy.json",
+    "governance/schema/placement-policy.schema.json",
+    "scripts/validate_continuity.py",
+    "scripts/validate_coordination.py",
+    "tests/test_continuity.py",
+    "tests/test_coordination.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {"resource_key":"component:life_governance_policy_bundle","lock_branch":"lock/f0de5dd243c49c43cbdc751e4879a3b5ff74295b968450028140d2c2d531e5d3","lease_id":"1759a375-9cd7-4bab-b53c-165d5a7d9598","generation":1},
+    {"resource_key":"integration:main","lock_branch":"lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9","lease_id":"65c91bfa-672c-40fa-b3fc-2ded78277a29","generation":12},
+    {"resource_key":"repo-file:continuity/bootstrap.json","lock_branch":"lock/adb1a84970cd6bbc087153eb338011aafb8107b0a0ecfd96691e16905a0b49de","lease_id":"0d05588f-ce74-401d-853d-33a4293fba28","generation":2},
+    {"resource_key":"repo-file:continuity/response-contract.json","lock_branch":"lock/bd3640d738c57f70aec8f33d3ebba1bd52db955c902dec2e72439f8ad92059ea","lease_id":"03a15bfc-9e3d-49ce-9abb-e1e6cea4e212","generation":1},
+    {"resource_key":"repo-file:continuity/schema/response-contract.schema.json","lock_branch":"lock/283ac8c70c3b085b41687e7a54c4f7982a308ae7a8776724c57227f12d338fc9","lease_id":"d991f3b2-0368-4ce9-99c7-853a7411e7f2","generation":1},
+    {"resource_key":"repo-file:coordination/README.md","lock_branch":"lock/b3a4f82dc74f1f37129f24434062580457898bbf5b243fe0c221d2b8a7c97198","lease_id":"74a7062f-4bbe-4d7e-9672-4978d4eca953","generation":3},
+    {"resource_key":"repo-file:coordination/protocol.json","lock_branch":"lock/9c6ddcd29016358f183405bba8ecbf3d19eb80c4e9344eddfc07287935e9e141","lease_id":"9653cc8f-51c9-43a9-9798-dbac588b085c","generation":3},
+    {"resource_key":"repo-file:governance/placement-policy.json","lock_branch":"lock/ab84c68b760d2d1273067cb620abc3e2ec3dfd3a9f1a2b8696deab2194a04cdd","lease_id":"1e55bd42-4dc5-446f-9164-392df2d7d5cd","generation":1},
+    {"resource_key":"repo-file:governance/schema/placement-policy.schema.json","lock_branch":"lock/67e257f04b5e099f9642aa35343e9f7370b056693ba949e16ae41eede186c453","lease_id":"9cff7193-8be3-4b45-9f01-f7c5bf9c3006","generation":1},
+    {"resource_key":"repo-file:scripts/validate_continuity.py","lock_branch":"lock/c3ba09fe16c3d5cbac4245dda1c8fa038874176e688f6addbd52e0e31d2acc8b","lease_id":"b2d50fe6-7f50-4787-9b6f-d58a6a247870","generation":2},
+    {"resource_key":"repo-file:scripts/validate_coordination.py","lock_branch":"lock/0d7cf6ac6a3f6ab9cca29d8e5e98cac953f7ec3f1a9acb5dcb4a065dc2f91146","lease_id":"17c8f4b8-1904-41cb-a8cd-1af6652a4c89","generation":2},
+    {"resource_key":"repo-file:tests/test_continuity.py","lock_branch":"lock/64bf054ef760683d2a8577dbf8970e81aaba5e4f7b24c4c32aa9760493cc1017","lease_id":"3fff1055-f920-4d16-b062-b6c725f21329","generation":3},
+    {"resource_key":"repo-file:tests/test_coordination.py","lock_branch":"lock/f3e5d80d2849bc9659003a08d149c03f0770e90592d628de93bccca45134cb8e","lease_id":"0572fde2-37c9-464d-a1a3-52d497dfbff4","generation":3}
+  ],
+  "runtime_control_authority": "NONE"
+}
