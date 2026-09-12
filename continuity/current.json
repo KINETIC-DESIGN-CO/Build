@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "manifest_revision": 6,
+  "manifest_revision": 7,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T03:02:33Z",
+  "updated_at": "2026-09-12T03:32:55Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
-  "phase": "IMPLEMENTATION",
-  "current_component": "multi_agent_coordination",
-  "current_status": "BLOCKED",
+  "phase": "DESIGN",
+  "current_component": "canonical_invocation_architecture",
+  "current_status": "ACTIVE",
   "authorized_targets": {
     "github": {
       "repository_id": 1366835183,
@@ -23,15 +23,14 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Install and verify deterministic multi-thread and multi-AI source coordination using isolated work branches/worktrees, machine-verifiable expiring resource claims, exact changed-path coverage, serialized main integration, and serialized Supabase production mutation before resuming life.invoke architecture.",
+    "goal": "Rederive and select the permanent life.invoke architecture from current alternatives, beginning with the runtime host, authentication boundary, invocation record, tool contract, and exact separation between context retrieval and runtime control.",
     "completion_conditions": [
-      "COORDINATION_PROTOCOL_MERGED",
-      "LOCK_AND_WORK_SCHEMAS_MERGED",
-      "VALIDATE_JOB_ENFORCES_COORDINATION",
-      "COORDINATION_TESTS_PASS",
-      "PROTECT_MAIN_STRICT_UP_TO_DATE_ENABLED",
-      "PROTECT_MAIN_READ_BACK_VERIFIED",
-      "POST_MERGE_CI_SUCCESS"
+      "HOST_CANDIDATES_COMPARED",
+      "TOOL_CONTRACT_DEFINED",
+      "AUTHENTICATION_BOUNDARY_DEFINED",
+      "INVOCATION_RECORD_DEFINED",
+      "CONTEXT_CONTROL_BOUNDARY_DEFINED",
+      "IMPLEMENTATION_SEQUENCE_SELECTED"
     ]
   },
   "active_decision_ids": [
@@ -45,8 +44,9 @@
     "D-0008",
     "D-0009",
     "D-0010",
-    "D-0011",
-    "D-0012"
+    "D-0012",
+    "D-0013",
+    "D-0014"
   ],
   "retired_decision_ids": [
     "D-0101",
@@ -88,7 +88,7 @@
     },
     {
       "id": "B-0003",
-      "state": "OPEN",
+      "state": "RESOLVED",
       "condition": "Protect-main currently uses loose required status checks, so a previously green PR can remain mergeable after main changes; multi-agent source coordination is not complete until strict up-to-date enforcement is active.",
       "clears_when": "GITHUB_RULESET_22998982_STRICT_REQUIRED_STATUS_CHECKS_TRUE"
     }
@@ -96,24 +96,24 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T03:02:33Z",
+      "observed_at": "2026-09-12T03:32:55Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "2cca120e510318d64f149d7f04291f9ea6b00463",
+      "head_sha": "4478966f70941d258c818f97d4ba841ac58604a7",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
-      "ruleset_strict_required_status_checks": false,
+      "ruleset_strict_required_status_checks": true,
       "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34668823989,
+      "latest_continuity_workflow_run_id": 34670572503,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T03:02:33Z",
+      "observed_at": "2026-09-12T03:32:55Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
@@ -130,15 +130,15 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T03:02:33Z",
+      "observed_at": "2026-09-12T03:32:55Z",
       "reason": "Authorized Supabase reads show zero deployed Edge Functions and no life.invoke database function, so no deployed Life MCP endpoint and exact tool life.invoke are verified."
     }
   },
   "next_action": {
-    "id": "A-0004",
-    "kind": "MUTATE",
-    "target": "GITHUB_RULESET:22998982",
-    "description": "Enable Require branches to be up to date before merging for the existing required validate status check in Protect-main, then read back strict_required_status_checks_policy=true before merging the multi-agent coordination PR.",
+    "id": "A-0003",
+    "kind": "DESIGN",
+    "target": "LIFE_INVOKE_ARCHITECTURE",
+    "description": "Compare the permanent life.invoke host and invocation-boundary candidates against current Life requirements; select KEEP/REPLACE/MODIFY/COMBINE/REMOVE for each legacy invocation concept; then define the exact tool contract, authentication boundary, invocation record, and implement-now sequence before any runtime deployment.",
     "authorization_effect": "NONE"
   }
 }
