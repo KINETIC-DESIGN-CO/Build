@@ -34,7 +34,8 @@
     "tests/test_continuity.py",
     "tests/test_coordination.py",
     "tests/test_work_selection.py",
-    ".github/workflows/continuity.yml"
+    ".github/workflows/continuity.yml",
+    "governance/user-observation-policy.json"
   ],
   "required_read_order": [
     "continuity/bootstrap.json",
@@ -46,7 +47,8 @@
     "continuity/decisions.jsonl",
     "continuity/events.jsonl",
     "coordination/protocol.json",
-    "coordination/README.md"
+    "coordination/README.md",
+    "governance/user-observation-policy.json"
   ],
   "resume_algorithm": [
     "READ_REQUIRED_FILES",
