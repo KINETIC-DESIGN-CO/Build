@@ -9,7 +9,19 @@
     "contract_id": {"const": "life-response-contract-v1"},
     "runtime_control_authority": {"const": "NONE"},
     "default_mode": {"const": "PLAIN_ENGLISH_FIRST"},
-    "required_sections": {"type":"array","minItems":9,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "required_sections": {
+      "const": [
+        "PLAIN_ENGLISH_MEANING",
+        "WHAT_IS_BEING_DONE",
+        "WHY_IT_MATTERS",
+        "WHAT_CHANGED_OR_DID_NOT_CHANGE",
+        "STATE_CLASSIFICATION",
+        "PROGRESSION",
+        "TECHNICAL_DETAIL",
+        "NEXT_STEP",
+        "RESPONSE_COUNTER"
+      ]
+    },
     "state_terms": {"type":"array","minItems":8,"uniqueItems":true,"items":{"type":"string","minLength":1}},
     "plain_english_rule": {"type":"string","minLength":1},
     "technical_only_exception": {"const":"USER_EXPLICITLY_REQUESTED_TECHNICAL_ONLY"},
