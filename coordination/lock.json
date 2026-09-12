@@ -1,15 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:watchdog/finding-registry.json",
-  "generation": 1,
-  "state": "RELEASED",
-  "work_id": "7d4017b9-6e67-4d9c-a0a3-7c85784cba08",
-  "worker": {"kind": "chatgpt", "session_id": "64b4642b-3eae-406a-a54e-2e11634789e8"},
-  "implementation_branch": "work/7d4017b9-6e67-4d9c-a0a3-7c85784cba08",
-  "lease_id": "921be001-436c-4dc8-a1ff-5836e6409aaf",
-  "base_sha": "6f84e6563c05a5c4b7517cd2509403fb2c51896f",
-  "acquired_at": "2026-09-12T07:53:36Z",
-  "heartbeat_at": "2026-09-12T07:53:36Z",
-  "expires_at": "2026-09-12T11:53:36Z",
+  "generation": 2,
+  "state": "ACTIVE",
+  "work_id": "f9d2c3ad-4584-4b3b-8bd7-cea1180c8c44",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "019402a4-c330-417d-b739-a7bb2187877c"
+  },
+  "implementation_branch": "work/f9d2c3ad-4584-4b3b-8bd7-cea1180c8c44",
+  "lease_id": "76dfdf2d-962b-4c7c-8cbd-4ecc90530884",
+  "base_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
+  "acquired_at": "2026-09-12T22:32:35Z",
+  "heartbeat_at": "2026-09-12T22:32:35Z",
+  "expires_at": "2026-09-13T02:32:35Z",
   "runtime_control_authority": "NONE"
 }
