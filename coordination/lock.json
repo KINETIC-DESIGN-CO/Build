@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:watchdog/spec.json",
   "generation": 2,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "7ad745fe-9a42-4932-8a95-bdf4b108e21c",
   "worker": {
     "kind": "chatgpt",
