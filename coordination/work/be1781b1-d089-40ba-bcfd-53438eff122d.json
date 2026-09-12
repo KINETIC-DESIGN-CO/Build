@@ -10,9 +10,7 @@
   "base_sha": "daf1ba47bbba7bb836e7fba54a87bba29d6a01d1",
   "component_id": "continuity_sync",
   "repo_paths": [
-    "continuity/current.json",
-    "continuity/decisions.jsonl",
-    "continuity/events.jsonl"
+    "continuity/current.json"
   ],
   "external_targets": [],
   "claims": [
@@ -27,18 +25,6 @@
       "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
       "lease_id": "6a898fe8-e139-4c41-8cb1-d142451e168b",
       "generation": 9
-    },
-    {
-      "resource_key": "repo-file:continuity/decisions.jsonl",
-      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
-      "lease_id": "97d4a3e2-0032-458e-beec-0ab5003e31f6",
-      "generation": 7
-    },
-    {
-      "resource_key": "repo-file:continuity/events.jsonl",
-      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
-      "lease_id": "ba047082-2f1d-4f25-badd-a9eb8e9ffddd",
-      "generation": 7
     }
   ],
   "runtime_control_authority": "NONE"
