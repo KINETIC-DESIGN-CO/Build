@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Vinanonymous/Build/blob/main/governance/schema/work-selection-policy.schema.json",
+  "title": "Life Engineering Work Selection Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "continuity_barrier_resource_key",
+    "continuity_sync",
+    "engineering_work_selection_authority",
+    "evidence_contract",
+    "foreground_blocker_rule",
+    "interruption",
+    "novelty_rule",
+    "parallel_rule",
+    "policy_id",
+    "preemption_rule",
+    "priority_order",
+    "runtime_control_authority",
+    "same_or_lower_priority_rule",
+    "schema_version",
+    "worker_lanes"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "policy_id": {"const": "life-engineering-work-selection-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "engineering_work_selection_authority": {"const": "DETERMINISTIC_EVALUATION_ONLY"},
+    "continuity_barrier_resource_key": {"const": "continuity:sync"},
+    "worker_lanes": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["FOREGROUND", "PARALLEL_ASSIGNED"]}},
+    "priority_order": {"type": "array", "minItems": 5, "maxItems": 5, "items": {"type": "object", "additionalProperties": false, "required": ["rank", "condition_id", "selected_work"], "properties": {"rank": {"type": "integer", "minimum": 0}, "condition_id": {"type": "string", "minLength": 1}, "selected_work": {"type": "string", "minLength": 1}}}},
+    "preemption_rule": {"type": "string", "minLength": 1},
+    "same_or_lower_priority_rule": {"type": "string", "minLength": 1},
+    "novelty_rule": {"type": "string", "minLength": 1},
+    "continuity_sync": {"type": "object", "additionalProperties": false, "required": ["sync_required_if_any", "prearm_rule", "fresh_mismatch_rule", "mutation_gate", "completion_requires", "continuity_sync_exempt_source"], "properties": {"sync_required_if_any": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "prearm_rule": {"type": "string", "minLength": 1}, "fresh_mismatch_rule": {"type": "string", "minLength": 1}, "mutation_gate": {"type": "string", "minLength": 1}, "completion_requires": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "continuity_sync_exempt_source": {"type": "string", "minLength": 1}}},
+    "interruption": {"type": "object", "additionalProperties": false, "required": ["unresolved_states", "terminal_states", "resume_cue_effect", "resume_rule"], "properties": {"unresolved_states": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "terminal_states": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "resume_cue_effect": {"type": "string", "minLength": 1}, "resume_rule": {"type": "string", "minLength": 1}}},
+    "foreground_blocker_rule": {"type": "string", "minLength": 1},
+    "parallel_rule": {"type": "string", "minLength": 1},
+    "evidence_contract": {"type": "object", "additionalProperties": false, "required": ["required_fields", "worker_lane", "continuity_sync_claim_state", "interrupted_operation_state", "current_status", "parallel_request_state", "parallel_resource_intersection", "selected_rank_before", "selected_work_terminal"], "properties": {"required_fields": {"type": "array", "minItems": 12, "maxItems": 12, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "worker_lane": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "continuity_sync_claim_state": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "interrupted_operation_state": {"type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "current_status": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "parallel_request_state": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "parallel_resource_intersection": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "selected_rank_before": {"type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": {}}, "selected_work_terminal": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {}}}}
+  }
+}
