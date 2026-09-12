@@ -181,7 +181,7 @@ begin
     v_request_utf8_bytes,
     'MCP_TOOL_ARGUMENT'
   )
-  on conflict (auth_subject, oauth_client_id, invocation_key) do nothing
+  on conflict on constraint invocations_idempotency_uq do nothing
   returning i.* into v_row;
 
   if found then
