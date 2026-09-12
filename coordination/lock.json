@@ -1,18 +1,15 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:coordination/protocol.json",
-  "generation": 4,
-  "state": "RELEASED",
-  "work_id": "c5a637f5-94bf-4b4a-9182-ff5f9809d9e3",
-  "worker": {
-    "kind": "chatgpt",
-    "session_id": "24b7d44c-e47a-420f-8923-ab38cb9521fa"
-  },
-  "implementation_branch": "work/c5a637f5-94bf-4b4a-9182-ff5f9809d9e3",
-  "lease_id": "750c1997-f7bb-49b4-a917-4bc108a10eff",
+  "generation": 5,
+  "state": "ACTIVE",
+  "work_id": "9f8d2f55-23c2-4b87-9bba-726f7f4b6868",
+  "worker": {"kind": "chatgpt", "session_id": "bfb40184-68cc-430b-8767-94ff191a296e"},
+  "implementation_branch": "work/9f8d2f55-23c2-4b87-9bba-726f7f4b6868",
+  "lease_id": "36b81b95-fd43-41bc-944d-d840bf9317f9",
   "base_sha": "807af80e9b2f87406e8031f16505aad9b1a77258",
-  "acquired_at": "2026-09-12T06:15:44Z",
-  "heartbeat_at": "2026-09-12T06:15:44Z",
-  "expires_at": "2026-09-12T10:15:44Z",
+  "acquired_at": "2026-09-12T06:23:49Z",
+  "heartbeat_at": "2026-09-12T06:23:49Z",
+  "expires_at": "2026-09-12T10:23:49Z",
   "runtime_control_authority": "NONE"
 }
