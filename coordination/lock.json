@@ -1,15 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "integration:main",
-  "generation": 10,
-  "state": "RELEASED",
-  "work_id": "cb09da63-4d29-483c-b82e-c973e78f30c9",
-  "worker": {"kind": "chatgpt", "session_id": "9e63ed10-971c-4924-b200-88c278613b8a"},
-  "implementation_branch": "work/cb09da63-4d29-483c-b82e-c973e78f30c9",
-  "lease_id": "592da02e-62dd-456a-8e40-949482a574d7",
-  "base_sha": "883c7aea6ff228baac9acc6515233919fa5e9225",
-  "acquired_at": "2026-09-12T05:30:44Z",
-  "heartbeat_at": "2026-09-12T05:30:44Z",
-  "expires_at": "2026-09-12T09:30:44Z",
+  "generation": 11,
+  "state": "ACTIVE",
+  "work_id": "065d9c73-54f9-433a-98e4-9af79537af4a",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "9a1c20d6-b52f-4834-be50-35f18f97406d"
+  },
+  "implementation_branch": "work/065d9c73-54f9-433a-98e4-9af79537af4a",
+  "lease_id": "c7ec6848-0c6c-4fd6-a0c9-58a16cb3d429",
+  "base_sha": "d4173ac0d8e6808d5023fc51e770a4540d10456f",
+  "acquired_at": "2026-09-12T05:54:29Z",
+  "heartbeat_at": "2026-09-12T05:54:29Z",
+  "expires_at": "2026-09-12T09:54:29Z",
   "runtime_control_authority": "NONE"
 }
