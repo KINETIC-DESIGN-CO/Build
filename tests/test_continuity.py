@@ -85,6 +85,7 @@ class ContinuityTests(unittest.TestCase):
         try:
             p = dst / "continuity/current.json"
             obj = json.loads(p.read_text())
+            obj["open_questions"][0]["state"] = "OPEN"
             obj["open_questions"][0]["resolution_decision_id"] = "D-0001"
             p.write_text(json.dumps(obj, indent=2) + "\n")
             result = self.run_validator(dst)

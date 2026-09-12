@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "manifest_revision": 7,
+  "manifest_revision": 8,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T03:32:55Z",
+  "updated_at": "2026-09-12T04:10:52Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
-  "phase": "DESIGN",
-  "current_component": "canonical_invocation_architecture",
+  "phase": "IMPLEMENTATION",
+  "current_component": "canonical_invocation_database_source",
   "current_status": "ACTIVE",
   "authorized_targets": {
     "github": {
@@ -23,14 +23,14 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Rederive and select the permanent life.invoke architecture from current alternatives, beginning with the runtime host, authentication boundary, invocation record, tool contract, and exact separation between context retrieval and runtime control.",
+    "goal": "Version and validate the Supabase database foundation for life.invoke v1 before any remote Supabase mutation.",
     "completion_conditions": [
-      "HOST_CANDIDATES_COMPARED",
-      "TOOL_CONTRACT_DEFINED",
-      "AUTHENTICATION_BOUNDARY_DEFINED",
-      "INVOCATION_RECORD_DEFINED",
-      "CONTEXT_CONTROL_BOUNDARY_DEFINED",
-      "IMPLEMENTATION_SEQUENCE_SELECTED"
+      "INVOCATION_MIGRATION_VERSIONED",
+      "CALLER_ALLOWLIST_SCHEMA_VERSIONED",
+      "RECORD_FUNCTION_VERSIONED",
+      "RUNTIME_ROLE_GRANTS_VERSIONED",
+      "APPEND_ONLY_GUARDS_VERSIONED",
+      "DATABASE_TESTS_PASS"
     ]
   },
   "active_decision_ids": [
@@ -40,13 +40,13 @@
     "D-0004",
     "D-0005",
     "D-0006",
-    "D-0007",
     "D-0008",
     "D-0009",
     "D-0010",
     "D-0012",
     "D-0013",
-    "D-0014"
+    "D-0014",
+    "D-0015"
   ],
   "retired_decision_ids": [
     "D-0101",
@@ -56,9 +56,9 @@
   "open_questions": [
     {
       "id": "Q-0001",
-      "state": "OPEN",
+      "state": "RESOLVED",
       "question": "Which permanent runtime host should expose the canonical Life MCP endpoint after fresh clean-slate comparison: Supabase Edge Functions, Vercel Functions, or another authorized mechanism?",
-      "resolution_decision_id": null
+      "resolution_decision_id": "D-0015"
     },
     {
       "id": "Q-0002",
@@ -68,9 +68,9 @@
     },
     {
       "id": "Q-0003",
-      "state": "OPEN",
+      "state": "RESOLVED",
       "question": "Which parts of the legacy invocation implementation should be rebuilt, modified, or discarded after clean-slate reevaluation?",
-      "resolution_decision_id": null
+      "resolution_decision_id": "D-0015"
     }
   ],
   "blockers": [
@@ -96,24 +96,24 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T03:32:55Z",
+      "observed_at": "2026-09-12T04:10:52Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "4478966f70941d258c818f97d4ba841ac58604a7",
+      "head_sha": "5d69173f8a3a46a0d8c161ca089e7295ea08fcbf",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": true,
       "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34670572503,
+      "latest_continuity_workflow_run_id": 34672133627,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T03:32:55Z",
+      "observed_at": "2026-09-12T04:09:04Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
@@ -130,15 +130,15 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T03:32:55Z",
-      "reason": "Authorized Supabase reads show zero deployed Edge Functions and no life.invoke database function, so no deployed Life MCP endpoint and exact tool life.invoke are verified."
+      "observed_at": "2026-09-12T04:09:04Z",
+      "reason": "Authorized Supabase reads show zero deployed Edge Functions and no life.invoke database function, and no exact Life Vercel target is authorized; no deployed Life MCP endpoint and exact tool life.invoke are verified."
     }
   },
   "next_action": {
-    "id": "A-0003",
-    "kind": "DESIGN",
-    "target": "LIFE_INVOKE_ARCHITECTURE",
-    "description": "Compare the permanent life.invoke host and invocation-boundary candidates against current Life requirements; select KEEP/REPLACE/MODIFY/COMBINE/REMOVE for each legacy invocation concept; then define the exact tool contract, authentication boundary, invocation record, and implement-now sequence before any runtime deployment.",
+    "id": "A-0005",
+    "kind": "IMPLEMENT",
+    "target": "SUPABASE_INVOCATION_FOUNDATION_SOURCE",
+    "description": "Create the versioned Supabase migration and database tests for the life schema, exact caller allowlist, append-only invocation ledger, dedicated runtime role/grants, and life.record_invocation_v1; validate in GitHub before any Supabase mutation.",
     "authorization_effect": "NONE"
   }
 }

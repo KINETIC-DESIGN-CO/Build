@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_id": "d18f66a2-25f7-493c-8828-886dcd774fa1",
+  "title": "Synchronize continuity after canonical invocation architecture selection",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "075c447d-996a-4724-a91b-14007d1a4827"
+  },
+  "implementation_branch": "work/d18f66a2-25f7-493c-8828-886dcd774fa1",
+  "base_sha": "5d69173f8a3a46a0d8c161ca089e7295ea08fcbf",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/context.md",
+    "continuity/current.json",
+    "continuity/decisions.jsonl",
+    "continuity/events.jsonl",
+    "tests/test_continuity.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "dad973a5-4b2c-489e-bb87-274afe15ba52",
+      "generation": 2
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "a32039cb-ca5f-4cd2-8952-023c11e2af80",
+      "generation": 5
+    },
+    {
+      "resource_key": "repo-file:continuity/context.md",
+      "lock_branch": "lock/b54a87ae0c6695df543fd900938bab73cecc8c48f4a9bca7bda091ece106a073",
+      "lease_id": "792c6a02-feac-4eeb-9266-036f737b8c99",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "053782e6-3422-4632-bbf8-ebfb86d7d935",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:continuity/decisions.jsonl",
+      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
+      "lease_id": "f5f6abd3-c2f0-4168-bf95-b54555009f64",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "36d7377d-2a3f-43a3-9a9a-d2bbdf64f946",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:tests/test_continuity.py",
+      "lock_branch": "lock/64bf054ef760683d2a8577dbf8970e81aaba5e4f7b24c4c32aa9760493cc1017",
+      "lease_id": "4363f3be-5479-4e50-94a1-e29105577f8d",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
