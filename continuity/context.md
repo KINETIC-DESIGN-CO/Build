@@ -26,7 +26,7 @@ An earlier implementation phase got ahead of architecture. Useful concepts may s
 
 Life runtime architecture begins with: **a user invokes Life**.
 
-The canonical entry tool is `life.invoke`. Its v1 source architecture is now selected and versioned, but the Project Instructions require the tool to be treated as READY only when current authorized-system reads show a deployed Life MCP endpoint and the exact tool `life.invoke`. That condition is not yet satisfied, so canonical invocation remains `NOT_RUN`.
+The canonical entry tool is `life.invoke`. Its v1 source architecture is selected and versioned, but the Project Instructions require the tool to be treated as READY only when current authorized-system reads show a deployed Life MCP endpoint and the exact tool `life.invoke`. That condition is not satisfied, so canonical invocation remains `NOT_RUN`.
 
 The selected sequence is:
 
@@ -49,7 +49,7 @@ Decision `D-0015` selects a combined architecture:
 - **GitHub `Vinanonymous/Build`**: source, tests, CI, engineering history, and source coordination only;
 - embeddings/vector retrieval: outside canonical invocation v1.
 
-The exact Vercel host class is selected, but no exact Life Vercel project is authorized. Vercel deployment remains `NOT_RUN` until Vince authorizes an exact target.
+The Vercel host class is selected, but no exact Life Vercel project is authorized. Vercel deployment remains `NOT_RUN` until Vince authorizes an exact target.
 
 The versioned source contract is:
 
@@ -124,7 +124,7 @@ The connected Supabase tool does not expose direct reads of the live OAuth-serve
 
 The selected database location is a non-public Supabase Postgres schema `life`.
 
-The v1 ledger table is `life.invocations`. The implementation migration must define the exact record fields selected in the architecture, including:
+The v1 ledger table is `life.invocations`. The selected architecture requires at least:
 
 - server-generated `invocation_id` UUID primary key;
 - `schema_version = 1`;
@@ -134,7 +134,7 @@ The v1 ledger table is `life.invocations`. The implementation migration must def
 - `tool_name = 'life.invoke'`;
 - `input_provenance = 'MCP_TOOL_ARGUMENT'`;
 - exact `request_text`;
-- lowercase request SHA-256;
+- lowercase text request SHA-256;
 - exact UTF-8 byte length;
 - MCP protocol version;
 - exact runtime build commit SHA.
@@ -150,6 +150,39 @@ The planned Vercel runtime uses a dedicated Postgres login path through Supaviso
 Its invocation-ledger write capability is restricted to EXECUTE on `life.record_invocation_v1`. The function must be `SECURITY DEFINER`, use an empty fixed `search_path`, schema-qualify referenced objects, enforce idempotency and ledger invariants, revoke EXECUTE from `PUBLIC`, and grant EXECUTE only to the dedicated runtime role.
 
 The runtime must not use the `postgres` role or a broad Supabase service-role credential.
+
+## Initial database source and verified mismatch
+
+PR #9 merged the initial Supabase database foundation to `main` at `0934c5e1ff4a6632afb93d86263e284920f3f8d7`. Post-merge workflow run `34673627298` succeeded, including a clean local Postgres 17 migration application and pgTAP tests.
+
+Fresh authorized Supabase reads then showed that migration `20260912042500` (`life_invocation_v1`) is already present remotely and created:
+
+- `life.oauth_callers_v1`;
+- `life.invocations`;
+- `life.record_invocation_v1(text,text,uuid,text)`;
+- dedicated login role `life_runtime_v1`.
+
+Both Life tables currently contain zero rows and the project has zero deployed Edge Functions.
+
+The current implementation is **MODIFY**, not complete relative to `D-0015`. Direct source and remote-schema reads verify that `life.invocations` omits `schema_version`, `auth_issuer`, `audience`, `tool_name`, `mcp_protocol_version`, and `runtime_build_sha`. It also stores `request_sha256` as `bytea`, while the selected architecture requires lowercase text SHA-256 in the canonical ledger.
+
+Decision `D-0016` therefore requires a new forward migration. The already-applied migration is preserved as immutable history rather than edited after deployment. The retained pieces are the private `life` schema, exact caller allowlist, append-only guards, idempotency uniqueness, dedicated runtime role, and least-privilege `SECURITY DEFINER` boundary.
+
+## Remote-mutation provenance gap
+
+The earlier verified Supabase read at `2026-09-12T04:09:04Z` showed the invocation database objects absent. The current direct read shows migration `20260912042500` and its objects present.
+
+The mutation therefore occurred, but the exact time, actor, and control provenance are **UNKNOWN**. No deterministic lock branch exists for the required global production resource `external:supabase:jnenguxodtgwbskhdsxt`, so there is no machine-verifiable evidence that the original remote mutation held the required claim. This past mutation cannot be converted to PASS through inference, prose, or later approval.
+
+Future Supabase writes remain serialized through the exact global claim and must satisfy version-first GitHub requirements before remote application.
+
+## Legacy Supabase RLS auto-enable mechanism
+
+Fresh Supabase security advisors currently report two warnings for `public.rls_auto_enable()`: the `SECURITY DEFINER` function is executable by `anon` and `authenticated`. Direct read-back shows active event trigger `ensure_rls` invokes the function on `ddl_command_end` to auto-enable RLS for newly created `public` tables.
+
+Authorized GitHub source contains no versioned definition for this mechanism. Clean-slate disposition is **REMOVE**. Future RLS behavior must be explicit in versioned migrations and tests rather than hidden in an unversioned database event trigger.
+
+The removal must itself be versioned and tested in GitHub before any authorized Supabase mutation.
 
 ## Success boundary
 
@@ -208,13 +241,15 @@ Default branch: `main`
 
 GitHub is the source/build plane: source, migrations, tests, CI, schemas, history, source-coordination evidence, and engineering evidence. It is not the deployed Life runtime control plane.
 
+Fresh direct reads show `main` at `0934c5e1ff4a6632afb93d86263e284920f3f8d7`, zero open pull requests before this continuity work item, and post-merge workflow run `34673627298` successful.
+
 ### Supabase
 
 Authorized project: `jnenguxodtgwbskhdsxt`
 Project name: `Life`
 Region: `us-west-2`
 
-Supabase is selected for OAuth identity and Postgres data in canonical invocation v1. Current fresh direct reads show the project `ACTIVE_HEALTHY`, zero public tables, zero deployed Edge Functions, no `life.invoke` database function, no installed vector extension, and only the default main environment. No canonical invocation runtime has been deployed.
+Supabase is selected for OAuth identity and Postgres data in canonical invocation v1. Fresh direct reads show the project `ACTIVE_HEALTHY`, zero public base tables, zero deployed Edge Functions, the initial Life invocation migration already present, two Life tables with zero rows, the dedicated runtime role, and `life.record_invocation_v1` deployed. The deployed database record is not yet aligned to every `D-0015` ledger requirement.
 
 Supabase Free currently has no preview Branching for this project path, so every direct authorized-project write is serialized through the exact global claim `external:supabase:jnenguxodtgwbskhdsxt` until a different verified mechanism replaces that constraint.
 
@@ -241,7 +276,7 @@ Decision `D-0013` supersedes the earlier loose-check description in `D-0011`. Th
 
 ## Multi-agent source coordination
 
-Source coordination is complete and enforced by `coordination/protocol.json`, its schemas, validator, tests, and the required `validate` check.
+Source coordination is enforced by `coordination/protocol.json`, its schemas, validator, tests, and the required `validate` check.
 
 Each mutable work item uses an exact `work/<UUIDv4>` branch and exact resource leases on deterministic `lock/<sha256(resource_key)>` branches. Required claims include a component claim, exact file claims, `integration:main` for PRs, and the global authorized-Supabase production claim before Supabase writes. Leases last exactly 14,400 seconds, resource acquisition is ascending UTF-8 order, failed acquisition releases in reverse order, expiry takeover increments generation by one, and reacquisition after `RELEASED` increments generation by one.
 
@@ -268,13 +303,15 @@ A continuity-sync PR may merge without a second sync only when its changed paths
 
 Vince changed the final continuity sentence from `End with next step+response number.` to `End with next step+response counter.` The complete Project Instructions remain at the previously verified **7,999 characters including whitespace**, within the 8,000-character ceiling.
 
-The current instructions still match the verified authorized systems. No instruction has been shown to be fully replaced by a deployed Life executable mechanism, so no instruction removal is proposed.
+The current instructions still match the verified authorized-system identities. No instruction has been shown to be fully replaced by a deployed Life executable mechanism, so no instruction removal is proposed.
+
+The current verified state does expose one historical control-evidence gap: the already-present Supabase migration lacks machine-verifiable original global-claim provenance. The Project Instructions do not conflict with that state; they require the gap to remain UNKNOWN/NOT_RUN rather than being inferred into PASS.
 
 ## Current research posture
 
-The architecture-selection response freshly completed the required platform 5/5 checks for Supabase Free, GitHub Free, and Vercel Hobby; Reddit searches on the current host/authentication/database mechanisms and failure reports; current OpenAI model/plugin/app/MCP capability checks and Plugin Directory search; and current MCP, agent-security, instruction-following, and systems-engineering research.
+The current response freshly completed the required platform 5/5 checks for Supabase Free, GitHub Free, and Vercel Hobby; Reddit searches on current database/hosting/authentication mechanisms and failure reports; current OpenAI model/plugin/app/MCP capability checks and Plugin Directory search; and current MCP, agent-security, instruction-following, PostgreSQL-security, and reliability research.
 
-The selected architecture is based on that current comparison, not on implementation history. Those external facts must be rechecked on every later Life response under the Project Instructions.
+Those external facts must be rechecked on every later Life response under the Project Instructions.
 
 ## Current unresolved question
 
@@ -288,11 +325,13 @@ The selected architecture is based on that current comparison, not on implementa
 
 `canonical_invocation_architecture` is complete.
 
-The active component is `canonical_invocation_database_source` in IMPLEMENTATION. Its purpose is to version and validate the Supabase database foundation before any remote Supabase mutation.
+The merged initial database foundation is not accepted as complete against `D-0015`; it is dispositioned **MODIFY** by `D-0016`.
 
-The next action is `A-0005`: create the versioned migration and database tests for the `life` schema, exact caller allowlist, append-only invocation ledger, dedicated runtime role/grants, and `life.record_invocation_v1`; validate all of it in GitHub before any authorized-project database write.
+The active component is `canonical_invocation_database_alignment_source` in IMPLEMENTATION.
 
-After that source passes, the version-first Project Instruction permits the separately claimed Supabase production mutation and read-back verification. Vercel source and deployment follow later; no exact Vercel target is authorized yet.
+The next action is `A-0006`: create one new forward Supabase migration and pgTAP test update that adds the missing canonical ledger fields, aligns `request_sha256` storage and `life.record_invocation_v1` with the `D-0015` record contract, and removes the unversioned `ensure_rls` event trigger plus `public.rls_auto_enable()`. Validate and merge that source before any further authorized Supabase mutation.
+
+After the source passes and merges, a separately claimed Supabase production mutation may apply only the already-versioned forward migration, followed by direct read-back and advisor verification. Vercel source and deployment follow later; no exact Vercel target is authorized yet.
 
 ## Cost constraints
 
@@ -316,4 +355,4 @@ If live authorized-system state conflicts with continuity, live state determines
 
 ## Last bundle-authoring timestamp
 
-`2026-09-12T04:10:52Z`
+`2026-09-12T05:08:16Z`
