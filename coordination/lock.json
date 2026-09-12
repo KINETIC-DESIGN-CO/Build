@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:scripts/validate_continuity.py",
-  "generation": 4,
-  "state": "RELEASED",
-  "work_id": "9f8d2f55-23c2-4b87-9bba-726f7f4b6868",
+  "generation": 5,
+  "state": "ACTIVE",
+  "work_id": "bc439d68-4e0d-4fe8-99c0-196813143e4a",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "bfb40184-68cc-430b-8767-94ff191a296e"
+    "session_id": "c110423e-18ed-4836-8574-f1a9727c8706"
   },
-  "implementation_branch": "work/9f8d2f55-23c2-4b87-9bba-726f7f4b6868",
-  "lease_id": "01a336d4-fb68-46da-bbfb-b1be55fbfeca",
-  "base_sha": "807af80e9b2f87406e8031f16505aad9b1a77258",
-  "acquired_at": "2026-09-12T06:58:03Z",
-  "heartbeat_at": "2026-09-12T06:58:03Z",
-  "expires_at": "2026-09-12T10:58:03Z",
+  "implementation_branch": "work/bc439d68-4e0d-4fe8-99c0-196813143e4a",
+  "lease_id": "7230acee-8ed2-4d32-b858-c154f4c845c9",
+  "base_sha": "2d67cacdfe8c725970a5da4bdaa739404cc44f89",
+  "acquired_at": "2026-09-12T19:57:14Z",
+  "heartbeat_at": "2026-09-12T19:57:14Z",
+  "expires_at": "2026-09-12T23:57:14Z",
   "runtime_control_authority": "NONE"
 }
