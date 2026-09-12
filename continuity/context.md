@@ -1,14 +1,14 @@
 # Life Continuity Context
 
-## Purpose of this file
+## Purpose and authority
 
-This file is the detailed narrative half of Life's continuity bundle. It exists so a fresh AI thread can reconstruct the engineering situation without relying on ChatGPT memory, prior-chat summaries, or Vince repeating the project. It is intentionally detailed.
+This file is the detailed narrative half of Life's continuity bundle. It exists so a fresh AI thread can reconstruct the engineering situation without relying on ChatGPT memory, prior-chat summaries, or Vince repeating the project.
 
-This file has **zero Life runtime control authority**. It explains state and rationale. Exact current state is represented in `continuity/current.json`; typed decision history is in `continuity/decisions.jsonl`; typed operational history is in `continuity/events.jsonl`; live facts must be re-read from authorized systems.
+This file has **zero Life runtime control authority**. Exact current state is represented in `continuity/current.json`; typed decision history is in `continuity/decisions.jsonl`; typed operational history is in `continuity/events.jsonl`; live external facts must be re-read from authorized systems.
 
 ## Core objective
 
-Life is being built from first principles as a durable personal AI system. The engineering objective is not merely to make an assistant that remembers things. Life must be able to retrieve the right context, distinguish context from control, preserve exact state where exactness is required, recover across AI threads, and eventually execute allowed effects without letting prose or model judgment become authority.
+Life is being built from first principles as a durable personal AI system. It must retrieve the right context, distinguish context from control, preserve exact state where exactness is required, recover across AI threads, and execute effects only through machine-verifiable control.
 
 A governing design phrase is:
 
@@ -18,44 +18,40 @@ Semantic/vector search may retrieve candidate information. It does not establish
 
 ## Clean-slate rule
 
-Existing work has no architectural privilege because it already exists, was approved, was implemented, or was previously recommended. Every mechanism must survive current comparison against Life requirements and alternatives. Decisions use the vocabulary KEEP / REPLACE / MODIFY / COMBINE / REMOVE.
+Existing work has no architectural privilege because it exists, was approved, was implemented, was proposed, was planned, or was previously recommended. Every candidate must be compared against Life requirements and current alternatives. Decisions use KEEP / REPLACE / MODIFY / COMBINE / REMOVE.
 
-This matters because an earlier implementation phase got ahead of architecture. Useful code and concepts may survive, but there is no wholesale migration rule.
+An earlier implementation phase got ahead of architecture. Useful concepts may survive, but there is no wholesale migration rule.
 
-## The first-event focus
+## First runtime event
 
 Current Life architecture work starts from the first runtime event: **a user invokes Life**.
 
-The working conceptual sequence is:
+The working sequence is:
 
 1. A user makes a Life request.
 2. The canonical Life entry tool is intended to be `life.invoke`.
-3. Life establishes an authenticated/canonical invocation boundary and records exact request facts that belong at that boundary.
+3. Life establishes an authenticated canonical invocation boundary and records exact request facts that belong at that boundary.
 4. Derived semantic representation may be created for retrieval.
-5. Later context retrieval can use semantic search to find candidates.
-6. Candidate information must be resolved back to authoritative exact records before it can be treated as current fact.
-7. Runtime control decisions must use exact machine-verifiable evidence and deterministic evaluation.
-8. AI reasoning and allowed effects operate only after the applicable control path permits them.
+5. Later context retrieval may use semantic search to find candidates.
+6. Candidate information must resolve back to authoritative exact records before it can be treated as current fact.
+7. Runtime control decisions use exact machine-verifiable evidence and deterministic evaluation.
+8. AI reasoning and allowed effects proceed only after the applicable control path permits them.
 
-The current Project Instructions require `life.invoke` only when fresh authorized-system reads show a deployed Life MCP endpoint and exact tool `life.invoke`. If that condition is not verified, invocation is `NOT_RUN` and no runtime output may be fabricated.
+The Project Instructions require `life.invoke` only when fresh authorized-system reads show a deployed Life MCP endpoint and exact tool `life.invoke`. If that condition is not verified, canonical invocation is `NOT_RUN` and no runtime output may be fabricated.
 
-Fresh authorized reads on `2026-09-12T02:23:00Z` showed zero deployed Edge Functions and no `life.invoke` database function in the authorized Supabase project, so canonical invocation remains `NOT_RUN`.
+Fresh authorized Supabase reads on `2026-09-12T02:50:04Z` showed zero public tables, zero deployed Edge Functions, no `life.invoke` database function, and no installed `vector` extension. Canonical invocation therefore remains `NOT_RUN`.
 
 ## Context pipeline versus control pipeline
 
 These are separate.
 
-**Context pipeline:** What information should be considered?
+**Context pipeline:** determines what information is considered. Candidate mechanisms include exact relational lookup, semantic/vector discovery, retrieved documents, user-provided material, and connected-system reads.
 
-Possible mechanisms include exact relational lookup, semantic/vector candidate discovery, retrieved documents, user-provided material, and connected-system reads.
+**Control pipeline:** determines what action is allowed. Authorization, routing, priority, state transition, completion, verification, escalation, release, mutation, and effect execution require exact machine-verifiable evidence and deterministic evaluation. Prose, AI judgment, labels, approvals, comments, reviews, and coordination records have zero Life runtime control authority.
 
-**Control pipeline:** What is allowed to happen?
+No retrieval score or model confidence may become a PASS control state.
 
-Authorization, routing, priority, state transition, completion, verification, escalation, release, mutation, and effect execution require exact machine-verifiable evidence and deterministic evaluation. Free-form prose, AI judgment, labels, approvals, comments, reviews, and coordination notes have zero runtime control authority.
-
-No retrieval score or model confidence may be promoted into a PASS control state.
-
-## Current platform roles
+## Authorized platform roles
 
 ### GitHub
 
@@ -66,99 +62,78 @@ Default branch: `main`
 
 GitHub is the source/build plane: source code, migrations, tests, CI, schemas, history, and engineering evidence. GitHub is not the deployed Life runtime control plane.
 
-The repository was intentionally created public because GitHub Free can enforce repository rulesets on public repositories and standard GitHub-hosted Actions are free for public repositories. The previous private repository did not provide the same Free-plan enforcement.
-
-At continuity-bootstrap start, the new repository was empty, had zero rulesets, and had no observed pull requests. Fresh direct reads on `2026-09-12T02:23:00Z` showed `main` at `0c58ebdca68bd641e5d9c83dbaafda930b57b6a9`, zero repository rulesets, zero open pull requests, and a successful continuity workflow on that head.
+The repository is public so GitHub Free repository rulesets can enforce source-plane protections while standard GitHub-hosted Actions remain free for public repositories.
 
 ### Supabase
 
 Authorized project: `jnenguxodtgwbskhdsxt`
 Project name: `Life`
 Region: `us-west-2`
-Current organization plan at last verification: Free
 
-Supabase remains the leading runtime/data candidate because its current platform offers Postgres, Auth, vector capabilities, and Edge Functions that may fit Life. However, clean-slate reevaluation means the exact permanent MCP/runtime host is still an open question.
-
-Fresh direct reads on `2026-09-12T02:23:00Z` showed the project `ACTIVE_HEALTHY` with zero public tables, zero deployed Edge Functions, no `life.invoke` database function, and the `vector` extension not installed.
+Supabase remains a runtime/data candidate because Postgres, Auth, vector support, and Edge Functions may fit Life. Clean-slate reevaluation keeps the permanent invocation host open until comparison selects it.
 
 ### Vercel
 
-No exact Life Vercel infrastructure target is currently authorized. Vercel Hobby may be researched and compared, but Life state on Vercel is `NOT_RUN` until Vince authorizes an exact target.
+No exact Life Vercel infrastructure target is authorized. Vercel Hobby may be researched and compared, but Life Vercel state is `NOT_RUN` until Vince authorizes an exact target.
 
-Vercel remains a possible runtime-host alternative, especially for MCP/gateway hosting, but it is not selected.
+## GitHub source protection is complete
+
+Vince created repository ruleset `Protect-main`, ruleset ID `22998982`, through the GitHub UI. Direct GitHub read-back verified all selected fields:
+
+- target: default branch;
+- enforcement: active;
+- bypass actors: none;
+- deletion: restricted;
+- non-fast-forward pushes: blocked;
+- pull request required;
+- required approving review count: 0;
+- required status check: `validate` from GitHub Actions;
+- strict up-to-date status-check policy: disabled;
+- extra approval for unattributed changes: disabled;
+- merge, squash, and rebase merge methods remain allowed.
+
+GitHub also reports `main` as protected. This ruleset has zero Life runtime control authority. Its purpose is source-plane enforcement: ordinary changes to `main` must pass through a PR and the repository validator/tests.
+
+The former source-protection blocker `B-0002` is resolved. `github_source_protection` is complete.
 
 ## Legacy invocation work
 
-Before the clean-slate correction, a legacy private repository contained an invocation implementation commonly referred to as PR #25. It explored several concepts that may still be valuable:
+Before the clean-slate correction, a legacy private repository contained an invocation implementation commonly referred to as PR #25. Candidate concepts from that implementation include:
 
 - a stable `life.invoke` tool;
 - authenticated invocation;
 - a canonical invocation ledger;
 - separation between raw invocation facts and vector embeddings;
 - 384-dimensional `gte-small` embeddings;
-- vectors explicitly carrying no control authority;
+- vectors carrying no control authority;
 - database tests and CI;
-- Supabase Auth/OAuth/JWT and an Edge Function entry point.
+- Supabase Auth/OAuth/JWT;
+- an Edge Function entry point.
 
-That implementation must **not** be copied wholesale into `Vinanonymous/Build`. It was created under earlier assumptions, and later review also found implementation defects including a PostgreSQL zero-byte edge case in a text field and case-sensitive parsing of the Bearer authentication scheme.
+That implementation must not be copied wholesale into `Vinanonymous/Build`. It was created under earlier assumptions, and later review found defects including a PostgreSQL zero-byte edge case in a text field and case-sensitive Bearer-scheme parsing.
 
-The correct posture is: treat the legacy implementation as evidence and a set of candidate parts. Re-evaluate each part. Rebuild only what still wins.
+Treat the legacy implementation as evidence and candidate parts. Rebuild only the parts that survive current comparison.
 
 ## Repository transition
 
-The legacy private repository is no longer the authorized Build target. `Vinanonymous/Build` is the current authorized GitHub repository.
+The legacy private repository is not the authorized Build target. `Vinanonymous/Build` is the authorized GitHub repository. The public repository provides GitHub Free ruleset enforcement and a clean source history containing only mechanisms that survive reevaluation.
 
-The reason for creating a new public repository rather than automatically publishing or migrating the old one was to obtain GitHub Free enforcement without inheriting potentially stale architecture, old repository history, or unreviewed private material. Only mechanisms that survive reevaluation should enter Build.
+## Continuity architecture
 
-## Continuity problem being solved now
+The continuity bundle contains:
 
-Vince explicitly required that a future thread be able to continue Life without him re-explaining what happened. He also required maximum useful context and minimum ambiguity.
+- `bootstrap.json`: fixed entry point, required files/read order, resume algorithm, synchronization triggers, and recursion exemption;
+- `current.json`: compact exact current state, targets, component/status, blockers, observations, and one next action;
+- `context.md`: this detailed narrative and rationale;
+- `decisions.jsonl`: append-only typed decision history;
+- `events.jsonl`: append-only operational history;
+- JSON Schemas, a deterministic validator, tests, and GitHub Actions CI.
 
-A single handoff paragraph is not sufficient because it can omit:
+Historical observations never satisfy a later response's fresh-verification requirements.
 
-- the actual objective;
-- the exact active component;
-- user corrections;
-- retired interpretations;
-- decisions and their rationale;
-- known failed or rejected paths;
-- exact authorized-system identities;
-- current verification status;
-- open architecture questions;
-- blockers;
-- exact next action.
+## Continuity synchronization
 
-ChatGPT Project memory remains supplemental context only. The canonical continuity design is repo-local and Git-backed.
-
-## Continuity bundle architecture
-
-The bundle has four content layers plus validation machinery.
-
-### `bootstrap.json`
-
-The fixed entry point. It lists required files, required read order, the resume algorithm, event types that trigger continuity synchronization, and the exact recursion exemption for continuity-only synchronization commits.
-
-### `current.json`
-
-The compact exact current picture. It contains authorized targets, active phase/component/status, current work goal, active/retired decision IDs, unresolved questions, blockers, historical last-observed system state, and one canonical next action.
-
-Historical observations do not satisfy fresh-verification requirements in later responses.
-
-### `context.md`
-
-This file. It preserves detailed narrative context, rationale, nuance, negative knowledge, and the story needed to understand why the current state exists.
-
-### `decisions.jsonl`
-
-Append-only typed decision history. Decisions remain addressable even after retirement. New decisions supersede old IDs rather than erasing history.
-
-### `events.jsonl`
-
-Append-only operational history. It records Vince directives, architecture decisions, mutations, verification transitions, blockers, next-action changes, and component transitions.
-
-## Exact continuity synchronization triggers
-
-Continuity synchronization is required after every successful occurrence of one of these event classes:
+Synchronization is required after each successful occurrence of:
 
 - `VINCE_DIRECTIVE`
 - `ARCHITECTURE_DECISION`
@@ -171,23 +146,27 @@ Continuity synchronization is required after every successful occurrence of one 
 - `NEXT_ACTION_CHANGE`
 - `COMPONENT_TRANSITION`
 
-There is no gate using “important”, “material”, “meaningful”, “as needed”, or a synonym.
+A repository mutation whose changed paths are a nonempty subset of the exact `continuity_sync_paths` in `bootstrap.json` is `CONTINUITY_SYNC` and does not recursively require another synchronization solely because it occurred. Git history preserves its byte-level mutation.
 
-A repository mutation whose changed paths are a nonempty subset of the exact continuity synchronization path set defined in `bootstrap.json` is `CONTINUITY_SYNC`. It does not require a second continuity update solely because the continuity synchronization itself mutated the repository. Git history preserves its exact byte-level mutation.
+## Project Instruction correction
 
-## What must happen after mutations
+Vince changed the final sentence of the `CONVERSATION CONTINUITY` Project Instruction block from:
 
-For a successful non-continuity GitHub mutation, continuity must record the target, operation, changed paths/objects, resulting commit or object identity when available, verification result, associated decision IDs, and effect on current state before the mutation sequence is considered complete.
+`End with next step+response number.`
 
-For Supabase or Vercel mutations, continuity must record the authorized target, operation, exact changed object identities, source Git identity when applicable, and read-back verification result.
+to:
 
-Continuity does not authorize those mutations. It records and reconstructs them.
+`End with next step+response counter.`
 
-## Vince corrections
+No other text in that block changed. The replacement adds one character. Using the previously verified 7,998-character complete Project Instructions as the base, the complete Project Instructions now contain 7,999 characters including whitespace, remaining within the 8,000-character ceiling.
 
-A later Vince correction, replacement, narrowing, or resolution supersedes the earlier target content. Future threads must not resurrect the retired interpretation unless Vince does.
+Future Life responses must use **response counter** terminology.
 
-Corrections are continuity events even when no repository mutation has happened yet. This is necessary because conversation can change project state before code changes.
+## Current research posture
+
+Fresh research in the response that completed source protection rechecked Supabase Free, GitHub Free, and Vercel Hobby pricing/limits/billing/docs; current GitHub ruleset and Actions behavior; current Supabase Edge Function/MCP material; current Vercel Function/MCP material; Reddit reports on operational failures and workarounds; current OpenAI model/plugin/app/agent mechanisms; and current agent instruction-following/security research.
+
+The research does not grandfather any runtime host. It reinforces the existing separation between probabilistic/model reasoning and deterministic execution control. Current agent research continues to show that instruction arbitration can fail under complex or conflicting instruction sets, which supports keeping security-critical control outside model judgment.
 
 ## Current unresolved questions
 
@@ -195,47 +174,45 @@ Corrections are continuity events even when no repository mutation has happened 
 2. Which exact deterministic runtime control implementation should satisfy the ten enumerated control decision kinds?
 3. Which concepts from the legacy invocation implementation should survive the clean-slate rebuild?
 
-Do not silently resolve these from prior implementation history.
+Do not resolve these from implementation history alone.
 
-## Current immediate sequence
+## Current active component
 
-The continuity bundle is installed and verified, and the continuity bootstrap rule is now present in the current Life Project Instructions. The Project Instruction installation blocker is resolved.
+`canonical_invocation_architecture` is active in DESIGN.
 
-The active component is `github_source_protection`. Fresh current research confirms that GitHub Free repository rulesets are available for public repositories and that standard GitHub-hosted Actions on public repositories do not consume private-repository Actions minutes. The selected minimum source-plane rule candidate for `main` is:
+The current work is to rederive and select the permanent `life.invoke` architecture, beginning with:
 
-- no bypass actors;
-- restrict deletions;
-- require a pull request before merging with zero required approvals;
-- require the existing `validate` status check;
-- block force pushes.
+- runtime host;
+- exact tool contract;
+- authentication boundary;
+- canonical invocation record;
+- context/control boundary;
+- implement-now sequence.
 
-This ruleset would have zero Life runtime control authority. Its only purpose is to protect the engineering source plane and ensure the existing continuity validator/tests cannot be bypassed by ordinary changes to `main`.
+No runtime deployment should occur before those decisions are defined and versioned as required.
 
-The connected GitHub integration currently exposes ruleset reads but no ruleset write operation. Browser automation is available only through a metered path, and no metered charge is authorized. `B-0002` therefore remains open until the exact ruleset is created through an authorized write path and read back.
+## Cost constraints
 
-After source protections are applied and verified, return to the first-event problem and rederive the permanent `life.invoke` architecture.
+No paid plan, add-on, metered charge, purchase, or billing commitment may be made without Vince's authorization.
 
-## Cost and platform constraints
-
-No paid plan, metered add-on, purchase, or billing commitment may be made without Vince's authorization.
-
-GitHub Free public-repository features should be preferred when they satisfy requirements without sacrificing architecture. Supabase is currently on the Free plan. Vercel Hobby may be considered only within its current terms and limits, and no Vercel target is authorized yet.
+GitHub Free public-repository mechanisms remain the selected source-plane path. Supabase is currently Free. Vercel Hobby remains a candidate within current terms and limits; no Vercel target is authorized.
 
 ## Reading discipline for future threads
 
-A future thread must not treat this file as verified current external fact. It must:
+A future thread must:
 
-1. read the required continuity bundle;
+1. read `continuity/bootstrap.json` and every path in `required_read_order`;
 2. validate the bundle;
-3. run the Project Instructions' required fresh research;
-4. directly read the authorized GitHub and Supabase systems;
-5. verify live objects referenced by continuity;
-6. mark stale, missing, mismatched, unsupported, failed, or unverified evidence according to Project Instructions;
-7. apply later Vince corrections from the current thread;
-8. continue from `current.json.next_action`.
+3. read the current request/thread;
+4. run the required fresh research;
+5. directly read the authorized systems;
+6. verify referenced live objects;
+7. mark stale, missing, mismatched, unsupported, failed, or unverified evidence under the Project Instructions;
+8. apply later Vince corrections;
+9. continue from `current.json.next_action`.
 
-If live state conflicts with continuity, live authorized-system reads determine the external state, and continuity must be synchronized before the affected work sequence is considered complete.
+If live authorized-system state conflicts with continuity, live state determines the external fact and continuity must be synchronized.
 
 ## Last bundle-authoring timestamp
 
-`2026-09-12T02:23:00Z`
+`2026-09-12T02:50:04Z`
