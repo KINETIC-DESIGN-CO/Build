@@ -11,7 +11,7 @@ Selected composition:
 - remote MCP transport/resource server: **Vercel Functions**;
 - OAuth 2.1 authorization server and identity provider: **Supabase Auth** in project `jnenguxodtgwbskhdsxt`;
 - canonical invocation ledger: **Supabase Postgres** in project `jnenguxodtgwbskhdsxt`;
-- Build/source plane: **GitHub** repository `Vinanonymous/Build`;
+- Build/source plane: **GitHub** repository `KINETIC-DESIGN-CO/Build`;
 - embeddings/vector retrieval: **outside canonical invocation v1**.
 
 The Vercel host class is selected, but no exact Life Vercel project is authorized. Deployment to Vercel is therefore `NOT_RUN`.
