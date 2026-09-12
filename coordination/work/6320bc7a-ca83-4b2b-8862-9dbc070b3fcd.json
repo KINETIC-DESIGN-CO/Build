@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_id": "6320bc7a-ca83-4b2b-8862-9dbc070b3fcd",
+  "title": "Record watchdog task activation and advance to first-run verification",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "f0ad1b3b-57c7-45f1-91d5-fae75168765b"
+  },
+  "implementation_branch": "work/6320bc7a-ca83-4b2b-8862-9dbc070b3fcd",
+  "base_sha": "c325f0ac903b20443bf5d7829b48c4195ac6f09d",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "8aaf747e-2e6a-445a-8e86-662ee9d739e5",
+      "generation": 9
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "0640a166-ef77-4665-8f77-9562e498d6c9",
+      "generation": 20
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "828e3f37-c9c3-4b73-ba37-c50691a79230",
+      "generation": 12
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
