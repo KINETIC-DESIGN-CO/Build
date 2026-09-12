@@ -25,6 +25,23 @@ class ContinuityTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("VALID", result.stdout)
 
+    def test_continuity_sync_rule_is_recursion_safe(self):
+        bootstrap = json.loads((ROOT / "continuity/bootstrap.json").read_text())
+        self.assertEqual(
+            bootstrap["continuity_sync_paths"],
+            [
+                "continuity/**",
+                "coordination/work/**",
+                "scripts/validate_continuity.py",
+                "tests/test_continuity.py",
+                ".github/workflows/continuity.yml",
+            ],
+        )
+        self.assertEqual(
+            bootstrap["continuity_sync_rule"],
+            "A repository mutation whose changed paths are a nonempty subset of continuity_sync_paths is CONTINUITY_SYNC and does not require a second continuity update solely because that continuity mutation occurred, including a pull-request merge to main. A GitHub mutation whose target branch matches work/<lowercase-UUIDv4> or lock/<64-lowercase-hex> and does not update main is SOURCE_WORKSPACE_MUTATION and does not require continuity synchronization solely because it occurred; that branch's Git history and live machine state are its exact evidence. Creation of the work branch from current main is included. Any update to main whose changed paths are not a nonempty subset of continuity_sync_paths is never exempt. Git history remains the exact byte-history for every exempt mutation.",
+        )
+
     def test_rejects_wrong_github_target(self):
         td, dst = self.copy_repo()
         try:

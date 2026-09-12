@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_id": "a4e9919d-ddcb-4c1f-9e98-afde68173c91",
+  "title": "Eliminate continuity-sync recursion in source coordination",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "47cba161-0959-49e7-bb68-acd033661043"
+  },
+  "implementation_branch": "work/a4e9919d-ddcb-4c1f-9e98-afde68173c91",
+  "base_sha": "9535ba7efd1aceec752c4f88324620f66e3f8c51",
+  "component_id": "multi_agent_coordination",
+  "repo_paths": [
+    "continuity/bootstrap.json",
+    "coordination/README.md",
+    "coordination/protocol.json",
+    "tests/test_continuity.py",
+    "tests/test_coordination.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:multi_agent_coordination",
+      "lock_branch": "lock/e530c334d008ac45e9d85b07280b0146c10f315f480c5577a977e3f6c7f22005",
+      "lease_id": "598db0f4-cd31-4769-aa2a-40ff173913aa",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "2261ff2d-5c95-4c01-90ce-9cc173dd5cde",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:continuity/bootstrap.json",
+      "lock_branch": "lock/adb1a84970cd6bbc087153eb338011aafb8107b0a0ecfd96691e16905a0b49de",
+      "lease_id": "e040b5f8-3b3d-4d94-b8a4-02c24e840de7",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:coordination/README.md",
+      "lock_branch": "lock/b3a4f82dc74f1f37129f24434062580457898bbf5b243fe0c221d2b8a7c97198",
+      "lease_id": "9e710b8e-0b81-4e7d-8552-2e76cad560ba",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:coordination/protocol.json",
+      "lock_branch": "lock/9c6ddcd29016358f183405bba8ecbf3d19eb80c4e9344eddfc07287935e9e141",
+      "lease_id": "fe8e873a-eaa6-40dc-86cc-f0b6b99afded",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:tests/test_continuity.py",
+      "lock_branch": "lock/64bf054ef760683d2a8577dbf8970e81aaba5e4f7b24c4c32aa9760493cc1017",
+      "lease_id": "86a2d5f1-5af6-4cb7-84fc-f1d945f41028",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:tests/test_coordination.py",
+      "lock_branch": "lock/f3e5d80d2849bc9659003a08d149c03f0770e90592d628de93bccca45134cb8e",
+      "lease_id": "a241c412-e7f9-4805-9504-e541845ff91d",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
