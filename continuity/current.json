@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "manifest_revision": 21,
+  "manifest_revision": 22,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T22:12:18Z",
+  "updated_at": "2026-09-12T22:56:23Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
   "current_component": "multi_thread_coordination_hardening",
@@ -43,13 +43,12 @@
     "D-0008",
     "D-0009",
     "D-0010",
-    "D-0012",
     "D-0013",
     "D-0014",
     "D-0015",
     "D-0016",
     "D-0017",
-    "D-0018"
+    "D-0019"
   ],
   "retired_decision_ids": [
     "D-0101",
@@ -105,19 +104,19 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T22:12:18Z",
+      "observed_at": "2026-09-12T22:56:23Z",
       "repository_id": 1366835183,
       "full_name": "KINETIC-DESIGN-CO/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "a2cf6fd8f762dc8639dfa29164652a9744732775",
+      "head_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": true,
       "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34721665798,
+      "latest_continuity_workflow_run_id": 34722379900,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
