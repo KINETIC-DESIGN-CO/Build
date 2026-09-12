@@ -14,13 +14,13 @@ Creating the empty work branch from current `main`, creating/updating/releasing 
 
 ## Resource claims
 
-A work item must hold an ACTIVE, unexpired claim for every implementation resource it can mutate. Resource keys are acquired in ascending UTF-8 order.
+A work item must hold an ACTIVE, unexpired claim for every implementation resource it can mutate.
 
 Required keys include:
 
 - `component:<component_id>` for the component being changed;
 - `repo-file:<exact_repo_path>` for every changed repository path except the work record itself;
-- `integration:main` before opening a PR to `main`;
+- `integration:main` before opening a PR to `main` and while integrating it;
 - `external:supabase:jnenguxodtgwbskhdsxt` before any write to the authorized Supabase production project.
 
 A resource's lock branch is deterministic:
@@ -32,6 +32,20 @@ The branch contains `coordination/lock.json`, validated by `coordination/schema/
 If a lock update fails because the live file changed, the worker must read the live lock again before any retry or new acquisition attempt for that resource. A stale compare-and-swap result is never retried from the stale snapshot.
 
 Claims last exactly 14,400 seconds. Renew a claim when it has 1,800 seconds or less remaining. A takeover is eligible only when current UTC is greater than or equal to `expires_at`; takeover increments `generation` by exactly one. Release sets `state` to `RELEASED` and preserves the last owner for audit. A later acquisition from `RELEASED` increments `generation` by exactly one and receives a new `work_id`, `lease_id`, base SHA, and lease timestamps.
+
+## Parallel work selection
+
+Another active work item is not a global block.
+
+For each proposed operation, determine the exact resource-key set required by that operation. Compare that set with the resource keys held by other work items whose live locks are both `ACTIVE` and unexpired. Only the exact intersection blocks that operation.
+
+`continuity/current.json` fields `current_component`, `current_work`, and `next_action` describe canonical engineering progression. They are not resource claims and create no exclusive ownership.
+
+An existing `integration:main` claim does not block implementation mutations on another work branch when that implementation operation does not require `integration:main`. It does block another work item from opening or integrating a PR to `main` while the claim remains ACTIVE and unexpired.
+
+If one requested operation intersects another work item's ACTIVE unexpired claims and another requested operation does not, evaluate them separately. The non-intersecting operation may proceed with its own exact required claims. The intersecting operation remains unexecuted; it is not silently dropped.
+
+Resource acquisition ordering applies to each acquisition attempt, not to the entire lifetime history of a work item. Keys acquired in one attempt must be unique and sorted ascending by UTF-8 resource key. A later attempt may therefore acquire `integration:main` after implementation claims already exist, provided that later attempt is itself correctly ordered and the live `integration:main` claim has no blocking intersection.
 
 ## Pull requests
 
@@ -46,8 +60,6 @@ The `Protect-main` ruleset must also use strict required checks: **Require branc
 Mutations confined to `work/<UUIDv4>` or `lock/<64hex>` branches do not update canonical Life state and do not require a continuity synchronization solely because they occurred. Their branch history and live machine state are the exact evidence.
 
 A normal source PR merge or other update to `main` requires continuity synchronization. The synchronization itself is recursion-safe: `continuity/bootstrap.json` includes `coordination/work/**` in `continuity_sync_paths`, so a validated continuity-sync PR whose changed paths are a nonempty subset of those exact paths is `CONTINUITY_SYNC` and its merge to `main` does not require another synchronization solely because that synchronization merged. An update to `main` outside that exact path set is never exempt.
-
-This distinction allows actual parallel work without creating an infinite sequence of continuity-only PRs.
 
 ## Visibility
 

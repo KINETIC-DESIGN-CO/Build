@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_id": "7b1dc4ed-5f79-4ff6-a08a-20323a7f0142",
+  "title": "Enforce exact resource intersection for parallel Life work",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "2c0d2c4c-7b6a-4692-9f2e-857529778482"
+  },
+  "implementation_branch": "work/7b1dc4ed-5f79-4ff6-a08a-20323a7f0142",
+  "base_sha": "c11e85020e2520fe33c39374cea3876b52969d5f",
+  "component_id": "source_coordination_parallel_resource_gating",
+  "repo_paths": [
+    "coordination/README.md",
+    "coordination/protocol.json",
+    "scripts/validate_coordination.py",
+    "tests/test_coordination.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:source_coordination_parallel_resource_gating",
+      "lock_branch": "lock/bfcea66765bdd13cd1aea725b872f65d9f780fbff935a15fd37990c873d1e9f0",
+      "lease_id": "1cf0c31e-b073-4986-b56c-e6564044efe3",
+      "generation": 1
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "2238903c-490f-4839-b29e-1fddaff8a4b2",
+      "generation": 16
+    },
+    {
+      "resource_key": "repo-file:coordination/README.md",
+      "lock_branch": "lock/b3a4f82dc74f1f37129f24434062580457898bbf5b243fe0c221d2b8a7c97198",
+      "lease_id": "f943b427-96b8-4c7a-a447-47e6f8e497ab",
+      "generation": 6
+    },
+    {
+      "resource_key": "repo-file:coordination/protocol.json",
+      "lock_branch": "lock/9c6ddcd29016358f183405bba8ecbf3d19eb80c4e9344eddfc07287935e9e141",
+      "lease_id": "34a3f216-3603-4fbf-a4c2-4f8b54a22c92",
+      "generation": 6
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_coordination.py",
+      "lock_branch": "lock/0d7cf6ac6a3f6ab9cca29d8e5e98cac953f7ec3f1a9acb5dcb4a065dc2f91146",
+      "lease_id": "01684374-0254-427b-8451-557e1c847dae",
+      "generation": 4
+    },
+    {
+      "resource_key": "repo-file:tests/test_coordination.py",
+      "lock_branch": "lock/f3e5d80d2849bc9659003a08d149c03f0770e90592d628de93bccca45134cb8e",
+      "lease_id": "5370c046-ec4c-4457-a4ae-53f8a9bfdc3b",
+      "generation": 5
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
