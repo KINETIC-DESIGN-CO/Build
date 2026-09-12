@@ -14,12 +14,18 @@
     "continuity/context.md",
     "continuity/decisions.jsonl",
     "continuity/events.jsonl",
+    "coordination/protocol.json",
+    "coordination/README.md",
+    "coordination/schema/lock.schema.json",
+    "coordination/schema/work-record.schema.json",
     "continuity/schema/bootstrap.schema.json",
     "continuity/schema/current.schema.json",
     "continuity/schema/decision.schema.json",
     "continuity/schema/event.schema.json",
     "scripts/validate_continuity.py",
+    "scripts/validate_coordination.py",
     "tests/test_continuity.py",
+    "tests/test_coordination.py",
     ".github/workflows/continuity.yml"
   ],
   "required_read_order": [
@@ -27,7 +33,9 @@
     "continuity/current.json",
     "continuity/context.md",
     "continuity/decisions.jsonl",
-    "continuity/events.jsonl"
+    "continuity/events.jsonl",
+    "coordination/protocol.json",
+    "coordination/README.md"
   ],
   "resume_algorithm": [
     "READ_REQUIRED_FILES",
@@ -59,5 +67,5 @@
     ".github/workflows/continuity.yml"
   ],
   "continuity_sync_rule": "A repository mutation whose changed paths are a nonempty subset of continuity_sync_paths is CONTINUITY_SYNC and does not require a second continuity update solely because that continuity mutation occurred. Git history remains the exact byte-history for the mutation.",
-  "validation_command": "python scripts/validate_continuity.py && python -m unittest discover -s tests -p 'test_*.py'"
+  "validation_command": "python scripts/validate_continuity.py && python scripts/validate_coordination.py && python -m unittest discover -s tests -p 'test_*.py'"
 }
