@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:continuity_reconciliation",
   "generation": 2,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "1b678d59-f16b-4689-aebd-6cefee81f1c2",
   "worker": {
     "kind": "chatgpt",
