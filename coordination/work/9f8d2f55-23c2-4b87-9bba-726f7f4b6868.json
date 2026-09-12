@@ -17,26 +17,89 @@
     "coordination/protocol.json",
     "governance/placement-policy.json",
     "governance/schema/placement-policy.schema.json",
-    "scripts/validate_continuity.py",
-    "scripts/validate_coordination.py",
     "tests/test_continuity.py",
     "tests/test_coordination.py"
   ],
   "external_targets": [],
   "claims": [
-    {"resource_key":"component:life_governance_policy_bundle","lock_branch":"lock/f0de5dd243c49c43cbdc751e4879a3b5ff74295b968450028140d2c2d531e5d3","lease_id":"6cda30e4-15fb-4d8f-b770-7be54d725201","generation":3},
-    {"resource_key":"integration:main","lock_branch":"lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9","lease_id":"37b97647-63a5-45d9-9055-5dc6eb8a0e45","generation":14},
-    {"resource_key":"repo-file:continuity/bootstrap.json","lock_branch":"lock/adb1a84970cd6bbc087153eb338011aafb8107b0a0ecfd96691e16905a0b49de","lease_id":"d9dbc80a-0ce7-4fa5-94c7-a3c2564434a7","generation":4},
-    {"resource_key":"repo-file:continuity/response-contract.json","lock_branch":"lock/bd3640d738c57f70aec8f33d3ebba1bd52db955c902dec2e72439f8ad92059ea","lease_id":"f50c31c5-a43f-4e09-908f-301b0d568a2f","generation":2},
-    {"resource_key":"repo-file:continuity/schema/response-contract.schema.json","lock_branch":"lock/283ac8c70c3b085b41687e7a54c4f7982a308ae7a8776724c57227f12d338fc9","lease_id":"878cd2af-713d-4f01-9158-e49c1c360dbf","generation":2},
-    {"resource_key":"repo-file:coordination/README.md","lock_branch":"lock/b3a4f82dc74f1f37129f24434062580457898bbf5b243fe0c221d2b8a7c97198","lease_id":"974fd77c-7fcb-4394-8f6c-cc2032765695","generation":5},
-    {"resource_key":"repo-file:coordination/protocol.json","lock_branch":"lock/9c6ddcd29016358f183405bba8ecbf3d19eb80c4e9344eddfc07287935e9e141","lease_id":"36b81b95-fd43-41bc-944d-d840bf9317f9","generation":5},
-    {"resource_key":"repo-file:governance/placement-policy.json","lock_branch":"lock/ab84c68b760d2d1273067cb620abc3e2ec3dfd3a9f1a2b8696deab2194a04cdd","lease_id":"c8418f1e-e21a-4eb2-99e6-9ff72ee030b8","generation":2},
-    {"resource_key":"repo-file:governance/schema/placement-policy.schema.json","lock_branch":"lock/67e257f04b5e099f9642aa35343e9f7370b056693ba949e16ae41eede186c453","lease_id":"c1590ea8-757b-4d54-b85d-51a5edbe89e4","generation":2},
-    {"resource_key":"repo-file:scripts/validate_continuity.py","lock_branch":"lock/c3ba09fe16c3d5cbac4245dda1c8fa038874176e688f6addbd52e0e31d2acc8b","lease_id":"e8f3530c-584e-420c-adb1-de4cb7a7c3fa","generation":3},
-    {"resource_key":"repo-file:scripts/validate_coordination.py","lock_branch":"lock/0d7cf6ac6a3f6ab9cca29d8e5e98cac953f7ec3f1a9acb5dcb4a065dc2f91146","lease_id":"f681a0c6-616e-4fcb-bc03-ca89c3ebf2c4","generation":3},
-    {"resource_key":"repo-file:tests/test_continuity.py","lock_branch":"lock/64bf054ef760683d2a8577dbf8970e81aaba5e4f7b24c4c32aa9760493cc1017","lease_id":"0aaf01a8-d379-4131-93de-80457deb067b","generation":4},
-    {"resource_key":"repo-file:tests/test_coordination.py","lock_branch":"lock/f3e5d80d2849bc9659003a08d149c03f0770e90592d628de93bccca45134cb8e","lease_id":"d6858f4d-5742-4f02-b292-5859250bb913","generation":4}
+    {
+      "resource_key": "component:life_governance_policy_bundle",
+      "lock_branch": "lock/f0de5dd243c49c43cbdc751e4879a3b5ff74295b968450028140d2c2d531e5d3",
+      "lease_id": "6cda30e4-15fb-4d8f-b770-7be54d725201",
+      "generation": 3
+    },
+    {
+      "resource_key": "integration:main",
+      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
+      "lease_id": "37b97647-63a5-45d9-9055-5dc6eb8a0e45",
+      "generation": 14
+    },
+    {
+      "resource_key": "repo-file:continuity/bootstrap.json",
+      "lock_branch": "lock/adb1a84970cd6bbc087153eb338011aafb8107b0a0ecfd96691e16905a0b49de",
+      "lease_id": "d9dbc80a-0ce7-4fa5-94c7-a3c2564434a7",
+      "generation": 4
+    },
+    {
+      "resource_key": "repo-file:continuity/response-contract.json",
+      "lock_branch": "lock/bd3640d738c57f70aec8f33d3ebba1bd52db955c902dec2e72439f8ad92059ea",
+      "lease_id": "f50c31c5-a43f-4e09-908f-301b0d568a2f",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:continuity/schema/response-contract.schema.json",
+      "lock_branch": "lock/283ac8c70c3b085b41687e7a54c4f7982a308ae7a8776724c57227f12d338fc9",
+      "lease_id": "878cd2af-713d-4f01-9158-e49c1c360dbf",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:coordination/README.md",
+      "lock_branch": "lock/b3a4f82dc74f1f37129f24434062580457898bbf5b243fe0c221d2b8a7c97198",
+      "lease_id": "974fd77c-7fcb-4394-8f6c-cc2032765695",
+      "generation": 5
+    },
+    {
+      "resource_key": "repo-file:coordination/protocol.json",
+      "lock_branch": "lock/9c6ddcd29016358f183405bba8ecbf3d19eb80c4e9344eddfc07287935e9e141",
+      "lease_id": "36b81b95-fd43-41bc-944d-d840bf9317f9",
+      "generation": 5
+    },
+    {
+      "resource_key": "repo-file:governance/placement-policy.json",
+      "lock_branch": "lock/ab84c68b760d2d1273067cb620abc3e2ec3dfd3a9f1a2b8696deab2194a04cdd",
+      "lease_id": "c8418f1e-e21a-4eb2-99e6-9ff72ee030b8",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:governance/schema/placement-policy.schema.json",
+      "lock_branch": "lock/67e257f04b5e099f9642aa35343e9f7370b056693ba949e16ae41eede186c453",
+      "lease_id": "c1590ea8-757b-4d54-b85d-51a5edbe89e4",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_continuity.py",
+      "lock_branch": "lock/c3ba09fe16c3d5cbac4245dda1c8fa038874176e688f6addbd52e0e31d2acc8b",
+      "lease_id": "e8f3530c-584e-420c-adb1-de4cb7a7c3fa",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_coordination.py",
+      "lock_branch": "lock/0d7cf6ac6a3f6ab9cca29d8e5e98cac953f7ec3f1a9acb5dcb4a065dc2f91146",
+      "lease_id": "f681a0c6-616e-4fcb-bc03-ca89c3ebf2c4",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:tests/test_continuity.py",
+      "lock_branch": "lock/64bf054ef760683d2a8577dbf8970e81aaba5e4f7b24c4c32aa9760493cc1017",
+      "lease_id": "0aaf01a8-d379-4131-93de-80457deb067b",
+      "generation": 4
+    },
+    {
+      "resource_key": "repo-file:tests/test_coordination.py",
+      "lock_branch": "lock/f3e5d80d2849bc9659003a08d149c03f0770e90592d628de93bccca45134cb8e",
+      "lease_id": "d6858f4d-5742-4f02-b292-5859250bb913",
+      "generation": 4
+    }
   ],
   "runtime_control_authority": "NONE"
 }
