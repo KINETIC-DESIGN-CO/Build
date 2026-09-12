@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "manifest_revision": 13,
+  "manifest_revision": 14,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T09:34:58Z",
+  "updated_at": "2026-09-12T09:51:31Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
-  "phase": "IMPLEMENTATION",
+  "phase": "VERIFICATION",
   "current_component": "build_repository_watchdog",
   "current_status": "ACTIVE",
   "authorized_targets": {
@@ -23,10 +23,13 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Create and read back the exact hourly America/Denver Build Repository Watchdog Scheduled task from the watchdog source now verified on main.",
+    "goal": "Verify the first scheduled Build Repository Watchdog execution against the versioned executor, schedule, self-audit, and required GitHub/Supabase read contract.",
     "completion_conditions": [
-      "WATCHDOG_SCHEDULED_TASK_CREATED_HOURLY_AMERICA_DENVER",
-      "WATCHDOG_SCHEDULED_TASK_READBACK_VERIFIED"
+      "WATCHDOG_FIRST_SCHEDULED_RUN_EXECUTED",
+      "WATCHDOG_FIRST_RUN_EXECUTOR_CONTRACT_MATCH_VERIFIED",
+      "WATCHDOG_FIRST_RUN_SCHEDULE_CONTRACT_MATCH_VERIFIED",
+      "WATCHDOG_FIRST_RUN_SELF_AUDIT_STATE_CLASSIFIED",
+      "WATCHDOG_FIRST_RUN_REQUIRED_READ_RESULTS_CLASSIFIED"
     ]
   },
   "active_decision_ids": [
@@ -93,19 +96,19 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T09:34:58Z",
+      "observed_at": "2026-09-12T09:51:31Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "e6e8ad4d7cc5d5a12cb2399ca5c40c6d34e65c9d",
+      "head_sha": "c325f0ac903b20443bf5d7829b48c4195ac6f09d",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": true,
       "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34686031274,
+      "latest_continuity_workflow_run_id": 34686769566,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
@@ -145,15 +148,29 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T09:34:58Z",
+      "observed_at": "2026-09-12T09:51:31Z",
       "reason": "No exact Life Vercel target or deployed Life MCP endpoint is authorized-system verified and the exact tool life.invoke is not verified live."
+    },
+    "watchdog_automation": {
+      "status": "VERIFIED",
+      "observed_at": "2026-09-12T09:48:53Z",
+      "title": "Build Repository Watchdog",
+      "executor_contract_id": "build-watchdog-executor-v1",
+      "schedule_contract_id": "build-watchdog-hourly-denver-v1",
+      "cadence": "HOURLY",
+      "timezone": "America/Denver",
+      "timing_mode": "condition_watch",
+      "enabled": true,
+      "prompt_match": true,
+      "schedule_match": true,
+      "first_run_status": "NOT_RUN"
     }
   },
   "next_action": {
-    "id": "A-0009",
-    "kind": "IMPLEMENT",
-    "target": "BUILD_REPOSITORY_WATCHDOG_SCHEDULED_TASK",
-    "description": "Create one hourly America/Denver ChatGPT Scheduled task using the exact executor prompt and schedule contract versioned in watchdog/spec.json on main, read the created task back, and record completion only when the returned task fields match that versioned contract.",
+    "id": "A-0010",
+    "kind": "VERIFY",
+    "target": "BUILD_REPOSITORY_WATCHDOG_FIRST_SCHEDULED_RUN",
+    "description": "After the first hourly Build Repository Watchdog execution, verify that the task ran under the versioned executor and schedule contracts, classify its self-audit state, and classify the required GitHub and Supabase read results without treating task prose as control authority.",
     "authorization_effect": "NONE"
   }
 }
