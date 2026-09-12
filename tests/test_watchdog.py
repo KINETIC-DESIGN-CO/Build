@@ -47,6 +47,18 @@ class WatchdogValidationTests(unittest.TestCase):
         with self.assertRaises(vw.ValidationError):
             vw.validate_spec(broken)
 
+    def test_executor_prompt_contract_is_exact(self):
+        broken = copy.deepcopy(BASE_SPEC)
+        broken["self_audit"]["executor_prompt_template"] += " changed"
+        with self.assertRaises(vw.ValidationError):
+            vw.validate_spec(broken)
+
+    def test_source_contract_fingerprint_set_is_exact(self):
+        broken = copy.deepcopy(BASE_SPEC)
+        broken["self_audit"]["source_contract_fingerprints"] = broken["self_audit"]["source_contract_fingerprints"][1:]
+        with self.assertRaises(vw.ValidationError):
+            vw.validate_spec(broken)
+
     def test_unregistered_predicate_operator_fails(self):
         broken = copy.deepcopy(BASE_REGISTRY)
         broken["findings"][0]["fail_predicate"]["op"] = "MODEL_JUDGMENT"
