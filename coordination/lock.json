@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:continuity/events.jsonl",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "99d3b3ba-46ab-4995-8ad4-b1d643c811e5",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "47cba161-0959-49e7-bb68-acd033661043"
+  },
+  "implementation_branch": "work/99d3b3ba-46ab-4995-8ad4-b1d643c811e5",
+  "lease_id": "534cd659-821c-40f3-ae7a-b942f4d36eb0",
+  "base_sha": "4478966f70941d258c818f97d4ba841ac58604a7",
+  "acquired_at": "2026-09-12T03:32:55Z",
+  "heartbeat_at": "2026-09-12T03:32:55Z",
+  "expires_at": "2026-09-12T07:32:55Z",
+  "runtime_control_authority": "NONE"
+}
