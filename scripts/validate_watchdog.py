@@ -81,7 +81,7 @@ def validate_spec(spec):
     expect(spec.get("runtime_control_authority") == "NONE", "spec:runtime-authority")
     expect(spec.get("source_control_authority") == "NONE", "spec:source-authority")
     repo = spec.get("authorized_repository", {})
-    expect(repo == {"repository_id":1366835183,"full_name":"Vinanonymous/Build","default_branch":"main"}, "spec:repository")
+    expect(repo == {"repository_id":1366835183,"full_name":"KINETIC-DESIGN-CO/Build","default_branch":"main"}, "spec:repository")
     ext = spec.get("authorized_external_targets", {})
     expect(ext.get("supabase_project_id") == "jnenguxodtgwbskhdsxt", "spec:supabase-target")
     expect(ext.get("vercel_target_source") == "continuity/current.json.authorized_targets.vercel", "spec:vercel-source")
