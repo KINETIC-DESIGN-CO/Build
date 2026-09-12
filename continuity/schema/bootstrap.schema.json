@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Vinanonymous/Build/blob/main/continuity/schema/bootstrap.schema.json",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/continuity/schema/bootstrap.schema.json",
   "title": "Life Continuity Bootstrap",
   "type": "object",
   "additionalProperties": false,
@@ -15,7 +15,7 @@
       "required": ["repository_id","full_name","default_branch"],
       "properties": {
         "repository_id": {"const": 1366835183},
-        "full_name": {"const": "Vinanonymous/Build"},
+        "full_name": {"const": "KINETIC-DESIGN-CO/Build"},
         "default_branch": {"const": "main"}
       }
     },
