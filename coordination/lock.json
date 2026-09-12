@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:architecture/canonical-invocation-v1.md",
-  "generation": 1,
-  "state": "RELEASED",
-  "work_id": "3b20ea31-bea9-4fa3-96ed-8c3da22c9af8",
+  "generation": 2,
+  "state": "ACTIVE",
+  "work_id": "bc439d68-4e0d-4fe8-99c0-196813143e4a",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "44ea1892-1766-46dc-af1b-88660450929a"
+    "session_id": "c110423e-18ed-4836-8574-f1a9727c8706"
   },
-  "implementation_branch": "work/3b20ea31-bea9-4fa3-96ed-8c3da22c9af8",
-  "lease_id": "81cbbb4a-93ce-4b8e-b78e-7594fa31f505",
-  "base_sha": "e65871200f7c0a8b965543e76111d1332ba2a4ff",
-  "acquired_at": "2026-09-12T03:59:38Z",
-  "heartbeat_at": "2026-09-12T03:59:38Z",
-  "expires_at": "2026-09-12T07:59:38Z",
+  "implementation_branch": "work/bc439d68-4e0d-4fe8-99c0-196813143e4a",
+  "lease_id": "95682c40-efe5-4965-b8c9-cd1cce54603d",
+  "base_sha": "2d67cacdfe8c725970a5da4bdaa739404cc44f89",
+  "acquired_at": "2026-09-12T19:57:14Z",
+  "heartbeat_at": "2026-09-12T19:57:14Z",
+  "expires_at": "2026-09-12T23:57:14Z",
   "runtime_control_authority": "NONE"
 }
