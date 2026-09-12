@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "manifest_revision": 2,
+  "manifest_revision": 3,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T02:11:13Z",
+  "updated_at": "2026-09-12T02:23:00Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
-  "current_component": "continuity_bootstrap",
-  "current_status": "COMPLETE",
+  "current_component": "github_source_protection",
+  "current_status": "BLOCKED",
   "authorized_targets": {
     "github": {
       "repository_id": 1366835183,
@@ -23,13 +23,15 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Continuity bootstrap is installed and verified in Vinanonymous/Build. The next step is to make future Life threads consume it through Project Instructions.",
+    "goal": "Install and verify the minimum GitHub Free machine-enforced source protections for the main branch before returning to the first-event life.invoke architecture.",
     "completion_conditions": [
-      "ALL_REQUIRED_FILES_EXIST",
-      "VALIDATOR_EXIT_ZERO",
-      "UNIT_TESTS_PASS",
-      "FILES_READ_BACK_FROM_GITHUB",
-      "PROJECT_INSTRUCTION_POINTER_PENDING_USER_INSTALLATION"
+      "GITHUB_FREE_REPOSITORY_RULESETS_VERIFIED",
+      "MAIN_RULESET_ACTIVE",
+      "PULL_REQUEST_REQUIRED",
+      "STATUS_CHECK_VALIDATE_REQUIRED",
+      "DELETION_RESTRICTED",
+      "FORCE_PUSH_BLOCKED",
+      "RULESET_READ_BACK_VERIFIED"
     ]
   },
   "active_decision_ids": [
@@ -72,35 +74,41 @@
   "blockers": [
     {
       "id": "B-0001",
-      "state": "OPEN",
+      "state": "RESOLVED",
       "condition": "Project Instructions do not yet require future threads to read and validate the continuity bundle.",
       "clears_when": "VINCE_INSTALLS_CONTINUITY_PROJECT_INSTRUCTION"
+    },
+    {
+      "id": "B-0002",
+      "state": "OPEN",
+      "condition": "The connected GitHub tool exposes repository-ruleset reads but no repository-ruleset write operation, and metered browser automation is not authorized.",
+      "clears_when": "ONE_OF:GITHUB_RULESET_WRITE_ACTION_AVAILABLE|VINCE_MANUALLY_CREATES_EXACT_RULESET|VINCE_AUTHORIZES_METERED_BROWSER_AUTOMATION"
     }
   ],
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T02:11:13Z",
+      "observed_at": "2026-09-12T02:23:00Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
+      "head_sha": "0c58ebdca68bd641e5d9c83dbaafda930b57b6a9",
       "ruleset_count": 0,
-      "pull_request_count_observed": 0,
-      "bundle_file_count": 12,
-      "validated_bundle_head_sha": "e7402f294ec0001f04c18f753f80ae2bd39a2a81",
-      "continuity_workflow_run_id": 34666929796,
-      "continuity_workflow_conclusion": "success",
-      "note": "All required continuity files were present at the validated bundle head. Later continuity-sync commits may advance main without changing non-continuity work."
+      "open_pull_request_count": 0,
+      "latest_continuity_workflow_run_id": 34667074812,
+      "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T02:02:16Z",
+      "observed_at": "2026-09-12T02:23:00Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
       "public_table_count": 0,
-      "edge_function_count": 0
+      "edge_function_count": 0,
+      "life_invoke_proc_count": 0,
+      "vector_extension_installed": 0
     },
     "vercel": {
       "status": "NOT_RUN",
@@ -110,15 +118,15 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T02:02:16Z",
-      "reason": "Authorized Supabase reads show zero deployed Edge Functions, so no deployed Life MCP endpoint and exact tool life.invoke are verified."
+      "observed_at": "2026-09-12T02:23:00Z",
+      "reason": "Authorized Supabase reads show zero deployed Edge Functions and no life.invoke database function, so no deployed Life MCP endpoint and exact tool life.invoke are verified."
     }
   },
   "next_action": {
-    "id": "A-0001",
+    "id": "A-0002",
     "kind": "MUTATE",
-    "target": "PROJECT_INSTRUCTIONS",
-    "description": "Replace the existing CONVERSATION CONTINUITY section with the validated continuity-bundle bootstrap rule, after counting the complete resulting Project Instructions and confirming the total is <= 8000 characters.",
+    "target": "GITHUB_RULESET:main",
+    "description": "Create one active repository branch ruleset targeting main with no bypass actors; require a pull request with zero required approvals, require the validate status check, restrict deletions, and block force pushes; then read back the ruleset and verify each field.",
     "authorization_effect": "NONE"
   }
 }
