@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Response Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","contract_id","runtime_control_authority","default_mode","required_sections","state_terms","plain_english_rule","technical_only_exception","precision_rule","platform_feature_fields","copy_paste_rule","completion_rule","progression_rule","no_duplicate_authority_rule"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_id": {"const": "life-response-contract-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "default_mode": {"const": "PLAIN_ENGLISH_FIRST"},
+    "required_sections": {"type":"array","minItems":9,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "state_terms": {"type":"array","minItems":8,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "plain_english_rule": {"type":"string","minLength":1},
+    "technical_only_exception": {"const":"USER_EXPLICITLY_REQUESTED_TECHNICAL_ONLY"},
+    "precision_rule": {"type":"string","minLength":1},
+    "platform_feature_fields": {"type":"array","minItems":4,"maxItems":4,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "copy_paste_rule": {"type":"string","minLength":1},
+    "completion_rule": {"type":"string","minLength":1},
+    "progression_rule": {"type":"string","minLength":1},
+    "no_duplicate_authority_rule": {"type":"string","minLength":1}
+  }
+}
