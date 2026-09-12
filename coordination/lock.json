@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:governance/schema/work-selection-policy.schema.json",
   "generation": 2,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "6a8b44f0-fe42-4247-832d-65a89b46c159",
   "worker": {
     "kind": "chatgpt",
