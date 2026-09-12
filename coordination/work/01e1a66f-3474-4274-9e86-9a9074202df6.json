@@ -15,7 +15,8 @@
     "continuity/current.json",
     "continuity/schema/bootstrap.schema.json",
     "continuity/schema/current.schema.json",
-    "scripts/validate_continuity.py"
+    "scripts/validate_continuity.py",
+    "watchdog/spec.json"
   ],
   "external_targets": [],
   "claims": [
@@ -72,6 +73,12 @@
       "lock_branch": "lock/c3ba09fe16c3d5cbac4245dda1c8fa038874176e688f6addbd52e0e31d2acc8b",
       "lease_id": "60eda64b-38c8-43e7-b702-136adaac2f19",
       "generation": 6
+    },
+    {
+      "resource_key": "repo-file:watchdog/spec.json",
+      "lock_branch": "lock/9b26dcc011156c23399cddff948f79a68075708993b34c9d772511a6c8edaa2d",
+      "lease_id": "79b43e69-5799-4f4b-9495-31d6452fc4f6",
+      "generation": 4
     }
   ],
   "runtime_control_authority": "NONE"
