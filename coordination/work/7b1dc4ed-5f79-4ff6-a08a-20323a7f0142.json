@@ -10,10 +10,6 @@
   "base_sha": "c11e85020e2520fe33c39374cea3876b52969d5f",
   "component_id": "source_coordination_parallel_resource_gating",
   "repo_paths": [
-    "continuity/context.md",
-    "continuity/current.json",
-    "continuity/decisions.jsonl",
-    "continuity/events.jsonl",
     "coordination/README.md",
     "coordination/protocol.json",
     "scripts/validate_coordination.py",
@@ -32,30 +28,6 @@
       "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
       "lease_id": "2238903c-490f-4839-b29e-1fddaff8a4b2",
       "generation": 16
-    },
-    {
-      "resource_key": "repo-file:continuity/context.md",
-      "lock_branch": "lock/b54a87ae0c6695df543fd900938bab73cecc8c48f4a9bca7bda091ece106a073",
-      "lease_id": "36825eac-3e6a-4905-a45d-1788bbd8e3da",
-      "generation": 8
-    },
-    {
-      "resource_key": "repo-file:continuity/current.json",
-      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
-      "lease_id": "6a431363-614a-4aed-bcc8-7090a9547a41",
-      "generation": 8
-    },
-    {
-      "resource_key": "repo-file:continuity/decisions.jsonl",
-      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
-      "lease_id": "9e302fd9-59f6-463f-933b-ee5a8bf22c3a",
-      "generation": 6
-    },
-    {
-      "resource_key": "repo-file:continuity/events.jsonl",
-      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
-      "lease_id": "4dfa9e02-d26c-4d55-8110-27de769af462",
-      "generation": 6
     },
     {
       "resource_key": "repo-file:coordination/README.md",
