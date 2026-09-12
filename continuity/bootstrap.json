@@ -14,12 +14,18 @@
     "continuity/context.md",
     "continuity/decisions.jsonl",
     "continuity/events.jsonl",
+    "coordination/protocol.json",
+    "coordination/README.md",
+    "coordination/schema/lock.schema.json",
+    "coordination/schema/work-record.schema.json",
     "continuity/schema/bootstrap.schema.json",
     "continuity/schema/current.schema.json",
     "continuity/schema/decision.schema.json",
     "continuity/schema/event.schema.json",
     "scripts/validate_continuity.py",
+    "scripts/validate_coordination.py",
     "tests/test_continuity.py",
+    "tests/test_coordination.py",
     ".github/workflows/continuity.yml"
   ],
   "required_read_order": [
@@ -27,7 +33,9 @@
     "continuity/current.json",
     "continuity/context.md",
     "continuity/decisions.jsonl",
-    "continuity/events.jsonl"
+    "continuity/events.jsonl",
+    "coordination/protocol.json",
+    "coordination/README.md"
   ],
   "resume_algorithm": [
     "READ_REQUIRED_FILES",
@@ -58,6 +66,6 @@
     "tests/test_continuity.py",
     ".github/workflows/continuity.yml"
   ],
-  "continuity_sync_rule": "A repository mutation whose changed paths are a nonempty subset of continuity_sync_paths is CONTINUITY_SYNC and does not require a second continuity update solely because that continuity mutation occurred. Git history remains the exact byte-history for the mutation.",
-  "validation_command": "python scripts/validate_continuity.py && python -m unittest discover -s tests -p 'test_*.py'"
+  "continuity_sync_rule": "A repository mutation whose changed paths are a nonempty subset of continuity_sync_paths is CONTINUITY_SYNC and does not require a second continuity update solely because that continuity mutation occurred. A GitHub mutation whose target branch matches work/<lowercase-UUIDv4> or lock/<64-lowercase-hex> and does not update main is SOURCE_WORKSPACE_MUTATION and does not require continuity synchronization solely because it occurred; that branch's Git history and live machine state are its exact evidence. Creation of the work branch from current main is included. A pull-request merge or any other update to main is never exempt. Git history remains the exact byte-history for every exempt mutation.",
+  "validation_command": "python scripts/validate_continuity.py && python scripts/validate_coordination.py && python -m unittest discover -s tests -p 'test_*.py'"
 }

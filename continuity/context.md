@@ -24,7 +24,7 @@ An earlier implementation phase got ahead of architecture. Useful concepts may s
 
 ## First runtime event
 
-Current Life architecture work starts from the first runtime event: **a user invokes Life**.
+Current Life architecture work ultimately starts from the first runtime event: **a user invokes Life**.
 
 The working sequence is:
 
@@ -39,7 +39,7 @@ The working sequence is:
 
 The Project Instructions require `life.invoke` only when fresh authorized-system reads show a deployed Life MCP endpoint and exact tool `life.invoke`. If that condition is not verified, canonical invocation is `NOT_RUN` and no runtime output may be fabricated.
 
-Fresh authorized Supabase reads on `2026-09-12T02:50:04Z` showed zero public tables, zero deployed Edge Functions, no `life.invoke` database function, and no installed `vector` extension. Canonical invocation therefore remains `NOT_RUN`.
+Fresh authorized Supabase reads on `2026-09-12T03:02:33Z` showed the project `ACTIVE_HEALTHY`, zero public tables, zero deployed Edge Functions, no `life.invoke` database function, no installed `vector` extension, and only the default main environment. Canonical invocation therefore remains `NOT_RUN`.
 
 ## Context pipeline versus control pipeline
 
@@ -60,7 +60,7 @@ Stable repository ID: `1366835183`
 Visibility: public
 Default branch: `main`
 
-GitHub is the source/build plane: source code, migrations, tests, CI, schemas, history, and engineering evidence. GitHub is not the deployed Life runtime control plane.
+GitHub is the source/build plane: source code, migrations, tests, CI, schemas, history, source-coordination evidence, and engineering evidence. GitHub is not the deployed Life runtime control plane.
 
 The repository is public so GitHub Free repository rulesets can enforce source-plane protections while standard GitHub-hosted Actions remain free for public repositories.
 
@@ -72,13 +72,15 @@ Region: `us-west-2`
 
 Supabase remains a runtime/data candidate because Postgres, Auth, vector support, and Edge Functions may fit Life. Clean-slate reevaluation keeps the permanent invocation host open until comparison selects it.
 
+Current Supabase Free pricing states that Branching is not included. Because the authorized project therefore has no free isolated preview environment, direct production mutations are serialized by the source-coordination protocol through one exact global resource claim until a different verified mechanism replaces that constraint.
+
 ### Vercel
 
 No exact Life Vercel infrastructure target is authorized. Vercel Hobby may be researched and compared, but Life Vercel state is `NOT_RUN` until Vince authorizes an exact target.
 
-## GitHub source protection is complete
+## GitHub source protection
 
-Vince created repository ruleset `Protect-main`, ruleset ID `22998982`, through the GitHub UI. Direct GitHub read-back verified all selected fields:
+Vince created repository ruleset `Protect-main`, ruleset ID `22998982`, through the GitHub UI. Direct GitHub read-back verified:
 
 - target: default branch;
 - enforcement: active;
@@ -92,9 +94,37 @@ Vince created repository ruleset `Protect-main`, ruleset ID `22998982`, through 
 - extra approval for unattributed changes: disabled;
 - merge, squash, and rebase merge methods remain allowed.
 
-GitHub also reports `main` as protected. This ruleset has zero Life runtime control authority. Its purpose is source-plane enforcement: ordinary changes to `main` must pass through a PR and the repository validator/tests.
+GitHub reports `main` as protected. This ruleset has zero Life runtime control authority. Its purpose is source-plane enforcement.
 
-The former source-protection blocker `B-0002` is resolved. `github_source_protection` is complete.
+The former blocker `B-0002` is resolved. A new blocker `B-0003` exists because the ruleset still uses loose required status checks. GitHub's current ruleset documentation distinguishes loose from strict checks: strict checks require the topic branch to be up to date with the base branch before merging, while loose checks can permit a branch whose checks passed before another collaborator changed the base. Multi-agent coordination is not complete until `strict_required_status_checks_policy=true` is read back for ruleset `22998982`.
+
+## Multi-agent source coordination
+
+Vince asked whether multiple threads or AIs can work on Life concurrently without overwriting or interfering with each other, then authorized installation of the permanent coordination mechanism before `life.invoke` work resumes.
+
+Fresh comparison rejected branches/worktrees alone as sufficient. They isolate live file writes, but they do not prevent two independently passing branches from becoming semantically incompatible after one merges, and they do not isolate the single Supabase production environment. Current OpenAI Codex material uses worktrees for parallel agents; current GitHub documentation recommends strict latest-base status checks for compatibility with the newest base; recent multi-agent SWE research likewise emphasizes centralized delegation, isolated workspaces, branch-and-merge, and executable verification. Reddit reports show the same practical distinction: worktrees prevent direct clobbering, while merge compatibility and shared services still need coordination.
+
+Decision `D-0012` therefore combines the following source-plane mechanisms:
+
+1. Every mutable work item receives a UUIDv4 `work_id` and one branch named exactly `work/<work_id>`.
+2. A local coding agent uses one Git worktree for that branch. A remote agent writes only to that branch.
+3. Every mutable resource has an exact resource key. Required forms include `component:<component_id>`, `repo-file:<exact_repo_path>`, `integration:main`, and the current global Supabase production key `external:supabase:jnenguxodtgwbskhdsxt`.
+4. The lock branch for a resource is deterministic: `lock/` plus the lowercase SHA-256 hex digest of the UTF-8 resource key.
+5. `coordination/lock.json` on that branch is the machine-verifiable lease record. The lease has an exact worker identity, work ID, lease ID, generation, base SHA, timestamps, state, and implementation branch.
+6. Lease duration is exactly 14,400 seconds. Renewal occurs when remaining time is at or below 1,800 seconds. Expiry occurs when current UTC is greater than or equal to `expires_at`. Takeover after expiry increments `generation` by exactly one.
+7. Resources for one work item are acquired in ascending UTF-8 resource-key order. If an acquisition fails, that attempt releases already-acquired claims in reverse order.
+8. Every repository path changed by a PR, except its unique work-record file, requires an exact `repo-file:` claim.
+9. Every work item requires a component claim.
+10. Every PR to `main` requires the exact `integration:main` claim.
+11. Every Supabase production mutation requires the exact global Supabase claim because Free Branching is unavailable.
+12. The existing required Actions job remains named `validate`; it now also validates the coordination protocol, exact changed-path coverage, current-base ancestry, work record, and live lock-branch claims.
+13. GitHub Issues, PR text, comments, reviews, and narrative coordination records remain visibility surfaces with zero source-control or Life runtime authority.
+
+The authoritative protocol is `coordination/protocol.json`. Its schemas are `coordination/schema/lock.schema.json` and `coordination/schema/work-record.schema.json`. Enforcement code is `scripts/validate_coordination.py`; tests are `tests/test_coordination.py`. `continuity/bootstrap.json` now includes the coordination protocol and README in the mandatory future-thread read order so a new Life thread reconstructs both project state and the concurrency rules before mutating anything.
+
+Issue #2 (`WORK: install multi-agent source coordination`) is visibility-only. It does not grant or reserve work.
+
+The installation branch is `coordination/multi-agent-v1`. It is intentionally a bootstrap exception: the coordination validator permits this first PR because the PR base does not yet contain `coordination/protocol.json`. After that protocol exists on `main`, every later PR is required to satisfy the work-record and live-claim gate.
 
 ## Legacy invocation work
 
@@ -127,7 +157,7 @@ The continuity bundle contains:
 - `context.md`: this detailed narrative and rationale;
 - `decisions.jsonl`: append-only typed decision history;
 - `events.jsonl`: append-only operational history;
-- JSON Schemas, a deterministic validator, tests, and GitHub Actions CI.
+- JSON Schemas, deterministic validators, tests, and GitHub Actions CI.
 
 Historical observations never satisfy a later response's fresh-verification requirements.
 
@@ -164,9 +194,9 @@ Future Life responses must use **response counter** terminology.
 
 ## Current research posture
 
-Fresh research in the response that completed source protection rechecked Supabase Free, GitHub Free, and Vercel Hobby pricing/limits/billing/docs; current GitHub ruleset and Actions behavior; current Supabase Edge Function/MCP material; current Vercel Function/MCP material; Reddit reports on operational failures and workarounds; current OpenAI model/plugin/app/agent mechanisms; and current agent instruction-following/security research.
+Fresh research for multi-agent coordination rechecked all required Supabase Free, GitHub Free, and Vercel Hobby plan/pricing, quotas/limits, billing/usage, docs roots, and named mechanism documentation. It also rechecked Reddit multi-agent implementations and failures, current OpenAI Codex/plugin/app mechanisms, and recent research on asynchronous software-engineering agents and verifiable tool control.
 
-The research does not grandfather any runtime host. It reinforces the existing separation between probabilistic/model reasoning and deterministic execution control. Current agent research continues to show that instruction arbitration can fail under complex or conflicting instruction sets, which supports keeping security-critical control outside model judgment.
+The selected mechanism uses only current GitHub Free/public-repository facilities plus repository code and CI. It does not require a paid GitHub feature. Supabase is not used as the Build coordination store because Free Branching is unavailable and coupling source coordination to the single runtime/data candidate would create an unnecessary shared-environment dependency. Vercel is not used because no Life Vercel target is authorized and no Vercel feature is needed for this source-plane mechanism.
 
 ## Current unresolved questions
 
@@ -178,18 +208,9 @@ Do not resolve these from implementation history alone.
 
 ## Current active component
 
-`canonical_invocation_architecture` is active in DESIGN.
+`multi_agent_coordination` is active in IMPLEMENTATION and is currently BLOCKED on one exact GitHub setting: `Protect-main` must change from loose to strict required status checks by enabling **Require branches to be up to date before merging** for the existing `validate` check.
 
-The current work is to rederive and select the permanent `life.invoke` architecture, beginning with:
-
-- runtime host;
-- exact tool contract;
-- authentication boundary;
-- canonical invocation record;
-- context/control boundary;
-- implement-now sequence.
-
-No runtime deployment should occur before those decisions are defined and versioned as required.
+`canonical_invocation_architecture` is paused, not abandoned. After coordination is merged, read back, validated, and `B-0003` is resolved, the canonical next action returns to the existing `A-0003` clean-slate `life.invoke` architecture work.
 
 ## Cost constraints
 
@@ -201,12 +222,12 @@ GitHub Free public-repository mechanisms remain the selected source-plane path. 
 
 A future thread must:
 
-1. read `continuity/bootstrap.json` and every path in `required_read_order`;
-2. validate the bundle;
+1. read `continuity/bootstrap.json` and every path in `required_read_order`, now including the exact coordination protocol;
+2. validate the bundle and coordination files;
 3. read the current request/thread;
 4. run the required fresh research;
 5. directly read the authorized systems;
-6. verify referenced live objects;
+6. verify referenced live objects and live resource claims;
 7. mark stale, missing, mismatched, unsupported, failed, or unverified evidence under the Project Instructions;
 8. apply later Vince corrections;
 9. continue from `current.json.next_action`.
@@ -215,4 +236,4 @@ If live authorized-system state conflicts with continuity, live state determines
 
 ## Last bundle-authoring timestamp
 
-`2026-09-12T02:50:04Z`
+`2026-09-12T03:02:33Z`
