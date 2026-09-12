@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "policy_id": "life-ci-dependency-pins-v1",
+  "runtime_control_authority": "NONE",
+  "workflow_paths": [
+    ".github/workflows/continuity.yml"
+  ],
+  "actions": [
+    {
+      "repository": "actions/checkout",
+      "commit_sha": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "release": "v7.0.1",
+      "required_occurrences": 1
+    },
+    {
+      "repository": "actions/setup-python",
+      "commit_sha": "5fda3b95a4ea91299a34e894583c3862153e4b97",
+      "release": "v7.0.0",
+      "required_occurrences": 1
+    },
+    {
+      "repository": "supabase/setup-cli",
+      "commit_sha": "46f7f98c7f948ad727d22c1e67fab04c223a0520",
+      "release": "v3.0.0",
+      "required_occurrences": 1
+    }
+  ],
+  "supabase_cli": {
+    "version": "2.117.0"
+  },
+  "rules": [
+    "THIRD_PARTY_ACTION_REFS_MUST_EQUAL_POLICY_COMMIT_SHA",
+    "UNLISTED_THIRD_PARTY_ACTIONS_FAIL_CLOSED",
+    "SUPABASE_CLI_VERSION_MUST_EQUAL_POLICY_EXACT_VERSION",
+    "LOCAL_ACTIONS_MAY_USE_RELATIVE_PATHS"
+  ]
+}
