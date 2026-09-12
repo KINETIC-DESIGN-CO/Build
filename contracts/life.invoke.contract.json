@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "tool_name": "life.invoke",
+  "runtime_control_authority": "NONE",
+  "transport": {
+    "selected_host": "VERCEL_FUNCTIONS",
+    "mcp_transport": "STREAMABLE_HTTP",
+    "mcp_protocol_target": "2026-07-28",
+    "oauth_role": "RESOURCE_SERVER",
+    "deployment_target_status": "NOT_AUTHORIZED",
+    "deployment_target": null
+  },
+  "identity": {
+    "authorization_server": "SUPABASE_AUTH",
+    "issuer": "https://jnenguxodtgwbskhdsxt.supabase.co/auth/v1",
+    "token_signature_verification": "JWKS",
+    "required_claims": [
+      "iss",
+      "sub",
+      "aud",
+      "exp",
+      "client_id"
+    ],
+    "validate_nbf_when_present": true,
+    "audience_rule": "MUST_EQUAL_EXACT_MCP_RESOURCE_URL",
+    "caller_gate": "ACTIVE_AUTH_SUBJECT_AND_OAUTH_CLIENT_ID_RECORD",
+    "client_registration": "DYNAMIC_OR_PRE_REGISTERED",
+    "access_token_passthrough": "FORBIDDEN",
+    "access_token_storage": "FORBIDDEN"
+  },
+  "input": {
+    "schema_path": "contracts/life.invoke.input.schema.json",
+    "input_provenance": "MCP_TOOL_ARGUMENT",
+    "claim_of_raw_chat_message_equivalence": "FORBIDDEN",
+    "unicode_normalization": "NONE",
+    "trim": "NONE",
+    "case_folding": "NONE",
+    "newline_normalization": "NONE",
+    "reject_u0000": true,
+    "utf8_min_bytes": 1,
+    "utf8_max_bytes": 262144,
+    "request_sha256": "SHA256_OF_EXACT_UTF8_BYTES",
+    "utf8_encoding": "STRICT"
+  },
+  "idempotency": {
+    "key_fields": [
+      "auth_subject",
+      "oauth_client_id",
+      "invocation_key"
+    ],
+    "same_key_same_request_sha256": "RETURN_EXISTING_RECORD",
+    "same_key_different_request_sha256": "INVOCATION_KEY_REUSE_MISMATCH"
+  },
+  "record": {
+    "store": "SUPABASE_POSTGRES",
+    "schema": "life",
+    "table": "invocations",
+    "write_function": "life.record_invocation_v1",
+    "append_only": true,
+    "server_generated_fields": [
+      "invocation_id",
+      "recorded_at"
+    ],
+    "embeddings_in_record": false,
+    "bearer_token_in_record": false,
+    "derived_control_state_in_record": false
+  },
+  "database_access": {
+    "runtime_role": "DEDICATED_LOGIN_ROLE",
+    "connection_path": "SUPAVISOR_TRANSACTION_POOLER",
+    "direct_table_dml_for_runtime_role": "FORBIDDEN",
+    "allowed_operation": "EXECUTE_LIFE_RECORD_INVOCATION_V1_ONLY",
+    "security_definer_search_path": ""
+  },
+  "tool_annotations": {
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false,
+    "authority": "HINTS_ONLY"
+  },
+  "success_output_schema_path": "contracts/life.invoke.output.schema.json",
+  "success_state_semantics": {
+    "RECORDED": "AUTHENTICATED_VALIDATED_TOOL_ARGUMENT_DURABLY_RECORDED_ONLY",
+    "implies_effect_authorization": false,
+    "implies_context_completeness": false,
+    "implies_semantic_maturity": false
+  },
+  "error_codes": [
+    "UNAUTHENTICATED",
+    "TOKEN_INVALID",
+    "TOKEN_AUDIENCE_MISMATCH",
+    "CALLER_NOT_ALLOWED",
+    "INVALID_INPUT",
+    "REQUEST_TEXT_INVALID_UNICODE",
+    "REQUEST_TEXT_U0000_FORBIDDEN",
+    "REQUEST_TEXT_UTF8_BYTES_OUT_OF_RANGE",
+    "INVOCATION_KEY_REUSE_MISMATCH",
+    "STORAGE_UNAVAILABLE"
+  ],
+  "deployment_gates": [
+    "EXACT_VERCEL_TARGET_AUTHORIZED",
+    "VERSIONED_SUPABASE_MIGRATION_MERGED",
+    "SUPABASE_MIGRATION_APPLIED_AND_READ_BACK_VERIFIED",
+    "SUPABASE_OAUTH_SERVER_ENABLED",
+    "SUPABASE_ASYMMETRIC_JWT_SIGNING_VERIFIED",
+    "EXACT_MCP_AUDIENCE_CONFIGURED",
+    "CALLER_ALLOWLIST_MACHINE_RECORD_ACTIVE",
+    "CHATGPT_WRITE_MCP_CAPABILITY_VERIFIED",
+    "LIVE_MCP_ENDPOINT_AND_EXACT_TOOL_LIFE_INVOKE_VERIFIED"
+  ],
+  "legacy_dispositions": [
+    {
+      "concept": "stable_life_invoke_tool",
+      "disposition": "KEEP"
+    },
+    {
+      "concept": "authenticated_invocation",
+      "disposition": "KEEP"
+    },
+    {
+      "concept": "canonical_invocation_ledger",
+      "disposition": "KEEP"
+    },
+    {
+      "concept": "exact_invocation_boundary_separate_from_embeddings",
+      "disposition": "KEEP"
+    },
+    {
+      "concept": "vectors_have_zero_control_authority",
+      "disposition": "KEEP"
+    },
+    {
+      "concept": "database_migrations_tests_and_ci",
+      "disposition": "KEEP"
+    },
+    {
+      "concept": "supabase_auth_oauth_jwt",
+      "disposition": "COMBINE"
+    },
+    {
+      "concept": "supabase_edge_function_as_mcp_front_door",
+      "disposition": "REPLACE"
+    },
+    {
+      "concept": "gte_small_384_embedding_in_canonical_invocation",
+      "disposition": "REMOVE"
+    },
+    {
+      "concept": "legacy_manual_bearer_parser",
+      "disposition": "REMOVE"
+    },
+    {
+      "concept": "request_text_is_machine_verified_raw_chat_message",
+      "disposition": "MODIFY"
+    },
+    {
+      "concept": "postgres_text_accepts_u0000",
+      "disposition": "REMOVE"
+    },
+    {
+      "concept": "project_instruction_routes_directly_to_database_tables",
+      "disposition": "REPLACE"
+    }
+  ]
+}
