@@ -28,7 +28,7 @@
       "source_issue_number": 15,
       "component_id": "issue_15",
       "dispatch_tier": 100,
-      "state": "ADMITTED",
+      "state": "COMPLETE",
       "depends_on": []
     },
     {
