@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "manifest_revision": 11,
+  "manifest_revision": 12,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T07:51:25Z",
+  "updated_at": "2026-09-12T08:51:42Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
-  "current_component": "life_governance_policy_bundle",
+  "current_component": "build_repository_watchdog",
   "current_status": "ACTIVE",
   "authorized_targets": {
     "github": {
@@ -23,14 +23,15 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Complete A-0007 by validating the permanent governance placement router, response contract, source-coordination identity semantics, claim-conflict reread rule, and exact governance schema constraints without changing Project Instructions or Life runtime control authority.",
+    "goal": "Integrate the permanent self-auditing Build Repository Watchdog against the current parallel-work coordination contract, verify it through protected CI, and create the exact hourly ChatGPT Scheduled task only after every versioned pre-install gate passes.",
     "completion_conditions": [
-      "GOVERNANCE_PLACEMENT_POLICY_VERSIONED",
-      "RESPONSE_CONTRACT_VERSIONED",
-      "BOOTSTRAP_LOADS_GOVERNANCE_POLICIES",
-      "GOVERNANCE_SCHEMA_AND_VALIDATION_PASS",
-      "SOURCE_COORDINATION_IDENTITY_SEMANTICS_HARDENED",
-      "CLAIM_CONFLICT_REREAD_RULE_VERSIONED"
+      "WATCHDOG_SPEC_VERSIONED_ON_MAIN",
+      "WATCHDOG_FINDING_REGISTRY_VERSIONED_ON_MAIN",
+      "WATCHDOG_VALIDATOR_AND_FALSIFICATION_TESTS_PASS_PROTECTED_CI",
+      "WATCHDOG_SELF_AUDIT_COMPATIBILITY_MATCHES_CURRENT_CANONICAL_CONTRACTS",
+      "WATCHDOG_ISSUE_MUTATION_POLICY_IS_EXACTLY_VERSIONED_OR_REMAINS_DISABLED",
+      "WATCHDOG_SCHEDULED_TASK_CREATED_HOURLY_AMERICA_DENVER",
+      "WATCHDOG_SCHEDULED_TASK_READBACK_VERIFIED"
     ]
   },
   "active_decision_ids": [
@@ -97,29 +98,31 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T07:51:25Z",
+      "observed_at": "2026-09-12T08:51:42Z",
       "repository_id": 1366835183,
       "full_name": "Vinanonymous/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "43de56f2894a4d7c53e37cc957a9a27babb17a6f",
+      "head_sha": "daf1ba47bbba7bb836e7fba54a87bba29d6a01d1",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": true,
       "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34680169138,
+      "latest_continuity_workflow_run_id": 34683460385,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T07:51:25Z",
+      "observed_at": "2026-09-12T08:51:42Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
+      "organization_plan": "free",
       "public_table_count": 0,
       "edge_function_count": 0,
+      "development_branch_count": 1,
       "migration_version": "20260912052949",
       "migration_name": "life_invocation_v1_alignment",
       "caller_table_count": 1,
@@ -134,9 +137,10 @@
       "request_sha256_required_type": "text",
       "legacy_rls_auto_enable_function_present": 0,
       "legacy_ensure_rls_event_trigger_present": 0,
-      "security_advisor_warning_count_for_legacy_rls_auto_enable": 0,
+      "security_advisor_lint_count": 0,
+      "performance_advisor_lint_count": 0,
       "remote_alignment_mutation_provenance_status": "UNKNOWN",
-      "remote_alignment_mutation_provenance_reason": "Migration 20260912052949 is present, but no deterministic lock branch exists for external:supabase:jnenguxodtgwbskhdsxt and no machine-verifiable evidence identifies the original remote mutation as having held the required global Supabase production claim."
+      "remote_alignment_mutation_provenance_reason": "Migration 20260912052949 is present, but no machine-verifiable evidence identifies the original remote mutation as having held the required global Supabase production claim."
     },
     "vercel": {
       "status": "NOT_RUN",
@@ -146,15 +150,15 @@
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-12T07:51:25Z",
-      "reason": "Authorized Supabase reads verify the database alignment, but no exact Life Vercel target or deployed Life MCP endpoint is authorized-system verified and the exact tool life.invoke is not verified live."
+      "observed_at": "2026-09-12T08:51:42Z",
+      "reason": "No exact Life Vercel target or deployed Life MCP endpoint is authorized-system verified and the exact tool life.invoke is not verified live."
     }
   },
   "next_action": {
-    "id": "A-0007",
+    "id": "A-0008",
     "kind": "IMPLEMENT",
-    "target": "LIFE_GOVERNANCE_POLICY_BUNDLE",
-    "description": "Finish validation and integration of the governance placement router, response contract, source-coordination identity and compare-and-swap reread semantics, including exact schema enforcement, before starting the separately claimed resource-intersection coordination correction.",
+    "target": "BUILD_REPOSITORY_WATCHDOG",
+    "description": "Reconcile the versioned watchdog source against the current source-coordination protocol, refresh its self-audit compatibility contract, pass protected CI, integrate it to main, and create the exact hourly America/Denver ChatGPT Scheduled task only if all pre-install gates pass.",
     "authorization_effect": "NONE"
   }
 }
