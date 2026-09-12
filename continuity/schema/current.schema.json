@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Vinanonymous/Build/blob/main/continuity/schema/current.schema.json",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/continuity/schema/current.schema.json",
   "title": "Life Continuity Current State",
   "type": "object",
   "additionalProperties": false,
@@ -18,7 +18,7 @@
     "authorized_targets": {
       "type":"object","additionalProperties":false,"required":["github","supabase","vercel"],
       "properties": {
-        "github": {"type":"object","additionalProperties":false,"required":["repository_id","full_name","visibility","default_branch"],"properties":{"repository_id":{"const":1366835183},"full_name":{"const":"Vinanonymous/Build"},"visibility":{"const":"public"},"default_branch":{"const":"main"}}},
+        "github": {"type":"object","additionalProperties":false,"required":["repository_id","full_name","visibility","default_branch"],"properties":{"repository_id":{"const":1366835183},"full_name":{"const":"KINETIC-DESIGN-CO/Build"},"visibility":{"const":"public"},"default_branch":{"const":"main"}}},
         "supabase": {"type":"object","additionalProperties":false,"required":["project_id","name","region"],"properties":{"project_id":{"const":"jnenguxodtgwbskhdsxt"},"name":{"const":"Life"},"region":{"const":"us-west-2"}}},
         "vercel": {"type":["object","null"]}
       }
