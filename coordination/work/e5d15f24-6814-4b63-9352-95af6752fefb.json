@@ -10,7 +10,8 @@
   "base_sha": "107156b6660aeeb88fea0c036d84e694b9860e80",
   "component_id": "architecture_migration_audit",
   "repo_paths": [
-    "architecture/audits/supabase-architecture-migration-audit-2026-09-12.md"
+    "architecture/audits/supabase-architecture-migration-audit-2026-09-12.md",
+    "architecture/audits/supabase-architecture-migration-audit-2026-09-12-addendum.md"
   ],
   "external_targets": [],
   "claims": [
@@ -24,6 +25,12 @@
       "resource_key": "repo-file:architecture/audits/supabase-architecture-migration-audit-2026-09-12.md",
       "lock_branch": "lock/d75abdfa2e0422b18833dffdafeaf058081e5acbe99c54408c83b19d163c739c",
       "lease_id": "4d4331a9-931f-45e1-8848-e220813aa58e",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:architecture/audits/supabase-architecture-migration-audit-2026-09-12-addendum.md",
+      "lock_branch": "lock/d12eebf8fe08e0ed5d71b86481a6cadd8904d7a2ac1a7df4c5ca7aabc94b45bd",
+      "lease_id": "e1fccad6-d8d5-4eb8-a488-a1485349fd61",
       "generation": 1
     }
   ],
