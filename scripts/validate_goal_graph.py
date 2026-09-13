@@ -22,15 +22,8 @@ RT = re.compile(r"^RT-[0-9]{4}$")
 SIGNAL_ID = re.compile(r"^GS-[0-9]{4}$")
 SIGNAL_SOURCE = re.compile(r"^(VINCE_DIRECTIVE|VINCE_CORRECTION|VINCE_AUTHORIZED_CHANGE):(VD-[0-9]{4})$")
 REVISION_SENSITIVE_FIELDS = {
-    "root_goal_id",
-    "parent_goal_id",
-    "return_to_goal_id",
-    "component_id",
-    "goal_relation",
-    "title",
-    "description",
-    "completion_condition_ids",
-    "child_goal_ids",
+    "root_goal_id", "parent_goal_id", "return_to_goal_id", "component_id", "goal_relation",
+    "title", "description", "completion_condition_ids", "child_goal_ids",
 }
 
 
@@ -169,8 +162,7 @@ def validate_signal(goal, directives):
         fail("active control_signal signal_id invalid")
     if not isinstance(signal["target_work_id"], str) or UUID4.fullmatch(signal["target_work_id"]) is None:
         fail("active control_signal target_work_id invalid")
-    source = signal["source_ref"]
-    match = SIGNAL_SOURCE.fullmatch(str(source))
+    match = SIGNAL_SOURCE.fullmatch(str(signal["source_ref"]))
     if match is None:
         fail("active control_signal source_ref must be typed Vince evidence")
     source_class, directive_id = match.groups()
@@ -179,7 +171,9 @@ def validate_signal(goal, directives):
         fail("active control_signal source_ref does not resolve to matching ACTIVE directive")
 
 
-def validate_registry(registry, schema, policy, directives):
+def validate_registry(registry, schema, policy, directives=None):
+    if directives is None:
+        directives = directive_map(load_jsonl(DIRECTIVE_PATH))
     root_keys = {"schema_version", "registry_id", "runtime_control_authority", "engineering_goal_authority", "active_root_goal_id", "active_goal_id", "active_path", "authorized_root_transition_id", "goals"}
     if not isinstance(registry, dict) or set(registry) != root_keys:
         fail("goal-registry root keys mismatch")
