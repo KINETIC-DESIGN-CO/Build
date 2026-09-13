@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+  "title": "Reconcile interrupted-thread resume against exact live work state",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "28e1f6a7-5836-44f3-80ed-372bc7210ce4"
+  },
+  "implementation_branch": "work/fae2f300-205f-4cb2-b7ff-17082065159b",
+  "base_sha": "78a6909eac444b42964716dd6d845b34af752192",
+  "component_id": "issue_18",
+  "repo_paths": [
+    "continuity/bootstrap.json",
+    "governance/resume-reconciliation-policy.json",
+    "governance/work-admissions.json",
+    "scripts/evaluate_resume_reconciliation.py",
+    "tests/test_resume_reconciliation.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_18",
+      "lock_branch": "lock/5aac3f38d7e2bc396461d09e0bcd2e1cffb9262a0b451371174b8a304e7ee8f5",
+      "lease_id": "9f86b96f-c58d-4710-a077-0cdf96dc054e",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
