@@ -62,7 +62,7 @@
     {
       "repair_id": "RCA-0002",
       "root_goal_ref": "continuity/current.json:A-0014",
-      "state": "VERIFYING",
+      "state": "VERIFIED_FIXED",
       "failure_refs": [
         "github-actions:34748616720:validate_lock_history",
         "github-actions:34749147069:Validate lock history",
@@ -91,7 +91,9 @@
         "0a53782fa5ad2a16bb384e5a81116da1c1cfe296",
         "e3df5efb44475afd702d2744dedce7634dc76625",
         "cf9ea647919f13eeac673a6cf97838f54702f228",
-        "403b3a0edd0935f2ada089221a0801c35f44ea0b"
+        "403b3a0edd0935f2ada089221a0801c35f44ea0b",
+        "c15b38be3150a3cf2b75fd47eec92ae1ee2acefe",
+        "ef5f7857e8e7b967adde10b7199cd62a7faafe87"
       ],
       "root_cause_classes": [
         "GLOBAL_LIVE_NAMESPACE_VALIDATION_CONTRADICTS_EXACT_RESOURCE_INTERSECTION",
@@ -144,7 +146,7 @@
         "REACQUISITION_REUSED_LEASE_STILL_FAILS",
         "TAKEOVER_REUSED_LEASE_STILL_FAILS"
       ],
-      "verification_state": "SOURCE_CI_SUCCESS_RUN_34785927569_PROTECTED_INTEGRATION_AND_POST_MERGE_READBACK_PENDING"
+      "verification_state": "VERIFIED_REQUIRED_CI_PROTECTED_INTEGRATION_AND_LIVE_READBACK"
     },
     {
       "repair_id": "RCA-0003",
