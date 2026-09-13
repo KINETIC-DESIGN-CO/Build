@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_id": "8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
+  "title": "Install deterministic continuity checkpoint policy",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "e3698433-3fae-47a2-bbb4-708f3237ba0b"
+  },
+  "implementation_branch": "work/8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
+  "base_sha": "336da390b9b30adf55f513ff7ccf8916808a4d8c",
+  "component_id": "continuity_checkpoint",
+  "repo_paths": [
+    "continuity/bootstrap.json",
+    "continuity/checkpoint-policy.json",
+    "continuity/checkpoint-template.json",
+    "continuity/schema/checkpoint-policy.schema.json",
+    "continuity/schema/checkpoint-template.schema.json",
+    "continuity/schema/checkpoint.schema.json",
+    "scripts/validate_continuity.py",
+    "tests/test_continuity.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_checkpoint",
+      "lock_branch": "lock/633e581db31e4024994ea6bc8dba00fd4709d967063b0708babfa3f49423386e",
+      "lease_id": "daa9cf67-3ee4-4840-a507-bab3ce798add",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
