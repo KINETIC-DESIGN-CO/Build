@@ -604,10 +604,12 @@ def validate_current(c, decision_by_id):
     if isinstance(na, dict):
         exact_keys(
             na,
-            {"id", "kind", "target", "description", "authorization_effect"},
-            {"id", "kind", "target", "description", "authorization_effect"},
+            {"id", "name", "kind", "target", "description", "authorization_effect"},
+            {"id", "name", "kind", "target", "description", "authorization_effect"},
             "next_action",
         )
+        if not isinstance(na.get("name"), str) or not na["name"]:
+            fail("C002_SCHEMA", "next_action.name must be nonempty string")
         if na.get("kind") not in {
             "RESEARCH",
             "READ",
