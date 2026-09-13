@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "work_id": "99e1a6ff-f156-40bc-b5d5-dabf0f17ea55",
+  "title": "Remove stale Issue 30 admission",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "c2b95af8-4a72-4d90-a1c5-86f7b3e2d641"
+  },
+  "implementation_branch": "work/99e1a6ff-f156-40bc-b5d5-dabf0f17ea55",
+  "base_sha": "71391dbcbc036ad23bae4d7ba7f3540b6ed17251",
+  "component_id": "issue_30",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000001-8d6b0c24.json",
+    "governance/work-admissions.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_30",
+      "lock_branch": "lock/482ca0bdd9d258bb741d61093152448d9475c194da63701f3c0fa754e0b8ba28",
+      "lease_id": "7adb933c-cd09-4980-8d2b-7864bb69a3fd",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
