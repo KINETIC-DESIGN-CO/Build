@@ -22,6 +22,14 @@ SCHEMA_FILES = [
 
 EXPECTED_DECISION_STATES = ["PASS", "FAIL", "NOT_RUN"]
 EXPECTED_EVIDENCE_STATES = ["KNOWN", "UNKNOWN", "UNVERIFIED", "NOT_RUN"]
+EXPECTED_EVIDENCE_TRUST_BOUNDARY = {
+    "source_metadata_authority": "STRUCTURAL_LABELS_ONLY_ZERO_RUNTIME_CONTROL_AUTHORITY",
+    "trusted_evidence_adapter_state": "NOT_IMPLEMENTED",
+    "runtime_activation_dependency": "VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION_REQUIRED",
+    "contract_source_whitelist_effect": "SOURCE_LEVEL_COMPATIBILITY_ONLY_ZERO_PROVENANCE_AUTHORITY",
+    "caller_supplied_source_metadata_effect": "CANNOT_ESTABLISH_TRUSTED_PROVENANCE",
+    "model_prose_review_issue_metadata_runtime_control_authority": "NONE",
+}
 
 
 def fail(code: str, message: str) -> None:
@@ -92,12 +100,17 @@ def main() -> int:
         fail("SF005_SPEC", "decision states must be PASS/FAIL/NOT_RUN")
     if spec.get("evidence_states") != EXPECTED_EVIDENCE_STATES:
         fail("SF005_SPEC", "evidence states must preserve KNOWN/UNKNOWN/UNVERIFIED/NOT_RUN")
+    if spec.get("evidence_trust_boundary") != EXPECTED_EVIDENCE_TRUST_BOUNDARY:
+        fail("SF005_SPEC", "evidence trust boundary must keep source metadata nonauthoritative and trusted evidence adapters NOT_IMPLEMENTED")
 
     expected_kinds = placement.get("control_decision_kinds")
     if spec.get("control_decision_kinds") != expected_kinds:
         fail("SF006_KINDS", "Semantic Firewall decision kinds must exactly match placement-policy control kinds")
 
     required_invariants = {
+        "SOURCE_TYPE_SOURCE_REF_AND_SOURCE_VERSION_FIELDS_ARE_STRUCTURAL_LABELS_ONLY_AND_CANNOT_PROVE_TRUSTED_EVIDENCE_ISSUANCE",
+        "RUNTIME_ACTIVATION_REQUIRES_VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION",
+        "CONTRACT_SOURCE_WHITELIST_CANNOT_ELEVATE_MODEL_PROSE_ISSUE_REVIEW_LABEL_OR_SEMANTIC_SIMILARITY_TO_AUTHORITATIVE_EVIDENCE",
         "SOURCE_EVALUATOR_CONTROL_AND_EFFECT_ELIGIBILITY_RESULTS_HAVE_ZERO_RUNTIME_CONTROL_AUTHORITY",
         "TRUSTED_RECEIPT_FIELDS_AND_SELF_HASH_ALONE_DO_NOT_ESTABLISH_TRUSTED_ISSUANCE_WITHOUT_AUTHORITATIVE_PERSISTENCE_READBACK",
     }
@@ -156,6 +169,13 @@ def main() -> int:
         ):
             if not callable(getattr(evaluator, name, None)):
                 fail("SF010_EVALUATOR", f"evaluator missing callable {name}")
+        result_builder = getattr(evaluator, "_result", None)
+        if not callable(result_builder):
+            fail("SF010_EVALUATOR", "evaluator missing source result builder")
+        else:
+            probe = result_builder("PASS", ["SOURCE_VALIDATOR_PROBE"])
+            if probe.get("runtime_control_authority") != "NONE":
+                fail("SF010_EVALUATOR", "every source evaluator result must explicitly carry runtime_control_authority NONE")
 
     if ERRORS:
         for error in ERRORS:
