@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-4b8c7d31",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T06:50:07Z",
+  "source_main_sha": "52ad688966cb9764cb4f384463d9fe11ded793cb",
+  "work_id": "aef1b9ab-362c-4621-b695-759f12287125",
+  "work_branch": "work/aef1b9ab-362c-4621-b695-759f12287125",
+  "work_head_sha": "4a339e244634d7267bb7369eeb46c9c8c75d1281",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-d60e89a5.json",
+    "blob_sha": "45d03be1c7b3b5593d837832e3e54701c8cdf2bc"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 4,
+    "selected_work_id": "github-issue-16",
+    "evaluated_at": "2026-09-13T06:50:07Z",
+    "evidence_ref": "Issue #16 component generation 2 remains ACTIVE for this work item; continuity:sync generation 16 is ACTIVE for a different work item; this Issue #16 work is nonterminal and has not been preempted by a lower numeric rank in this lane",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0013",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T06:50:07Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_16",
+      "lock_branch": "lock/e850da97747d9640bd6611ea81a9551cf69323068833fd4ad19da9ab45c7d74d",
+      "state": "ACTIVE",
+      "work_id": "aef1b9ab-362c-4621-b695-759f12287125",
+      "lease_id": "ea12bef7-95e5-4c27-b626-d2b7c084abfb",
+      "generation": 2,
+      "expires_at": "2026-09-13T10:43:06Z",
+      "observed_at": "2026-09-13T06:50:07Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "3a1d6f25-2d89-45ec-a86b-43e730fa862e",
+      "lease_id": "d6587c30-92c1-43c2-a36b-f9e3c718475d",
+      "generation": 16,
+      "expires_at": "2026-09-13T10:41:05Z",
+      "observed_at": "2026-09-13T06:50:07Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "workflow_run:34743580623",
+      "operation": "FIRST_PR_HEAD_VALIDATE",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "immutable CI pin, continuity, source coordination and lock-history validators passed",
+        "repository tests failed because the branch inherited Issue-12-specific test fixtures while current main had already transitioned Issue 12 to COMPLETE"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/aef1b9ab-362c-4621-b695-759f12287125.json",
+      "operation": "DECLARE_SELECTOR_TEST_REPAIR_AND_CHECKPOINT_PATH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "work record blob 5bc947168cbd53a72890e3457c5594b931335964"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "tests/test_work_selection.py",
+      "operation": "SYNC_CURRENT_MAIN_SELECTOR_TEST_FIXTURES",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "branch blob f15013553e5e7a433f52c62928b138fae83344b3 equals current-main blob f15013553e5e7a433f52c62928b138fae83344b3",
+        "commit 4a339e244634d7267bb7369eeb46c9c8c75d1281"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [
+    "DR-0003"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "pull_request:51",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_16",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_LATEST_PR_HEAD_VALIDATE_SUCCESS_THEN_CREATE_FINAL_PRE_QUEUE_CHECKPOINT_AND_REVALIDATE_FROZEN_HEAD",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "governance/work-selection-policy.json",
+    "tests/test_work_selection.py",
+    "coordination/protocol.json",
+    "coordination/work/aef1b9ab-362c-4621-b695-759f12287125.json",
+    "GITHUB_PR:51",
+    "GITHUB_RUN:34743580623",
+    "GITHUB_MAIN:52ad688966cb9764cb4f384463d9fe11ded793cb"
+  ]
+}
