@@ -94,8 +94,7 @@ def blocking_resource_keys(requested_resource_keys: list[str], live_locks: list[
         fail("requesting_work_id must be lowercase UUIDv4")
     if not isinstance(requested_resource_keys, list) or len(requested_resource_keys) != len(set(requested_resource_keys)):
         fail("requested_resource_keys must be unique array")
-    requested = set(requested_resource_keys)
-    blockers = set()
+    requested, blockers = set(requested_resource_keys), set()
     for lock in live_locks:
         required = {"resource_key", "work_id", "state", "expires_at"}
         if not isinstance(lock, dict) or not required <= set(lock):
@@ -144,10 +143,10 @@ def validate_protocol(protocol: dict) -> None:
         "external_lease_duration_seconds": 14400,
         "component_lease_duration_seconds": 1800,
         "component_lock_schema_version": 2,
-        "component_v2_transition_rule": "V1_COMPONENT_LOCK_REMAINS_VALID_TO_STORED_EXPIRES_AT;AFTER_V4_MAIN_INTEGRATION_ANY_COMPONENT_ACQUIRE_RENEW_TAKEOVER_OR_REACQUIRE_MUST_WRITE_SCHEMA_V2_COMPONENT_1800",
-        "component_legacy_effective_expiry_rule": "USE_STORED_EXPIRES_AT_UNTIL_NEXT_SCHEMA_V2_TRANSITION",
+        "component_v2_transition_rule": "AFTER_V4_MAIN_INTEGRATION_LEGACY_V1_COMPONENT_AUTHORITY_ENDS_AT_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_1800_SECONDS;ANY_LATER_COMPONENT_ACQUIRE_RENEW_TAKEOVER_OR_REACQUIRE_WRITES_SCHEMA_V2_COMPONENT_1800",
+        "component_legacy_effective_expiry_rule": "AFTER_V4_MAIN_INTEGRATION_EFFECTIVE_EXPIRY_IS_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_1800_SECONDS",
         "component_renewal_event_types": ["PROTECTED_MUTATION_COMMITTED", "REQUIRED_CHECKPOINT_WRITTEN"],
-        "expiration_rule": "COMPONENT_V1_AND_EXTERNAL_USE_STORED_EXPIRES_AT;COMPONENT_V2_USES_STORED_1800_SECOND_EXPIRES_AT",
+        "expiration_rule": "AFTER_V4_MAIN_INTEGRATION_COMPONENT_V1_USES_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_1800_SECONDS;COMPONENT_V2_USES_STORED_1800_SECOND_EXPIRES_AT;EXTERNAL_USES_STORED_EXPIRES_AT",
         "lock_history_enforcement_start_utc": "2026-09-12T22:56:23Z",
         "resource_acquisition_order": "PER_ACQUISITION_ATTEMPT_RESOURCE_KEY_ASCENDING_UTF8",
     }
@@ -159,27 +158,29 @@ def validate_protocol(protocol: dict) -> None:
     if protocol["required_claims"] != {"component": "component:<component_id>", "supabase_production": "external:supabase:jnenguxodtgwbskhdsxt"}:
         fail("protocol.required_claims mismatch")
     rules = protocol["mutation_rules"]
-    for rule in {
+    required_rules = {
         "CONTINUITY_SYNC_PR_MAY_MERGE_MAIN_WITHOUT_SECOND_SYNC_ONLY_WHEN_CHANGED_PATHS_ARE_NONEMPTY_SUBSET_OF_BOOTSTRAP_CONTINUITY_SYNC_PATHS",
         "LOCK_HISTORY_VALIDATION_MUST_PROVE_LEGAL_DURATION_RENEWAL_RELEASE_REACQUISITION_AND_TAKEOVER_TRANSITIONS",
         "LOCK_COMPARE_AND_SWAP_CONFLICT_REQUIRES_FRESH_LIVE_LOCK_REREAD_BEFORE_ANY_RETRY_OR_NEW_ACQUISITION_ATTEMPT_FOR_THAT_RESOURCE",
         "CLAIM_OWNERSHIP_IS_RESOURCE_KEY_WORK_ID_LEASE_ID_GENERATION_NOT_WORKER_SESSION_ID",
         "WORKER_SESSION_ID_IS_AUDIT_LABEL_ONLY_AND_MAY_REPEAT_ACROSS_WORK_ITEMS",
-        "LEGACY_V1_COMPONENT_RETAINS_STORED_EXPIRES_AT_AND_CANNOT_RENEW_AS_V1_AFTER_V4_MAIN_INTEGRATION",
+        "AFTER_V4_MAIN_INTEGRATION_LEGACY_V1_COMPONENT_EFFECTIVE_EXPIRY_IS_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_1800_SECONDS_AND_V1_CANNOT_RENEW",
         "AFTER_V4_MAIN_INTEGRATION_COMPONENT_RENEWAL_REQUIRES_SCHEMA_V2_AND_PROTECTED_MUTATION_COMMITTED_OR_REQUIRED_CHECKPOINT_WRITTEN_EVENT",
         "COMPONENT_SCHEMA_V2_EFFECTIVE_LEASE_DURATION_IS_1800_SECONDS",
         "AFTER_V4_MAIN_INTEGRATION_COMPONENT_ACQUIRE_RENEW_TAKEOVER_AND_REACQUIRE_REQUIRE_SCHEMA_V2_COMPONENT_1800_CONTRACT",
+        "TAKEOVER_OR_REACQUISITION_REQUIRES_NEW_LEASE_ID_AND_GENERATION_PLUS_ONE_AND_MAY_PRESERVE_DURABLE_WORK_ID",
         "COMPONENT_GENERATION_IS_THE_STALE_WORKER_FENCING_TOKEN",
         "GOAL_REVISION_MISMATCH_RETURNS_REPLAN_REQUIRED_BEFORE_PROTECTED_BOUNDARY",
         "UNRESOLVED_EXTERNAL_EFFECT_PRECEDES_TAKEOVER_RETRY_OR_REPLAN",
         "MAIN_INTEGRATION_REQUIRES_GITHUB_MERGE_QUEUE",
         "MERGE_GROUP_VALIDATE_IS_LATEST_BASE_INTEGRATION_GATE",
-    }:
+    }
+    for rule in required_rules:
         if rules.count(rule) != 1:
             fail(f"protocol mutation rule missing/duplicate: {rule}")
     if protocol["parallel_work"].get("main_integration_mode") != "GITHUB_REQUIRED_MERGE_QUEUE":
         fail("protocol parallel main integration mode mismatch")
-    if protocol["parallel_work"].get("unexpired_rule") != "COMPONENT_V1_USES_STORED_EXPIRES_AT_COMPONENT_V2_USES_1800_SECOND_STORED_EXPIRES_AT_EXTERNAL_USES_STORED_EXPIRES_AT":
+    if protocol["parallel_work"].get("unexpired_rule") != "AFTER_V4_MAIN_INTEGRATION_COMPONENT_V1_USES_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_1800_SECONDS_COMPONENT_V2_USES_STORED_EXPIRES_AT_EXTERNAL_USES_STORED_EXPIRES_AT":
         fail("protocol parallel unexpired rule mismatch")
     for required_rule in {"MAIN_RULESET_MUST_REQUIRE_MERGE_QUEUE", "MERGE_GROUP_VALIDATE_MUST_PASS_BEFORE_MAIN_INTEGRATION", "LOCK_BASE_SHA_MUST_BE_ANCESTOR_OF_PR_HEAD", "POST_V4_MERGE_GROUP_MUST_PASS_WORK_FENCE_VALIDATION"}:
         if required_rule not in protocol["integration_rules"]:
@@ -318,9 +319,7 @@ def protocol_at(commit_sha: str) -> dict:
 
 def validate_pull_request_event(event: dict, protocol: dict) -> None:
     pr = event.get("pull_request") or {}
-    base_sha = str((pr.get("base") or {}).get("sha") or "")
-    head_sha = str((pr.get("head") or {}).get("sha") or "")
-    head_branch = str((pr.get("head") or {}).get("ref") or "")
+    base_sha, head_sha, head_branch = str((pr.get("base") or {}).get("sha") or ""), str((pr.get("head") or {}).get("sha") or ""), str((pr.get("head") or {}).get("ref") or "")
     if not SHA_RE.fullmatch(base_sha) or not SHA_RE.fullmatch(head_sha):
         fail("pull_request base/head SHA invalid")
     changed = [path for path in git("diff", "--name-only", f"{base_sha}...{head_sha}").splitlines() if path]
@@ -355,8 +354,7 @@ def main() -> int:
         protocol = load_json(PROTOCOL_PATH)
         validate_protocol(protocol)
         validate_schema_headers()
-        event_name = os.environ.get("GITHUB_EVENT_NAME")
-        event_path = os.environ.get("GITHUB_EVENT_PATH")
+        event_name, event_path = os.environ.get("GITHUB_EVENT_NAME"), os.environ.get("GITHUB_EVENT_PATH")
         if event_name in {"pull_request", "merge_group"}:
             if not event_path:
                 fail("GITHUB_EVENT_PATH missing")
