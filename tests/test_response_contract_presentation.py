@@ -12,23 +12,40 @@ class ResponseContractPresentationTests(unittest.TestCase):
         self.contract = json.loads((ROOT / "continuity/response-contract.json").read_text())
         self.orientation = self.contract["architecture_thread_orientation"]
 
-    def test_goal_quote_is_definition_only_and_bounded(self):
+    def test_goal_description_is_standalone_and_never_blockquoted(self):
         self.assertEqual(
-            self.orientation["quote_boundary_rule"],
-            "GOAL_DESCRIPTION_QUOTE_CONTAINS_ONLY_GOAL_DESCRIPTION_AND_ENDS_BEFORE_USER_ACTION_TRACKED_WORK_BODY_OR_NEXT_STEP",
+            self.orientation["start_description_rule"],
+            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_STANDALONE_TEXT_PARAGRAPH_WITHOUT_MARKDOWN_BLOCKQUOTE_WITH_SENTENCE_COUNT_IN:1,2",
+        )
+        self.assertIn("WITHOUT_MARKDOWN_BLOCKQUOTE", self.orientation["child_rule"])
+        self.assertNotIn("QUOTE_BLOCK", self.orientation["start_description_rule"])
+
+    def test_required_regions_are_closed_and_compositional(self):
+        self.assertEqual(
+            self.orientation["required_response_regions"],
+            [
+                "PARENT_GOAL_HEADING",
+                "STANDALONE_GOAL_DESCRIPTION",
+                "OPENING_TRACKED_WORK_CHECKLIST",
+                "RESPONSE_BODY",
+                "COMPACT_PARENT_GOAL_NAME",
+                "ENDING_ACTION_CARD",
+                "RESPONSE_COUNTER",
+            ],
+        )
+        self.assertIn(
+            "PRESERVE_ALL_UNSUPERSEDED_REQUIRED_RESPONSE_REGIONS",
+            self.orientation["composition_rule"],
+        )
+        self.assertIn(
+            "ZERO_IMPLIED_DELETION_EFFECT",
+            self.orientation["composition_rule"],
         )
 
-    def test_user_action_has_closed_outcomes(self):
-        self.assertEqual(
-            self.orientation["user_action_states"],
-            ["CONTINUE_THIS_THREAD", "CLOSE_THIS_THREAD", "WAIT_AND_RETURN", "ACTION_REQUIRED"],
-        )
-        self.assertIn("OUTSIDE_ANY_GOAL_QUOTE", self.orientation["user_action_rule"])
-
-    def test_tracked_work_requires_two_column_table(self):
+    def test_tracked_work_requires_opening_two_column_table(self):
         self.assertEqual(
             self.orientation["tracked_work_layout_rule"],
-            "TRACKED_WORK_RENDERS_AS_TWO_COLUMN_MARKDOWN_TABLE_WITH_STATUS_EMOJI_ONLY_IN_COLUMN_ONE_AND_COMPLETE_ITEM_TEXT_IN_COLUMN_TWO",
+            "OPENING_TRACKED_WORK_CHECKLIST_RENDERS_AS_TWO_COLUMN_MARKDOWN_TABLE_WITH_STATUS_EMOJI_ONLY_IN_COLUMN_ONE_AND_COMPLETE_ITEM_TEXT_IN_COLUMN_TWO",
         )
         self.assertIn("EMOJI_PREFIXED_ORDINARY_PARAGRAPHS", self.orientation["tracked_work_prohibited_forms"])
         self.assertIn("HANGING_INDENT_PARAGRAPHS", self.orientation["tracked_work_prohibited_forms"])
@@ -39,6 +56,58 @@ class ResponseContractPresentationTests(unittest.TestCase):
             {"✅", "☑️", "⛔️", "💡", "🛠️", "🧪", "⏸️", "📥", "🔁", "❓"},
         )
 
+    def test_action_card_is_typed_and_your_action_is_last(self):
+        self.assertEqual(
+            self.orientation["action_card_row_order"],
+            ["SYSTEM_OWNER", "EXECUTION_STATE", "SYSTEM_NEXT_STEP", "SUGGESTION", "YOUR_ACTION"],
+        )
+        self.assertEqual(self.orientation["action_card_row_order"][-1], "YOUR_ACTION")
+        self.assertEqual(
+            self.orientation["your_action_states"],
+            [
+                "CONTINUE_THIS_THREAD",
+                "CLOSE_THIS_THREAD_OTHER_WORK_OWNS_REMAINDER",
+                "CLOSE_THIS_THREAD_NO_REMAINING_WORK",
+                "YOUR_ACTION_UNKNOWN",
+            ],
+        )
+        self.assertIn("NO_ACTION_REQUIRED_ALONE_IS_INSUFFICIENT", self.orientation["your_action_rule"])
+
+    def test_next_step_is_actor_first_without_background_execution_inference(self):
+        self.assertEqual(
+            self.orientation["system_owner_states"],
+            [
+                "THIS_THREAD_OWNS_NEXT_WORK",
+                "OTHER_WORKER_OWNS_NEXT_WORK",
+                "VINCE_ACTION_REQUIRED",
+                "NO_FURTHER_SYSTEM_WORK",
+                "OWNERSHIP_UNKNOWN",
+            ],
+        )
+        self.assertIn("ACTOR_FIRST", self.orientation["system_next_step_rule"])
+        self.assertIn(
+            "SOURCE_OWNERSHIP_ALONE_CANNOT_ASSERT_CONTINUOUS_BACKGROUND_EXECUTION",
+            self.orientation["execution_state_rule"],
+        )
+        self.assertIn("THIS_THREAD_OWNS_SELECTED_EXECUTABLE_WORK", self.contract["current_job_rule"])
+
+    def test_pre_close_review_and_suggestion_are_exact(self):
+        self.assertEqual(
+            self.orientation["pre_close_review_categories"],
+            [
+                "UNRESOLVED_TRACKED_OBLIGATION",
+                "RECURRING_FRICTION_OR_CORRECTION",
+                "DUPLICATE_OR_SUPERSEDED_MECHANISM",
+                "MISSING_VERIFICATION_OR_FALSIFICATION",
+                "RESEARCH_DESIGN_CHANGE",
+                "NATIVE_PLATFORM_SIMPLIFICATION",
+                "PRESENTATION_OR_INTERACTION_IMPROVEMENT",
+            ],
+        )
+        self.assertIn("BEFORE_ANY_CLOSE_THIS_THREAD_DISPOSITION", self.orientation["pre_close_review_rule"])
+        self.assertIn("EXACTLY_ONE_SUGGESTION_ROW_IMMEDIATELY_BEFORE_YOUR_ACTION", self.orientation["suggestion_rule"])
+        self.assertIn("ZERO_RUNTIME_CONTROL", self.orientation["suggestion_rule"])
+
     def test_unknown_or_chat_only_obligation_blocks_clean_terminal_handoff(self):
         rule = self.orientation["no_loose_ends_rule"]
         self.assertIn("UNKNOWN_OR_CHAT_ONLY_ACCOUNTABILITY_FORBIDS_CLEAN_TERMINAL_HANDOFF", rule)
@@ -47,7 +116,7 @@ class ResponseContractPresentationTests(unittest.TestCase):
     def test_ending_stays_compact(self):
         self.assertEqual(
             self.orientation["end_rule"],
-            "IMMEDIATELY_BEFORE_NEXT_STEP_RENDER_ACTIVE_ROOT_GOAL_TITLE_ONLY_WITHOUT_DESCRIPTION_OR_REPEATED_TRACKED_WORK_TABLE_UNLESS_USER_EXPLICITLY_REQUESTS_FINAL_AUDIT",
+            "IMMEDIATELY_BEFORE_ENDING_ACTION_CARD_RENDER_ACTIVE_ROOT_GOAL_TITLE_ONLY_WITHOUT_DESCRIPTION_OR_REPEATED_TRACKED_WORK_TABLE_UNLESS_USER_EXPLICITLY_REQUESTS_FINAL_AUDIT",
         )
 
 
