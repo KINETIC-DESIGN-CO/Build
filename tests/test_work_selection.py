@@ -52,6 +52,19 @@ class WorkSelectionTests(unittest.TestCase):
             key=lambda item: (item["dispatch_tier"], item["source_issue_number"], item["work_item_id"]),
         )
 
+    def dispatchable_admitted_items(self):
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
+        states = {item["work_item_id"]: item["state"] for item in admissions["items"]}
+        return sorted(
+            [
+                item
+                for item in admissions["items"]
+                if item["state"] == "ADMITTED"
+                and all(states.get(dependency) == "COMPLETE" for dependency in item["depends_on"])
+            ],
+            key=lambda item: (item["dispatch_tier"], item["source_issue_number"], item["work_item_id"]),
+        )
+
     def admitted_item(self, index=0):
         return self.admitted_items()[index]
 
@@ -168,8 +181,8 @@ class WorkSelectionTests(unittest.TestCase):
 
     def test_parallel_auto_selection_skips_owned_component(self):
         current_key = "component:multi_thread_coordination_hardening"
-        first = self.admitted_item(0)
-        second = self.admitted_item(1)
+        first = self.dispatchable_admitted_items()[0]
+        second = self.dispatchable_admitted_items()[1]
         first_key = f"component:{first['component_id']}"
         result = self.dispatch(self.snapshot({current_key: self.lock(current_key), first_key: self.lock(first_key)}))
         self.assertEqual(result["work_item_id"], second["work_item_id"])
@@ -236,8 +249,8 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(policy["fresh_thread_dispatch"]["race_rule"], "AFTER_PARALLEL_SELECTION_ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP;ON_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH")
 
     def test_manual_selector_tie_break_remains_deterministic(self):
-        first = self.admitted_item(0)
-        second = self.admitted_item(1)
+        first = self.dispatchable_admitted_items()[0]
+        second = self.dispatchable_admitted_items()[1]
         proc = self.run_selector(["--select-parallel"])
         self.assertEqual(proc.returncode, 0, proc.stderr)
         self.assertEqual(json.loads(proc.stdout)["work_item_id"], first["work_item_id"])

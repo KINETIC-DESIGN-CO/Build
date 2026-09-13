@@ -106,6 +106,20 @@ class LockHistoryTests(unittest.TestCase):
         with self.assertRaises(mod.ValidationError):
             load_protocol_from_dict(value)
 
+    def test_supported_protocol_wrong_renewal_window_still_fails(self):
+        value = dict(PROTOCOL)
+        value["protocol_id"] = "life-source-coordination-v3"
+        value["renew_when_remaining_seconds_lte"] = 1799
+        with self.assertRaises(mod.ValidationError):
+            load_protocol_from_dict(value)
+
+    def test_supported_protocol_wrong_enforcement_epoch_still_fails(self):
+        value = dict(PROTOCOL)
+        value["protocol_id"] = "life-source-coordination-v3"
+        value["lock_history_enforcement_start_utc"] = "2026-09-12T22:56:24Z"
+        with self.assertRaises(mod.ValidationError):
+            load_protocol_from_dict(value)
+
     def test_invalid_duration_fails(self):
         value = lock()
         value["expires_at"] = z(datetime(2026, 9, 12, 11, 59, 59, tzinfo=timezone.utc))
@@ -227,6 +241,30 @@ class LockHistoryTests(unittest.TestCase):
             generation=1,
             work_id=WORK_B,
             lease_id=LEASE_B,
+            session_id=SESSION_B,
+            acquired=datetime(2026, 9, 12, 12, 0, tzinfo=timezone.utc),
+        )
+        with self.assertRaises(mod.ValidationError):
+            mod.validate_transition(previous, current, PROTOCOL)
+
+    def test_takeover_skipped_generation_fails(self):
+        previous = lock()
+        current = lock(
+            generation=3,
+            work_id=WORK_B,
+            lease_id=LEASE_B,
+            session_id=SESSION_B,
+            acquired=datetime(2026, 9, 12, 12, 0, tzinfo=timezone.utc),
+        )
+        with self.assertRaises(mod.ValidationError):
+            mod.validate_transition(previous, current, PROTOCOL)
+
+    def test_takeover_reused_lease_fails(self):
+        previous = lock()
+        current = lock(
+            generation=2,
+            work_id=WORK_B,
+            lease_id=LEASE_A,
             session_id=SESSION_B,
             acquired=datetime(2026, 9, 12, 12, 0, tzinfo=timezone.utc),
         )
