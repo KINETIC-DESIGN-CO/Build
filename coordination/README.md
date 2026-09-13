@@ -32,9 +32,11 @@ The branch contains `coordination/lock.json`, validated by `coordination/schema/
 
 If a lock update fails because the live file changed, the worker must read the live lock again before any retry or new acquisition attempt for that resource. A stale compare-and-swap result is never retried from the stale snapshot.
 
-Claims last exactly 14,400 seconds from the current heartbeat. Renew a claim only when 1,800 seconds or less remain. Renewal preserves `work_id`, `lease_id`, `generation`, worker, implementation branch, base SHA, and original `acquired_at`; it advances `heartbeat_at` and sets `expires_at` exactly 14,400 seconds after the new heartbeat.
+Claims last exactly 14,400 seconds from the current heartbeat. Renew a claim only when 1,800 seconds or less remain. Renewal preserves the ownership cycle and immutable lease fields, advances `heartbeat_at`, and sets `expires_at` exactly 14,400 seconds after the new heartbeat.
 
-A takeover is eligible only when the predecessor ACTIVE lease has expired; takeover increments `generation` by exactly one and creates a new work ID/lease ownership cycle. Release changes only `state` to `RELEASED` and preserves the prior owner fields for audit. A later acquisition from RELEASED increments `generation` by exactly one and receives a new `work_id`, `lease_id`, base SHA, and lease timestamps. `scripts/validate_lock_history.py` validates these transitions over each deterministic lock branch's Git history.
+A takeover is eligible only when the predecessor ACTIVE lease has expired; takeover increments `generation` by exactly one and creates a new work ID/lease ownership cycle. Release changes only `state` to `RELEASED` and preserves the prior owner fields for audit. A later acquisition from RELEASED increments `generation` by exactly one and receives a new `work_id`, `lease_id`, base SHA, and lease timestamps.
+
+Executable transition enforcement starts at the exact protocol field `lock_history_enforcement_start_utc = 2026-09-12T22:56:23Z`, the recorded D-0019 decision time. Earlier lock commits remain machine-readable legacy evidence and are not retroactively converted into compliant transitions. Every lock commit at or after the enforcement timestamp is validated against its immediate predecessor. This prevents legacy behavior—such as rewriting `base_sha` inside the same live lease—from being repeated after v2 activation without making historical defects impossible to migrate past. `scripts/validate_lock_history.py` performs that branch-history validation.
 
 ## Parallel work selection
 
