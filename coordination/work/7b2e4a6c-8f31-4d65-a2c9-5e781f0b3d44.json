@@ -12,6 +12,7 @@
   "repo_paths": [
     "continuity/checkpoints/CP-000001-a31f7d2c.json",
     "continuity/checkpoints/CP-000002-7e1c4a90.json",
+    "continuity/checkpoints/CP-000003-c5e91a42.json",
     "governance/work-admissions.json",
     "tests/test_lock_history.py",
     "tests/test_work_selection.py"
