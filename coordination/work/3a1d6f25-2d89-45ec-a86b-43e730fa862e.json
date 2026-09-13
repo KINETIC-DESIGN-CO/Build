@@ -11,8 +11,6 @@
   "component_id": "continuity_sync",
   "repo_paths": [
     "continuity/current.json",
-    "continuity/events.jsonl",
-    "continuity/directive-ledger.jsonl",
     "continuity/checkpoints/CP-000010-5ef4a72c.json"
   ],
   "external_targets": [],
