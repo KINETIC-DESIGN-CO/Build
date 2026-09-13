@@ -10,22 +10,8 @@
   "base_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
   "component_id": "reliability_recovery_contracts",
   "repo_paths": [
-    "continuity/checkpoints/CP-000005-83828cb5.json",
-    "continuity/checkpoints/CP-000006-1d2c2ee1.json",
-    "continuity/checkpoints/CP-000007-01392b07.json",
-    "continuity/checkpoints/CP-000008-62025211.json",
-    "continuity/checkpoints/CP-000009-75f2a392.json",
-    "continuity/checkpoints/CP-000010-f63c26bb.json",
-    "continuity/checkpoints/CP-000011-5d12caaa.json",
-    "coordination/README.md",
-    "governance/root-cause-repairs.json",
-    "reliability/compatibility-map.json",
-    "reliability/schema/compatibility-map.schema.json",
-    "reliability/spec.json",
-    "scripts/validate_lock_history.py",
-    "scripts/validate_reliability.py",
-    "tests/test_lock_history.py",
-    "tests/test_reliability.py"
+    "continuity/checkpoints/CP-000012-ef5f7857.json",
+    "governance/root-cause-repairs.json"
   ],
   "external_targets": [],
   "claims": [
