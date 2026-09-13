@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/continuity/schema/checkpoint-template.schema.json",
+  "title": "Life Checkpoint Fill Template",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["template_version", "template_id", "runtime_control_authority", "checkpoint_authority", "checkpoint_schema_path", "policy_path", "field_order", "fill_instructions", "prohibited_interpretations"],
+  "properties": {
+    "template_version": {"const": 1},
+    "template_id": {"const": "life-checkpoint-fill-template-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "checkpoint_authority": {"const": "EVIDENCE_ONLY"},
+    "checkpoint_schema_path": {"const": "continuity/schema/checkpoint.schema.json"},
+    "policy_path": {"const": "continuity/checkpoint-policy.json"},
+    "field_order": {"type": "array", "minItems": 20, "maxItems": 20, "uniqueItems": true, "items": {"enum": ["schema_version", "checkpoint_id", "authority", "runtime_control_authority", "created_at", "source_main_sha", "work_id", "work_branch", "work_head_sha", "trigger_ids", "previous_checkpoint", "selected_work", "canonical_snapshot", "claim_observations", "operation_results", "directive_refs", "decision_rationale_refs", "research_refs", "live_verify", "resume_candidate", "context_refs"]}},
+    "fill_instructions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpoint_id", "created_at", "source_main_sha", "work_identity", "trigger_ids", "previous_checkpoint", "selected_work", "canonical_snapshot", "claim_observations", "operation_results", "directive_refs", "decision_rationale_refs", "research_refs", "live_verify", "resume_candidate", "context_refs", "completion"],
+      "properties": {
+        "checkpoint_id": {"type": "string", "minLength": 1},
+        "created_at": {"type": "string", "minLength": 1},
+        "source_main_sha": {"type": "string", "minLength": 1},
+        "work_identity": {"type": "string", "minLength": 1},
+        "trigger_ids": {"type": "string", "minLength": 1},
+        "previous_checkpoint": {"type": "string", "minLength": 1},
+        "selected_work": {"type": "string", "minLength": 1},
+        "canonical_snapshot": {"type": "string", "minLength": 1},
+        "claim_observations": {"type": "string", "minLength": 1},
+        "operation_results": {"type": "string", "minLength": 1},
+        "directive_refs": {"type": "string", "minLength": 1},
+        "decision_rationale_refs": {"type": "string", "minLength": 1},
+        "research_refs": {"type": "string", "minLength": 1},
+        "live_verify": {"type": "string", "minLength": 1},
+        "resume_candidate": {"type": "string", "minLength": 1},
+        "context_refs": {"type": "string", "minLength": 1},
+        "completion": {"type": "string", "minLength": 1}
+      }
+    },
+    "prohibited_interpretations": {"type": "array", "minItems": 10, "maxItems": 10, "uniqueItems": true, "items": {"enum": ["CHECKPOINT_AS_CURRENT_LIVE_CLAIM_AUTHORITY", "CHECKPOINT_AS_AUTHORIZATION", "CHECKPOINT_AS_COMPLETION_PASS", "CHECKPOINT_AS_VERIFICATION_PASS", "CHECKPOINT_AS_RELEASE_PERMISSION", "CHECKPOINT_AS_MUTATION_PERMISSION", "CHECKPOINT_AS_EFFECT_EXECUTION_PERMISSION", "PROSE_OR_DIRECT_QUOTE_AS_RUNTIME_CONTROL_AUTHORITY", "MODEL_JUDGMENT_AS_TRIGGER", "SELF_HASH_OR_CONTAINING_COMMIT_SHA_REQUIRED_INSIDE_CURRENT_ARTIFACT"]}}
+  }
+}
