@@ -74,6 +74,14 @@ def v2_takeover(*, generation=2, lease_id=LEASE_B, acquired=NOW):
     }
 
 
+def entry(lock_value: dict, committed_at: datetime, sha_char: str) -> dict:
+    return {
+        "commit_sha": sha_char * 40,
+        "committed_at": committed_at,
+        "lock": lock_value,
+    }
+
+
 class WorkFenceLockMigrationTests(unittest.TestCase):
     def test_legacy_v1_effective_expiry_uses_last_heartbeat(self):
         lock = v1(heartbeat=NOW - timedelta(minutes=10))
@@ -100,6 +108,57 @@ class WorkFenceLockMigrationTests(unittest.TestCase):
     def test_pre_cutover_active_v1_snapshot_remains_valid_history(self):
         lock = v1(heartbeat=NOW - timedelta(minutes=10))
         mod.validate_versioned_snapshot(lock, NOW - timedelta(minutes=1), protocol(), NOW)
+
+    def test_pre_cutover_takeover_uses_legacy_four_hour_expiry_and_v1_shape(self):
+        previous = v1(heartbeat=NOW - timedelta(hours=5))
+        current = v1(generation=2, lease_id=LEASE_B, heartbeat=NOW - timedelta(hours=1))
+        mod.validate_versioned_history(
+            [
+                entry(previous, NOW - timedelta(hours=5), "a"),
+                entry(current, NOW - timedelta(hours=1), "b"),
+            ],
+            protocol(),
+            cutover=NOW,
+        )
+
+    def test_pre_cutover_takeover_does_not_retroactively_use_thirty_minute_expiry(self):
+        previous = v1(heartbeat=NOW - timedelta(minutes=40))
+        current = v1(generation=2, lease_id=LEASE_B, heartbeat=NOW)
+        with self.assertRaises(mod.ValidationError):
+            mod.validate_versioned_history(
+                [
+                    entry(previous, NOW - timedelta(minutes=40), "a"),
+                    entry(current, NOW, "b"),
+                ],
+                protocol(),
+                cutover=NOW + timedelta(minutes=1),
+            )
+
+    def test_post_cutover_versioned_takeover_accepts_v2_typed_event(self):
+        previous = v1(heartbeat=NOW - timedelta(minutes=40))
+        current = v2_takeover()
+        mod.validate_versioned_history(
+            [
+                entry(previous, NOW - timedelta(minutes=40), "a"),
+                entry(current, NOW, "b"),
+            ],
+            protocol(),
+            cutover=NOW - timedelta(minutes=5),
+        )
+
+    def test_post_cutover_versioned_takeover_rejects_wrong_event_type(self):
+        previous = v1(heartbeat=NOW - timedelta(minutes=40))
+        current = v2_takeover()
+        current["lease_event_type"] = "ACQUIRE"
+        with self.assertRaises(mod.ValidationError):
+            mod.validate_versioned_history(
+                [
+                    entry(previous, NOW - timedelta(minutes=40), "a"),
+                    entry(current, NOW, "b"),
+                ],
+                protocol(),
+                cutover=NOW - timedelta(minutes=5),
+            )
 
 
 if __name__ == "__main__":
