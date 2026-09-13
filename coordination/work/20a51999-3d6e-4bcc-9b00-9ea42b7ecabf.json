@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "work_id": "20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+  "title": "Reconcile already-implemented Issue 15 schema enforcement",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "1245ac6f-0e4c-43e8-b0cb-b0c73549347d"
+  },
+  "implementation_branch": "work/20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+  "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
+  "component_id": "issue_15",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000001-93aa28e1.json",
+    "governance/work-admissions.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_15",
+      "lock_branch": "lock/9d2d67391fdccea8d9371e7139cfced4484a6280e2d715393dc97ba5aa623ad0",
+      "lease_id": "90089f9b-a238-440f-b6d7-75ebd76873c1",
+      "generation": 4
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
