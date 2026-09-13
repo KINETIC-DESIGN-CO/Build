@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "work_id": "7b2e4a6c-8f31-4d65-a2c9-5e781f0b3d44",
+  "title": "Complete Issue 17 lock-transition enforcement",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "c2b95af8-4a72-4d90-a1c5-86f7b3e2d641"
+  },
+  "implementation_branch": "work/7b2e4a6c-8f31-4d65-a2c9-5e781f0b3d44",
+  "base_sha": "dcfb42bbd7f08cf2a655878c29a49becf7352a53",
+  "component_id": "issue_17",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000001-a31f7d2c.json",
+    "governance/work-admissions.json",
+    "tests/test_lock_history.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_17",
+      "lock_branch": "lock/5d5ae1fe9fc98097e0c98dddf51191909e219a76f31dcdd66d3202ff9395c85b",
+      "lease_id": "4d9a02e1-b3f6-4c78-9a52-1e7d0f6c8b31",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
