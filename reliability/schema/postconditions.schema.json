@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Reliability Postcondition Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["catalog_id", "postconditions", "runtime_control_authority", "schema_version"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "catalog_id": {"type": "string", "const": "life-reliability-postconditions-v1"},
+    "runtime_control_authority": {"type": "string", "const": "NONE"},
+    "postconditions": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["name", "pass_rule", "postcondition_id", "required_evidence_role", "runtime_control_authority", "verification_dimension"],
+        "properties": {
+          "postcondition_id": {"type": "string", "pattern": "^RPOST-[0-9]{4}$"},
+          "name": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "verification_dimension": {"type": "string", "enum": ["OUTPUT_CORRECTNESS", "MECHANISM_EXECUTION", "SOURCE_ROUTE", "EFFECT_STATE", "POSTCONDITION_STATE", "PROTECTED_INVARIANT_PRESERVATION", "RECURRENCE_PREVENTION", "SPECIFICATION_SURVIVAL", "LIVE_ENFORCEMENT", "PARENT_RESTORATION"]},
+          "required_evidence_role": {"type": "string", "enum": ["USER_TRIGGER", "FAILED_RESPONSE", "TOOL_INPUT", "TOOL_RESULT", "USER_CORRECTION", "DIRECT_OBSERVATION", "AUTHORITATIVE_READBACK", "DIAGNOSIS_SUPPORT", "DIAGNOSIS_REFUTATION", "REPAIR_ATTEMPT", "POSTCONDITION_PROOF", "REGRESSION_PROOF", "PARENT_CONTEXT", "MECHANISM_TRACE", "TIMING_TRACE", "SOURCE_ROLE_PROOF", "CONFLICTING_EVIDENCE"]},
+          "pass_rule": {"type": "string", "minLength": 1},
+          "runtime_control_authority": {"type": "string", "const": "NONE"}
+        }
+      }
+    }
+  }
+}
