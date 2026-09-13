@@ -127,6 +127,44 @@
         "POST_EPOCH_EMPTY_LOCK_BRANCH_DETECTOR_REMAINS_FAIL_CLOSED"
       ],
       "verification_state": "RECONCILED_SOURCE_CI_AND_PROTECTED_INTEGRATION_PENDING"
+    },
+    {
+      "repair_id": "RCA-0003",
+      "root_goal_ref": "continuity/current.json:A-0014",
+      "state": "REPAIRING",
+      "failure_refs": [
+        "github-actions:34783372915:tests.test_continuity.ContinuityTests.test_bootstrap_loads_goal_lifecycle_before_work_selection"
+      ],
+      "violated_invariant_ids": [
+        "MUTABLE_CANONICAL_STATE_NOT_LITERAL_TEST_EXPECTATION"
+      ],
+      "origin_commit_refs": [
+        "2bf2028963f66ba122d29102a23018da42265883"
+      ],
+      "history_evidence_refs": [
+        "2bf2028963f66ba122d29102a23018da42265883"
+      ],
+      "root_cause_classes": [
+        "PRODUCTION_STATE_USED_AS_TEST_FIXTURE_WITH_LITERAL_EXPECTATION"
+      ],
+      "affected_surfaces": [
+        "continuity/bootstrap.json",
+        "continuity/schema/bootstrap.schema.json",
+        "tests/test_continuity.py"
+      ],
+      "dependent_validator_surfaces": [
+        "scripts/validate_continuity.py",
+        ".github/workflows/continuity.yml"
+      ],
+      "selected_dispositions": [
+        "REPLACE_LITERAL_PRODUCTION_EXPECTATION_WITH_SCHEMA_DERIVED_ASSERTION",
+        "ADD_VERSION_INCREMENT_FALSIFICATION_WITHOUT_WEAKENING_SCHEMA_VALIDATION"
+      ],
+      "recurrence_test_ids": [
+        "BOOTSTRAP_BUNDLE_VERSION_SCHEMA_DERIVED",
+        "BOOTSTRAP_BUNDLE_VERSION_INCREMENT_ACCEPTED"
+      ],
+      "verification_state": "SOURCE_REPAIR_IN_PROGRESS_REQUIRED_CI_AND_PROTECTED_INTEGRATION_PENDING"
     }
   ]
 }
