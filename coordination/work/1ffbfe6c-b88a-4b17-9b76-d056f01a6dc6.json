@@ -14,7 +14,8 @@
     "scripts/validate_coordination.py",
     "scripts/validate_lock_history.py",
     "tests/test_coordination_claim_scope.py",
-    "tests/test_lock_history.py"
+    "tests/test_lock_history.py",
+    "watchdog/spec.json"
   ],
   "external_targets": [],
   "claims": [
@@ -53,6 +54,12 @@
       "lock_branch": "lock/53a5128eef68c085a8b1253a890f7fcdd02df8b04bc0feaaecd5dedc66375327",
       "lease_id": "2ec485ad-3a2d-4eaa-a746-5216e448fce0",
       "generation": 3
+    },
+    {
+      "resource_key": "repo-file:watchdog/spec.json",
+      "lock_branch": "lock/9b26dcc011156c23399cddff948f79a68075708993b34c9d772511a6c8edaa2d",
+      "lease_id": "7c85b399-229d-4a7d-b4ce-8e9d123f7551",
+      "generation": 6
     }
   ],
   "runtime_control_authority": "NONE"
