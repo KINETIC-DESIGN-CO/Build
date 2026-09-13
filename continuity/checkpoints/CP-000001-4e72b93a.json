@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-4e72b93a",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:50:05Z",
+  "source_main_sha": "78a6909eac444b42964716dd6d845b34af752192",
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_head_sha": "6b6041a39d981bcf905706a845945360c46f7ad9",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": null,
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T19:50:05Z",
+    "evidence_ref": "Vince explicitly directed continuation of the already-active Phase 0 Reliability work after automatic admitted-Issue redispatch had no unclaimed eligible item; this checkpoint has zero work-selection authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_F5BC289_STALE_VS_LIVE_MAIN_78A6909E"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:50:05Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "99a1ea0a-1b32-44cd-8ec8-9951ebc8618d",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:14:11Z",
+      "observed_at": "2026-09-13T19:50:05Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "operation": "INITIAL_LOCK_CONTENTS_WRITE_BEFORE_REF_EXISTED",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:http=404:lock_branch_not_found:no_mutation"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github:main",
+      "operation": "ACCIDENTAL_INITIAL_LOCK_CONTENT_WRITE_TO_PROTECTED_MAIN",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:http=409:protected_main_ruleset_rejected:no_mutation"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f:_probe",
+      "operation": "ACCIDENTAL_SCRATCH_FILE_CREATE_THEN_DELETE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:create_commit=b676f477bec4c09c422d45fab08f12926f360ce2",
+        "github:delete_commit=26ac91c3f5795b5a7f806aca1f6359f975b1531b",
+        "github:readback=404:file_absent"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f:noop-do-not-use",
+      "operation": "ACCIDENTAL_SCRATCH_FILE_CREATE_THEN_DELETE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:create_commit=b25657096ac93edd7579ab29747e9c0ab8ceaaf1",
+        "github:delete_commit=c37ef560d2e9f1c1911eac26d9ec148d1052613b"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "operation": "RECONCILE_WITH_CURRENT_MAIN_USING_TWO_PARENT_MERGE_COMMIT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:work_head=6b6041a39d981bcf905706a845945360c46f7ad9",
+        "github:parent_phase0=c37ef560d2e9f1c1911eac26d9ec148d1052613b",
+        "github:parent_main=78a6909eac444b42964716dd6d845b34af752192"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main=78a6909eac444b42964716dd6d845b34af752192",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Finish Phase 0 Reliability catalogs, Draft 2020-12 schemas, semantic validator, falsification tests, bootstrap/CI integration, and protected integration without Supabase or Vercel mutation.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "architecture/reliability-recovery-v1.md",
+    "architecture/reliability-recovery-implementation-v1.md",
+    "reliability/spec.json",
+    "reliability/invariants.json",
+    "governance/user-observation-policy.json",
+    "continuity/user-observations.jsonl",
+    "github:main=78a6909eac444b42964716dd6d845b34af752192"
+  ]
+}

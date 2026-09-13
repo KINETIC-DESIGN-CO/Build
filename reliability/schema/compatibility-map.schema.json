@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Reliability Compatibility Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["goal_identity", "map_id", "root_cause_repair", "runtime_control_authority", "schema_version", "semantic_firewall", "user_observation", "work_selection_interruption"],
+  "properties": {
+    "schema_version": {"type":"integer","const":1},
+    "map_id": {"type":"string","const":"life-reliability-compatibility-v1"},
+    "runtime_control_authority": {"type":"string","const":"NONE"},
+    "work_selection_interruption": {
+      "type":"object","additionalProperties":false,"required":["mappings","owner_path"],
+      "properties": {
+        "owner_path":{"type":"string","const":"governance/work-selection-policy.json"},
+        "mappings":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"object","additionalProperties":false,"required":["reliability_obligation_class","selection_effect","source_state"],"properties":{"source_state":{"type":"string","enum":["PENDING","NO_RESULT","TIMEOUT","UNKNOWN","SUCCESS","FAILURE"]},"reliability_obligation_class":{"type":"string","enum":["OCCURRENCE_REPAIR","RECURRENCE_PREVENTION","EVIDENCE_RECOVERY","EFFECT_RECONCILIATION","VERIFIER_REPAIR","SPECIFICATION_REPAIR","LIVE_ENFORCEMENT_REPAIR","PARENT_RESTORATION","LESSON_PROMOTION"]},"selection_effect":{"type":"string","enum":["SOURCE_POLICY_OWNS_SELECTION","NO_AUTOMATIC_OBLIGATION_SATISFACTION"]}}}}
+      }
+    },
+    "root_cause_repair": {
+      "type":"object","additionalProperties":false,"required":["owner_path","relationship","repair_identity_fields"],
+      "properties":{"owner_path":{"type":"string","const":"governance/root-cause-repair-policy.json"},"relationship":{"type":"string","const":"COMBINE_BY_REFERENCE"},"repair_identity_fields":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^[a-z][a-z0-9_]*$"}}}
+    },
+    "user_observation": {
+      "type":"object","additionalProperties":false,"required":["contradiction_rule","owner_ledger_path","owner_policy_path","record_id_pattern","relationship","reliability_source_class"],
+      "properties":{"owner_policy_path":{"type":"string","const":"governance/user-observation-policy.json"},"owner_ledger_path":{"type":"string","const":"continuity/user-observations.jsonl"},"relationship":{"type":"string","const":"REPLACE_DUPLICATE_VINCE_OBSERVATION_SEMANTICS_WITH_REFERENCE"},"reliability_source_class":{"type":"string","const":"VINCE_PERSONAL_OBSERVATION_REF"},"record_id_pattern":{"type":"string","const":"^UO-[0-9]{4}$"},"contradiction_rule":{"type":"string","minLength":1}}
+    },
+    "semantic_firewall": {
+      "type":"object","additionalProperties":false,"required":["current_contract_path","relationship","rule","state"],
+      "properties":{"relationship":{"type":"string","const":"COMBINE_IMPORTED_SOURCE_PENDING_BUILD_NATIVE_ACTIVATION"},"current_contract_path":{"type":"string","const":"contracts/semantic-firewall"},"state":{"type":"string","enum":["SOURCE_IMPORTED_ACTIVATION_PENDING","ACTIVE"]},"rule":{"type":"string","minLength":1}}
+    },
+    "goal_identity": {
+      "type":"object","additionalProperties":false,"required":["current_owner_path","relationship","rule","state"],
+      "properties":{"relationship":{"type":"string","const":"COMBINE_PENDING_GOAL_OWNER_IMPLEMENTATION"},"current_owner_path":{"type":["string","null"]},"state":{"type":"string","enum":["PENDING_IMPLEMENTATION","ACTIVE"]},"rule":{"type":"string","minLength":1}}
+    }
+  }
+}

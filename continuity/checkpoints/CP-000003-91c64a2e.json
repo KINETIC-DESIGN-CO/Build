@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-91c64a2e",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T20:20:07Z",
+  "source_main_sha": "6f6b498b546e5681f357fc06c9d4e83aa38cc1c8",
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_head_sha": "375708c71bffdc547568db1bc1ad79b71d1cdf3f",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-7f3a2c91.json",
+    "blob_sha": "6ea17fe8f0c1529a071b44da677b05850ba7d953"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T20:20:07Z",
+    "evidence_ref": "Vince explicitly directed continuation of the already-active Phase 0 Reliability work; the live component claim remains ACTIVE and unexpired. This checkpoint has zero work-selection authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_F5BC289_STALE_VS_LIVE_MAIN_6F6B498B"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T20:20:07Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "99a1ea0a-1b32-44cd-8ec8-9951ebc8618d",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:14:11Z",
+      "observed_at": "2026-09-13T20:20:07Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:81:Enforce Phase 0 Reliability and Recovery contracts",
+      "operation": "CREATE_PROTECTED_INTEGRATION_PULL_REQUEST",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:pr=81",
+        "github:pr_head=375708c71bffdc547568db1bc1ad79b71d1cdf3f",
+        "github:pr_base=6f6b498b546e5681f357fc06c9d4e83aa38cc1c8"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "actions:run:34780338938",
+      "operation": "PR_HEAD_REQUIRED_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:job=103786078100",
+        "github:head=375708c71bffdc547568db1bc1ad79b71d1cdf3f",
+        "github:step=Validate Reliability contracts:SUCCESS",
+        "github:step=Validate source coordination:SUCCESS",
+        "github:step=Run repository tests:SUCCESS",
+        "github:step=Run Supabase database tests:SUCCESS"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main=6f6b498b546e5681f357fc06c9d4e83aa38cc1c8",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:81:Enforce Phase 0 Reliability and Recovery contracts",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "actions:run:34780338938",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:reliability_recovery_contracts",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Require the new exact PR head to pass protected validation, then enter GitHub Merge Queue and verify merge-group validation before main integration.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "architecture/reliability-recovery-v1.md",
+    "architecture/reliability-recovery-implementation-v1.md",
+    "GITHUB_PR:81:Enforce Phase 0 Reliability and Recovery contracts",
+    "github:run=34780338938",
+    "github:main=6f6b498b546e5681f357fc06c9d4e83aa38cc1c8"
+  ]
+}

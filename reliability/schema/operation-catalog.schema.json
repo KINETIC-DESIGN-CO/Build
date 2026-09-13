@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Reliability Operation Contract Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["catalog_id", "operation_contracts", "runtime_control_authority", "schema_version"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "catalog_id": {"type": "string", "const": "life-reliability-operation-contracts-v1"},
+    "runtime_control_authority": {"type": "string", "const": "NONE"},
+    "operation_contracts": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["compensation_contract_id", "duplicate_effect_risk", "effect_class", "fail_closed_disposition", "idempotency_mode", "name", "operation_contract_id", "postcondition_ids", "readback_mode", "retry_budget", "retryable_attempt_result_states", "retryable_effect_states", "runtime_control_authority"],
+        "properties": {
+          "operation_contract_id": {"type": "string", "pattern": "^ROP-[0-9]{4}$"},
+          "name": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "effect_class": {"type": "string", "enum": ["STATE_CHANGING", "READ_ONLY"]},
+          "duplicate_effect_risk": {"type": "string", "enum": ["YES", "NO"]},
+          "idempotency_mode": {"type": "string", "enum": ["EXACT_KEY", "NATURAL_UNIQUE_CONSTRAINT", "NONE"]},
+          "retry_budget": {"type": "integer", "minimum": 0},
+          "retryable_attempt_result_states": {"type": "array", "minItems": 0, "uniqueItems": true, "items": {"type": "string", "enum": ["PENDING", "SUCCESS", "FAILURE", "NO_RESULT", "TIMEOUT", "UNKNOWN"]}},
+          "retryable_effect_states": {"type": "array", "minItems": 0, "uniqueItems": true, "items": {"type": "string", "enum": ["NOT_EVALUATED", "NO_EFFECT_VERIFIED", "EFFECT_VERIFIED", "PARTIAL_EFFECT_VERIFIED", "EFFECT_UNKNOWN"]}},
+          "readback_mode": {"type": "string", "enum": ["AUTHORITATIVE_READBACK", "READBACK_UNAVAILABLE"]},
+          "postcondition_ids": {"type": "array", "minItems": 0, "uniqueItems": true, "items": {"type": "string", "pattern": "^RPOST-[0-9]{4}$"}},
+          "compensation_contract_id": {"type": ["string", "null"], "pattern": "^ROP-[0-9]{4}$"},
+          "fail_closed_disposition": {"type": "string", "enum": ["QUARANTINE", "ESCALATE", "ABORT"]},
+          "runtime_control_authority": {"type": "string", "const": "NONE"}
+        }
+      }
+    }
+  }
+}
