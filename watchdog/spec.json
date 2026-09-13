@@ -112,7 +112,7 @@
     "source_contract_fingerprints": [
       {
         "path": "continuity/bootstrap.json",
-        "git_blob_sha": "fc2133570a34f4332791af3d9856376e0d08e81e"
+        "git_blob_sha": "eab55ac6039dfb4697584ffb9a62bb17a825ad24"
       },
       {
         "path": "continuity/response-contract.json",
