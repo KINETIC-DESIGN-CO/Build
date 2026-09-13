@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "manifest_revision": 24,
+  "manifest_revision": 25,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-13T05:34:24Z",
+  "updated_at": "2026-09-13T06:15:03Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
   "current_component": "multi_thread_coordination_hardening",
@@ -104,12 +104,12 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-13T05:34:24Z",
+      "observed_at": "2026-09-13T06:15:03Z",
       "repository_id": 1366835183,
       "full_name": "KINETIC-DESIGN-CO/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "db13de0c69294c52d1c2417efee2f38d72ccbc2e",
+      "head_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
@@ -117,14 +117,14 @@
       "ruleset_strict_required_status_checks": false,
       "ruleset_merge_queue_required": true,
       "open_pull_request_count": 1,
-      "latest_continuity_workflow_run_id": 34739725513,
+      "latest_continuity_workflow_run_id": 34741223698,
       "latest_continuity_workflow_conclusion": "success",
-      "latest_merge_group_workflow_run_id": 34739624742,
+      "latest_merge_group_workflow_run_id": 34741084328,
       "latest_merge_group_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-13T05:34:24Z",
+      "observed_at": "2026-09-13T06:15:03Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
@@ -153,18 +153,18 @@
     },
     "vercel": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-13T05:34:24Z",
+      "observed_at": "2026-09-13T06:15:03Z",
       "target": null,
       "reason": "No exact Life Vercel infrastructure target is authorized."
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-13T05:34:24Z",
+      "observed_at": "2026-09-13T06:15:03Z",
       "reason": "The authorized Supabase project has zero deployed Edge Functions, no exact Life Vercel target is authorized, and the exact tool life.invoke is not verified live."
     },
     "watchdog_automation": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-13T05:34:24Z",
+      "observed_at": "2026-09-13T06:15:03Z",
       "automation_id": "6aa5200548248191a9b7d15639632874",
       "title": "Build Repository Watchdog",
       "executor_contract_id": "build-watchdog-executor-v2",
@@ -184,7 +184,7 @@
     "id": "A-0013",
     "kind": "VERIFY",
     "target": "DETERMINISTIC_WORK_SELECTION_AFTER_CONTINUITY_SYNC",
-    "description": "After this rank-0 continuity synchronization is merged, merged main is read back, post-merge validate succeeds, and both synchronization claims are released and read back, rerun the live deterministic dispatcher. Reconcile any selected item's existing work branch and live claim state before mutation; do not infer current ownership from an open pull request, expired lease, checkpoint, issue, or prose.",
+    "description": "After this follow-up rank-0 continuity synchronization is merged, merged main is read back, post-merge validate succeeds, and both synchronization claims are released and read back, rerun the live deterministic dispatcher. Reconcile any selected item's existing work branch and live claim state before mutation; do not infer current ownership from an open pull request, expired lease, checkpoint, issue, or prose.",
     "authorization_effect": "NONE"
   }
 }
