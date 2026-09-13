@@ -26,7 +26,8 @@
     "scripts/validate_coordination.py",
     "tests/test_continuity.py",
     "tests/test_coordination.py",
-    "tests/test_problem_intake_policy.py"
+    "tests/test_problem_intake_policy.py",
+    "watchdog/spec.json"
   ],
   "external_targets": [],
   "claims": [
