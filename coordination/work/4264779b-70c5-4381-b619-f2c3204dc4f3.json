@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
-  "title": "Semantic Firewall Phase B: canonical admission and Build-native control activation",
+  "title": "Semantic Firewall Phase B: Build-native source control boundary",
   "worker": {
     "kind": "chatgpt",
     "session_id": "8a245f96-a61b-4269-8abd-df583d4b0235"
@@ -14,6 +14,7 @@
     "architecture/semantic-firewall-v1.md",
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000002-a2622ab0.json",
+    "continuity/checkpoints/CP-000003-dfc4836d.json",
     "contracts/semantic-firewall-v1/control-contract.schema.json",
     "contracts/semantic-firewall-v1/control-receipt.schema.json",
     "contracts/semantic-firewall-v1/control-request.schema.json",
