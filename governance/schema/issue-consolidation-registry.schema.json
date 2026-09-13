@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/governance/schema/issue-consolidation-registry.schema.json",
+  "title": "Life Issue Consolidation Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","registry_id","runtime_control_authority","engineering_consolidation_authority","activation_state","parent_goal_binding","canonical_requirements","source_requirements","dependencies","independence_assertions","candidate_pairs","excluded_issues","source_refs"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "registry_id": {"const": "life-issue-consolidation-registry-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "engineering_consolidation_authority": {"const": "DETERMINISTIC_EVALUATION_ONLY"},
+    "activation_state": {"enum": ["SOURCE_ONLY_NOT_YET_CONSUMED_BY_WORK_SELECTION","LIVE_WORK_SELECTION_CONSUMER"]},
+    "parent_goal_binding": {
+      "type":"object","additionalProperties":false,"required":["goal_id","binding_state","source_ref"],
+      "properties":{
+        "goal_id":{"type":"string","pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "binding_state":{"enum":["PENDING_PARENT_GOAL_MAIN_INTEGRATION","VERIFIED_ON_MAIN"]},
+        "source_ref":{"type":"string","minLength":1}
+      }
+    },
+    "canonical_requirements":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/canonical_requirement"}},
+    "source_requirements":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/source_requirement"}},
+    "dependencies":{"type":"array","items":{"$ref":"#/$defs/dependency"}},
+    "independence_assertions":{"type":"array","items":{"$ref":"#/$defs/independence"}},
+    "candidate_pairs":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/candidate_pair"}},
+    "excluded_issues":{"type":"array","items":{"$ref":"#/$defs/excluded_issue"}},
+    "source_refs":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}}
+  },
+  "$defs": {
+    "canonical_requirement": {
+      "type":"object","additionalProperties":false,
+      "required":["canonical_requirement_id","canonical_work_identity_id","acceptance_condition_ids","source_requirement_refs","lifecycle_state"],
+      "properties":{
+        "canonical_requirement_id":{"type":"string","pattern":"^CR-[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+        "canonical_work_identity_id":{"type":"string","pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "acceptance_condition_ids":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^[A-Z0-9]+(?:_[A-Z0-9]+)*$"}},
+        "source_requirement_refs":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^ISSUE-[1-9][0-9]*:[A-Z0-9]+(?:_[A-Z0-9]+)*$"}},
+        "lifecycle_state":{"enum":["ACTIVE","COMPLETE","REMOVED"]}
+      }
+    },
+    "source_requirement": {
+      "type":"object","additionalProperties":false,
+      "required":["source_requirement_ref","source_issue_number","source_fragment_id","canonical_requirement_id","acceptance_condition_ids","eligibility_state"],
+      "properties":{
+        "source_requirement_ref":{"type":"string","pattern":"^ISSUE-[1-9][0-9]*:[A-Z0-9]+(?:_[A-Z0-9]+)*$"},
+        "source_issue_number":{"type":"integer","minimum":1},
+        "source_fragment_id":{"type":"string","pattern":"^[A-Z0-9]+(?:_[A-Z0-9]+)*$"},
+        "canonical_requirement_id":{"type":"string","pattern":"^CR-[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+        "acceptance_condition_ids":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^[A-Z0-9]+(?:_[A-Z0-9]+)*$"}},
+        "eligibility_state":{"enum":["ACTIVE","COMPLETE","REMOVED"]}
+      }
+    },
+    "dependency": {
+      "type":"object","additionalProperties":false,"required":["requirement_id","depends_on_requirement_id","dependency_id"],
+      "properties":{
+        "requirement_id":{"type":"string","pattern":"^CR-[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+        "depends_on_requirement_id":{"type":"string","pattern":"^CR-[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+        "dependency_id":{"type":"string","pattern":"^DEP-[0-9]{4}$"}
+      }
+    },
+    "independence": {
+      "type":"object","additionalProperties":false,"required":["assertion_id","left_requirement_id","right_requirement_id"],
+      "properties":{
+        "assertion_id":{"type":"string","pattern":"^IA-[0-9]{4}$"},
+        "left_requirement_id":{"type":"string","pattern":"^CR-[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+        "right_requirement_id":{"type":"string","pattern":"^CR-[A-Z0-9]+(?:-[A-Z0-9]+)*$"}
+      }
+    },
+    "candidate_pair": {
+      "type":"object","additionalProperties":false,"required":["left_source_requirement_ref","right_source_requirement_ref","classification_state","expected_relationship"],
+      "properties":{
+        "left_source_requirement_ref":{"type":"string","pattern":"^ISSUE-[1-9][0-9]*:[A-Z0-9]+(?:_[A-Z0-9]+)*$"},
+        "right_source_requirement_ref":{"type":"string","pattern":"^ISSUE-[1-9][0-9]*:[A-Z0-9]+(?:_[A-Z0-9]+)*$"},
+        "classification_state":{"enum":["UNRESOLVED","CLASSIFIED"]},
+        "expected_relationship":{"type":["string","null"],"enum":["DUPLICATE","COMBINE_REQUIRED","DEPENDENCY","INDEPENDENT",null]}
+      }
+    },
+    "excluded_issue": {
+      "type":"object","additionalProperties":false,"required":["source_issue_number","eligibility_state","reason_id"],
+      "properties":{
+        "source_issue_number":{"type":"integer","minimum":1},
+        "eligibility_state":{"const":"EXCLUDED_INVALID_INTAKE"},
+        "reason_id":{"type":"string","pattern":"^[A-Z0-9]+(?:_[A-Z0-9]+)*$"}
+      }
+    }
+  }
+}
