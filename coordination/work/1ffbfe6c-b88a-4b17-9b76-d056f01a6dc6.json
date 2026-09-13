@@ -14,7 +14,7 @@
     "scripts/validate_coordination.py",
     "scripts/validate_lock_history.py",
     "tests/test_coordination_claim_scope.py",
-    "tests/test_lock_history_protocol_compat.py"
+    "tests/test_lock_history.py"
   ],
   "external_targets": [],
   "claims": [
@@ -49,10 +49,10 @@
       "generation": 1
     },
     {
-      "resource_key": "repo-file:tests/test_lock_history_protocol_compat.py",
-      "lock_branch": "lock/07bb573559460990f44d4e0f70ac5d45a72c47889026963df46d56a18ed85335",
-      "lease_id": "90dc6aa0-e48a-4935-9a22-0a3bcc3b498d",
-      "generation": 1
+      "resource_key": "repo-file:tests/test_lock_history.py",
+      "lock_branch": "lock/53a5128eef68c085a8b1253a890f7fcdd02df8b04bc0feaaecd5dedc66375327",
+      "lease_id": "2ec485ad-3a2d-4eaa-a746-5216e448fce0",
+      "generation": 3
     }
   ],
   "runtime_control_authority": "NONE"
