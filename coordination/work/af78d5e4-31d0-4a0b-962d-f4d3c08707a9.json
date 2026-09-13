@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "work_id": "af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+  "title": "Persist Reliability and Recovery architecture synthesis",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "7ac69cab-dfef-4fa4-ba21-72c354fae3c4"
+  },
+  "implementation_branch": "work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+  "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
+  "component_id": "reliability_recovery_architecture",
+  "repo_paths": [
+    "architecture/reliability-recovery-implementation-v1.md",
+    "architecture/reliability-recovery-v1.md",
+    "continuity/checkpoints/CP-000001-b95d87e3.json",
+    "continuity/directive-ledger.jsonl",
+    "continuity/events.jsonl",
+    "coordination/work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:reliability_recovery_architecture",
+      "lock_branch": "lock/a8d719815632c854da757419af97ff9e6bf9afb222a6edc79e2f2defa4c11619",
+      "lease_id": "5f40c44e-7a8a-4308-b5dc-f385bdd1da20",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
