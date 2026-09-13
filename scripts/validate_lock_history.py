@@ -159,8 +159,11 @@ def validate_history(history: list[dict], protocol: dict) -> None:
         fail("initial lock snapshot must be ACTIVE generation 1")
     if first["acquired_at"] != first["heartbeat_at"]:
         fail("initial lock snapshot must have acquired_at == heartbeat_at")
-    for previous, current in zip(history, history[1:]):
-        validate_transition(previous, current, protocol)
+    for index, (previous, current) in enumerate(zip(history, history[1:]), start=1):
+        try:
+            validate_transition(previous, current, protocol)
+        except ValidationError as exc:
+            fail(f"transition[{index - 1}->{index}] generation {previous['generation']}->{current['generation']} {previous['state']}->{current['state']}: {exc}")
 
 
 def load_protocol() -> dict:
@@ -212,8 +215,11 @@ def main() -> int:
     try:
         protocol = load_protocol()
         for branch in remote_lock_branches():
-            history = history_for_branch(branch)
-            validate_history(history, protocol)
+            try:
+                history = history_for_branch(branch)
+                validate_history(history, protocol)
+            except ValidationError as exc:
+                fail(f"{branch}: {exc}")
     except ValidationError as exc:
         print(f"LOCK_HISTORY_INVALID: {exc}", file=sys.stderr)
         return 1
