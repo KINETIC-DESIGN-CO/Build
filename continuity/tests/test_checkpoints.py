@@ -6,6 +6,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+ENFORCEMENT = "2026-09-13T19:38:19Z"
+ROOT_GOAL = "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
 
 
 class CheckpointTests(unittest.TestCase):
@@ -44,7 +46,7 @@ class CheckpointTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("VALID", result.stdout)
 
-    def test_bootstrap_requires_checkpoint_and_provenance_surfaces(self):
+    def test_bootstrap_requires_checkpoint_goal_and_provenance_surfaces(self):
         bootstrap = json.loads((ROOT / "continuity/bootstrap.json").read_text())
         for rel in (
             "continuity/checkpoint-policy.json",
@@ -56,6 +58,10 @@ class CheckpointTests(unittest.TestCase):
             "continuity/decision-rationale.schema.json",
             "governance/work-admissions.json",
             "governance/schema/work-admissions.schema.json",
+            "governance/goal-policy.json",
+            "governance/goal-registry.json",
+            "scripts/validate_goal_graph.py",
+            "tests/test_goal_graph.py",
             "scripts/validate_lock_history.py",
             "tests/test_lock_history.py",
             "continuity/tools/validate_checkpoints.py",
@@ -66,20 +72,23 @@ class CheckpointTests(unittest.TestCase):
             "READ_LIVE_COORDINATION_FOR_CHECKPOINT_DISCOVERY",
             "READ_LATEST_WORK_CHECKPOINT",
             "READ_CHECKPOINT_PROVENANCE",
+            "EVALUATE_THREAD_LIFECYCLE_BOUNDARY",
         ):
             self.assertIn(step, bootstrap["resume_algorithm"])
-        self.assertIn("python scripts/validate_lock_history.py", bootstrap["validation_command"])
+        self.assertIn("python scripts/validate_goal_graph.py", bootstrap["validation_command"])
         self.assertIn("python continuity/tools/validate_checkpoints.py", bootstrap["validation_command"])
         self.assertIn("python continuity/tests/test_checkpoints.py", bootstrap["validation_command"])
 
-    def test_policy_has_only_exact_checkpoint_triggers(self):
+    def test_policy_has_exact_goal_snapshot_boundary(self):
         policy = json.loads((ROOT / "continuity/checkpoint-policy.json").read_text())
         self.assertEqual(policy["trigger_mode"], "ANY_TRUE")
         self.assertEqual(policy["cadence"]["non_checkpoint_tool_result_limit"], 12)
         self.assertEqual(policy["cadence"]["elapsed_seconds_limit"], 1800)
         self.assertEqual(policy["cadence"]["elapsed_trigger_min_new_evidence_items"], 1)
         self.assertEqual(policy["checkpoint_authority"], "EVIDENCE_ONLY")
+        self.assertEqual(policy["goal_snapshot_enforcement_utc"], ENFORCEMENT)
         template = json.loads((ROOT / "continuity/checkpoint-template.json").read_text())
+        self.assertIn("goal_snapshot", template["field_order"])
         self.assertIn("MODEL_JUDGMENT_AS_TRIGGER", template["prohibited_interpretations"])
 
     def test_unknown_checkpoint_trigger_is_rejected(self):
@@ -158,6 +167,41 @@ class CheckpointTests(unittest.TestCase):
             result = self.run_validator(dst)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("required const", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_checkpoint_after_enforcement_requires_goal_snapshot(self):
+        td, dst = self.copy_repo()
+        try:
+            path = self.checkpoint_path(dst)
+            obj = json.loads(path.read_text())
+            obj["created_at"] = ENFORCEMENT
+            obj.pop("goal_snapshot", None)
+            self.write_json(path, obj)
+            result = self.run_validator(dst)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("requires goal_snapshot after enforcement", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_goal_snapshot_path_must_start_at_root_and_end_at_active(self):
+        td, dst = self.copy_repo()
+        try:
+            path = self.checkpoint_path(dst)
+            obj = json.loads(path.read_text())
+            obj["created_at"] = ENFORCEMENT
+            child = "5c4d26d4-f821-4db5-9f5c-dccce3eaa697"
+            obj["goal_snapshot"] = {
+                "active_root_goal_id": ROOT_GOAL,
+                "active_goal_id": child,
+                "active_path": [child],
+                "observed_at": ENFORCEMENT,
+                "authority": "HISTORICAL_OBSERVATION_ONLY",
+            }
+            self.write_json(path, obj)
+            result = self.run_validator(dst)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("must start at active_root_goal_id", result.stderr)
         finally:
             td.cleanup()
 

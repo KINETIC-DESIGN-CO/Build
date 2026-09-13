@@ -149,8 +149,8 @@ def validate_source_contract_documents(documents):
     expect(set(required_read_order) <= set(required_files), "source-contract:bootstrap-read-order-subset")
 
     response = documents["continuity/response-contract.json"]
-    expect(response.get("schema_version") == 1, "source-contract:response-schema")
-    expect(response.get("contract_id") == "life-response-contract-v1", "source-contract:response-id")
+    expect(response.get("schema_version") == 2, "source-contract:response-schema")
+    expect(response.get("contract_id") == "life-response-contract-v2", "source-contract:response-id")
     expect(response.get("runtime_control_authority") == "NONE", "source-contract:response-authority")
 
     protocol = documents["coordination/protocol.json"]

@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000004-b28f91c4",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T20:37:02Z",
+  "source_main_sha": "496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_head_sha": "1d046647987ab2a51c4bbb98d5959b6ba9acc306",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000003-91c64a2e.json",
+    "blob_sha": "611672de8a21606ad4afcfd314792206a17de25f"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T20:37:02Z",
+    "evidence_ref": "This checkpoint records terminal verification of the already-owned Phase 0 Reliability work. Work-selection v4 gives continuity projections zero preemption effect; this checkpoint has zero selection or mutation authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_F5BC289_STALE_VS_LIVE_MAIN_496DC414"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T20:37:02Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "99a1ea0a-1b32-44cd-8ec8-9951ebc8618d",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:14:11Z",
+      "observed_at": "2026-09-13T20:37:02Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:81:Enforce Phase 0 Reliability and Recovery contracts",
+      "operation": "MERGE_GROUP_REQUIRED_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34780647525",
+        "github:merge_group_head=496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+        "github:step=Validate Reliability contracts:SUCCESS",
+        "github:step=Validate source coordination:SUCCESS",
+        "github:step=Run repository tests:SUCCESS",
+        "github:step=Run Supabase database tests:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:81:Enforce Phase 0 Reliability and Recovery contracts",
+      "operation": "PROTECTED_MAIN_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:pr=81:merged=true",
+        "github:merge_commit=496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+        "github:main=496dc41475ba7ce0f65e27395c4c4e059c394cf5"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "actions:run:34780755332",
+      "operation": "POST_MERGE_MAIN_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:head=496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+        "github:step=Validate Reliability contracts:SUCCESS",
+        "github:step=Validate source coordination:SUCCESS",
+        "github:step=Run repository tests:SUCCESS",
+        "github:step=Run Supabase database tests:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main:reliability",
+      "operation": "MERGED_SOURCE_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:main:continuity/bootstrap.json=618221f7ff15942384fb7ade16d8379b81eb6979",
+        "github:main:reliability/spec.json=45806931725a1f9df4421476b2d2b76f8295125d",
+        "github:main:reliability/invariants.json=98a9d0c346b89e3a9f0840948ef9b98f2adea200",
+        "github:main:reliability/operation-catalog.json=bf0ae05f5fa88776c60fcf92133d113bdd7e56a9",
+        "github:main:reliability/postconditions.json=c88f91a75c434b5b6c2519fc18f8aaf6bb0aa064",
+        "github:main:reliability/recovery-policy.json=062001d09b17097356437dbdd7a9aa1069ccf1f4",
+        "github:main:reliability/compatibility-map.json=7039242f4ec35e35fe31fe91e40bbf1ab2f00f5d"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "CANONICAL_INVOCATION_READINESS_READBACK",
+      "result": "NOT_RUN",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "supabase:project=ACTIVE_HEALTHY",
+        "supabase:plan=free",
+        "supabase:edge_functions=0",
+        "supabase:life.invoke=ABSENT",
+        "supabase:life.record_invocation_v1=PRESENT",
+        "vercel:authorized_target=null"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [
+    {
+      "source_kind": "ACADEMIC",
+      "title": "Verified Tool Calls Improve LLM Agent Reliability Under Non-Atomic Failures",
+      "url": "https://arxiv.org/abs/2608.02645",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Postcondition verification, verify-before-retry behavior, and idempotency keys address duplicate-effect risk under non-atomic tool failures."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue - GitHub Docs",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Merge Queue validates queued changes with required checks on a latest-base merge_group before integration."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main=496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:81:merged",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "actions:run:34780647525",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "actions:run:34780755332",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:reliability_recovery_contracts",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Integrate this continuity-only final checkpoint through required validation and Merge Queue, verify its main readback, then release the final component:reliability_recovery_contracts claim.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "architecture/reliability-recovery-v1.md",
+    "architecture/reliability-recovery-implementation-v1.md",
+    "GITHUB_PR:81:Enforce Phase 0 Reliability and Recovery contracts",
+    "github:merge_group_run=34780647525",
+    "github:post_merge_run=34780755332",
+    "github:main=496dc41475ba7ce0f65e27395c4c4e059c394cf5"
+  ]
+}

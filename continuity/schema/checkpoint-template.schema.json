@@ -12,11 +12,11 @@
     "checkpoint_authority": {"const": "EVIDENCE_ONLY"},
     "checkpoint_schema_path": {"const": "continuity/checkpoint.schema.json"},
     "policy_path": {"const": "continuity/checkpoint-policy.json"},
-    "field_order": {"type": "array", "minItems": 21, "maxItems": 21, "uniqueItems": true, "items": {"enum": ["schema_version", "checkpoint_id", "authority", "runtime_control_authority", "created_at", "source_main_sha", "work_id", "work_branch", "work_head_sha", "trigger_ids", "previous_checkpoint", "selected_work", "canonical_snapshot", "claim_observations", "operation_results", "directive_refs", "decision_rationale_refs", "research_refs", "live_verify", "resume_candidate", "context_refs"]}},
+    "field_order": {"type": "array", "minItems": 22, "maxItems": 22, "uniqueItems": true, "items": {"enum": ["schema_version", "checkpoint_id", "authority", "runtime_control_authority", "created_at", "source_main_sha", "work_id", "work_branch", "work_head_sha", "trigger_ids", "previous_checkpoint", "selected_work", "canonical_snapshot", "goal_snapshot", "claim_observations", "operation_results", "directive_refs", "decision_rationale_refs", "research_refs", "live_verify", "resume_candidate", "context_refs"]}},
     "fill_instructions": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["checkpoint_id", "created_at", "source_main_sha", "work_identity", "trigger_ids", "previous_checkpoint", "selected_work", "canonical_snapshot", "claim_observations", "operation_results", "directive_refs", "decision_rationale_refs", "research_refs", "live_verify", "resume_candidate", "context_refs", "completion"],
+      "required": ["checkpoint_id", "created_at", "source_main_sha", "work_identity", "trigger_ids", "previous_checkpoint", "selected_work", "canonical_snapshot", "goal_snapshot", "claim_observations", "operation_results", "directive_refs", "decision_rationale_refs", "research_refs", "live_verify", "resume_candidate", "context_refs", "completion"],
       "properties": {
         "checkpoint_id": {"type": "string", "minLength": 1},
         "created_at": {"type": "string", "minLength": 1},
@@ -26,6 +26,7 @@
         "previous_checkpoint": {"type": "string", "minLength": 1},
         "selected_work": {"type": "string", "minLength": 1},
         "canonical_snapshot": {"type": "string", "minLength": 1},
+        "goal_snapshot": {"type": "string", "minLength": 1},
         "claim_observations": {"type": "string", "minLength": 1},
         "operation_results": {"type": "string", "minLength": 1},
         "directive_refs": {"type": "string", "minLength": 1},
