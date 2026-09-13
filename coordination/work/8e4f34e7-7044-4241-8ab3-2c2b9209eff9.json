@@ -13,13 +13,22 @@
     ".github/workflows/issue-lifecycle.yml",
     "continuity/bootstrap.json",
     "governance/issue-lifecycle-policy.json",
+    "governance/root-cause-repair-policy.json",
+    "governance/root-cause-repairs.json",
     "governance/schema/issue-lifecycle-policy.schema.json",
+    "governance/schema/root-cause-repair-policy.schema.json",
+    "governance/schema/root-cause-repairs.schema.json",
     "governance/schema/work-selection-policy.schema.json",
     "governance/work-selection-policy.json",
     "scripts/select_work.py",
     "scripts/validate_issue_lifecycle.py",
+    "scripts/validate_root_cause_repair.py",
+    "scripts/validate_watchdog.py",
     "tests/test_issue_lifecycle.py",
-    "tests/test_work_selection.py"
+    "tests/test_root_cause_repair.py",
+    "tests/test_watchdog.py",
+    "tests/test_work_selection.py",
+    "watchdog/spec.json"
   ],
   "external_targets": [],
   "claims": [
