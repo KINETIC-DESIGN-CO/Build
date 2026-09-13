@@ -64,14 +64,6 @@
       "dispatch_tier": 100,
       "state": "ADMITTED",
       "depends_on": []
-    },
-    {
-      "work_item_id": "github-issue-30",
-      "source_issue_number": 30,
-      "component_id": "issue_30",
-      "dispatch_tier": 100,
-      "state": "REMOVED",
-      "depends_on": []
     }
   ]
 }
