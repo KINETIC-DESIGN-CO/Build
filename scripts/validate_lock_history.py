@@ -141,9 +141,11 @@ def validate_snapshot(lock: dict, protocol: dict) -> None:
         fail("lock lease duration mismatch")
 
 
-def effective_expiry(lock: dict, protocol: dict) -> datetime:
+def effective_expiry(lock: dict, protocol: dict, *, v4_rules_active: bool | None = None) -> datetime:
     stored = parse_utc(lock["expires_at"])
-    if protocol.get("protocol_id") == "life-source-coordination-v4" and is_component(lock) and lock["schema_version"] == 1:
+    if v4_rules_active is None:
+        v4_rules_active = protocol.get("protocol_id") == "life-source-coordination-v4"
+    if v4_rules_active and is_component(lock) and lock["schema_version"] == 1:
         return min(stored, parse_utc(lock["heartbeat_at"]) + timedelta(seconds=component_duration(protocol)))
     return stored
 
@@ -152,7 +154,15 @@ def immutable_release_fields(lock: dict) -> tuple:
     return tuple((key, json.dumps(lock[key], sort_keys=True)) for key in sorted(set(lock) - {"state"}))
 
 
-def validate_transition_semantics(previous: dict, current: dict, protocol: dict) -> None:
+def validate_transition_semantics(
+    previous: dict,
+    current: dict,
+    protocol: dict,
+    *,
+    v4_rules_active: bool | None = None,
+) -> None:
+    if v4_rules_active is None:
+        v4_rules_active = protocol.get("protocol_id") == "life-source-coordination-v4"
     if previous["resource_key"] != current["resource_key"]:
         fail("resource_key cannot change within lock history")
     prev_state, curr_state = previous["state"], current["state"]
@@ -171,7 +181,7 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
             fail("released reacquisition must use a new lease_id")
         if curr_acquired != curr_heartbeat or curr_acquired < prev_heartbeat:
             fail("released reacquisition timestamp invalid")
-        if protocol.get("protocol_id") == "life-source-coordination-v4" and is_component(current):
+        if v4_rules_active and is_component(current):
             if current["schema_version"] != 2 or current["lease_event_type"] != "REACQUIRE":
                 fail("post-v4 component reacquisition requires schema v2 REACQUIRE")
         return
@@ -183,12 +193,12 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
                 fail("renewal changed immutable ownership field")
             if curr_heartbeat <= prev_heartbeat:
                 fail("renewal heartbeat must advance")
-            if protocol.get("protocol_id") == "life-source-coordination-v4" and is_component(current):
+            if v4_rules_active and is_component(current):
                 if previous["schema_version"] != 2 or current["schema_version"] != 2:
                     fail("post-v4 component renewal requires schema v2 predecessor and current lock")
                 if current["lease_event_type"] not in {"RENEW_PROTECTED_MUTATION", "RENEW_REQUIRED_CHECKPOINT"}:
                     fail("post-v4 component renewal requires typed activity event")
-                if curr_heartbeat >= effective_expiry(previous, protocol):
+                if curr_heartbeat >= effective_expiry(previous, protocol, v4_rules_active=True):
                     fail("component renewal cannot occur at or after predecessor effective expiry")
                 return
             remaining = int((parse_utc(previous["expires_at"]) - curr_heartbeat).total_seconds())
@@ -196,7 +206,7 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
                 fail("legacy renewal outside configured renewal window")
             return
 
-        if curr_acquired < effective_expiry(previous, protocol):
+        if curr_acquired < effective_expiry(previous, protocol, v4_rules_active=v4_rules_active):
             fail("takeover cannot occur before predecessor effective expiry")
         if current["generation"] != previous["generation"] + 1:
             fail("takeover must increment generation by exactly one")
@@ -204,7 +214,7 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
             fail("takeover must use a new lease_id")
         if curr_acquired != curr_heartbeat:
             fail("takeover must start with acquired_at == heartbeat_at")
-        if protocol.get("protocol_id") == "life-source-coordination-v4" and is_component(current):
+        if v4_rules_active and is_component(current):
             if current["schema_version"] != 2 or current["lease_event_type"] != "TAKEOVER":
                 fail("post-v4 component takeover requires schema v2 TAKEOVER")
         return
@@ -296,8 +306,13 @@ def validate_versioned_history(entries: list[dict], protocol: dict, cutover: dat
                 fail("enforced initial lock snapshot invalid")
             continue
         previous = entries[index - 1]["lock"]
+        v4_rules_active = (
+            protocol.get("protocol_id") == "life-source-coordination-v4"
+            and cutover is not None
+            and committed_at >= cutover
+        )
         try:
-            validate_transition_semantics(previous, lock, protocol)
+            validate_transition_semantics(previous, lock, protocol, v4_rules_active=v4_rules_active)
         except ValidationError as exc:
             fail(f"transition[{index-1}->{index}] generation {previous['generation']}->{lock['generation']} {previous['state']}->{lock['state']}: {exc}")
 
