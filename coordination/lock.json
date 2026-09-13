@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:tests/test_coordination_claim_scope.py",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "1ffbfe6c-b88a-4b17-9b76-d056f01a6dc6",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "d93260c7-4f0d-4501-8f0d-185312f4161a"
+  },
+  "implementation_branch": "work/1ffbfe6c-b88a-4b17-9b76-d056f01a6dc6",
+  "lease_id": "5d672cf1-3634-4ea4-8c0f-9ef7236d9eb8",
+  "base_sha": "b55ee94b1102093a19eacc981695ea2e5bff1174",
+  "acquired_at": "2026-09-13T02:41:23Z",
+  "heartbeat_at": "2026-09-13T02:41:23Z",
+  "expires_at": "2026-09-13T06:41:23Z",
+  "runtime_control_authority": "NONE"
+}
