@@ -68,6 +68,19 @@ class ProblemIntakePolicyTests(unittest.TestCase):
         self.assertTrue((ROOT / "governance/issue-consolidation-registry.json").is_file())
         self.assertTrue((ROOT / "governance/root-cause-repair-policy.json").is_file())
 
+    def test_response_contract_discloses_persistence_and_current_job(self):
+        contract = json.loads((ROOT / "continuity/response-contract.json").read_text())
+        self.assertIn("PERSISTENCE_STATUS", contract["required_sections"])
+        self.assertEqual(
+            contract["persistence_status_values"],
+            ["THREAD_ONLY", "DURABLE_INTAKE_RECORDED", "QUEUED", "IMPLEMENTING", "LIVE", "BLOCKED"],
+        )
+        self.assertEqual(
+            contract["current_job_rule"],
+            "NEXT_STEP_STATES_THE_EXACT_WORK_THIS_THREAD_OWNS_AND_WILL_EXECUTE;IF_THIS_THREAD_HAS_NO_WORK_TO_CONTINUE_OUTPUT_EXACTLY_THIS_THREAD_CAN_BE_CLOSED",
+        )
+        self.assertIn("ARTIFACT_OR_WORK_ID", contract["persistence_disclosure_rule"])
+
 
 if __name__ == "__main__":
     unittest.main()

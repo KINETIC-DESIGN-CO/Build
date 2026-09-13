@@ -7,6 +7,9 @@
   "base_sha": "52ad688966cb9764cb4f384463d9fe11ded793cb",
   "component_id": "issue_49",
   "repo_paths": [
+    "continuity/directive-ledger.jsonl",
+    "continuity/response-contract.json",
+    "continuity/schema/response-contract.schema.json",
     "coordination/README.md",
     "coordination/protocol.json",
     "governance/problem-intake-policy.json",
