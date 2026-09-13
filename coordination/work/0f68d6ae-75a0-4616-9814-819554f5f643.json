@@ -27,7 +27,6 @@
     "continuity/checkpoints/CP-000001-3f1f3e12.json",
     "continuity/directive-ledger.jsonl",
     "continuity/events.jsonl",
-    "coordination/work/0f68d6ae-75a0-4616-9814-819554f5f643.json",
     "tests/test_semantic_firewall_import.py"
   ],
   "external_targets": [],
