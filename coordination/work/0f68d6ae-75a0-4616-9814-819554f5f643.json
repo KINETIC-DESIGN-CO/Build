@@ -14,6 +14,7 @@
     "continuity/checkpoints/CP-000001-3f1f3e12.json",
     "continuity/checkpoints/CP-000002-a61d9b73.json",
     "continuity/checkpoints/CP-000003-f47c0e62.json",
+    "continuity/checkpoints/CP-000004-066976fd.json",
     "continuity/directive-ledger.jsonl",
     "continuity/events.jsonl",
     "contracts/semantic-firewall/artifact-byte-identity.acceptance.json",
