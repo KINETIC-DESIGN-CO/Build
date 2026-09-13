@@ -7,7 +7,7 @@
   "source_main_sha": "78a6909eac444b42964716dd6d845b34af752192",
   "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
   "work_branch": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
-  "work_head_sha": "36febe40331afd75dd1ae11711f024c707296718",
+  "work_head_sha": "1efb7e992dc0278b5c7f767ad04b22e406a02556",
   "trigger_ids": [
     "TRACKED_PR_STATE_CHANGED",
     "LIVE_MAIN_SHA_CHANGED",
@@ -21,8 +21,8 @@
     "worker_lane": "PARALLEL_ASSIGNED",
     "selected_rank": 0,
     "selected_work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
-    "evaluated_at": "2026-09-13T19:43:00Z",
-    "evidence_ref": "Interrupted Semantic Firewall Phase A work remains bound to active generation-2 component claim; current work branch was reconciled with main 78a6909eac444b42964716dd6d845b34af752192 using two-parent merge commit 36febe40331afd75dd1ae11711f024c707296718 after directive identity collision repair.",
+    "evaluated_at": "2026-09-13T19:46:35Z",
+    "evidence_ref": "Interrupted Semantic Firewall Phase A work remains bound to the active generation-2 component claim. PR #76 current head 1efb7e992dc0278b5c7f767ad04b22e406a02556 includes current main 78a6909eac444b42964716dd6d845b34af752192 as its second parent after directive identity collision repair, and GitHub reports mergeable=true with mergeable_state=blocked pending required checks/queue gates.",
     "authority": "HISTORICAL_OBSERVATION_ONLY"
   },
   "canonical_snapshot": {
@@ -35,7 +35,7 @@
     "open_blocker_ids": [
       "B-0004"
     ],
-    "observed_at": "2026-09-13T19:43:00Z"
+    "observed_at": "2026-09-13T19:46:35Z"
   },
   "claim_observations": [
     {
@@ -46,7 +46,7 @@
       "lease_id": "d9c103b6-9c73-40fe-94a0-035a8a8ed6f6",
       "generation": 2,
       "expires_at": "2026-09-13T22:27:27Z",
-      "observed_at": "2026-09-13T19:43:00Z",
+      "observed_at": "2026-09-13T19:46:35Z",
       "live_verify_required": true
     }
   ],
@@ -60,7 +60,8 @@
       "evidence_refs": [
         "current main canonical VD-0021 preserved unchanged",
         "Semantic Firewall priority directive renumbered to VD-0022",
-        "branch-local checkpoint and event references updated to VD-0022"
+        "branch-local checkpoint and event references updated to VD-0022",
+        "historical VD-0003 and VD-0004 bytes restored to current-main parity"
       ]
     },
     {
@@ -68,12 +69,13 @@
       "target": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
       "operation": "RECONCILE_CURRENT_MAIN_WITH_TWO_PARENT_MERGE",
       "result": "SUCCESS",
-      "readback_state": "PENDING_LIVE_VERIFY",
+      "readback_state": "VERIFIED",
       "evidence_refs": [
-        "merge commit 36febe40331afd75dd1ae11711f024c707296718",
-        "first parent 309545e6b8c80f279ffbe29a7abb729a51f273f9",
+        "merge commit 1efb7e992dc0278b5c7f767ad04b22e406a02556",
+        "first parent f199fe0f39b3f97e16d9e8d6de69518e10185093",
         "second parent 78a6909eac444b42964716dd6d845b34af752192",
-        "result tree 5d670df410786b065ff23d115b40768b83fce968"
+        "result tree 1bf0239de4bb7dd961658a050c4d37c35f5707cc",
+        "PR #76 mergeable=true and mergeable_state=blocked after reconciliation"
       ]
     }
   ],
@@ -120,7 +122,7 @@
   ],
   "resume_candidate": {
     "operation_state": "PENDING",
-    "candidate_next_operation": "UPDATE_WORK_RECORD_FOR_CP_000003_THEN_REQUIRE_EXACT_PR_HEAD_VALIDATE_SUCCESS_AND_ENTER_GITHUB_MERGE_QUEUE",
+    "candidate_next_operation": "REQUIRE_EXACT_PR_HEAD_VALIDATE_SUCCESS_THEN_ENTER_GITHUB_MERGE_QUEUE_AND_VERIFY_MERGE_GROUP_AND_POST_MERGE_MAIN",
     "authority": "NONE"
   },
   "context_refs": [
@@ -131,6 +133,6 @@
     "DR-0001",
     "DR-0002",
     "GITHUB_MAIN:78a6909eac444b42964716dd6d845b34af752192",
-    "WORK_MERGE:36febe40331afd75dd1ae11711f024c707296718"
+    "WORK_MERGE:1efb7e992dc0278b5c7f767ad04b22e406a02556"
   ]
 }
