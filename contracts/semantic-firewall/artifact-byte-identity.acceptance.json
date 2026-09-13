@@ -1,0 +1,116 @@
+{
+  "contract_id": "semantic_firewall.artifact_byte_identity",
+  "purpose": "Bind declared Semantic Firewall artifact identities to exact repository-relative files and SHA-256 values recomputed from the checked-out bytes before those identities can support later receipt issuance.",
+  "fixture": {
+    "artifacts": {
+      "CONTRACT": {
+        "id": "semantic_firewall.artifact.control_request_acceptance",
+        "path": "contracts/semantic-firewall/control-request.acceptance.json"
+      },
+      "VALIDATOR": {
+        "id": "semantic_firewall.artifact.control_request_runner",
+        "path": "contracts/semantic-firewall/run_control_request_acceptance.py"
+      },
+      "EVALUATOR": {
+        "id": "semantic_firewall.artifact.contract_reference_runner",
+        "path": "contracts/semantic-firewall/run_contract_reference_acceptance.py"
+      },
+      "TEST_SUITE": {
+        "id": "semantic_firewall.artifact.contract_reference_acceptance",
+        "path": "contracts/semantic-firewall/contract-reference.acceptance.json"
+      }
+    }
+  },
+  "acceptance_cases": [
+    {
+      "case_id": "baseline_bound",
+      "mutations": [],
+      "expected": "BOUND"
+    },
+    {
+      "case_id": "contract_well_formed_wrong_hash_rejected",
+      "mutations": [{"op": "REPLACE_WITH_DIFFERENT_VALID_SHA256", "path": "/artifacts/CONTRACT/sha256"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "validator_well_formed_wrong_hash_rejected",
+      "mutations": [{"op": "REPLACE_WITH_DIFFERENT_VALID_SHA256", "path": "/artifacts/VALIDATOR/sha256"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "evaluator_well_formed_wrong_hash_rejected",
+      "mutations": [{"op": "REPLACE_WITH_DIFFERENT_VALID_SHA256", "path": "/artifacts/EVALUATOR/sha256"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "test_suite_well_formed_wrong_hash_rejected",
+      "mutations": [{"op": "REPLACE_WITH_DIFFERENT_VALID_SHA256", "path": "/artifacts/TEST_SUITE/sha256"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "artifact_identity_change_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/VALIDATOR/id", "value": "semantic_firewall.artifact.other_validator"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "artifact_path_change_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/EVALUATOR/path", "value": "contracts/semantic-firewall/run_control_request_acceptance.py"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "missing_artifact_file_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/CONTRACT/path", "value": "contracts/semantic-firewall/does-not-exist.json"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "parent_traversal_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/CONTRACT/path", "value": "contracts/semantic-firewall/../../../README.md"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "absolute_path_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/CONTRACT/path", "value": "/etc/hosts"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "directory_path_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/CONTRACT/path", "value": "contracts/semantic-firewall"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "missing_role_rejected",
+      "mutations": [{"op": "REMOVE", "path": "/artifacts/TEST_SUITE"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "extra_role_rejected",
+      "mutations": [{"op": "ADD", "path": "/artifacts/OTHER", "value": {"id": "semantic_firewall.artifact.other", "path": "README.md", "sha256": "0000000000000000000000000000000000000000000000000000000000000000"}}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "extra_artifact_field_rejected",
+      "mutations": [{"op": "ADD", "path": "/artifacts/CONTRACT/note", "value": "approved"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "malformed_hash_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/CONTRACT/sha256", "value": "not-a-hash"}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "hash_wrong_type_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/CONTRACT/sha256", "value": {"sha256": "0000000000000000000000000000000000000000000000000000000000000000"}}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "id_wrong_type_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/VALIDATOR/id", "value": {"id": "semantic_firewall.artifact.control_request_runner"}}],
+      "expected": "UNBOUND"
+    },
+    {
+      "case_id": "path_wrong_type_rejected",
+      "mutations": [{"op": "REPLACE", "path": "/artifacts/EVALUATOR/path", "value": {"path": "contracts/semantic-firewall/run_contract_reference_acceptance.py"}}],
+      "expected": "UNBOUND"
+    }
+  ]
+}

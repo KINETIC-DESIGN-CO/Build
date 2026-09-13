@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "title": "Phase 0 Reliability and Recovery Contracts",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "b9668a3e-eb54-4bbc-ac14-fda1324f259a"
+  },
+  "implementation_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "base_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
+  "component_id": "reliability_recovery_contracts",
+  "repo_paths": [
+    ".github/workflows/continuity.yml",
+    "continuity/bootstrap.json",
+    "continuity/checkpoints/CP-000001-4e72b93a.json",
+    "continuity/checkpoints/CP-000002-7f3a2c91.json",
+    "continuity/checkpoints/CP-000003-91c64a2e.json",
+    "reliability/compatibility-map.json",
+    "reliability/invariants.json",
+    "reliability/operation-catalog.json",
+    "reliability/postconditions.json",
+    "reliability/recovery-policy.json",
+    "reliability/schema/compatibility-map.schema.json",
+    "reliability/schema/invariants.schema.json",
+    "reliability/schema/operation-catalog.schema.json",
+    "reliability/schema/postconditions.schema.json",
+    "reliability/schema/recovery-policy.schema.json",
+    "reliability/schema/spec.schema.json",
+    "reliability/spec.json",
+    "scripts/validate_reliability.py",
+    "tests/test_reliability.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "lease_id": "99a1ea0a-1b32-44cd-8ec8-9951ebc8618d",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}

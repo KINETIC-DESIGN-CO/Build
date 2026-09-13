@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-f47c0e62",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:43:00Z",
+  "source_main_sha": "78a6909eac444b42964716dd6d845b34af752192",
+  "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+  "work_branch": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
+  "work_head_sha": "1efb7e992dc0278b5c7f767ad04b22e406a02556",
+  "trigger_ids": [
+    "TRACKED_PR_STATE_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "MUTATION_RESULT_TERMINAL"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-a61d9b73.json",
+    "blob_sha": "ecb5b212c83973f01c1a23fc72df05757520a513"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 0,
+    "selected_work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+    "evaluated_at": "2026-09-13T19:46:35Z",
+    "evidence_ref": "Interrupted Semantic Firewall Phase A work remains bound to the active generation-2 component claim. PR #76 current head 1efb7e992dc0278b5c7f767ad04b22e406a02556 includes current main 78a6909eac444b42964716dd6d845b34af752192 as its second parent after directive identity collision repair, and GitHub reports mergeable=true with mergeable_state=blocked pending required checks/queue gates.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:46:35Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:semantic_firewall_source_intake",
+      "lock_branch": "lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab",
+      "state": "ACTIVE",
+      "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+      "lease_id": "d9c103b6-9c73-40fe-94a0-035a8a8ed6f6",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:27:27Z",
+      "observed_at": "2026-09-13T19:46:35Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "continuity/directive-ledger.jsonl",
+      "operation": "RESOLVE_DIRECTIVE_ID_COLLISION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "current main canonical VD-0021 preserved unchanged",
+        "Semantic Firewall priority directive renumbered to VD-0022",
+        "branch-local checkpoint and event references updated to VD-0022",
+        "historical VD-0003 and VD-0004 bytes restored to current-main parity"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
+      "operation": "RECONCILE_CURRENT_MAIN_WITH_TWO_PARENT_MERGE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "merge commit 1efb7e992dc0278b5c7f767ad04b22e406a02556",
+        "first parent f199fe0f39b3f97e16d9e8d6de69518e10185093",
+        "second parent 78a6909eac444b42964716dd6d845b34af752192",
+        "result tree 1bf0239de4bb7dd961658a050c4d37c35f5707cc",
+        "PR #76 mergeable=true and mergeable_state=blocked after reconciliation"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0022"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue - GitHub Docs",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Protected integration must continue through required validate and Merge Queue after latest-base reconciliation."
+    },
+    {
+      "source_kind": "STANDARD",
+      "title": "RFC 9562 UUIDs",
+      "url": "https://www.rfc-editor.org/rfc/rfc9562",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Future shared event/directive identifiers can avoid manual sequential allocation collisions by using collision-resistant UUID identifiers; that architecture change is outside this Phase A repair."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:76",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:semantic_firewall_source_intake",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_EXACT_PR_HEAD_VALIDATE_SUCCESS_THEN_ENTER_GITHUB_MERGE_QUEUE_AND_VERIFY_MERGE_GROUP_AND_POST_MERGE_MAIN",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57",
+    "GITHUB_PR:76",
+    "WORK_ID:0f68d6ae-75a0-4616-9814-819554f5f643",
+    "VD-0022",
+    "DR-0001",
+    "DR-0002",
+    "GITHUB_MAIN:78a6909eac444b42964716dd6d845b34af752192",
+    "WORK_MERGE:1efb7e992dc0278b5c7f767ad04b22e406a02556"
+  ]
+}

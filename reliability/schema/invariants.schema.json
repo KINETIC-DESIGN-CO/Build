@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Reliability Invariant Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["catalog_id", "invariants", "runtime_control_authority", "schema_version"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "catalog_id": {"type": "string", "const": "life-reliability-invariants-v1"},
+    "runtime_control_authority": {"type": "string", "const": "NONE"},
+    "invariants": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["invariant_id", "name", "phase", "rule", "runtime_control_authority", "verification_dimension"],
+        "properties": {
+          "invariant_id": {"type": "string", "pattern": "^RINV-[0-9]{4}$"},
+          "name": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "verification_dimension": {"type": "string", "enum": ["OUTPUT_CORRECTNESS", "MECHANISM_EXECUTION", "SOURCE_ROUTE", "EFFECT_STATE", "POSTCONDITION_STATE", "PROTECTED_INVARIANT_PRESERVATION", "RECURRENCE_PREVENTION", "SPECIFICATION_SURVIVAL", "LIVE_ENFORCEMENT", "PARENT_RESTORATION"]},
+          "phase": {"type": "string", "enum": ["ALL", "EFFECT_EXECUTION", "VERIFICATION", "RECOVERY", "REPAIR"]},
+          "rule": {"type": "string", "minLength": 1},
+          "runtime_control_authority": {"type": "string", "const": "NONE"}
+        }
+      }
+    }
+  }
+}

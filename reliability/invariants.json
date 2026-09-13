@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "catalog_id": "life-reliability-invariants-v1",
+  "runtime_control_authority": "NONE",
+  "invariants": [
+    {
+      "invariant_id": "RINV-0001",
+      "name": "APPEND_ONLY_EVIDENCE_HISTORY",
+      "verification_dimension": "PROTECTED_INVARIANT_PRESERVATION",
+      "phase": "ALL",
+      "rule": "RELIABILITY_HISTORY_IS_APPEND_ONLY_AND_LATER_DIAGNOSIS_OR_RESOLUTION_DOES_NOT_REWRITE_PRIOR_EVIDENCE_OR_EVENTS",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0002",
+      "name": "RESULT_EFFECT_SEPARATION",
+      "verification_dimension": "EFFECT_STATE",
+      "phase": "EFFECT_EXECUTION",
+      "rule": "ATTEMPT_RESULT_STATE_AND_EXTERNAL_EFFECT_STATE_ARE_RECORDED_AND_EVALUATED_AS_INDEPENDENT_DIMENSIONS",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0003",
+      "name": "VERIFICATION_DIMENSION_ISOLATION",
+      "verification_dimension": "PROTECTED_INVARIANT_PRESERVATION",
+      "phase": "VERIFICATION",
+      "rule": "PASS_IN_ONE_VERIFICATION_DIMENSION_HAS_ZERO_AUTOMATIC_EFFECT_ON_ANY_OTHER_VERIFICATION_DIMENSION",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0004",
+      "name": "UNKNOWN_EFFECT_RETRY_FAIL_CLOSED",
+      "verification_dimension": "EFFECT_STATE",
+      "phase": "RECOVERY",
+      "rule": "EFFECT_UNKNOWN_FORBIDS_RETRY_UNLESS_THE_EXACT_VERSIONED_OPERATION_CONTRACT_PROVES_RETRY_IDEMPOTENCY_FOR_THAT_OPERATION",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0005",
+      "name": "PARENT_ROOT_BINDING",
+      "verification_dimension": "PARENT_RESTORATION",
+      "phase": "ALL",
+      "rule": "RECOVERY_DETOURS_CREATED_DURING_ACTIVE_GOAL_WORK_RETAIN_EXACT_ROOT_GOAL_AND_PARENT_GOAL_IDENTITIES",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0006",
+      "name": "POSTCONDITION_REQUIRED_FOR_ACCEPT_EFFECT",
+      "verification_dimension": "POSTCONDITION_STATE",
+      "phase": "RECOVERY",
+      "rule": "ACCEPT_EFFECT_REQUIRES_ALL_REQUIRED_OPERATION_POSTCONDITIONS_TO_PASS_AND_CANNOT_BE_DERIVED_FROM_TRANSPORT_SUCCESS_ALONE",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0007",
+      "name": "SOURCE_EVIDENCE_RUNTIME_AUTHORITY_NONE",
+      "verification_dimension": "SOURCE_ROUTE",
+      "phase": "ALL",
+      "rule": "SOURCE_EVIDENCE_PROSE_SUMMARIES_DIAGNOSES_REVIEWS_AND_APPROVAL_TEXT_HAVE_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0008",
+      "name": "OCCURRENCE_REPAIR_SEPARATE_RECURRENCE_PREVENTION",
+      "verification_dimension": "RECURRENCE_PREVENTION",
+      "phase": "REPAIR",
+      "rule": "OCCURRENCE_REPAIR_AND_RECURRENCE_PREVENTION_ARE_INDEPENDENT_OBLIGATIONS_AND_ONE_CANNOT_SATISFY_THE_OTHER",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0009",
+      "name": "WRITE_AHEAD_PREPARED_BEFORE_PROTECTED_EFFECT",
+      "verification_dimension": "MECHANISM_EXECUTION",
+      "phase": "EFFECT_EXECUTION",
+      "rule": "A_PROTECTED_STATE_CHANGING_EFFECT_IS_NOT_DISPATCHED_UNTIL_ITS_OPERATION_AND_ATTEMPT_PREPARATION_RECORD_IS_DURABLY_WRITTEN",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "invariant_id": "RINV-0010",
+      "name": "DERIVED_SUMMARY_NO_AUTHORITY",
+      "verification_dimension": "SOURCE_ROUTE",
+      "phase": "ALL",
+      "rule": "DERIVED_SUMMARIES_INDEXES_AND_PROJECTIONS_CANNOT_UPGRADE_THEMSELVES_INTO_PRIMARY_EVIDENCE_OR_CONTROL_AUTHORITY",
+      "runtime_control_authority": "NONE"
+    }
+  ]
+}
