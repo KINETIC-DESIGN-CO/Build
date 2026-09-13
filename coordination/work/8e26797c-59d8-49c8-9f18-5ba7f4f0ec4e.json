@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_id": "8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
-  "title": "Install deterministic continuity checkpoint policy",
+  "title": "Install deterministic continuity checkpoint and directive provenance",
   "worker": {
     "kind": "chatgpt",
     "session_id": "e3698433-3fae-47a2-bbb4-708f3237ba0b"
@@ -13,9 +13,16 @@
     "continuity/bootstrap.json",
     "continuity/checkpoint-policy.json",
     "continuity/checkpoint-template.json",
+    "continuity/current.json",
+    "continuity/decision-rationale.jsonl",
+    "continuity/decisions.jsonl",
+    "continuity/directive-ledger.jsonl",
+    "continuity/events.jsonl",
     "continuity/schema/checkpoint-policy.schema.json",
     "continuity/schema/checkpoint-template.schema.json",
     "continuity/schema/checkpoint.schema.json",
+    "continuity/schema/decision-rationale.schema.json",
+    "continuity/schema/directive-record.schema.json",
     "scripts/validate_continuity.py",
     "tests/test_continuity.py"
   ],
@@ -26,6 +33,12 @@
       "lock_branch": "lock/633e581db31e4024994ea6bc8dba00fd4709d967063b0708babfa3f49423386e",
       "lease_id": "daa9cf67-3ee4-4840-a507-bab3ce798add",
       "generation": 1
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "4a440c77-88bf-4833-840e-1a740c43d81e",
+      "generation": 13
     }
   ],
   "runtime_control_authority": "NONE"
