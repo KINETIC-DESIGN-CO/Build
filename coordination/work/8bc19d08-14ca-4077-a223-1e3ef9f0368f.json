@@ -10,25 +10,7 @@
   "base_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
   "component_id": "reliability_recovery_contracts",
   "repo_paths": [
-    ".github/workflows/continuity.yml",
-    "continuity/bootstrap.json",
-    "continuity/checkpoints/CP-000001-4e72b93a.json",
-    "continuity/checkpoints/CP-000002-7f3a2c91.json",
-    "continuity/checkpoints/CP-000003-91c64a2e.json",
-    "reliability/compatibility-map.json",
-    "reliability/invariants.json",
-    "reliability/operation-catalog.json",
-    "reliability/postconditions.json",
-    "reliability/recovery-policy.json",
-    "reliability/schema/compatibility-map.schema.json",
-    "reliability/schema/invariants.schema.json",
-    "reliability/schema/operation-catalog.schema.json",
-    "reliability/schema/postconditions.schema.json",
-    "reliability/schema/recovery-policy.schema.json",
-    "reliability/schema/spec.schema.json",
-    "reliability/spec.json",
-    "scripts/validate_reliability.py",
-    "tests/test_reliability.py"
+    "continuity/checkpoints/CP-000004-b28f91c4.json"
   ],
   "external_targets": [],
   "claims": [
