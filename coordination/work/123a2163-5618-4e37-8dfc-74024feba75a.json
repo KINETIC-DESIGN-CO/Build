@@ -10,6 +10,7 @@
   "base_sha": "4cdeceec9da3333404fbe0cda9f632a134a5f302",
   "component_id": "issue_consolidation",
   "repo_paths": [
+    "continuity/checkpoints/CP-000001-07742374.json",
     "governance/issue-consolidation-policy.json",
     "governance/issue-consolidation-registry.json",
     "governance/schema/issue-consolidation-policy.schema.json",
