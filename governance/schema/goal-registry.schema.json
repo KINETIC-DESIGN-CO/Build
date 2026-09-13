@@ -18,7 +18,7 @@
     },
     "goal": {
       "type":"object","additionalProperties":false,
-      "required":["goal_id","root_goal_id","parent_goal_id","return_to_goal_id","component_id","goal_relation","goal_state","terminal_cleanup_state","title","completion_condition_ids","satisfied_condition_ids","child_goal_ids","execution_attempts","source_refs","runtime_control_authority"],
+      "required":["goal_id","root_goal_id","parent_goal_id","return_to_goal_id","component_id","goal_relation","goal_state","terminal_cleanup_state","title","description","completion_condition_ids","satisfied_condition_ids","child_goal_ids","execution_attempts","source_refs","runtime_control_authority"],
       "properties": {
         "goal_id":{"$ref":"#/$defs/uuid4"},
         "root_goal_id":{"$ref":"#/$defs/uuid4"},
@@ -28,7 +28,8 @@
         "goal_relation":{"enum":["ROOT","PREREQUISITE","BLOCKER_REPAIR","CONTINUITY_CAPTURE","VERIFICATION","TERMINAL_CLEANUP","DEFECT_REPAIR","ISSUE_CONSOLIDATION","IMPLEMENTATION_CHILD"]},
         "goal_state":{"enum":["ACTIVE","BLOCKED_RESOURCE","BLOCKED_AUTHORIZATION","BLOCKED_COST","BLOCKED_PLATFORM","VERIFYING","COMPLETE","REMOVED"]},
         "terminal_cleanup_state":{"enum":["PENDING","VERIFIED"]},
-        "title":{"type":"string","minLength":1},
+        "title":{"type":"string","minLength":1,"maxLength":200},
+        "description":{"type":"string","minLength":1,"maxLength":500},
         "completion_condition_ids":{"type":"array","minItems":1,"uniqueItems":true,"items":{"$ref":"#/$defs/condition"}},
         "satisfied_condition_ids":{"type":"array","uniqueItems":true,"items":{"$ref":"#/$defs/condition"}},
         "child_goal_ids":{"type":"array","uniqueItems":true,"items":{"$ref":"#/$defs/uuid4"}},
