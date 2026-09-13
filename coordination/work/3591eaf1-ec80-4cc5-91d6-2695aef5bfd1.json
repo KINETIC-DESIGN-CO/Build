@@ -18,7 +18,9 @@
     "governance/work-admissions.json",
     "scripts/select_work.py",
     "scripts/validate_coordination.py",
+    "scripts/validate_lock_history.py",
     "tests/test_coordination.py",
+    "tests/test_lock_history_orphan_refs.py",
     "tests/test_problem_intake_policy.py"
   ],
   "external_targets": [],
