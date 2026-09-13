@@ -29,6 +29,8 @@
         "create_exemption_id",
         "create_exemption_conditions",
         "create_exemption_effect",
+        "problem_identity_rule",
+        "dedupe_rule",
         "projection_rule",
         "edit_rule"
       ],
@@ -49,6 +51,8 @@
           "items": {"type": "string", "minLength": 1}
         },
         "create_exemption_effect": {"const": "CONTINUITY_SYNC_PREARM_NOT_REQUIRED_FOR_THIS_CREATE_ONLY_OPERATION"},
+        "problem_identity_rule": {"type":"string","minLength":1},
+        "dedupe_rule": {"type":"string","minLength":1},
         "projection_rule": {"type": "string", "minLength": 1},
         "edit_rule": {"type": "string", "minLength": 1}
       }
@@ -65,6 +69,8 @@
         "keep_rule",
         "repair_rule",
         "blocked_evidence_rule",
+        "repair_item_rule",
+        "bootstrap_effect",
         "no_passive_outcome_rule",
         "completion_rule"
       ],
@@ -85,6 +91,8 @@
         "keep_rule": {"type":"string","minLength":1},
         "repair_rule": {"type":"string","minLength":1},
         "blocked_evidence_rule": {"type":"string","minLength":1},
+        "repair_item_rule": {"type":"string","minLength":1},
+        "bootstrap_effect": {"type":"string","minLength":1},
         "no_passive_outcome_rule": {"type":"string","minLength":1},
         "completion_rule": {"type":"string","minLength":1}
       }
