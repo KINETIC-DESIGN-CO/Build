@@ -24,6 +24,17 @@ class GoalGraphTests(unittest.TestCase):
     def test_canonical_goal_graph_validates(self):
         self.validate()
 
+    def test_root_has_canonical_presentation_description(self):
+        root = self.registry["goals"][0]
+        self.assertTrue(root["description"])
+        self.assertLessEqual(len(root["description"]), 500)
+
+    def test_missing_goal_description_fails_closed(self):
+        registry = copy.deepcopy(self.registry)
+        del registry["goals"][0]["description"]
+        with self.assertRaises(goal_graph.GoalError):
+            self.validate(registry=registry)
+
     def test_old_execution_attempt_is_superseded_and_new_attempt_is_active(self):
         root = self.registry["goals"][0]
         attempts = {item["work_id"]: item["attempt_state"] for item in root["execution_attempts"]}
@@ -37,6 +48,7 @@ class GoalGraphTests(unittest.TestCase):
         second["goal_id"] = "11111111-1111-4111-8111-111111111111"
         second["root_goal_id"] = second["goal_id"]
         second["title"] = "Second root"
+        second["description"] = "Second root description."
         registry["goals"].append(second)
         with self.assertRaises(goal_graph.GoalError):
             self.validate(registry=registry)
@@ -74,6 +86,7 @@ class GoalGraphTests(unittest.TestCase):
             "goal_state":"ACTIVE",
             "terminal_cleanup_state":"PENDING",
             "title":"Child goal",
+            "description":"A typed prerequisite child used only for falsification.",
             "completion_condition_ids":["CHILD_COMPLETE"],
             "satisfied_condition_ids":[],
             "child_goal_ids":[],
