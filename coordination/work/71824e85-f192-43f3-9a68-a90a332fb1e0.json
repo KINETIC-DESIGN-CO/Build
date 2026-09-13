@@ -11,6 +11,7 @@
   "component_id": "issue_21",
   "repo_paths": [
     "continuity/bootstrap.json",
+    "continuity/checkpoints/CP-000001-0c214599.json",
     "continuity/user-observations.jsonl",
     "governance/user-observation-policy.json",
     "scripts/evaluate_user_observation.py",
