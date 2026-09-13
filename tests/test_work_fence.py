@@ -103,12 +103,30 @@ def lock_v2(*, generation=2, work_id=WORK_A, heartbeat=None, event="ACQUIRE"):
 
 class WorkFenceTests(unittest.TestCase):
     def test_canonical_policy_validates(self):
-        self.assertEqual(mod.validate_policy()["component_stale_after_seconds"], 1800)
+        policy = mod.validate_policy()
+        self.assertEqual(policy["component_stale_after_seconds"], 1800)
+        self.assertEqual(policy["canonical_selector_entrypoint"], "scripts/select_work.py")
+        self.assertEqual(
+            policy["legacy_v1_component_effective_expiry_rule"],
+            "USE_STORED_EXPIRES_AT_UNTIL_NEXT_SCHEMA_V2_TRANSITION",
+        )
 
-    def test_legacy_v1_component_uses_1800_hard_bound_not_four_hour_storage_expiry(self):
-        old = NOW - timedelta(minutes=40)
-        value = lock_v1(acquired=old, expires=old + timedelta(hours=4))
-        self.assertEqual(mod.effective_component_expiry(value), old + timedelta(seconds=1800))
+    def test_legacy_v1_component_preserves_stored_expiry_during_migration(self):
+        old = NOW - timedelta(hours=3)
+        value = lock_v1(acquired=old, expires=NOW + timedelta(minutes=20))
+        self.assertEqual(mod.effective_component_expiry(value), mod.parse_utc(value["expires_at"]))
+
+    def test_legacy_v1_claim_does_not_become_stale_only_because_acquisition_is_old(self):
+        old = NOW - timedelta(hours=3)
+        value = lock_v1(acquired=old, expires=NOW + timedelta(minutes=20))
+        result = mod.evaluate_record_claim(record(), claim(), value, registry(), NOW)
+        self.assertEqual(result, {"result": "PASS", "reason": "PASS"})
+
+    def test_legacy_v1_component_expires_at_stored_expiry(self):
+        old = NOW - timedelta(hours=3)
+        value = lock_v1(acquired=old, expires=NOW)
+        result = mod.evaluate_record_claim(record(), claim(), value, registry(), NOW)
+        self.assertEqual(result, {"result": "COMPONENT_LEASE_EXPIRED", "reason": "COMPONENT_LEASE_EXPIRED"})
 
     def test_v2_component_uses_stored_1800_expiry(self):
         value = lock_v2()
@@ -141,11 +159,6 @@ class WorkFenceTests(unittest.TestCase):
     def test_owner_mismatch_fails_even_when_generation_matches(self):
         result = mod.evaluate_record_claim(record(), claim(), lock_v2(work_id=WORK_B), registry(), NOW)
         self.assertEqual(result, {"result": "STALE_OWNER", "reason": "CLAIM_OWNER_MISMATCH"})
-
-    def test_expired_legacy_component_fails_at_1800_seconds(self):
-        old = NOW - timedelta(seconds=1800)
-        result = mod.evaluate_record_claim(record(), claim(), lock_v1(acquired=old), registry(), NOW)
-        self.assertEqual(result, {"result": "COMPONENT_LEASE_EXPIRED", "reason": "COMPONENT_LEASE_EXPIRED"})
 
     def test_v2_duration_other_than_1800_is_rejected(self):
         value = lock_v2()
