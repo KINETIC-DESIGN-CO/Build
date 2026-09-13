@@ -10,8 +10,7 @@
   "base_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
   "component_id": "reliability_recovery_contracts",
   "repo_paths": [
-    "continuity/checkpoints/CP-000012-ef5f7857.json",
-    "governance/root-cause-repairs.json"
+    "continuity/checkpoints/CP-000013-c2f3ad18.json"
   ],
   "external_targets": [],
   "claims": [
