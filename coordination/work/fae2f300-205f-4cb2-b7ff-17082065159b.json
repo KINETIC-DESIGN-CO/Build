@@ -12,6 +12,7 @@
   "repo_paths": [
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000004-bf5e1196.json",
+    "continuity/checkpoints/CP-000005-0e2570d3.json",
     "governance/resume-reconciliation-policy.json",
     "governance/work-admissions.json",
     "scripts/evaluate_resume_reconciliation.py",
