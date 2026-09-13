@@ -25,11 +25,33 @@ class GoalGraphValidationTests(unittest.TestCase):
     def test_canonical_goal_graph_validates(self):
         self.validate()
 
+    def test_canonical_children_return_to_same_root(self):
+        root = self.registry["goals"][0]
+        children = {goal["goal_relation"]: goal for goal in self.registry["goals"][1:]}
+        self.assertEqual(set(root["child_goal_ids"]), {goal["goal_id"] for goal in children.values()})
+        for child in children.values():
+            self.assertEqual(child["root_goal_id"], root["goal_id"])
+            self.assertEqual(child["parent_goal_id"], root["goal_id"])
+            self.assertEqual(child["return_to_goal_id"], root["goal_id"])
+
+    def test_issue_consolidation_child_is_terminal_with_exact_evidence(self):
+        child = next(goal for goal in self.registry["goals"] if goal["goal_relation"] == "ISSUE_CONSOLIDATION")
+        self.assertEqual(child["goal_state"], "COMPLETE")
+        self.assertEqual(set(child["completion_condition_ids"]), set(child["satisfied_condition_ids"]))
+        self.assertEqual(child["execution_attempts"][0]["attempt_state"], "TERMINAL_SUCCESS")
+
+    def test_defect_repair_child_remains_nonterminal_while_verification_fails(self):
+        child = next(goal for goal in self.registry["goals"] if goal["goal_relation"] == "DEFECT_REPAIR")
+        self.assertEqual(child["goal_state"], "VERIFYING")
+        self.assertEqual(child["satisfied_condition_ids"], [])
+        self.assertEqual(child["execution_attempts"][0]["attempt_state"], "ACTIVE")
+        self.assertEqual(self.registry["active_root_goal_id"], self.registry["active_goal_id"])
+
     def test_non_root_must_return_to_parent(self):
         registry = copy.deepcopy(self.registry)
         root = registry["goals"][0]
         child_id = "11111111-1111-4111-8111-111111111111"
-        root["child_goal_ids"] = [child_id]
+        root["child_goal_ids"].append(child_id)
         registry["goals"].append({
             "goal_id": child_id,
             "root_goal_id": root["goal_id"],
@@ -54,7 +76,7 @@ class GoalGraphValidationTests(unittest.TestCase):
         registry = copy.deepcopy(self.registry)
         root = registry["goals"][0]
         child_id = "22222222-2222-4222-8222-222222222222"
-        root["child_goal_ids"] = [child_id]
+        root["child_goal_ids"].append(child_id)
         registry["goals"].append({
             "goal_id": child_id,
             "root_goal_id": root["goal_id"],
@@ -107,6 +129,12 @@ class GoalGraphValidationTests(unittest.TestCase):
     def test_policy_parent_first_rule_cannot_drift(self):
         policy = copy.deepcopy(self.policy)
         policy["child_terminal_rule"] = "SELECT_UNRELATED_ROOT"
+        with self.assertRaises(goal_graph.GoalGraphError):
+            self.validate(policy=policy)
+
+    def test_issue_consolidation_relation_cannot_be_removed_from_policy(self):
+        policy = copy.deepcopy(self.policy)
+        policy["goal_relations"].remove("ISSUE_CONSOLIDATION")
         with self.assertRaises(goal_graph.GoalGraphError):
             self.validate(policy=policy)
 
