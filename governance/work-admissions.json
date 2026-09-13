@@ -13,6 +13,7 @@
     {"work_item_id":"github-issue-16","source_issue_number":16,"component_id":"issue_16","dispatch_tier":100,"state":"REMOVED","depends_on":[]},
     {"work_item_id":"github-issue-17","source_issue_number":17,"component_id":"issue_17","dispatch_tier":100,"state":"COMPLETE","depends_on":[]},
     {"work_item_id":"github-issue-18","source_issue_number":18,"component_id":"issue_18","dispatch_tier":100,"state":"ADMITTED","depends_on":["github-issue-21"]},
-    {"work_item_id":"github-issue-21","source_issue_number":21,"component_id":"issue_21","dispatch_tier":100,"state":"COMPLETE","depends_on":[]}
+    {"work_item_id":"github-issue-21","source_issue_number":21,"component_id":"issue_21","dispatch_tier":100,"state":"COMPLETE","depends_on":[]},
+    {"work_item_id":"github-issue-57","source_issue_number":57,"component_id":"issue_57","dispatch_tier":100,"state":"ADMITTED","depends_on":["github-issue-15"]}
   ]
 }

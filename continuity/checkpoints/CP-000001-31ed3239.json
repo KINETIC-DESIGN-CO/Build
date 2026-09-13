@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-31ed3239",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T20:07:51Z",
+  "source_main_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "6673f85c40b88d975f87234cf55f8b5a32d9fc37",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TOOL_RESULT_COUNT_THRESHOLD"
+  ],
+  "previous_checkpoint": null,
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+    "evaluated_at": "2026-09-13T20:07:51Z",
+    "evidence_ref": "E-0093 authorizes engineering on all open Issues. Issue #57 remains open, Phase A and Issue #15 are verified complete, component:issue_18 is ACTIVE under another work item, and component:issue_57 was absent/unclaimed. This work holds the new generation-1 issue_57 claim and stages the missing canonical admission. Rank-3 canonical eligibility is not treated as live until the admission reaches protected main.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T20:07:51Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "efaad927-c5ea-43dc-9154-53aa339c307a",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:05:56Z",
+      "observed_at": "2026-09-13T20:07:51Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:issue_18",
+      "lock_branch": "lock/5aac3f38d7e2bc396461d09e0bcd2e1cffb9262a0b451371174b8a304e7ee8f5",
+      "state": "ACTIVE",
+      "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+      "lease_id": "9f86b96f-c58d-4710-a077-0cdf96dc054e",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:38:27Z",
+      "observed_at": "2026-09-13T20:07:51Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "component:semantic_firewall_source_intake",
+      "operation": "FINAL_PHASE_A_CLAIM_RELEASE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "generation-2 source-intake lock read back RELEASED"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "component:issue_57",
+      "operation": "ATOMIC_GENERATION_1_CLAIM_ACQUISITION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "lock commit 873f47fd0272e203ce2c993c9f6ef197b74d72aa",
+        "lock branch first visible ref contains ACTIVE generation-1 lock"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/work-admissions.json",
+      "operation": "STAGE_ISSUE_57_CANONICAL_ADMISSION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "authorization_ref E-0093",
+        "github-issue-57 component issue_57 tier 100 ADMITTED depends_on github-issue-15",
+        "branch blob 091dd8a6444d049305462b0098ef582cffd16b3e"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/4264779b-70c5-4381-b619-f2c3204dc4f3.json",
+      "operation": "CREATE_PHASE_B_WORK_RECORD",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "work record blob c202e710b0f4b884a58937521fbdf39bbcc76c5b"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0002",
+    "VD-0011",
+    "VD-0022"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue - GitHub Docs",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "The admission registry change must reach main through required PR validation and merge_group validation rather than direct main mutation."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering",
+      "url": "https://arxiv.org/abs/2602.23193",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Structured persisted intent and deterministic selection support separating durable admission evidence from conversational intent."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:issue_57",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:issue_18",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "OPEN_ADMISSION_REPAIR_PR_REQUIRE_EXACT_HEAD_VALIDATE_AND_MERGE_QUEUE_THEN_VERIFY_CANONICAL_ISSUE_57_ADMISSION_AND_CONTINUE_PHASE_B",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57",
+    "WORK_ID:4264779b-70c5-4381-b619-f2c3204dc4f3",
+    "AUTHORIZATION_EVENT:E-0093",
+    "VD-0022",
+    "DR-0001",
+    "DR-0002",
+    "GITHUB_MAIN:29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b"
+  ]
+}
