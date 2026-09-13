@@ -14,8 +14,8 @@
     "architecture/reliability-recovery-v1.md",
     "continuity/checkpoints/CP-000001-b95d87e3.json",
     "continuity/checkpoints/CP-000002-6b14c2fa.json",
-    "continuity/directive-ledger.jsonl",
-    "coordination/work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9.json"
+    "continuity/checkpoints/CP-000003-9f32a6c1.json",
+    "continuity/directive-ledger.jsonl"
   ],
   "external_targets": [],
   "claims": [
