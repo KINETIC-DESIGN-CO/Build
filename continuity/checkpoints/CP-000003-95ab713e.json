@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-95ab713e",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T06:53:44Z",
+  "source_main_sha": "52ad688966cb9764cb4f384463d9fe11ded793cb",
+  "work_id": "aef1b9ab-362c-4621-b695-759f12287125",
+  "work_branch": "work/aef1b9ab-362c-4621-b695-759f12287125",
+  "work_head_sha": "d4bb43257ec9214a750085e05f80cdaf0e970bd2",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-4b8c7d31.json",
+    "blob_sha": "625cff5e2bb9902a94ee29175186dc1d0d2549d4"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 4,
+    "selected_work_id": "github-issue-16",
+    "evaluated_at": "2026-09-13T06:53:44Z",
+    "evidence_ref": "Issue #16 generation 2 remains ACTIVE for this nonterminal work item while continuity:sync generation 16 is independently ACTIVE for another work item; no lower-rank condition within this parallel work item's exact resource set preempts it",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0013",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T06:53:44Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_16",
+      "lock_branch": "lock/e850da97747d9640bd6611ea81a9551cf69323068833fd4ad19da9ab45c7d74d",
+      "state": "ACTIVE",
+      "work_id": "aef1b9ab-362c-4621-b695-759f12287125",
+      "lease_id": "ea12bef7-95e5-4c27-b626-d2b7c084abfb",
+      "generation": 2,
+      "expires_at": "2026-09-13T10:43:06Z",
+      "observed_at": "2026-09-13T06:53:44Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "3a1d6f25-2d89-45ec-a86b-43e730fa862e",
+      "lease_id": "d6587c30-92c1-43c2-a36b-f9e3c718475d",
+      "generation": 16,
+      "expires_at": "2026-09-13T10:41:05Z",
+      "observed_at": "2026-09-13T06:53:44Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "workflow_run:34743755861",
+      "operation": "REPAIRED_PR_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "immutable CI pin validation passed",
+        "continuity, source coordination, lock history, repository tests, pinned Supabase CLI setup, hosted local database startup, and database tests all passed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/aef1b9ab-362c-4621-b695-759f12287125.json",
+      "operation": "DECLARE_FINAL_PRE_QUEUE_CHECKPOINT_PATH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "commit d4bb43257ec9214a750085e05f80cdaf0e970bd2",
+        "work-record blob 0d91c7a9ba56e16308b13d0dcd6384e8e9bef08e"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "pull_request:51",
+      "operation": "CORRECT_PR_DESCRIPTION_FOR_TEST_FIXTURE_SYNC",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR #51 body records the stale-test failure, byte-identical current-main test sync, and absence of production selector changes"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [
+    "DR-0003"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "pull_request:51",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_16",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "FREEZE_BRANCH_CONTENT_REQUIRE_LATEST_PR_HEAD_VALIDATE_SUCCESS_THEN_ENTER_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "governance/work-selection-policy.json",
+    "tests/test_work_selection.py",
+    "coordination/protocol.json",
+    "coordination/work/aef1b9ab-362c-4621-b695-759f12287125.json",
+    "GITHUB_PR:51",
+    "GITHUB_RUN:34743755861",
+    "GITHUB_MAIN:52ad688966cb9764cb4f384463d9fe11ded793cb"
+  ]
+}
