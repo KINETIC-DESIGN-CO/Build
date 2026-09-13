@@ -15,6 +15,9 @@ class WorkSelectionTests(unittest.TestCase):
         self.original_policy = POLICY_PATH.read_text(encoding="utf-8")
         self.original_admissions = ADMISSIONS_PATH.read_text(encoding="utf-8")
         self.original_current = CURRENT_PATH.read_text(encoding="utf-8")
+        current = json.loads(self.original_current)
+        current["current_status"] = "ACTIVE"
+        CURRENT_PATH.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
 
     def tearDown(self):
         POLICY_PATH.write_text(self.original_policy, encoding="utf-8")
@@ -127,6 +130,15 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["effective_rank"], 3)
         self.assertEqual(result["selected_work"], "CURRENT_NEXT_ACTION")
         self.assertEqual(result["claim_next_resource_key"], "component:multi_thread_coordination_hardening")
+
+    def test_completed_current_work_routes_fresh_thread_to_parallel(self):
+        current = json.loads(CURRENT_PATH.read_text())
+        current["current_status"] = "COMPLETE"
+        CURRENT_PATH.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
+        result = self.dispatch(self.snapshot())
+        self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
+        self.assertEqual(result["work_item_id"], "github-issue-12")
+        self.assertEqual(result["claim_next_resource_key"], "component:issue_12")
 
     def test_fresh_thread_becomes_parallel_when_foreground_component_is_owned(self):
         key = "component:multi_thread_coordination_hardening"
