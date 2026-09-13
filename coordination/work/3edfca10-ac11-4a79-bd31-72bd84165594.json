@@ -35,6 +35,7 @@
     "governance/schema/thread-lifecycle-policy.schema.json",
     "governance/thread-lifecycle-policy.json",
     "scripts/evaluate_thread_lifecycle.py",
+    "scripts/validate_continuity.py",
     "scripts/validate_goal_graph.py",
     "tests/test_continuity.py",
     "tests/test_goal_graph.py",
