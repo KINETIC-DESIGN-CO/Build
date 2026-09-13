@@ -144,7 +144,7 @@ def validate_protocol(protocol: dict) -> None:
         fail(f"protocol keys mismatch: missing={sorted(required-set(protocol))} extra={sorted(set(protocol)-required)}")
     exact = {
         "schema_version": 1,
-        "protocol_id": "life-source-coordination-v2",
+        "protocol_id": "life-source-coordination-v3",
         "runtime_control_authority": "NONE",
         "source_coordination_authority": "GITHUB_MACHINE_STATE",
         "canonical_repository": "KINETIC-DESIGN-CO/Build",
@@ -165,7 +165,6 @@ def validate_protocol(protocol: dict) -> None:
         fail("protocol.worker_kinds mismatch")
     if protocol["required_claims"] != {
         "component": "component:<component_id>",
-        "repository_file": "repo-file:<exact_repo_path>",
         "supabase_production": "external:supabase:jnenguxodtgwbskhdsxt",
     }:
         fail("protocol.required_claims mismatch")
@@ -178,6 +177,7 @@ def validate_protocol(protocol: dict) -> None:
         "nonempty_intersection_result": "INTERSECTION_NONEMPTY",
         "main_integration_mode": "GITHUB_REQUIRED_MERGE_QUEUE",
         "continuity_fields_with_zero_claim_effect": ["current_component", "current_work", "next_action"],
+        "repository_path_ownership_mode": "GIT_BRANCH_AND_MERGE_QUEUE_NOT_EXCLUSIVE_LEASE",
         "partial_execution_rule": "EVALUATE_EACH_OPERATION_USING_ITS_EXACT_REQUIRED_RESOURCE_SET_AND_LEAVE_INTERSECTING_OPERATIONS_UNEXECUTED",
         "work_record_base_rule": "BASE_SHA_IS_ACQUISITION_PROVENANCE_AND_MUST_BE_ANCESTOR_OF_PR_HEAD",
     }:
@@ -189,6 +189,9 @@ def validate_protocol(protocol: dict) -> None:
         "CURRENT_COMPONENT_CURRENT_WORK_AND_NEXT_ACTION_HAVE_ZERO_SOURCE_CLAIM_EFFECT",
         "PULL_REQUEST_CREATION_AND_MAIN_INTEGRATION_DO_NOT_REQUIRE_INTEGRATION_MAIN_CLAIM",
         "PARTIAL_REQUEST_EXECUTION_EVALUATES_EACH_OPERATION_EXACT_RESOURCE_SET_AND_DOES_NOT_DROP_INTERSECTING_OPERATIONS",
+        "REPOSITORY_PATHS_ARE_RECORDED_EXACTLY_IN_THE_WORK_RECORD_BUT_DO_NOT_REQUIRE_EXCLUSIVE_REPO_FILE_CLAIMS",
+        "SOURCE_FILE_CONCURRENCY_IS_RESOLVED_BY_ISOLATED_WORK_BRANCHES_GIT_CONFLICT_DETECTION_REQUIRED_VALIDATE_AND_MERGE_GROUP_VALIDATION",
+        "EVERY_DECLARED_EXTERNAL_TARGET_REQUIRES_ITS_EXACT_EXTERNAL_RESOURCE_CLAIM",
         "LOCK_TRANSITION_ENFORCEMENT_APPLIES_FROM_PROTOCOL_LOCK_HISTORY_ENFORCEMENT_START_UTC",
         "LOCK_HISTORY_VALIDATION_MUST_PROVE_LEGAL_DURATION_RENEWAL_RELEASE_REACQUISITION_AND_TAKEOVER_TRANSITIONS",
         "MAIN_INTEGRATION_REQUIRES_GITHUB_MERGE_QUEUE",
@@ -200,9 +203,10 @@ def validate_protocol(protocol: dict) -> None:
     forbidden = {
         "EVERY_PR_TO_MAIN_REQUIRES_AN_ACTIVE_INTEGRATION_MAIN_CLAIM",
         "INTEGRATION_MAIN_CLAIM_CONFLICT_BLOCKS_PR_CREATION_AND_MAIN_INTEGRATION_NOT_WORK_BRANCH_IMPLEMENTATION",
+        "EVERY_CHANGED_REPOSITORY_PATH_EXCEPT_THE_WORK_RECORD_REQUIRES_AN_EXACT_REPO_FILE_CLAIM",
     }
     if any(rule in rules for rule in forbidden):
-        fail("obsolete integration:main mutation rule remains")
+        fail("obsolete integration/file-lease mutation rule remains")
     expected_integration = [
         "REQUIRED_VALIDATE_CHECK_MUST_PASS_ON_PR_HEAD",
         "MAIN_RULESET_MUST_REQUIRE_MERGE_QUEUE",
@@ -234,6 +238,15 @@ def validate_claim_shape(claim: object) -> None:
         fail("claim.lease_id must be lowercase UUIDv4")
     if not isinstance(claim["generation"], int) or claim["generation"] < 1:
         fail("claim.generation must be integer >= 1")
+
+
+def required_claim_keys(record: dict) -> set[str]:
+    mandatory = {f"component:{record['component_id']}"}
+    external = set(record["external_targets"])
+    mandatory |= external
+    if any(str(target).startswith("external:supabase:") for target in external):
+        mandatory.add("external:supabase:jnenguxodtgwbskhdsxt")
+    return mandatory
 
 
 def validate_work_record(record: dict, changed_files: list[str], head_branch: str, head_sha: str) -> None:
@@ -271,12 +284,7 @@ def validate_work_record(record: dict, changed_files: list[str], head_branch: st
     keys = [claim["resource_key"] for claim in claims]
     if len(keys) != len(set(keys)) or keys != sorted(keys):
         fail("claims must be unique and sorted by resource_key")
-    mandatory = {f"component:{record['component_id']}"}
-    mandatory |= {f"repo-file:{path}" for path in repo_paths}
-    mandatory |= set(external)
-    if any(str(t).startswith("external:supabase:") for t in external):
-        mandatory.add("external:supabase:jnenguxodtgwbskhdsxt")
-    missing = mandatory - set(keys)
+    missing = required_claim_keys(record) - set(keys)
     if missing:
         fail(f"work record missing mandatory claims: {sorted(missing)}")
     if "integration:main" in keys:
