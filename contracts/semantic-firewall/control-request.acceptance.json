@@ -1,0 +1,169 @@
+{
+  "contract_id": "semantic_firewall.control_request",
+  "purpose": "Permit runtime control evaluation only through an explicit contract reference.",
+  "control_request_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$defs": {
+      "control_decision_kind": {
+        "type": "string",
+        "enum": [
+          "AUTHORIZATION",
+          "ROUTING",
+          "PRIORITY",
+          "STATE_TRANSITION",
+          "COMPLETION",
+          "VERIFICATION",
+          "ESCALATION",
+          "RELEASE",
+          "MUTATION",
+          "EFFECT_EXECUTION"
+        ]
+      },
+      "contract_id": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+      }
+    },
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "decision_kind",
+      "contract_id"
+    ],
+    "properties": {
+      "decision_kind": {
+        "$ref": "#/$defs/control_decision_kind"
+      },
+      "contract_id": {
+        "$ref": "#/$defs/contract_id"
+      }
+    }
+  },
+  "acceptance_cases": [
+    {
+      "case_id": "authorization_contract_reference_only",
+      "request": {"decision_kind": "AUTHORIZATION", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "routing_contract_reference_only",
+      "request": {"decision_kind": "ROUTING", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "priority_contract_reference_only",
+      "request": {"decision_kind": "PRIORITY", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "state_transition_contract_reference_only",
+      "request": {"decision_kind": "STATE_TRANSITION", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "completion_contract_reference_only",
+      "request": {"decision_kind": "COMPLETION", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "verification_contract_reference_only",
+      "request": {"decision_kind": "VERIFICATION", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "escalation_contract_reference_only",
+      "request": {"decision_kind": "ESCALATION", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "release_contract_reference_only",
+      "request": {"decision_kind": "RELEASE", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "mutation_contract_reference_only",
+      "request": {"decision_kind": "MUTATION", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "effect_execution_contract_reference_only",
+      "request": {"decision_kind": "EFFECT_EXECUTION", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_VALID"
+    },
+    {
+      "case_id": "authorization_text_predicate_rejected",
+      "request": {"decision_kind": "AUTHORIZATION", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "routing_text_predicate_rejected",
+      "request": {"decision_kind": "ROUTING", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "priority_text_predicate_rejected",
+      "request": {"decision_kind": "PRIORITY", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "state_transition_text_predicate_rejected",
+      "request": {"decision_kind": "STATE_TRANSITION", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "completion_text_predicate_rejected",
+      "request": {"decision_kind": "COMPLETION", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "verification_text_predicate_rejected",
+      "request": {"decision_kind": "VERIFICATION", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "escalation_text_predicate_rejected",
+      "request": {"decision_kind": "ESCALATION", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "release_text_predicate_rejected",
+      "request": {"decision_kind": "RELEASE", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "mutation_text_predicate_rejected",
+      "request": {"decision_kind": "MUTATION", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "effect_execution_text_predicate_rejected",
+      "request": {"decision_kind": "EFFECT_EXECUTION", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate_text": "significant"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "missing_contract_id_rejected",
+      "request": {"decision_kind": "COMPLETION"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "unrecognized_decision_kind_rejected",
+      "request": {"decision_kind": "IMPORTANT", "contract_id": "00000000-0000-0000-0000-000000000001"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "malformed_contract_id_rejected",
+      "request": {"decision_kind": "COMPLETION", "contract_id": "contract-one"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "untyped_model_output_rejected",
+      "request": {"decision_kind": "ESCALATION", "contract_id": "00000000-0000-0000-0000-000000000001", "model_output": "This seems major"},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    },
+    {
+      "case_id": "inline_predicate_object_rejected",
+      "request": {"decision_kind": "ESCALATION", "contract_id": "00000000-0000-0000-0000-000000000001", "predicate": {"gte": ["failed_repair_count", 2]}},
+      "expected": "REQUEST_SCHEMA_INVALID"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "artifact_id": "semantic-firewall-import-provenance-v1",
+  "runtime_control_authority": "NONE",
+  "phase": "PHASE_A_SOURCE_INTAKE",
+  "source_state": "SOURCE_ONLY",
+  "activation_state": "NOT_RUN",
+  "source_repository": "Vinanonymous/life",
+  "audited_baseline_commit": "c46179c730a5e7b94214433a59bdd3c85d18b31f",
+  "selected_source_commit": "6cc602f2ac18599aa67c0352ce81fbd404dcb40f",
+  "selected_source_tree": "ca4b5d72897f17dc2f9d929186f41d6c93ba2dbc",
+  "destination_repository": "KINETIC-DESIGN-CO/Build",
+  "source_requirement_ref": "ISSUE-57:PHASE_A_SOURCE_INTAKE",
+  "canonical_requirement_id": "CR-SEMANTIC-FIREWALL-SOURCE-INTAKE",
+  "files": [
+    {"path":"contracts/semantic-firewall/artifact-byte-identity.acceptance.json","source_git_blob_sha":"f5af029e83b3ae115934cbc3684c59390252dd85","destination_git_blob_sha":"f5af029e83b3ae115934cbc3684c59390252dd85"},
+    {"path":"contracts/semantic-firewall/contract-reference.acceptance.json","source_git_blob_sha":"fe5bbb12f7365c5bf0405a0ee78397ab8b934654","destination_git_blob_sha":"fe5bbb12f7365c5bf0405a0ee78397ab8b934654"},
+    {"path":"contracts/semantic-firewall/control-input-binding.acceptance.json","source_git_blob_sha":"8a74bfc60f2d62941e75ad33258069e3378865a1","destination_git_blob_sha":"8a74bfc60f2d62941e75ad33258069e3378865a1"},
+    {"path":"contracts/semantic-firewall/control-request.acceptance.json","source_git_blob_sha":"adfbf6a823120990fd5782db3ac51ae62146f05b","destination_git_blob_sha":"adfbf6a823120990fd5782db3ac51ae62146f05b"},
+    {"path":"contracts/semantic-firewall/receipt-execution-binding.acceptance.json","source_git_blob_sha":"e522a1f7ea72474204ad00ed384caadb6cc714d2","destination_git_blob_sha":"e522a1f7ea72474204ad00ed384caadb6cc714d2"},
+    {"path":"contracts/semantic-firewall/receipt_execution_binding_inner.py","source_git_blob_sha":"771e97168051f0f19c3f384d72da8ed83d802aef","destination_git_blob_sha":"771e97168051f0f19c3f384d72da8ed83d802aef"},
+    {"path":"contracts/semantic-firewall/run_artifact_byte_identity_acceptance.py","source_git_blob_sha":"b1f4bfe92601cd78e59a851e20cd344a53bb9704","destination_git_blob_sha":"b1f4bfe92601cd78e59a851e20cd344a53bb9704"},
+    {"path":"contracts/semantic-firewall/run_contract_reference_acceptance.py","source_git_blob_sha":"ad952e8aea4388a5782865735bf7630c136cffcd","destination_git_blob_sha":"ad952e8aea4388a5782865735bf7630c136cffcd"},
+    {"path":"contracts/semantic-firewall/run_control_input_binding_acceptance.py","source_git_blob_sha":"44677fa47b344c3e6a018c4e4dc51daa5395de29","destination_git_blob_sha":"44677fa47b344c3e6a018c4e4dc51daa5395de29"},
+    {"path":"contracts/semantic-firewall/run_control_request_acceptance.py","source_git_blob_sha":"c40a0aebcaecc7aac671638c436f262b870788f4","destination_git_blob_sha":"c40a0aebcaecc7aac671638c436f262b870788f4"},
+    {"path":"contracts/semantic-firewall/run_receipt_execution_binding_acceptance.py","source_git_blob_sha":"37ecc081c99f7145317dc6445eb4abf0fd303b83","destination_git_blob_sha":"37ecc081c99f7145317dc6445eb4abf0fd303b83"},
+    {"path":"contracts/semantic-firewall/run_typed_contract_evaluation_acceptance.py","source_git_blob_sha":"8d1b80205a0a3fd9fede9d767eb3a6b54010950a","destination_git_blob_sha":"8d1b80205a0a3fd9fede9d767eb3a6b54010950a"},
+    {"path":"contracts/semantic-firewall/typed-contract-evaluation.acceptance.json","source_git_blob_sha":"fdef722d326e26582b731b804ce5ab9e4ab9d601","destination_git_blob_sha":"fdef722d326e26582b731b804ce5ab9e4ab9d601"}
+  ],
+  "selected_source_delta": {
+    "baseline_relation": "SELECTED_SOURCE_EXTENDS_AUDITED_BASELINE",
+    "explicitly_evaluated_additions": [
+      "contracts/semantic-firewall/control-input-binding.acceptance.json",
+      "contracts/semantic-firewall/run_control_input_binding_acceptance.py"
+    ],
+    "receipt_provenance_update": "SELECTED_SOURCE_INCLUDES_CONTROL_INPUT_BINDING_FILES_IN_RECEIPT_PROVENANCE_CLOSURE"
+  },
+  "dispositions": [
+    {"mechanism":"CLOSED_TEN_CONTROL_DECISION_KINDS","disposition":"KEEP"},
+    {"mechanism":"EXACT_TESTED_LEGACY_SEMANTIC_FIREWALL_CORPUS","disposition":"COPY_VERIFY_ADAPT"},
+    {"mechanism":"CONTROL_INPUT_BINDING_WITH_TYPED_KNOWN_UNKNOWN_SOURCE_AND_FRESHNESS","disposition":"COMBINE"},
+    {"mechanism":"ARTIFACT_BYTE_IDENTITY_AND_RECEIPT_EXECUTION_PROVENANCE_BINDING","disposition":"COMBINE"},
+    {"mechanism":"TYPED_COMPLETION_ALL_TRUE_FIXTURE","disposition":"MODIFY"},
+    {"mechanism":"REBUILD_FROM_MEMORY","disposition":"REMOVE"},
+    {"mechanism":"WHOLESALE_LEGACY_REPOSITORY_OR_RUNTIME_RESTORATION","disposition":"REMOVE"},
+    {"mechanism":"OPENAI_STRUCTURED_OUTPUTS_AS_CONTROL_AUTHORITY_REPLACEMENT","disposition":"REMOVE"},
+    {"mechanism":"OPENAI_STRUCTURED_OUTPUTS_AT_MODEL_OUTPUT_SHAPE_BOUNDARY","disposition":"COMBINE"},
+    {"mechanism":"DETERMINISTIC_PRE_EFFECT_SEMANTIC_CONTROL_INTERCEPTION","disposition":"COMBINE"}
+  ],
+  "phase_b_dependencies": [
+    "CR-SEMANTIC-FIREWALL-SOURCE-INTAKE:VERIFIED_COMPLETE",
+    "CR-SCHEMA-ENFORCEMENT:VERIFIED_COMPLETE"
+  ],
+  "phase_b_required_capabilities": [
+    "EXACT_SUBJECT_ACTION_SCOPE_BINDING",
+    "TRUSTED_EVIDENCE_ISSUANCE",
+    "AUTHORITATIVE_RECEIPT_ISSUANCE_PERSISTENCE_AND_CONSUMPTION",
+    "MANDATORY_NON_BYPASSABLE_CONTROL_ROUTING",
+    "POST_EFFECT_VERIFICATION"
+  ],
+  "authority_rule": "SOURCE_IMPORT_AND_TEST_PASS_DO_NOT_CREATE_LIFE_RUNTIME_CONTROL_AUTHORITY"
+}
