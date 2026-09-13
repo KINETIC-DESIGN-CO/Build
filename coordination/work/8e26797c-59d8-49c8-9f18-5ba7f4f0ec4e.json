@@ -25,7 +25,8 @@
     "continuity/schema/checkpoint-policy.schema.json",
     "continuity/schema/checkpoint-template.schema.json",
     "continuity/tests/test_checkpoints.py",
-    "continuity/tools/validate_checkpoints.py"
+    "continuity/tools/validate_checkpoints.py",
+    "watchdog/spec.json"
   ],
   "external_targets": [],
   "claims": [
