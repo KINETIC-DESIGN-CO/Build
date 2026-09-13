@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_id": "1e30d5b6-c5dc-47c9-ae1c-4c2357d97a71",
-  "title": "Pin protected CI dependencies to immutable versions",
+  "title": "Close Issue 12 admission after verified CI pin integration",
   "worker": {
     "kind": "chatgpt",
     "session_id": "ed6d5ef0-1fa3-4c81-a8ea-2f7391994625"
@@ -10,9 +10,8 @@
   "base_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
   "component_id": "issue_12",
   "repo_paths": [
-    ".github/workflows/continuity.yml",
-    "scripts/validate_ci_pins.py",
-    "tests/test_ci_pins.py"
+    "continuity/checkpoints/CP-000001-c4f1a8e2.json",
+    "governance/work-admissions.json"
   ],
   "external_targets": [],
   "claims": [
