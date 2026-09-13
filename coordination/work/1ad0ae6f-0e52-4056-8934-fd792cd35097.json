@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_id": "1ad0ae6f-0e52-4056-8934-fd792cd35097",
+  "title": "Remove global continuity synchronization barrier",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "a690b7d7-c10c-4078-98a6-94c817b176c0"
+  },
+  "implementation_branch": "work/1ad0ae6f-0e52-4056-8934-fd792cd35097",
+  "base_sha": "dcfb42bbd7f08cf2a655878c29a49becf7352a53",
+  "component_id": "continuity_projection_concurrency",
+  "repo_paths": [
+    "continuity/bootstrap.json",
+    "coordination/README.md",
+    "coordination/protocol.json",
+    "governance/schema/work-selection-policy.schema.json",
+    "governance/work-selection-policy.json",
+    "scripts/select_work.py",
+    "scripts/validate_coordination.py",
+    "tests/test_coordination.py",
+    "tests/test_work_selection.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_projection_concurrency",
+      "lock_branch": "lock/6b66f78e139c57cc38318062475d7fb18f1be3cc4cf8e3e62f2e8a257c483776",
+      "lease_id": "007e6fa6-f482-4421-aba2-22556e1d7cf3",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
