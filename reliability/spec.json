@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "subsystem_id": "life-reliability-recovery-v1",
+  "runtime_control_authority": "NONE",
+  "source_contract_authority": "VERSIONED_GITHUB_SOURCE_ONLY",
+  "event_types": [
+    "OCCURRENCE_OPENED",
+    "EVIDENCE_ATTACHED",
+    "PROPOSITION_RECORDED",
+    "DISCREPANCY_OPENED",
+    "DISCREPANCY_RESOLVED",
+    "DIAGNOSIS_REVISION_RECORDED",
+    "OBLIGATION_CREATED",
+    "OPERATION_PREPARED",
+    "ATTEMPT_DISPATCHED",
+    "ATTEMPT_RESULT_RECORDED",
+    "EFFECT_OBSERVED",
+    "POSTCONDITION_OBSERVED",
+    "RECOVERY_EVALUATED",
+    "RECOVERY_DISPATCHED",
+    "RECOVERY_VERIFIED",
+    "RECURRENCE_TEST_LINKED",
+    "PARENT_RESTORATION_ELIGIBLE",
+    "PARENT_RESTORED",
+    "OCCURRENCE_RESOLVED",
+    "OCCURRENCE_REOPENED"
+  ],
+  "attempt_result_states": [
+    "PENDING",
+    "SUCCESS",
+    "FAILURE",
+    "NO_RESULT",
+    "TIMEOUT",
+    "UNKNOWN"
+  ],
+  "effect_states": [
+    "NOT_EVALUATED",
+    "NO_EFFECT_VERIFIED",
+    "EFFECT_VERIFIED",
+    "PARTIAL_EFFECT_VERIFIED",
+    "EFFECT_UNKNOWN"
+  ],
+  "verification_dimensions": [
+    "OUTPUT_CORRECTNESS",
+    "MECHANISM_EXECUTION",
+    "SOURCE_ROUTE",
+    "EFFECT_STATE",
+    "POSTCONDITION_STATE",
+    "PROTECTED_INVARIANT_PRESERVATION",
+    "RECURRENCE_PREVENTION",
+    "SPECIFICATION_SURVIVAL",
+    "LIVE_ENFORCEMENT",
+    "PARENT_RESTORATION"
+  ],
+  "verification_states": [
+    "PASS",
+    "FAIL",
+    "UNKNOWN",
+    "NOT_RUN"
+  ],
+  "obligation_classes": [
+    "OCCURRENCE_REPAIR",
+    "RECURRENCE_PREVENTION",
+    "EVIDENCE_RECOVERY",
+    "EFFECT_RECONCILIATION",
+    "VERIFIER_REPAIR",
+    "SPECIFICATION_REPAIR",
+    "LIVE_ENFORCEMENT_REPAIR",
+    "PARENT_RESTORATION",
+    "LESSON_PROMOTION"
+  ],
+  "obligation_states": [
+    "OPEN",
+    "BLOCKED_RESOURCE",
+    "BLOCKED_AUTHORIZATION",
+    "BLOCKED_COST",
+    "BLOCKED_PLATFORM",
+    "EXECUTING",
+    "VERIFYING",
+    "SATISFIED",
+    "REJECTED_NOT_APPLICABLE"
+  ],
+  "recovery_dispositions": [
+    "ACCEPT_EFFECT",
+    "VERIFY_EFFECT",
+    "RETRY",
+    "COMPENSATE",
+    "QUARANTINE",
+    "ESCALATE",
+    "ABORT",
+    "RESUME_PARENT"
+  ],
+  "evidence_source_classes": [
+    "IMMUTABLE_REPOSITORY",
+    "LIVE_GITHUB",
+    "LIVE_SUPABASE",
+    "LIVE_VERCEL",
+    "VINCE_DIRECTIVE",
+    "VINCE_OBSERVATION",
+    "TOOL_REQUEST",
+    "TOOL_RESULT",
+    "UI_TRACE",
+    "RESEARCH_SOURCE",
+    "EXTERNAL_DOCUMENT",
+    "MODEL_RESPONSE",
+    "DERIVED_SUMMARY",
+    "INFERRED"
+  ],
+  "evidence_roles": [
+    "USER_TRIGGER",
+    "FAILED_RESPONSE",
+    "TOOL_INPUT",
+    "TOOL_RESULT",
+    "USER_CORRECTION",
+    "DIRECT_OBSERVATION",
+    "AUTHORITATIVE_READBACK",
+    "DIAGNOSIS_SUPPORT",
+    "DIAGNOSIS_REFUTATION",
+    "REPAIR_ATTEMPT",
+    "POSTCONDITION_PROOF",
+    "REGRESSION_PROOF",
+    "PARENT_CONTEXT",
+    "MECHANISM_TRACE",
+    "TIMING_TRACE",
+    "SOURCE_ROLE_PROOF",
+    "CONFLICTING_EVIDENCE"
+  ],
+  "discrepancy_states": [
+    "OPEN",
+    "RESOLVED_BY_NEW_EVIDENCE",
+    "RESOLVED_BY_VINCE_CORRECTION",
+    "RESOLVED_BY_AUTHORITATIVE_READBACK",
+    "UNRESOLVED"
+  ],
+  "parent_binding": {
+    "required_origin_classes": [
+      "ACTIVE_GOAL_WORK",
+      "RECOVERY_DETOUR"
+    ],
+    "required_identity_fields": [
+      "root_goal_id",
+      "parent_goal_id"
+    ]
+  },
+  "cross_links": {
+    "root_cause_repair_policy": "governance/root-cause-repair-policy.json",
+    "problem_intake_policy": "governance/problem-intake-policy.json",
+    "work_selection_policy": "governance/work-selection-policy.json",
+    "checkpoint_policy": "continuity/checkpoint-policy.json",
+    "issue_consolidation_policy": "governance/issue-consolidation-policy.json",
+    "semantic_firewall_contract_path": null,
+    "semantic_firewall_link_state": "PENDING_MIGRATION",
+    "goal_root_identity_owner_path": null,
+    "goal_root_identity_link_state": "PENDING_IMPLEMENTATION"
+  },
+  "source_artifacts": {
+    "invariants": "reliability/invariants.json",
+    "operation_catalog": "reliability/operation-catalog.json",
+    "postconditions": "reliability/postconditions.json",
+    "recovery_policy": "reliability/recovery-policy.json",
+    "compatibility_map": "reliability/compatibility-map.json"
+  }
+}
