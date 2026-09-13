@@ -10,15 +10,16 @@
   "base_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
   "component_id": "reliability_recovery_contracts",
   "repo_paths": [
-    "continuity/checkpoints/CP-000004-b28f91c4.json"
+    "reliability/compatibility-map.json",
+    "reliability/spec.json"
   ],
   "external_targets": [],
   "claims": [
     {
       "resource_key": "component:reliability_recovery_contracts",
       "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
-      "lease_id": "99a1ea0a-1b32-44cd-8ec8-9951ebc8618d",
-      "generation": 1
+      "lease_id": "65d35d8e-1607-4a71-966f-30025c4319e9",
+      "generation": 2
     }
   ],
   "runtime_control_authority": "NONE"
