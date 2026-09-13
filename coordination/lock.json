@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:continuity_projection_concurrency",
   "generation": 2,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "6dbf3e44-a818-40f6-9b4d-7234d6a9624c",
   "worker": {
     "kind": "chatgpt",
