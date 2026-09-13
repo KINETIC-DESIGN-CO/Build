@@ -27,6 +27,8 @@ jobs:
         run: python scripts/validate_continuity.py
       - name: Validate Reliability contracts
         run: python scripts/validate_reliability.py
+      - name: Validate Semantic Firewall v1
+        run: python scripts/validate_semantic_firewall.py
       - name: Validate source coordination
         run: python scripts/validate_coordination.py
       - name: Validate relevant lock history

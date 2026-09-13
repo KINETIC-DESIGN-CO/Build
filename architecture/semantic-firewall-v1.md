@@ -38,6 +38,8 @@ An effect is eligible only when a separate trusted persistence/issuance mechanis
 - exact subject/action/scope/operation binding;
 - an unexpired evaluation window.
 
+Those JSON fields and a self-hash do **not** establish trusted issuance by themselves. Any PASS produced by the source evaluator, including source-level effect-eligibility evaluation, has zero Life runtime control authority until the future trusted control service verifies authoritative receipt persistence/readback and the non-bypassable effect router consumes that authoritative evidence.
+
 The trusted persistence/issuance mechanism is not implemented by this source slice and cannot be substituted by changing source fields in prose or model output.
 
 ## Reliability integration
@@ -52,6 +54,10 @@ Before a protected effect, the effect request must bind an exact `reliability_op
 - `required_postconditions_state = PASS`.
 
 Retry, compensation, quarantine, and parent restoration remain owned by `reliability/recovery-policy.json`.
+
+## Bootstrap and CI enforcement
+
+`contracts/semantic-firewall-v1/spec.json` is bootstrap-required reading so future Life workers receive the source-level fail-closed semantics before making architecture or implementation decisions. The schemas, evaluator, validator, and falsification tests are bootstrap-required files and the repository `validate` workflow runs the Semantic Firewall validator. This is engineering/source enforcement only; it does not create Life runtime control authority.
 
 ## Relationship to canonical invocation
 
