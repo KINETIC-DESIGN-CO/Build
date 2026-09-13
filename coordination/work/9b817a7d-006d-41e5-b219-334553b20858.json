@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "work_id": "9b817a7d-006d-41e5-b219-334553b20858",
+  "title": "Reconcile stale continuity context after Issue 49 repair merge",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "18f20324-2587-4af5-8882-9d07e68a5be8"
+  },
+  "implementation_branch": "work/9b817a7d-006d-41e5-b219-334553b20858",
+  "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
+  "component_id": "issue_49",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000001-a8296904.json",
+    "continuity/context.md",
+    "continuity/current.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_49",
+      "lock_branch": "lock/982cc2746a3b0a0ea178aff66946b5634b379fc05845d177da9b68713b68b4a3",
+      "lease_id": "7d4a8f95-ceff-4483-a7de-bfba053c4adc",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
