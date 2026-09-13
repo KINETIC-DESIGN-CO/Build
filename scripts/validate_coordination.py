@@ -121,7 +121,7 @@ def validate_protocol(protocol: dict) -> None:
         "canonical_repository", "default_branch", "work_branch_prefix", "lock_branch_prefix",
         "lock_branch_derivation", "lease_duration_seconds", "renew_when_remaining_seconds_lte",
         "legacy_lease_duration_seconds", "external_lease_duration_seconds", "component_lease_duration_seconds",
-        "component_lease_cutover_utc", "component_lock_schema_version", "component_legacy_effective_expiry_rule",
+        "component_lock_schema_version", "component_v2_transition_rule", "component_legacy_effective_expiry_rule",
         "component_renewal_event_types", "expiration_rule", "lock_history_enforcement_start_utc",
         "resource_acquisition_order", "worker_kinds", "required_claims", "parallel_work", "mutation_rules",
         "integration_rules", "coordination_surfaces",
@@ -143,11 +143,11 @@ def validate_protocol(protocol: dict) -> None:
         "legacy_lease_duration_seconds": 14400,
         "external_lease_duration_seconds": 14400,
         "component_lease_duration_seconds": 1800,
-        "component_lease_cutover_utc": "2026-09-13T21:02:53Z",
         "component_lock_schema_version": 2,
-        "component_legacy_effective_expiry_rule": "MIN_STORED_EXPIRES_AT_ACQUIRED_AT_PLUS_COMPONENT_LEASE_DURATION_SECONDS",
+        "component_v2_transition_rule": "V1_COMPONENT_LOCK_REMAINS_VALID_TO_STORED_EXPIRES_AT;AFTER_V4_MAIN_INTEGRATION_ANY_COMPONENT_ACQUIRE_RENEW_TAKEOVER_OR_REACQUIRE_MUST_WRITE_SCHEMA_V2_COMPONENT_1800",
+        "component_legacy_effective_expiry_rule": "USE_STORED_EXPIRES_AT_UNTIL_NEXT_SCHEMA_V2_TRANSITION",
         "component_renewal_event_types": ["PROTECTED_MUTATION_COMMITTED", "REQUIRED_CHECKPOINT_WRITTEN"],
-        "expiration_rule": "COMPONENT_USES_EFFECTIVE_EXPIRY_EXTERNAL_AND_LEGACY_NONCOMPONENT_USE_STORED_EXPIRES_AT",
+        "expiration_rule": "COMPONENT_V1_AND_EXTERNAL_USE_STORED_EXPIRES_AT;COMPONENT_V2_USES_STORED_1800_SECOND_EXPIRES_AT",
         "lock_history_enforcement_start_utc": "2026-09-12T22:56:23Z",
         "resource_acquisition_order": "PER_ACQUISITION_ATTEMPT_RESOURCE_KEY_ASCENDING_UTF8",
     }
@@ -165,7 +165,10 @@ def validate_protocol(protocol: dict) -> None:
         "LOCK_COMPARE_AND_SWAP_CONFLICT_REQUIRES_FRESH_LIVE_LOCK_REREAD_BEFORE_ANY_RETRY_OR_NEW_ACQUISITION_ATTEMPT_FOR_THAT_RESOURCE",
         "CLAIM_OWNERSHIP_IS_RESOURCE_KEY_WORK_ID_LEASE_ID_GENERATION_NOT_WORKER_SESSION_ID",
         "WORKER_SESSION_ID_IS_AUDIT_LABEL_ONLY_AND_MAY_REPEAT_ACROSS_WORK_ITEMS",
-        "COMPONENT_EFFECTIVE_LEASE_DURATION_IS_1800_SECONDS",
+        "LEGACY_V1_COMPONENT_RETAINS_STORED_EXPIRES_AT_AND_CANNOT_RENEW_AS_V1_AFTER_V4_MAIN_INTEGRATION",
+        "AFTER_V4_MAIN_INTEGRATION_COMPONENT_RENEWAL_REQUIRES_SCHEMA_V2_AND_PROTECTED_MUTATION_COMMITTED_OR_REQUIRED_CHECKPOINT_WRITTEN_EVENT",
+        "COMPONENT_SCHEMA_V2_EFFECTIVE_LEASE_DURATION_IS_1800_SECONDS",
+        "AFTER_V4_MAIN_INTEGRATION_COMPONENT_ACQUIRE_RENEW_TAKEOVER_AND_REACQUIRE_REQUIRE_SCHEMA_V2_COMPONENT_1800_CONTRACT",
         "COMPONENT_GENERATION_IS_THE_STALE_WORKER_FENCING_TOKEN",
         "GOAL_REVISION_MISMATCH_RETURNS_REPLAN_REQUIRED_BEFORE_PROTECTED_BOUNDARY",
         "UNRESOLVED_EXTERNAL_EFFECT_PRECEDES_TAKEOVER_RETRY_OR_REPLAN",
@@ -176,6 +179,8 @@ def validate_protocol(protocol: dict) -> None:
             fail(f"protocol mutation rule missing/duplicate: {rule}")
     if protocol["parallel_work"].get("main_integration_mode") != "GITHUB_REQUIRED_MERGE_QUEUE":
         fail("protocol parallel main integration mode mismatch")
+    if protocol["parallel_work"].get("unexpired_rule") != "COMPONENT_V1_USES_STORED_EXPIRES_AT_COMPONENT_V2_USES_1800_SECOND_STORED_EXPIRES_AT_EXTERNAL_USES_STORED_EXPIRES_AT":
+        fail("protocol parallel unexpired rule mismatch")
     for required_rule in {"MAIN_RULESET_MUST_REQUIRE_MERGE_QUEUE", "MERGE_GROUP_VALIDATE_MUST_PASS_BEFORE_MAIN_INTEGRATION", "LOCK_BASE_SHA_MUST_BE_ANCESTOR_OF_PR_HEAD", "POST_V4_MERGE_GROUP_MUST_PASS_WORK_FENCE_VALIDATION"}:
         if required_rule not in protocol["integration_rules"]:
             fail(f"protocol integration rule missing: {required_rule}")
