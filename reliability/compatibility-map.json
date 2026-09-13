@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "map_id": "life-reliability-compatibility-v1",
+  "runtime_control_authority": "NONE",
+  "work_selection_interruption": {
+    "owner_path": "governance/work-selection-policy.json",
+    "mappings": [
+      {"source_state":"PENDING","reliability_obligation_class":"EFFECT_RECONCILIATION","selection_effect":"SOURCE_POLICY_OWNS_SELECTION"},
+      {"source_state":"NO_RESULT","reliability_obligation_class":"EFFECT_RECONCILIATION","selection_effect":"SOURCE_POLICY_OWNS_SELECTION"},
+      {"source_state":"TIMEOUT","reliability_obligation_class":"EFFECT_RECONCILIATION","selection_effect":"SOURCE_POLICY_OWNS_SELECTION"},
+      {"source_state":"UNKNOWN","reliability_obligation_class":"EFFECT_RECONCILIATION","selection_effect":"SOURCE_POLICY_OWNS_SELECTION"},
+      {"source_state":"SUCCESS","reliability_obligation_class":"OCCURRENCE_REPAIR","selection_effect":"NO_AUTOMATIC_OBLIGATION_SATISFACTION"},
+      {"source_state":"FAILURE","reliability_obligation_class":"OCCURRENCE_REPAIR","selection_effect":"NO_AUTOMATIC_OBLIGATION_SATISFACTION"}
+    ]
+  },
+  "root_cause_repair": {
+    "owner_path": "governance/root-cause-repair-policy.json",
+    "relationship": "COMBINE_BY_REFERENCE",
+    "repair_identity_fields": ["repair_id","root_goal_ref","failure_refs","violated_invariant_ids","recurrence_test_ids","verification_state"]
+  },
+  "user_observation": {
+    "owner_policy_path": "governance/user-observation-policy.json",
+    "owner_ledger_path": "continuity/user-observations.jsonl",
+    "relationship": "REPLACE_DUPLICATE_VINCE_OBSERVATION_SEMANTICS_WITH_REFERENCE",
+    "reliability_source_class": "VINCE_PERSONAL_OBSERVATION_REF",
+    "record_id_pattern": "^UO-[0-9]{4}$",
+    "contradiction_rule": "VERIFIED_CONTRADICTION_OPENS_OR_UPDATES_A_TYPED_DISCREPANCY_AND_DOES_NOT_REWRITE_PRIOR_OBSERVATION"
+  },
+  "semantic_firewall": {
+    "relationship": "COMBINE_PENDING_BUILD_NATIVE_ACTIVATION",
+    "current_contract_path": null,
+    "state": "PENDING_MIGRATION",
+    "rule": "RELIABILITY_CONSUMES_TYPED_CONTROL_EVIDENCE_AND_RECEIPTS_AFTER_BUILD_NATIVE_ACTIVATION_AND_DOES_NOT_CREATE_A_PARALLEL_CONTROL_PLANE"
+  },
+  "goal_identity": {
+    "relationship": "COMBINE_PENDING_GOAL_OWNER_IMPLEMENTATION",
+    "current_owner_path": null,
+    "state": "PENDING_IMPLEMENTATION",
+    "rule": "RELIABILITY_PRESERVES_ROOT_AND_PARENT_IDENTITIES_WHEN_PROVIDED_BY_THE_CANONICAL_GOAL_OWNER_AND_DOES_NOT_INFER_SEMANTIC_IDENTITY_FROM_WORK_ID"
+  }
+}
