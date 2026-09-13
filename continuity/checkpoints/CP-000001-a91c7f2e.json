@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-a91c7f2e",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T09:08:25Z",
+  "source_main_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
+  "work_id": "941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+  "work_branch": "work/941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+  "work_head_sha": "bd32774d69e65493051014ed5e1b5a8e8362851f",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": "941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+    "evaluated_at": "2026-09-13T09:08:25Z",
+    "evidence_ref": "Current main selector v4 does not yet implement the active parent-goal graph; the in-flight parent work identity is preserved from the exact work record, active component claim, and Vince directive VD-0021. Selection authority must be reevaluated after parent-first selector integration.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "COORDINATION_README_REPO_FILE_CLAIMS_STALE",
+      "GITHUB_MAIN_HEAD_STALE_IN_CONTINUITY_CURRENT",
+      "WORK_ADMISSIONS_SOURCE_REPOSITORY_STALE"
+    ],
+    "open_blocker_ids": [
+      "AUTO_ISSUE_DISPATCH_CLAIM_ACTIVE",
+      "PR67_LOCK_HISTORY_FAILURE_EMPTY_LOCK_BRANCH"
+    ],
+    "observed_at": "2026-09-13T09:08:25Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T09:08:25Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+      "lease_id": "a3ee3caf-1b7d-429f-ab4b-c5539d8997a0",
+      "generation": 1,
+      "expires_at": "2026-09-13T12:05:39Z",
+      "observed_at": "2026-09-13T09:08:25Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "state": "ACTIVE",
+      "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+      "lease_id": "0ca72a15-ce6b-4098-b484-3dcc20fa961d",
+      "generation": 1,
+      "expires_at": "2026-09-13T10:25:48Z",
+      "observed_at": "2026-09-13T09:08:25Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "work/941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+      "operation": "MERGE_CURRENT_MAIN_0B2611_INTO_PARENT_GOAL_BRANCH_WITH_EXACT_PARENT_GOAL_OVERLAY",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_COMMIT:d4d4a0883a70f7be2558dd6f40e4703f8fc548d7",
+        "GITHUB_MAIN:0b2611fba37f8b4cb44574264c1463e2d1366126"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/decision-rationale.jsonl",
+      "operation": "RESTORE_MAIN_DR_0009_AND_RENUMBER_PARENT_GOAL_RATIONALE_DR_0010",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_BLOB:ef838f3ec3af942b4cfe2b267a37a36625d6910a",
+        "DECISION_RATIONALE:DR-0009",
+        "DECISION_RATIONALE:DR-0010"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "branch:nope/dummy",
+      "operation": "ACCIDENTAL_WRITE_ATTEMPT_TO_NONEXISTENT_BRANCH",
+      "result": "FAILURE",
+      "readback_state": "NOT_RUN",
+      "evidence_refs": [
+        "GITHUB_CONNECTOR:HTTP_502_NO_VERIFIED_MUTATION"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021"
+  ],
+  "decision_rationale_refs": [
+    "DR-0010"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "GitHub Merge Queue remains the protected latest-base integration mechanism; goal identity should govern what work returns to foreground, not replace integration validation."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "HIPIF: Hierarchical Planning and Information Folding for Long-Horizon LLM Agents",
+      "url": "https://arxiv.org/abs/2606.10507",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Explicit hierarchical subgoals support long-horizon execution without requiring the execution attempt itself to define the enduring objective."
+    },
+    {
+      "source_kind": "REDDIT",
+      "title": "Production multi-agent lessons from r/ClaudeCode",
+      "url": "https://www.reddit.com/r/ClaudeCode/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Community multi-agent implementations report goal drift across task chains and persist original-goal constraints in shared handoff state as a mitigation."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:goal_lifecycle_identity",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:auto_issue_dispatch",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "supabase:jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "Validate PR #63 with its goal-aware checkpoint; continue nonintersecting parent-goal work while component:auto_issue_dispatch remains ACTIVE; after exact RELEASED readback, acquire the next legal generation for this work and integrate parent-first selection before unrelated redispatch.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_PR:63",
+    "GITHUB_PR:67",
+    "GITHUB_ISSUE:59",
+    "GITHUB_ISSUE:61",
+    "GITHUB_ISSUE:49",
+    "GITHUB_MAIN:0b2611fba37f8b4cb44574264c1463e2d1366126",
+    "ROOT_GOAL:2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+  ]
+}
