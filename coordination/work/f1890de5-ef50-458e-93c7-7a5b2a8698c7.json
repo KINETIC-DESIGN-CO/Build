@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "work_id": "f1890de5-ef50-458e-93c7-7a5b2a8698c7",
+  "title": "Pin protected CI dependencies to immutable versions",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "86848f04-930d-43c4-993c-5148fe3f43b6"
+  },
+  "implementation_branch": "work/f1890de5-ef50-458e-93c7-7a5b2a8698c7",
+  "base_sha": "05b024f750527cecba170bcc904691f5f5f43450",
+  "component_id": "issue_12",
+  "repo_paths": [
+    "scripts/validate_ci_pins.py",
+    "tests/test_ci_pins.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_12",
+      "lock_branch": "lock/ee12c98e107cf314f3213e283e140154225f5c73273756dc9e75cc8c10a11a1e",
+      "lease_id": "9cb46be4-0b6f-4374-b6e8-01a323e3f130",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_ci_pins.py",
+      "lock_branch": "lock/c3e17f7bbd75ed15719707054983ce488ecdfbd7a07c7213c659c572e8cf5131",
+      "lease_id": "e96f52c8-1c48-4950-8b13-55bcbd29b140",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:tests/test_ci_pins.py",
+      "lock_branch": "lock/d5ab42b15b19c33728b518a89eb01587d0e7bc1f3c36fadfa538a551c00d26c6",
+      "lease_id": "1fa713ae-cb42-426c-b112-207517c7a430",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
