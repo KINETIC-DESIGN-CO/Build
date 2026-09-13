@@ -60,9 +60,10 @@ def claim(generation=2):
     }
 
 
-def lock_v1(*, generation=2, work_id=WORK_A, acquired=None, expires=None):
-    acquired = acquired or (NOW - timedelta(minutes=10))
-    expires = expires or (acquired + timedelta(hours=4))
+def lock_v1(*, generation=2, work_id=WORK_A, acquired=None, heartbeat=None, expires=None):
+    acquired = acquired or (NOW - timedelta(hours=3))
+    heartbeat = heartbeat or (NOW - timedelta(minutes=10))
+    expires = expires or (heartbeat + timedelta(hours=4))
     return {
         "schema_version": 1,
         "resource_key": "component:test_component",
@@ -74,7 +75,7 @@ def lock_v1(*, generation=2, work_id=WORK_A, acquired=None, expires=None):
         "lease_id": LEASE_A,
         "base_sha": "1" * 40,
         "acquired_at": z(acquired),
-        "heartbeat_at": z(acquired),
+        "heartbeat_at": z(heartbeat),
         "expires_at": z(expires),
         "runtime_control_authority": "NONE",
     }
@@ -108,23 +109,21 @@ class WorkFenceTests(unittest.TestCase):
         self.assertEqual(policy["canonical_selector_entrypoint"], "scripts/select_work.py")
         self.assertEqual(
             policy["legacy_v1_component_effective_expiry_rule"],
-            "USE_STORED_EXPIRES_AT_UNTIL_NEXT_SCHEMA_V2_TRANSITION",
+            "AFTER_V4_MAIN_INTEGRATION_EFFECTIVE_EXPIRY_IS_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_COMPONENT_STALE_AFTER_SECONDS",
         )
+        self.assertIn("WORK_ID_MAY_REMAIN_SAME", policy["takeover_rule"])
 
-    def test_legacy_v1_component_preserves_stored_expiry_during_migration(self):
-        old = NOW - timedelta(hours=3)
-        value = lock_v1(acquired=old, expires=NOW + timedelta(minutes=20))
-        self.assertEqual(mod.effective_component_expiry(value), mod.parse_utc(value["expires_at"]))
+    def test_legacy_v1_component_authority_is_capped_from_last_heartbeat(self):
+        value = lock_v1(heartbeat=NOW - timedelta(minutes=10), expires=NOW + timedelta(hours=3))
+        self.assertEqual(mod.effective_component_expiry(value), NOW + timedelta(minutes=20))
 
-    def test_legacy_v1_claim_does_not_become_stale_only_because_acquisition_is_old(self):
-        old = NOW - timedelta(hours=3)
-        value = lock_v1(acquired=old, expires=NOW + timedelta(minutes=20))
+    def test_legacy_v1_component_stale_after_thirty_minutes_without_heartbeat(self):
+        value = lock_v1(heartbeat=NOW - timedelta(minutes=31), expires=NOW + timedelta(hours=3))
         result = mod.evaluate_record_claim(record(), claim(), value, registry(), NOW)
-        self.assertEqual(result, {"result": "PASS", "reason": "PASS"})
+        self.assertEqual(result, {"result": "COMPONENT_LEASE_EXPIRED", "reason": "COMPONENT_LEASE_EXPIRED"})
 
-    def test_legacy_v1_component_expires_at_stored_expiry(self):
-        old = NOW - timedelta(hours=3)
-        value = lock_v1(acquired=old, expires=NOW)
+    def test_legacy_v1_component_uses_earlier_stored_expiry(self):
+        value = lock_v1(heartbeat=NOW - timedelta(minutes=10), expires=NOW)
         result = mod.evaluate_record_claim(record(), claim(), value, registry(), NOW)
         self.assertEqual(result, {"result": "COMPONENT_LEASE_EXPIRED", "reason": "COMPONENT_LEASE_EXPIRED"})
 
