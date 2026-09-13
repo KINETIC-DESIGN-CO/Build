@@ -62,50 +62,71 @@
     {
       "repair_id": "RCA-0002",
       "root_goal_ref": "continuity/current.json:A-0014",
-      "state": "REPAIRING",
+      "state": "VERIFYING",
       "failure_refs": [
         "github-actions:34748616720:validate_lock_history",
-        "github-lock-branch:lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab"
+        "github-actions:34749147069:Validate lock history",
+        "github-lock-branch:lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab",
+        "github:lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab:TRANSIENT_EMPTY_REF"
       ],
       "violated_invariant_ids": [
         "DISJOINT_RESOURCE_DEFECT_MUST_NOT_CREATE_GLOBAL_MERGE_BLOCKER",
-        "REQUIRED_LOCK_HISTORY_GATE_MUST_VALIDATE_CURRENT_WORK_CLAIMS"
+        "REQUIRED_LOCK_HISTORY_GATE_MUST_VALIDATE_CURRENT_WORK_CLAIMS",
+        "FIRST_VISIBLE_LOCK_REF_CONTAINS_GENERATION_ONE_SNAPSHOT",
+        "GLOBAL_LOCK_HISTORY_VALIDATION_NOT_RACY_WITH_NEW_ACQUISITION"
       ],
       "origin_commit_refs": [
         "97b3c9d8f9a5ebda5b28752caebb2078935101c2",
+        "c19aa46023c8e5ffe5f523f800868335674587c2",
         "634e20f875b83d502c42625226263e619aa4a929"
       ],
       "history_evidence_refs": [
         "60bf80bef57154b0639d2f5328917b22bc425935",
-        "0b2611fba37f8b4cb44574264c1463e2d1366126"
+        "0b2611fba37f8b4cb44574264c1463e2d1366126",
+        "634e20f875b83d502c42625226263e619aa4a929",
+        "0a53782fa5ad2a16bb384e5a81116da1c1cfe296"
       ],
       "root_cause_classes": [
         "GLOBAL_LIVE_NAMESPACE_VALIDATION_CONTRADICTS_EXACT_RESOURCE_INTERSECTION",
-        "INTERRUPTED_TWO_STEP_LOCK_ACQUISITION_CAN_LEAVE_EMPTY_LOCK_REF"
+        "INTERRUPTED_TWO_STEP_LOCK_ACQUISITION_CAN_LEAVE_EMPTY_LOCK_REF",
+        "LOCK_REF_PUBLISHED_BEFORE_FIRST_LOCK_SNAPSHOT",
+        "DETECTOR_AND_ACQUISITION_PROTOCOL_NOT_CLOSED_UNDER_CONCURRENCY"
       ],
       "affected_surfaces": [
         ".github/workflows/continuity.yml",
         "scripts/validate_lock_history.py",
         "scripts/validate_relevant_lock_history.py",
         "tests/test_lock_history.py",
-        "tests/test_relevant_lock_history.py"
+        "tests/test_relevant_lock_history.py",
+        "coordination/protocol.json",
+        "coordination/README.md",
+        "tests/test_initial_lock_publication.py",
+        "governance/root-cause-repairs.json"
       ],
       "dependent_validator_surfaces": [
         ".github/workflows/continuity.yml",
-        "scripts/validate_coordination.py"
+        "scripts/validate_coordination.py",
+        "scripts/validate_lock_history.py",
+        "tests/test_lock_history.py"
       ],
       "selected_dispositions": [
         "KEEP_STRICT_GLOBAL_LOCK_HISTORY_VALIDATOR_AS_EXPLICIT_AUDIT",
         "REPLACE_REQUIRED_CI_GLOBAL_SCAN_WITH_CHANGED_WORK_CLAIM_HISTORY_SCOPE",
-        "KEEP_EMPTY_REFERENCED_LOCK_BRANCH_REJECTION"
+        "KEEP_EMPTY_REFERENCED_LOCK_BRANCH_REJECTION",
+        "KEEP_POST_EPOCH_EMPTY_LOCK_BRANCH_REJECTION",
+        "MODIFY_FIRST_ACQUISITION_TO_PREBUILD_LOCK_COMMIT_BEFORE_REF_PUBLICATION",
+        "COMBINE_ATOMIC_FIRST_PUBLICATION_WITH_EXISTING_COMPARE_AND_SWAP_TRANSITIONS"
       ],
       "recurrence_test_ids": [
         "UNRELATED_EMPTY_LOCK_BRANCH_DOES_NOT_ENTER_CURRENT_WORK_REQUIRED_GATE",
         "REFERENCED_EMPTY_LOCK_BRANCH_STILL_FAILS_CLOSED",
         "GLOBAL_AUDIT_STILL_REJECTS_POST_EPOCH_EMPTY_LOCK_BRANCH",
-        "PULL_REQUEST_SCOPE_DERIVES_FROM_EXACT_EVENT_BASE_AND_HEAD"
+        "PULL_REQUEST_SCOPE_DERIVES_FROM_EXACT_EVENT_BASE_AND_HEAD",
+        "PROTOCOL_REQUIRES_PREBUILT_GENERATION_ONE_LOCK_COMMIT",
+        "PROTOCOL_FORBIDS_VISIBLE_EMPTY_POST_EPOCH_LOCK_REF",
+        "POST_EPOCH_EMPTY_LOCK_BRANCH_DETECTOR_REMAINS_FAIL_CLOSED"
       ],
-      "verification_state": "REPAIR_SOURCE_AND_RECURRENCE_TESTS_PENDING"
+      "verification_state": "RECONCILED_SOURCE_CI_AND_PROTECTED_INTEGRATION_PENDING"
     }
   ]
 }

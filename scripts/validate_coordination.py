@@ -50,6 +50,16 @@ def git(*args: str, check: bool = True) -> str:
     return proc.stdout.strip()
 
 
+def require_ancestor(base_sha: str, head_sha: str, label: str) -> None:
+    proc = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", base_sha, head_sha],
+        cwd=ROOT,
+        capture_output=True,
+    )
+    if proc.returncode != 0:
+        fail(f"{label} must be an ancestor of PR head")
+
+
 def parse_utc(value: str) -> datetime:
     if not isinstance(value, str) or not value.endswith("Z"):
         fail(f"timestamp must be RFC3339 UTC ending Z: {value!r}")
@@ -179,7 +189,8 @@ def validate_protocol(protocol: dict) -> None:
         "continuity_fields_with_zero_claim_effect": ["current_component", "current_work", "next_action"],
         "repository_path_ownership_mode": "GIT_BRANCH_AND_MERGE_QUEUE_NOT_EXCLUSIVE_LEASE",
         "partial_execution_rule": "EVALUATE_EACH_OPERATION_USING_ITS_EXACT_REQUIRED_RESOURCE_SET_AND_LEAVE_INTERSECTING_OPERATIONS_UNEXECUTED",
-        "work_record_base_rule": "BASE_SHA_IS_ACQUISITION_PROVENANCE_AND_MUST_BE_ANCESTOR_OF_PR_HEAD",
+        "work_record_base_rule": "WORK_RECORD_BASE_SHA_IS_WORK_ITEM_ORIGIN_PROVENANCE_AND_MUST_BE_ANCESTOR_OF_PR_HEAD",
+        "claim_base_rule": "LOCK_BASE_SHA_IS_CLAIM_ACQUISITION_PROVENANCE_MAY_DIFFER_FROM_WORK_RECORD_BASE_SHA_AND_MUST_BE_ANCESTOR_OF_PR_HEAD",
     }:
         fail("protocol.parallel_work mismatch")
     required_rules = {
@@ -192,6 +203,7 @@ def validate_protocol(protocol: dict) -> None:
         "REPOSITORY_PATHS_ARE_RECORDED_EXACTLY_IN_THE_WORK_RECORD_BUT_DO_NOT_REQUIRE_EXCLUSIVE_REPO_FILE_CLAIMS",
         "SOURCE_FILE_CONCURRENCY_IS_RESOLVED_BY_ISOLATED_WORK_BRANCHES_GIT_CONFLICT_DETECTION_REQUIRED_VALIDATE_AND_MERGE_GROUP_VALIDATION",
         "EVERY_DECLARED_EXTERNAL_TARGET_REQUIRES_ITS_EXACT_EXTERNAL_RESOURCE_CLAIM",
+        "LOCK_BASE_SHA_IS_CLAIM_ACQUISITION_PROVENANCE_MAY_DIFFER_FROM_WORK_RECORD_BASE_SHA_AND_MUST_BE_ANCESTOR_OF_PR_HEAD",
         "LOCK_TRANSITION_ENFORCEMENT_APPLIES_FROM_PROTOCOL_LOCK_HISTORY_ENFORCEMENT_START_UTC",
         "LOCK_HISTORY_VALIDATION_MUST_PROVE_LEGAL_DURATION_RENEWAL_RELEASE_REACQUISITION_AND_TAKEOVER_TRANSITIONS",
         "MAIN_INTEGRATION_REQUIRES_GITHUB_MERGE_QUEUE",
@@ -213,6 +225,7 @@ def validate_protocol(protocol: dict) -> None:
         "MERGE_GROUP_VALIDATE_MUST_PASS_BEFORE_MAIN_INTEGRATION",
         "PR_HEAD_NEED_NOT_CONTAIN_CURRENT_MAIN_AS_ANCESTOR_FOR_PULL_REQUEST_VALIDATION",
         "WORK_RECORD_BASE_SHA_MUST_BE_ANCESTOR_OF_PR_HEAD",
+        "LOCK_BASE_SHA_MUST_BE_ANCESTOR_OF_PR_HEAD",
     ]
     if protocol["integration_rules"] != expected_integration:
         fail("protocol.integration_rules mismatch")
@@ -264,8 +277,7 @@ def validate_work_record(record: dict, changed_files: list[str], head_branch: st
         fail(f"implementation branch must be exactly {expected_branch}")
     if not SHA_RE.fullmatch(str(record["base_sha"])):
         fail("work record base_sha must be 40-lowercase-hex SHA")
-    if subprocess.run(["git", "merge-base", "--is-ancestor", record["base_sha"], head_sha], cwd=ROOT).returncode != 0:
-        fail("work record base_sha must be an ancestor of PR head")
+    require_ancestor(record["base_sha"], head_sha, "work record base_sha")
     if not COMPONENT_RE.fullmatch(str(record["component_id"])):
         fail("component_id must be snake_case [a-z0-9_]")
     if not isinstance(record["title"], str) or not (1 <= len(record["title"]) <= 160):
@@ -311,7 +323,7 @@ def load_live_lock(claim: dict) -> dict:
         fail(f"invalid coordination/lock.json on {branch}: {exc}")
 
 
-def validate_live_lock(lock: dict, claim: dict, record: dict, now: datetime, protocol: dict) -> None:
+def validate_live_lock(lock: dict, claim: dict, record: dict, head_sha: str, now: datetime, protocol: dict) -> None:
     required = {"schema_version", "resource_key", "generation", "state", "work_id", "worker", "implementation_branch", "lease_id", "base_sha", "acquired_at", "heartbeat_at", "expires_at", "runtime_control_authority"}
     if set(lock) != required:
         fail(f"live lock keys mismatch for {claim['resource_key']}")
@@ -325,11 +337,17 @@ def validate_live_lock(lock: dict, claim: dict, record: dict, now: datetime, pro
         "worker": record["worker"],
         "implementation_branch": record["implementation_branch"],
         "lease_id": claim["lease_id"],
-        "base_sha": record["base_sha"],
     }
     for key, value in exact_pairs.items():
         if lock[key] != value:
             fail(f"live lock {claim['resource_key']} mismatch at {key}")
+    if not SHA_RE.fullmatch(str(lock["base_sha"])):
+        fail(f"live lock base_sha invalid: {claim['resource_key']}")
+    require_ancestor(
+        str(lock["base_sha"]),
+        head_sha,
+        f"live lock base_sha for {claim['resource_key']}",
+    )
     acquired = parse_utc(lock["acquired_at"])
     heartbeat = parse_utc(lock["heartbeat_at"])
     expires = parse_utc(lock["expires_at"])
@@ -367,7 +385,7 @@ def validate_pull_request_event(event: dict, protocol: dict) -> None:
         fail("work record path/work_id mismatch")
     now = datetime.now(timezone.utc)
     for claim in record["claims"]:
-        validate_live_lock(load_live_lock(claim), claim, record, now, protocol)
+        validate_live_lock(load_live_lock(claim), claim, record, head_sha, now, protocol)
 
 
 def validate_merge_group_event(event: dict, github_sha: str) -> None:
