@@ -1,0 +1,55 @@
+name: semantic-firewall-selector-once
+
+on:
+  push:
+    branches:
+      - work/0f68d6ae-75a0-4616-9814-819554f5f643
+
+permissions:
+  contents: write
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          ref: work/0f68d6ae-75a0-4616-9814-819554f5f643
+      - name: Evaluate current-main selector and remove helper
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add --detach /tmp/life-main origin/main
+          cat >/tmp/semantic-firewall-evidence.json <<'JSON'
+          {
+            "worker_lane": "PARALLEL_ASSIGNED",
+            "pending_continuity_event_ids": ["E-0119", "E-0120"],
+            "canonical_live_mismatch_ids": ["GITHUB_MAIN_HEAD_SHA"],
+            "interrupted_operation_state": "PENDING",
+            "current_status": "COMPLETE",
+            "open_blocker_ids": ["B-0004"],
+            "current_next_action_id": "A-0014",
+            "parallel_request_state": "NONE",
+            "parallel_work_item_id": null,
+            "parallel_resource_intersection": "NOT_EVALUATED",
+            "selected_rank_before": null,
+            "selected_work_terminal": false
+          }
+          JSON
+          python /tmp/life-main/scripts/select_work.py --evaluate /tmp/semantic-firewall-evidence.json | tee /tmp/semantic-firewall-selector.json
+          python - <<'PY'
+          import json
+          result=json.load(open('/tmp/semantic-firewall-selector.json'))
+          assert result['decision']=='SELECT', result
+          assert result['effective_rank']==0, result
+          assert result['selected_work']=='RESUME_INTERRUPTED_OPERATION', result
+          assert result['candidate_condition_id']=='INTERRUPTED_OPERATION_UNRESOLVED', result
+          PY
+          rm .github/workflows/semantic-firewall-selector-once.yml
+          git config user.name "Life Source Coordination"
+          git config user.email "154024038+Vinanonymous@users.noreply.github.com"
+          git add -u .github/workflows/semantic-firewall-selector-once.yml
+          git commit -m "Remove one-shot Semantic Firewall selector helper"
+          git push origin HEAD:work/0f68d6ae-75a0-4616-9814-819554f5f643
