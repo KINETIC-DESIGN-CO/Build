@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/governance/schema/goal-registry.schema.json",
+  "title": "Life Engineering Goal Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_id",
+    "runtime_control_authority",
+    "engineering_goal_authority",
+    "active_root_goal_id",
+    "active_goal_id",
+    "active_path",
+    "authorized_root_transition_id",
+    "goals"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "registry_id": {"const": "life-engineering-goal-registry-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "engineering_goal_authority": {"const": "DETERMINISTIC_EVALUATION_ONLY"},
+    "active_root_goal_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "active_goal_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "active_path": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}},
+    "authorized_root_transition_id": {"type": ["string", "null"], "pattern": "^RT-[0-9]{4}$"},
+    "goals": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/goal"}}
+  },
+  "$defs": {
+    "goal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal_id",
+        "root_goal_id",
+        "parent_goal_id",
+        "return_to_goal_id",
+        "goal_relation",
+        "goal_state",
+        "title",
+        "completion_condition_ids",
+        "satisfied_condition_ids",
+        "child_goal_ids",
+        "execution_attempts",
+        "source_refs",
+        "runtime_control_authority"
+      ],
+      "properties": {
+        "goal_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "root_goal_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "parent_goal_id": {"type": ["string", "null"], "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "return_to_goal_id": {"type": ["string", "null"], "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "goal_relation": {"enum": ["ROOT", "PREREQUISITE", "BLOCKER_REPAIR", "CONTINUITY_CAPTURE", "VERIFICATION", "TERMINAL_CLEANUP", "DEFECT_REPAIR", "IMPLEMENTATION_CHILD"]},
+        "goal_state": {"enum": ["ACTIVE", "BLOCKED_RESOURCE", "BLOCKED_AUTHORIZATION", "BLOCKED_COST", "BLOCKED_PLATFORM", "VERIFYING", "COMPLETE", "REMOVED"]},
+        "title": {"type": "string", "minLength": 1, "maxLength": 200},
+        "completion_condition_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}},
+        "satisfied_condition_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}},
+        "child_goal_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}},
+        "execution_attempts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["work_id", "attempt_state"],
+            "properties": {
+              "work_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+              "attempt_state": {"enum": ["ACTIVE", "TERMINAL_SUCCESS", "TERMINAL_FAILURE", "SUPERSEDED"]}
+            }
+          }
+        },
+        "source_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "runtime_control_authority": {"const": "NONE"}
+      }
+    }
+  }
+}
