@@ -14,8 +14,12 @@
     "continuity/checkpoints/CP-000006-1d2c2ee1.json",
     "continuity/checkpoints/CP-000007-01392b07.json",
     "continuity/checkpoints/CP-000008-62025211.json",
+    "continuity/checkpoints/CP-000009-75f2a392.json",
     "reliability/compatibility-map.json",
-    "reliability/spec.json"
+    "reliability/schema/compatibility-map.schema.json",
+    "reliability/spec.json",
+    "scripts/validate_reliability.py",
+    "tests/test_reliability.py"
   ],
   "external_targets": [],
   "claims": [
