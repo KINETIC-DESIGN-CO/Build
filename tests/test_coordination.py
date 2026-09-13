@@ -55,6 +55,7 @@ class CoordinationTests(unittest.TestCase):
         self.assertEqual(protocol["parallel_work"]["main_integration_mode"], "GITHUB_REQUIRED_MERGE_QUEUE")
         self.assertIn("MAIN_RULESET_MUST_REQUIRE_MERGE_QUEUE", protocol["integration_rules"])
         self.assertIn("MERGE_GROUP_VALIDATE_MUST_PASS_BEFORE_MAIN_INTEGRATION", protocol["integration_rules"])
+        self.assertIn("LOCK_BASE_SHA_MUST_BE_ANCESTOR_OF_PR_HEAD", protocol["integration_rules"])
         self.assertNotIn(
             "EVERY_PR_TO_MAIN_REQUIRES_AN_ACTIVE_INTEGRATION_MAIN_CLAIM",
             protocol["mutation_rules"],
@@ -182,7 +183,7 @@ class CoordinationTests(unittest.TestCase):
                 "b" * 40,
             )
 
-    def test_live_lock_allows_independent_acquisition_base(self):
+    def make_live_lock_fixture(self, base_sha: str) -> tuple[dict, dict, dict]:
         record = {
             "work_id": WORK_A,
             "worker": {"kind": "chatgpt", "session_id": "00000000-0000-4000-8000-000000000003"},
@@ -204,44 +205,31 @@ class CoordinationTests(unittest.TestCase):
             "worker": record["worker"],
             "implementation_branch": record["implementation_branch"],
             "lease_id": claim["lease_id"],
-            "base_sha": "2" * 40,
+            "base_sha": base_sha,
             "acquired_at": "2026-09-12T07:00:00Z",
             "heartbeat_at": "2026-09-12T07:00:00Z",
             "expires_at": "2026-09-12T11:00:00Z",
             "runtime_control_authority": "NONE",
         }
-        mod.validate_live_lock(lock, claim, record, NOW, self.protocol())
+        return record, claim, lock
+
+    def test_live_lock_allows_independent_ancestor_acquisition_base(self):
+        record, claim, lock = self.make_live_lock_fixture("2" * 40)
+        completed = type("P", (), {"returncode": 0})()
+        with patch.object(mod.subprocess, "run", return_value=completed):
+            mod.validate_live_lock(lock, claim, record, "3" * 40, NOW, self.protocol())
+
+    def test_live_lock_rejects_nonancestor_acquisition_base(self):
+        record, claim, lock = self.make_live_lock_fixture("2" * 40)
+        completed = type("P", (), {"returncode": 1})()
+        with patch.object(mod.subprocess, "run", return_value=completed):
+            with self.assertRaises(mod.ValidationError):
+                mod.validate_live_lock(lock, claim, record, "3" * 40, NOW, self.protocol())
 
     def test_live_lock_rejects_malformed_acquisition_base(self):
-        record = {
-            "work_id": WORK_A,
-            "worker": {"kind": "chatgpt", "session_id": "00000000-0000-4000-8000-000000000003"},
-            "implementation_branch": f"work/{WORK_A}",
-            "base_sha": "1" * 40,
-        }
-        claim = {
-            "resource_key": "continuity:sync",
-            "lock_branch": mod.expected_lock_branch("continuity:sync"),
-            "lease_id": "00000000-0000-4000-8000-000000000004",
-            "generation": 2,
-        }
-        lock = {
-            "schema_version": 1,
-            "resource_key": "continuity:sync",
-            "generation": 2,
-            "state": "ACTIVE",
-            "work_id": WORK_A,
-            "worker": record["worker"],
-            "implementation_branch": record["implementation_branch"],
-            "lease_id": claim["lease_id"],
-            "base_sha": "not-a-sha",
-            "acquired_at": "2026-09-12T07:00:00Z",
-            "heartbeat_at": "2026-09-12T07:00:00Z",
-            "expires_at": "2026-09-12T11:00:00Z",
-            "runtime_control_authority": "NONE",
-        }
+        record, claim, lock = self.make_live_lock_fixture("not-a-sha")
         with self.assertRaises(mod.ValidationError):
-            mod.validate_live_lock(lock, claim, record, NOW, self.protocol())
+            mod.validate_live_lock(lock, claim, record, "3" * 40, NOW, self.protocol())
 
     def test_work_record_base_is_provenance_not_current_main(self):
         record = {
