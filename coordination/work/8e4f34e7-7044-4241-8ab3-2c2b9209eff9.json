@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+  "title": "Reconcile terminal Issue lifecycle and install durable root-cause repair",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "87284546-231b-477c-909a-951108f08878"
+  },
+  "implementation_branch": "work/8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+  "base_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
+  "component_id": "auto_issue_dispatch",
+  "repo_paths": [
+    ".github/workflows/issue-lifecycle.yml",
+    "continuity/bootstrap.json",
+    "continuity/checkpoints/CP-000001-c4a1d8e7.json",
+    "governance/issue-lifecycle-policy.json",
+    "governance/root-cause-repair-policy.json",
+    "governance/root-cause-repairs.json",
+    "governance/schema/issue-lifecycle-policy.schema.json",
+    "governance/schema/root-cause-repair-policy.schema.json",
+    "governance/schema/root-cause-repairs.schema.json",
+    "scripts/validate_issue_lifecycle.py",
+    "scripts/validate_root_cause_repair.py",
+    "scripts/validate_watchdog.py",
+    "tests/test_issue_lifecycle.py",
+    "tests/test_root_cause_repair.py",
+    "tests/test_watchdog.py",
+    "watchdog/spec.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "lease_id": "0ca72a15-ce6b-4098-b484-3dcc20fa961d",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}

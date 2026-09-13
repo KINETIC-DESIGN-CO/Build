@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "registry_id": "life-engineering-root-cause-repairs-v1",
+  "runtime_control_authority": "NONE",
+  "repairs": [
+    {
+      "repair_id": "RCA-0001",
+      "root_goal_ref": "continuity/current.json:A-0014",
+      "state": "VERIFYING",
+      "failure_refs": [
+        "github-actions:34745411071:test_issue_lifecycle.IssueLifecycleTests.test_terminal_operations_are_derived_from_canonical_admissions",
+        "github-actions:34745411071:test_watchdog.WatchdogValidationTests.test_canonical_package_validates"
+      ],
+      "violated_invariant_ids": [
+        "MUTABLE_CANONICAL_STATE_NOT_LITERAL_TEST_EXPECTATION",
+        "DERIVED_SOURCE_COMPATIBILITY_NOT_MANUALLY_REFRESHED_COPY"
+      ],
+      "origin_commit_refs": [
+        "87316f8c1194cbd90f6891ee3f7fd7e3a362862d",
+        "4ee657922c4597ca10e2f2de95721e0f26bd29d8"
+      ],
+      "history_evidence_refs": [
+        "736243d9497a244709aaef0225a7cc38fbbcd7dc",
+        "e9806a01c580638b6b287d45ec37163af479b5c3",
+        "a4516d5f0c2a64763b527f55198a4c900f13dec8",
+        "75bcf4ad3a16cb4c37373c7e11e8f8a9811e92bf",
+        "76f52a8112bf916d49171806b4da4c8d141a9cdd",
+        "22f8c916fb7f3e8f429a28bb9e7a73de1bc78dd5"
+      ],
+      "root_cause_classes": [
+        "PRODUCTION_STATE_USED_AS_TEST_FIXTURE_WITH_LITERAL_EXPECTATION",
+        "MANUALLY_MAINTAINED_DERIVED_SOURCE_IDENTITY",
+        "SOURCE_DEPENDENCY_CLOSURE_NOT_EXECUTABLY_MODELED"
+      ],
+      "affected_surfaces": [
+        "tests/test_issue_lifecycle.py",
+        "tests/test_work_selection.py",
+        "watchdog/spec.json",
+        "scripts/validate_watchdog.py",
+        "tests/test_watchdog.py",
+        "continuity/bootstrap.json"
+      ],
+      "dependent_validator_surfaces": [
+        "scripts/validate_issue_lifecycle.py",
+        "scripts/validate_watchdog.py",
+        "scripts/validate_continuity.py",
+        ".github/workflows/continuity.yml"
+      ],
+      "selected_dispositions": [
+        "REPLACE_LITERAL_PRODUCTION_EXPECTATIONS_WITH_CONTROLLED_FIXTURE_ASSERTIONS",
+        "REPLACE_STATIC_SOURCE_FINGERPRINT_COPY_WITH_CURRENT_TREE_STRUCTURAL_COMPATIBILITY_VALIDATION",
+        "COMBINE_ROOT_CAUSE_POLICY_WITH_EXISTING_REQUIRED_VALIDATION_AND_FUTURE_PROBLEM_INTAKE"
+      ],
+      "recurrence_test_ids": [
+        "ISSUE_LIFECYCLE_FIXTURE_ACCEPTS_NEW_TERMINAL_ITEMS_WITHOUT_LITERAL_UPDATE",
+        "WATCHDOG_BOOTSTRAP_NONAUTHORITY_CHANGE_DOES_NOT_REQUIRE_HASH_REFRESH",
+        "WATCHDOG_AUTHORITY_OR_IDENTITY_DRIFT_FAILS_STRUCTURAL_COMPATIBILITY",
+        "ROOT_CAUSE_POLICY_FORBIDS_PATCH_ONLY_TERMINAL_SHORTCUT"
+      ],
+      "verification_state": "SOURCE_CI_SUCCESS_RUN_34747883131_PROTECTED_INTEGRATION_AND_POST_MERGE_READBACK_PENDING"
+    }
+  ]
+}
