@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "work_id": "aef1b9ab-362c-4621-b695-759f12287125",
+  "title": "Remove obsolete Issue 16 admission",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "c2b95af8-4a72-4d90-a1c5-86f7b3e2d641"
+  },
+  "implementation_branch": "work/aef1b9ab-362c-4621-b695-759f12287125",
+  "base_sha": "ef08e38696715b9e7803db8589bbad23a98807e9",
+  "component_id": "issue_16",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000001-d60e89a5.json",
+    "continuity/checkpoints/CP-000002-4b8c7d31.json",
+    "continuity/checkpoints/CP-000003-95ab713e.json",
+    "governance/work-admissions.json",
+    "tests/test_work_selection.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_16",
+      "lock_branch": "lock/e850da97747d9640bd6611ea81a9551cf69323068833fd4ad19da9ab45c7d74d",
+      "lease_id": "ea12bef7-95e5-4c27-b626-d2b7c084abfb",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
