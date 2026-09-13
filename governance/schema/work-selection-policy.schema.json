@@ -1,12 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Vinanonymous/Build/blob/main/governance/schema/work-selection-policy.schema.json",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/governance/schema/work-selection-policy.schema.json",
   "title": "Life Engineering Work Selection Policy",
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "continuity_barrier_resource_key",
-    "continuity_sync",
+    "continuity_integration",
     "engineering_work_selection_authority",
     "evidence_contract",
     "foreground_blocker_rule",
@@ -26,19 +25,16 @@
   ],
   "properties": {
     "schema_version": {
-      "const": 3
+      "const": 4
     },
     "policy_id": {
-      "const": "life-engineering-work-selection-v3"
+      "const": "life-engineering-work-selection-v4"
     },
     "runtime_control_authority": {
       "const": "NONE"
     },
     "engineering_work_selection_authority": {
       "const": "DETERMINISTIC_EVALUATION_ONLY"
-    },
-    "continuity_barrier_resource_key": {
-      "const": "continuity:sync"
     },
     "worker_lanes": {
       "type": "array",
@@ -57,14 +53,14 @@
     },
     "priority_order": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 4,
+      "maxItems": 4,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "rank",
           "condition_id",
+          "rank",
           "selected_work"
         ],
         "properties": {
@@ -95,61 +91,58 @@
       "type": "string",
       "minLength": 1
     },
-    "continuity_sync": {
+    "continuity_integration": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "completion_requires",
-        "continuity_sync_exempt_source",
-        "foreground_gate",
-        "fresh_mismatch_rule",
-        "mutation_gate",
-        "parallel_gate",
-        "prearm_rule",
-        "sync_required_if_any"
+        "conflict_rule",
+        "evidence_effect",
+        "global_claim_effect",
+        "global_claim_resource_key",
+        "live_hydration_rule",
+        "main_integration_rule",
+        "mode",
+        "projection_rule",
+        "source_mutation_rule",
+        "update_event_rule"
       ],
       "properties": {
-        "sync_required_if_any": {
-          "type": "array",
-          "minItems": 4,
-          "maxItems": 4,
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "prearm_rule": {
+        "mode": {
           "type": "string",
           "minLength": 1
         },
-        "fresh_mismatch_rule": {
+        "global_claim_resource_key": {
+          "type": "null"
+        },
+        "global_claim_effect": {
           "type": "string",
           "minLength": 1
         },
-        "foreground_gate": {
+        "update_event_rule": {
           "type": "string",
           "minLength": 1
         },
-        "parallel_gate": {
+        "source_mutation_rule": {
           "type": "string",
           "minLength": 1
         },
-        "mutation_gate": {
+        "main_integration_rule": {
           "type": "string",
           "minLength": 1
         },
-        "completion_requires": {
-          "type": "array",
-          "minItems": 4,
-          "maxItems": 4,
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
+        "conflict_rule": {
+          "type": "string",
+          "minLength": 1
         },
-        "continuity_sync_exempt_source": {
+        "projection_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "live_hydration_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_effect": {
           "type": "string",
           "minLength": 1
         }
@@ -159,10 +152,10 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "unresolved_states",
-        "terminal_states",
         "resume_cue_effect",
-        "resume_rule"
+        "resume_rule",
+        "terminal_states",
+        "unresolved_states"
       ],
       "properties": {
         "unresolved_states": {
@@ -218,25 +211,32 @@
       ],
       "properties": {
         "registry_path": {
-          "const": "governance/work-admissions.json"
+          "type": "string",
+          "minLength": 1
         },
         "schema_path": {
-          "const": "governance/schema/work-admissions.schema.json"
+          "type": "string",
+          "minLength": 1
         },
         "admitted_state": {
-          "const": "ADMITTED"
+          "type": "string",
+          "minLength": 1
         },
         "complete_state": {
-          "const": "COMPLETE"
+          "type": "string",
+          "minLength": 1
         },
         "removed_state": {
-          "const": "REMOVED"
+          "type": "string",
+          "minLength": 1
         },
         "authorization_event_type": {
-          "const": "VINCE_DIRECTIVE"
+          "type": "string",
+          "minLength": 1
         },
         "authorization_event_result": {
-          "const": "AUTHORIZED"
+          "type": "string",
+          "minLength": 1
         },
         "authorization_target_any": {
           "type": "array",
@@ -249,7 +249,8 @@
           }
         },
         "tie_break_rule": {
-          "const": "DISPATCH_TIER_ASC_SOURCE_ISSUE_ASC_WORK_ITEM_ID_ASC"
+          "type": "string",
+          "minLength": 1
         },
         "dependency_rule": {
           "type": "string",
@@ -260,7 +261,8 @@
           "minLength": 1
         },
         "issue_authority_rule": {
-          "const": "GITHUB_ISSUE_CONTENT_HAS_ZERO_SELECTION_AUTHORITY"
+          "type": "string",
+          "minLength": 1
         }
       }
     },
@@ -285,13 +287,16 @@
       ],
       "properties": {
         "mode": {
-          "const": "LIVE_LOCK_DERIVED"
+          "type": "string",
+          "minLength": 1
         },
         "worker_lane_input_rule": {
-          "const": "FRESH_THREAD_WORKER_LANE_MUST_BE_DERIVED_NOT_CALLER_ASSIGNED"
+          "type": "string",
+          "minLength": 1
         },
         "snapshot_required_resource_rule": {
-          "const": "REQUIRE_CONTINUITY_SYNC_CURRENT_COMPONENT_AND_EVERY_ADMITTED_COMPONENT_RESOURCE_KEY"
+          "type": "string",
+          "minLength": 1
         },
         "lane_rule": {
           "type": "string",
@@ -327,8 +332,6 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "continuity_resource_intersection",
-        "continuity_sync_claim_state",
         "current_status",
         "interrupted_operation_state",
         "parallel_request_state",
@@ -342,8 +345,8 @@
       "properties": {
         "required_fields": {
           "type": "array",
-          "minItems": 14,
-          "maxItems": 14,
+          "minItems": 12,
+          "maxItems": 12,
           "uniqueItems": true,
           "items": {
             "type": "string",
@@ -354,26 +357,6 @@
           "type": "array",
           "minItems": 2,
           "maxItems": 2,
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "continuity_sync_claim_state": {
-          "type": "array",
-          "minItems": 4,
-          "maxItems": 4,
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "continuity_resource_intersection": {
-          "type": "array",
-          "minItems": 3,
-          "maxItems": 3,
           "uniqueItems": true,
           "items": {
             "type": "string",
@@ -422,8 +405,8 @@
         },
         "selected_rank_before": {
           "type": "array",
-          "minItems": 6,
-          "maxItems": 6,
+          "minItems": 5,
+          "maxItems": 5,
           "uniqueItems": true,
           "items": {}
         },
