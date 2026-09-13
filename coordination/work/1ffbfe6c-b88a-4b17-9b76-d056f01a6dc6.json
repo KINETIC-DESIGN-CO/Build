@@ -12,7 +12,9 @@
   "repo_paths": [
     "coordination/protocol.json",
     "scripts/validate_coordination.py",
-    "tests/test_coordination_claim_scope.py"
+    "scripts/validate_lock_history.py",
+    "tests/test_coordination_claim_scope.py",
+    "tests/test_lock_history_protocol_compat.py"
   ],
   "external_targets": [],
   "claims": [
@@ -35,9 +37,21 @@
       "generation": 7
     },
     {
+      "resource_key": "repo-file:scripts/validate_lock_history.py",
+      "lock_branch": "lock/0b15ab8ac6fc7678c02f9c724e253568b8c458c3a1149a4111470677000afa74",
+      "lease_id": "5fc9bff0-5884-4ba0-8ba4-67c2f6f73ed6",
+      "generation": 3
+    },
+    {
       "resource_key": "repo-file:tests/test_coordination_claim_scope.py",
       "lock_branch": "lock/c648c85f9c95c64de74d3c89e515a592ba05b397491838e788ef3f0daf4dd78a",
       "lease_id": "5d672cf1-3634-4ea4-8c0f-9ef7236d9eb8",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:tests/test_lock_history_protocol_compat.py",
+      "lock_branch": "lock/07bb573559460990f44d4e0f70ac5d45a72c47889026963df46d56a18ed85335",
+      "lease_id": "90dc6aa0-e48a-4935-9a22-0a3bcc3b498d",
       "generation": 1
     }
   ],
