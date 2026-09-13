@@ -163,8 +163,8 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
     if prev_state == "RELEASED" and curr_state == "ACTIVE":
         if current["generation"] != previous["generation"] + 1:
             fail("released reacquisition must increment generation by exactly one")
-        if current["work_id"] == previous["work_id"] or current["lease_id"] == previous["lease_id"]:
-            fail("released reacquisition must use new work_id and lease_id")
+        if current["lease_id"] == previous["lease_id"]:
+            fail("released reacquisition must use a new lease_id")
         if curr_acquired != curr_heartbeat:
             fail("released reacquisition must start with acquired_at == heartbeat_at")
         if curr_acquired < prev_heartbeat:
@@ -194,8 +194,8 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
             fail("takeover cannot occur before predecessor expiry")
         if current["generation"] != previous["generation"] + 1:
             fail("takeover must increment generation by exactly one")
-        if current["work_id"] == previous["work_id"] or current["lease_id"] == previous["lease_id"]:
-            fail("takeover must use new work_id and lease_id")
+        if current["lease_id"] == previous["lease_id"]:
+            fail("takeover must use a new lease_id")
         if curr_acquired != curr_heartbeat:
             fail("takeover must start with acquired_at == heartbeat_at")
         return

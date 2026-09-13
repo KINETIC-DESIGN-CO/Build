@@ -29,7 +29,7 @@
     },
     "goal_identity": {
       "type":"object","additionalProperties":false,"required":["current_owner_path","relationship","rule","state"],
-      "properties":{"relationship":{"type":"string","const":"COMBINE_PENDING_GOAL_OWNER_IMPLEMENTATION"},"current_owner_path":{"type":["string","null"]},"state":{"type":"string","enum":["PENDING_IMPLEMENTATION","ACTIVE"]},"rule":{"type":"string","minLength":1}}
+      "properties":{"relationship":{"type":"string","enum":["COMBINE_PENDING_GOAL_OWNER_IMPLEMENTATION","COMBINE_CANONICAL_GOAL_OWNER"]},"current_owner_path":{"type":["string","null"]},"state":{"type":"string","enum":["PENDING_IMPLEMENTATION","ACTIVE"]},"rule":{"type":"string","minLength":1}}
     }
   }
 }

@@ -50,7 +50,7 @@ If a lock update fails because the live file changed, the worker must read the l
 
 Claims last exactly 14,400 seconds from the current heartbeat. Renew a claim only when 1,800 seconds or less remain. Renewal preserves the ownership cycle and immutable lease fields, advances `heartbeat_at`, and sets `expires_at` exactly 14,400 seconds after the new heartbeat.
 
-A takeover is eligible only when the predecessor ACTIVE lease has expired; takeover increments `generation` by exactly one and creates a new work ID/lease ownership cycle. Release changes only `state` to `RELEASED` and preserves the prior owner fields for audit. A later acquisition from RELEASED increments `generation` by exactly one and receives a new `work_id`, `lease_id`, base SHA, and lease timestamps.
+A takeover is eligible only when the predecessor ACTIVE lease has expired. Takeover increments `generation` by exactly one and must use a new `lease_id`. The durable `work_id` may remain the same when the same nonterminal work item resumes under a new lease, or differ when a different work item takes over. Release changes only `state` to `RELEASED` and preserves the prior owner fields for audit. A later acquisition from RELEASED also increments `generation` by exactly one and must use a new `lease_id`; it preserves `work_id` when reacquiring the same durable work item and uses a different `work_id` only for a different work item.
 
 The work record's `base_sha` is the work item's branch-origin provenance and must be an ancestor of the PR head. Each lock's `base_sha` is that claim acquisition's provenance. A later legal claim acquisition may therefore have a different `base_sha` from the work record, but its claim base must also be an ancestor of the PR head.
 

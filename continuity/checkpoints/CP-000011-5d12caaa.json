@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000011-5d12caaa",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T22:08:07Z",
+  "source_main_sha": "d45b66906fb1503771eb1b3caa60614c0e6772e5",
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_head_sha": "8c2223efa76593c423d4b363e3722bd85ec134e2",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000010-f63c26bb.json",
+    "blob_sha": "dd4e225bc8eaa60701ff769495ba09ada4d47e12"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T22:08:07Z",
+    "evidence_ref": "Rank-0 interrupted Reliability continuation remains the work owned by this branch. Canonical foreground A-0014 remains separate; this checkpoint has zero work-selection or mutation authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_78A6909_STALE_VS_LIVE_MAIN_D45B669"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T22:08:07Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T22:08:07Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:lock_history_validation",
+      "lock_branch": "lock/b01d7eb513474626f092988da6d4000ad6fe55e8c6e5162c4a6588636e9b4ade",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "9c04de07-afd5-4e4f-8079-7889215e590a",
+      "generation": 2,
+      "expires_at": "2026-09-14T02:02:34Z",
+      "observed_at": "2026-09-13T22:08:07Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "65d35d8e-1607-4a71-966f-30025c4319e9",
+      "generation": 2,
+      "expires_at": "2026-09-14T00:48:33Z",
+      "observed_at": "2026-09-13T22:08:07Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "component:lock_history_validation",
+      "operation": "TAKEOVER_EXPIRED_COMPONENT_CLAIM",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:lock_commit=bc262375e66bc8b1a78a8954ae8cb846b6237ec6",
+        "github:lock_blob=008c3de58a5e6268d7c1edc813d48f8755c3d5d2",
+        "github:generation=2",
+        "github:lease_id=9c04de07-afd5-4e4f-8079-7889215e590a"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/8bc19d08-14ca-4077-a223-1e3ef9f0368f.json",
+      "operation": "DECLARE_DUAL_COMPONENT_CLAIMS_AND_EXACT_CHANGED_PATH_SET",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=8c2223efa76593c423d4b363e3722bd85ec134e2",
+        "github:blob=6f27228d3b32fd41eeaa201d53493fe5797fb63c"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:84:Bind Reliability to canonical goal identity",
+      "operation": "RECONCILE_PR_VISIBILITY_DESCRIPTION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:pr=84:updated_at=2026-09-13T22:07:26Z",
+        "github:pr=84:dual_claim_description_readback"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:84:head:8c2223efa76593c423d4b363e3722bd85ec134e2",
+      "operation": "PR_HEAD_REQUIRED_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34785781863",
+        "github:job=103800880830:validate:SUCCESS",
+        "github:source_coordination=SUCCESS",
+        "github:relevant_lock_history=SUCCESS",
+        "github:repository_tests=SUCCESS",
+        "github:local_supabase_tests=SUCCESS"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021",
+    "VD-0024"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [
+    "web:github-merge-queue-current",
+    "web:consul-session-lock-sequencer-current",
+    "web:kubernetes-lease-current",
+    "web:llm-verified-tool-calls-2608.02645"
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:84",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:reliability_recovery_contracts",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:lock_history_validation",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt:canonical_invocation_readiness",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "ADD_THIS_CHECKPOINT_TO_WORK_RECORD_REQUIRE_FINAL_EXACT_HEAD_VALIDATE_THEN_ENTER_REQUIRED_GITHUB_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoints/CP-000010-f63c26bb.json",
+    "coordination/work/8bc19d08-14ca-4077-a223-1e3ef9f0368f.json",
+    "coordination/README.md",
+    "governance/root-cause-repairs.json",
+    "scripts/validate_lock_history.py",
+    "tests/test_lock_history.py",
+    "reliability/spec.json",
+    "reliability/compatibility-map.json",
+    "GITHUB_PR:84:Bind Reliability to canonical goal identity",
+    "github:workflow_run=34785781863",
+    "github:main=d45b66906fb1503771eb1b3caa60614c0e6772e5"
+  ]
+}
