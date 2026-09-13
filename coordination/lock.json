@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "repo-file:scripts/validate_lock_history.py",
-  "generation": 2,
-  "state": "RELEASED",
-  "work_id": "f9d2c3ad-4584-4b3b-8bd7-cea1180c8c44",
+  "generation": 3,
+  "state": "ACTIVE",
+  "work_id": "1ffbfe6c-b88a-4b17-9b76-d056f01a6dc6",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "019402a4-c330-417d-b739-a7bb2187877c"
+    "session_id": "d93260c7-4f0d-4501-8f0d-185312f4161a"
   },
-  "implementation_branch": "work/f9d2c3ad-4584-4b3b-8bd7-cea1180c8c44",
-  "lease_id": "f3570ec6-c58b-4fd7-b5ea-0cb134e18956",
-  "base_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
-  "acquired_at": "2026-09-12T22:32:35Z",
-  "heartbeat_at": "2026-09-12T22:32:35Z",
-  "expires_at": "2026-09-13T02:32:35Z",
+  "implementation_branch": "work/1ffbfe6c-b88a-4b17-9b76-d056f01a6dc6",
+  "lease_id": "5fc9bff0-5884-4ba0-8ba4-67c2f6f73ed6",
+  "base_sha": "b55ee94b1102093a19eacc981695ea2e5bff1174",
+  "acquired_at": "2026-09-13T02:53:05Z",
+  "heartbeat_at": "2026-09-13T02:53:05Z",
+  "expires_at": "2026-09-13T06:53:05Z",
   "runtime_control_authority": "NONE"
 }
