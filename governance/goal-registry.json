@@ -43,8 +43,8 @@
         }
       ],
       "source_refs": [
-        "VINCE_DIRECTIVE:VD-0023",
-        "VINCE_CORRECTION:VD-0022",
+        "VINCE_DIRECTIVE:VD-0024",
+        "VINCE_CORRECTION:VD-0023",
         "GITHUB_ISSUE:59",
         "GITHUB_ISSUE:54",
         "GITHUB_ISSUE:55",
