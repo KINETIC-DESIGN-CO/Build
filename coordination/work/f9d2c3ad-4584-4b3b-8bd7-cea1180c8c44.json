@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "work_id": "f9d2c3ad-4584-4b3b-8bd7-cea1180c8c44",
+  "title": "Replace integration lock with merge queue and enforce lease transitions",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "019402a4-c330-417d-b739-a7bb2187877c"
+  },
+  "implementation_branch": "work/f9d2c3ad-4584-4b3b-8bd7-cea1180c8c44",
+  "base_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
+  "component_id": "multi_thread_coordination_hardening",
+  "repo_paths": [
+    ".github/workflows/continuity.yml",
+    "coordination/README.md",
+    "coordination/protocol.json",
+    "scripts/validate_coordination.py",
+    "scripts/validate_lock_history.py",
+    "tests/test_coordination.py",
+    "tests/test_lock_history.py",
+    "watchdog/finding-registry.json",
+    "watchdog/spec.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:multi_thread_coordination_hardening",
+      "lock_branch": "lock/59cb0115181bd2c23a385594018248f94c140e7c29c394c3def5d23c0dfa90d8",
+      "lease_id": "79366f5a-26a5-4946-8908-54b65a854585",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:.github/workflows/continuity.yml",
+      "lock_branch": "lock/00f987781a44716a2501b39c58085c5e00bb6b8089d0883f660f4a0980d3bf3a",
+      "lease_id": "6228ffa1-b054-45d7-aabf-7f415e0fdc7c",
+      "generation": 3
+    },
+    {
+      "resource_key": "repo-file:coordination/README.md",
+      "lock_branch": "lock/b3a4f82dc74f1f37129f24434062580457898bbf5b243fe0c221d2b8a7c97198",
+      "lease_id": "5ff928a5-cef9-471d-b04b-c6aacfe26604",
+      "generation": 8
+    },
+    {
+      "resource_key": "repo-file:coordination/protocol.json",
+      "lock_branch": "lock/9c6ddcd29016358f183405bba8ecbf3d19eb80c4e9344eddfc07287935e9e141",
+      "lease_id": "95a89e69-6710-49fc-8cd2-5b802e167f8f",
+      "generation": 8
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_coordination.py",
+      "lock_branch": "lock/0d7cf6ac6a3f6ab9cca29d8e5e98cac953f7ec3f1a9acb5dcb4a065dc2f91146",
+      "lease_id": "78e61178-9e22-460a-9a01-b6a0694009c5",
+      "generation": 6
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_lock_history.py",
+      "lock_branch": "lock/0b15ab8ac6fc7678c02f9c724e253568b8c458c3a1149a4111470677000afa74",
+      "lease_id": "f3570ec6-c58b-4fd7-b5ea-0cb134e18956",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:tests/test_coordination.py",
+      "lock_branch": "lock/f3e5d80d2849bc9659003a08d149c03f0770e90592d628de93bccca45134cb8e",
+      "lease_id": "af62e8da-7448-4844-a09d-2e51229d1c5b",
+      "generation": 7
+    },
+    {
+      "resource_key": "repo-file:tests/test_lock_history.py",
+      "lock_branch": "lock/53a5128eef68c085a8b1253a890f7fcdd02df8b04bc0feaaecd5dedc66375327",
+      "lease_id": "1e3ffc62-abd5-4611-9173-260775126e77",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:watchdog/finding-registry.json",
+      "lock_branch": "lock/03d78b27d342e0e2e100cf205adef6272c44b688e5d0688dba48b09713f5fc7f",
+      "lease_id": "76dfdf2d-962b-4c7c-8cbd-4ecc90530884",
+      "generation": 2
+    },
+    {
+      "resource_key": "repo-file:watchdog/spec.json",
+      "lock_branch": "lock/9b26dcc011156c23399cddff948f79a68075708993b34c9d772511a6c8edaa2d",
+      "lease_id": "9740f263-8738-46c4-8abb-e835f9d6dfbd",
+      "generation": 5
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
