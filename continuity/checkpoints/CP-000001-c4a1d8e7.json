@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-c4a1d8e7",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T07:56:43Z",
+  "source_main_sha": "71391dbcbc036ad23bae4d7ba7f3540b6ed17251",
+  "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+  "work_branch": "work/8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+  "work_head_sha": "3bcd8c4aceea4f8b8134030ecabf9441f16c4cc3",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": "continuity/current.json:A-0014",
+    "evaluated_at": "2026-09-13T07:56:43Z",
+    "evidence_ref": "Exact live selector was not rerun at checkpoint creation; current in-flight work identity is preserved from the verified work record and active component claim only. Future selection requires fresh deterministic evaluation.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T07:56:43Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "state": "ACTIVE",
+      "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+      "lease_id": "0ca72a15-ce6b-4098-b484-3dcc20fa961d",
+      "generation": 1,
+      "expires_at": "2026-09-13T10:25:48Z",
+      "observed_at": "2026-09-13T07:56:43Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "3591eaf1-ec80-4cc5-91d6-2695aef5bfd1",
+      "lease_id": "931bf543-658e-4352-8445-ea446246691e",
+      "generation": 17,
+      "expires_at": "2026-09-13T11:19:10Z",
+      "observed_at": "2026-09-13T07:56:43Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "work/8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+      "operation": "Stage automatic Issue lifecycle closure and same-thread terminal redispatch under the owned auto_issue_dispatch component",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_PR:56",
+        "WORK_RECORD:coordination/work/8e4f34e7-7044-4241-8ab3-2c2b9209eff9.json"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+      "operation": "Trace CI failures to production-state test coupling and manually maintained watchdog source fingerprints; add durable root-cause policy, repair registry, validator, schemas, falsification tests, hermetic lifecycle fixtures, and current-tree structural watchdog validation",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "ROOT_CAUSE_REPAIR:RCA-0001",
+        "ORIGIN_COMMIT:87316f8c1194cbd90f6891ee3f7fd7e3a362862d",
+        "ORIGIN_COMMIT:4ee657922c4597ca10e2f2de95721e0f26bd29d8",
+        "HISTORY_COMMIT:736243d9497a244709aaef0225a7cc38fbbcd7dc",
+        "GITHUB_ACTIONS_RUN:34746370365:REPOSITORY_TESTS_SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main",
+      "operation": "Observe concurrent merge of PR 60 completing Issue 17 lock-transition enforcement while this source branch remains isolated",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "MAIN_SHA:71391dbcbc036ad23bae4d7ba7f3540b6ed17251",
+        "GITHUB_PR:60"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [
+    "DR-0006"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "ACADEMIC",
+      "title": "Turning Interaction History into Execution State: A Runtime Layer for Long-Horizon Coding Agents",
+      "url": "https://arxiv.org/abs/2608.00808",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Explicit durable execution state supports long-horizon software-agent reliability and reduces dependence on conversation-history inference."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:auto_issue_dispatch",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "continuity:sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "supabase:jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "Verify the current source CI terminal result, reconcile the work branch with live main if required, transition RCA-0001 to VERIFYING only after source validation succeeds, update PR 56 scope, integrate through Merge Queue, verify merge_group and post-merge validation plus Issue lifecycle readback, then complete the root-cause record and release the component claim before redispatch.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_PR:56",
+    "GITHUB_PR:58",
+    "GITHUB_PR:60",
+    "GITHUB_ISSUE:49",
+    "GITHUB_ISSUE:59",
+    "governance/root-cause-repair-policy.json",
+    "governance/root-cause-repairs.json",
+    "watchdog/spec.json",
+    "tests/test_issue_lifecycle.py",
+    "tests/test_root_cause_repair.py",
+    "tests/test_watchdog.py"
+  ]
+}

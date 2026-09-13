@@ -1,0 +1,54 @@
+name: issue-lifecycle
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+          check-latest: false
+      - name: Validate issue lifecycle policy
+        run: python scripts/validate_issue_lifecycle.py --validate-policy
+      - name: Reconcile terminal admissions and verify readback
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REPOSITORY}" != "KINETIC-DESIGN-CO/Build" ]]; then
+            echo "Unexpected repository: ${GITHUB_REPOSITORY}" >&2
+            exit 1
+          fi
+          operations="${RUNNER_TEMP}/life-terminal-issues.tsv"
+          python scripts/validate_issue_lifecycle.py --terminal-operations > "${operations}"
+          while IFS=$'\t' read -r issue_number expected_reason; do
+            [[ -n "${issue_number}" ]] || continue
+            observed="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${issue_number}" --jq '[.state, (.state_reason // "")] | @tsv')"
+            IFS=$'\t' read -r observed_state observed_reason <<< "${observed}"
+            if [[ "${observed_state}" != "closed" || "${observed_reason}" != "${expected_reason}" ]]; then
+              gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/${issue_number}" \
+                -f state='closed' \
+                -f state_reason="${expected_reason}" >/dev/null
+            fi
+            verified="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${issue_number}" --jq '[.state, (.state_reason // "")] | @tsv')"
+            IFS=$'\t' read -r verified_state verified_reason <<< "${verified}"
+            if [[ "${verified_state}" != "closed" || "${verified_reason}" != "${expected_reason}" ]]; then
+              echo "Issue ${issue_number} reconciliation failed: state=${verified_state} reason=${verified_reason}" >&2
+              exit 1
+            fi
+            echo "Issue ${issue_number}: VERIFIED closed/${verified_reason}"
+          done < "${operations}"
