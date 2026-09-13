@@ -27,7 +27,6 @@
     "continuity/schema/response-contract.schema.json",
     "continuity/tests/test_checkpoints.py",
     "continuity/tools/validate_checkpoints.py",
-    "coordination/work/3edfca10-ac11-4a79-bd31-72bd84165594.json",
     "governance/goal-policy.json",
     "governance/goal-registry.json",
     "governance/schema/goal-policy.schema.json",
