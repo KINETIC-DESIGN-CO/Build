@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Reliability Recovery Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["evaluation_mode", "input_domains", "policy_id", "rules", "runtime_control_authority", "schema_version"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "policy_id": {"type": "string", "const": "life-reliability-recovery-policy-v1"},
+    "runtime_control_authority": {"type": "string", "const": "NONE"},
+    "evaluation_mode": {"type": "string", "const": "FIRST_MATCH_PRIORITY_ASC"},
+    "input_domains": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attempt_result_state", "compensation_contract_state", "duplicate_effect_risk", "effect_state", "idempotency_mode", "parent_restoration_state", "readback_mode", "required_postconditions_state", "retry_budget_state"],
+      "properties": {
+        "attempt_result_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["PENDING","SUCCESS","FAILURE","NO_RESULT","TIMEOUT","UNKNOWN"]}},
+        "effect_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["NOT_EVALUATED","NO_EFFECT_VERIFIED","EFFECT_VERIFIED","PARTIAL_EFFECT_VERIFIED","EFFECT_UNKNOWN"]}},
+        "readback_mode": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["AUTHORITATIVE_READBACK","READBACK_UNAVAILABLE"]}},
+        "idempotency_mode": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["EXACT_KEY","NATURAL_UNIQUE_CONSTRAINT","NONE"]}},
+        "duplicate_effect_risk": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["YES","NO"]}},
+        "retry_budget_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["AVAILABLE","EXHAUSTED","UNDEFINED"]}},
+        "required_postconditions_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["PASS","FAIL","UNKNOWN","NOT_RUN","NOT_APPLICABLE"]}},
+        "compensation_contract_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["PRESENT","ABSENT"]}},
+        "parent_restoration_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["ELIGIBLE","NOT_ELIGIBLE"]}}
+      }
+    },
+    "rules": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["disposition", "match", "priority", "rule_id"],
+        "properties": {
+          "rule_id": {"type": "string", "pattern": "^RREC-[0-9]{4}$"},
+          "priority": {"type": "integer", "minimum": 1},
+          "match": {
+            "type": "object", "additionalProperties": false,
+            "required": ["attempt_result_state", "compensation_contract_state", "duplicate_effect_risk", "effect_state", "idempotency_mode", "parent_restoration_state", "readback_mode", "required_postconditions_state", "retry_budget_state"],
+            "properties": {
+              "attempt_result_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}},
+              "effect_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}},
+              "readback_mode": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}},
+              "idempotency_mode": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}},
+              "duplicate_effect_risk": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}},
+              "retry_budget_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}},
+              "required_postconditions_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}},
+              "compensation_contract_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}},
+              "parent_restoration_state": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","pattern":"^(\\*|[A-Z][A-Z0-9_]*)$"}}
+            }
+          },
+          "disposition": {"type":"string","enum":["ACCEPT_EFFECT","VERIFY_EFFECT","RETRY","COMPENSATE","QUARANTINE","ESCALATE","ABORT","RESUME_PARENT"]}
+        }
+      }
+    }
+  }
+}
