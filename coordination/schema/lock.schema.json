@@ -19,77 +19,28 @@
     "runtime_control_authority"
   ],
   "properties": {
-    "schema_version": {
-      "const": 1
-    },
-    "resource_key": {
-      "type": "string",
-      "minLength": 1
-    },
-    "generation": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "state": {
-      "enum": [
-        "ACTIVE",
-        "RELEASED"
-      ]
-    },
-    "work_id": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-    },
+    "schema_version": {"enum": [1, 2]},
+    "resource_key": {"type": "string", "minLength": 1},
+    "generation": {"type": "integer", "minimum": 1},
+    "state": {"enum": ["ACTIVE", "RELEASED"]},
+    "work_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
     "worker": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "kind",
-        "session_id"
-      ],
+      "required": ["kind", "session_id"],
       "properties": {
-        "kind": {
-          "enum": [
-            "chatgpt",
-            "claude",
-            "grok",
-            "codex",
-            "human",
-            "other_ai"
-          ]
-        },
-        "session_id": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-        }
+        "kind": {"enum": ["chatgpt", "claude", "grok", "codex", "human", "other_ai"]},
+        "session_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}
       }
     },
-    "implementation_branch": {
-      "type": "string",
-      "pattern": "^work/[0-9a-f-]{36}$"
-    },
-    "lease_id": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-    },
-    "base_sha": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{40}$"
-    },
-    "acquired_at": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "heartbeat_at": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "expires_at": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "runtime_control_authority": {
-      "const": "NONE"
-    }
+    "implementation_branch": {"type": "string", "pattern": "^work/[0-9a-f-]{36}$"},
+    "lease_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "acquired_at": {"type": "string", "format": "date-time"},
+    "heartbeat_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "lease_contract": {"enum": ["COMPONENT_1800"]},
+    "lease_event_type": {"enum": ["ACQUIRE", "TAKEOVER", "REACQUIRE", "RENEW_PROTECTED_MUTATION", "RENEW_REQUIRED_CHECKPOINT"]},
+    "runtime_control_authority": {"const": "NONE"}
   }
 }
