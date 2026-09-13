@@ -71,6 +71,14 @@ class WorkSelectionTests(unittest.TestCase):
                 break
         ADMISSIONS_PATH.write_text(json.dumps(admissions, indent=2) + "\n", encoding="utf-8")
 
+    def make_issue_21_admitted(self):
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
+        for item in admissions["items"]:
+            if item["work_item_id"] == "github-issue-21":
+                item["state"] = "ADMITTED"
+                break
+        ADMISSIONS_PATH.write_text(json.dumps(admissions, indent=2) + "\n", encoding="utf-8")
+
     def admitted_item(self, index=0):
         return self.admitted_items()[index]
 
@@ -200,6 +208,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["work_item_id"], first["work_item_id"])
 
     def test_parallel_auto_selection_skips_owned_component(self):
+        self.make_issue_21_admitted()
         self.make_issue_18_dispatchable()
         current_key = "component:multi_thread_coordination_hardening"
         first = self.dispatchable_admitted_items()[0]
@@ -217,6 +226,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["work_item_id"], first["work_item_id"])
 
     def test_dependency_blocks_issue_18_when_issue_21_not_complete(self):
+        self.make_issue_21_admitted()
         current_key = "component:multi_thread_coordination_hardening"
         overrides = {current_key: self.lock(current_key)}
         for item in self.admitted_items():
@@ -253,6 +263,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(policy["fresh_thread_dispatch"]["race_rule"], "AFTER_PARALLEL_SELECTION_ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP;ON_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH")
 
     def test_manual_selector_tie_break_remains_deterministic(self):
+        self.make_issue_21_admitted()
         self.make_issue_18_dispatchable()
         first = self.dispatchable_admitted_items()[0]
         second = self.dispatchable_admitted_items()[1]

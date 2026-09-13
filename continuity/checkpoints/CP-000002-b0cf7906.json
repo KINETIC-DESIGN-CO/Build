@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-b0cf7906",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:14:55Z",
+  "source_main_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
+  "work_id": "71824e85-f192-43f3-9a68-a90a332fb1e0",
+  "work_branch": "work/71824e85-f192-43f3-9a68-a90a332fb1e0",
+  "work_head_sha": "0ad8090a381eea4f9137ba5cdb8497d5ce2ccc06",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-0c214599.json",
+    "blob_sha": "8a7760bcc0295714e298113fad3b84fff01bd9d1"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-21",
+    "evaluated_at": "2026-09-13T19:14:55Z",
+    "evidence_ref": "Issue 21 remains the active selected work item under the verified generation-4 component claim; its implementation head passed the required PR validation and its canonical admission is now COMPLETE pending revalidation of the new exact head and protected Merge Queue integration.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:14:55Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_21",
+      "lock_branch": "lock/3193a55f9456d3ece2a30033010c4f6116751aad61410c06945be459de3227eb",
+      "state": "ACTIVE",
+      "work_id": "71824e85-f192-43f3-9a68-a90a332fb1e0",
+      "lease_id": "67607383-0d52-48a6-9eb7-e257018a8b56",
+      "generation": 4,
+      "expires_at": "2026-09-13T23:03:15Z",
+      "observed_at": "2026-09-13T19:14:55Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:75 head d6162bfb7a3f96fe16806d6a73c0dc0ad0f9eb88",
+      "operation": "PR_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34776964433 job 103776733639 concluded success",
+        "immutable pins, continuity, source coordination, relevant lock history, repository tests, local Supabase startup, and Supabase database tests passed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/work-admissions.json:github-issue-21",
+      "operation": "ADMISSION_STATE_TRANSITION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "work-branch commit 0ad8090a381eea4f9137ba5cdb8497d5ce2ccc06 changes only github-issue-21 state from ADMITTED to COMPLETE",
+        "github-issue-18 remains ADMITTED with depends_on github-issue-21"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "repository:1366835183/main",
+      "operation": "READ_CONCURRENT_MAIN_ADVANCE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "main advanced to 8327a520d48f8724f58a55ea1bd17817ead280d2 through PR 73",
+        "PR 73 changed no paths overlapping the Issue 21 implementation paths"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:75",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:21",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_21",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_CURRENT_EXACT_PR_HEAD_VALIDATE_SUCCESS_THEN_CREATE_FINAL_PRE_QUEUE_CHECKPOINT_AND_ENTER_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "governance/user-observation-policy.json",
+    "continuity/user-observations.jsonl",
+    "continuity/bootstrap.json",
+    "coordination/work/71824e85-f192-43f3-9a68-a90a332fb1e0.json",
+    "GITHUB_PR:75",
+    "GITHUB_RUN:34776964433",
+    "GITHUB_ISSUE:21",
+    "GITHUB_ISSUE:18",
+    "GITHUB_MAIN:8327a520d48f8724f58a55ea1bd17817ead280d2"
+  ]
+}
