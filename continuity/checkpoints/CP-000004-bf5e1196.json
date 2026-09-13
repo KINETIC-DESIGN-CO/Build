@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000004-bf5e1196",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T21:30:59Z",
+  "source_main_sha": "07c506acad2bd6a7bfc883ca9b26c337eff5b1d9",
+  "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+  "work_branch": "work/fae2f300-205f-4cb2-b7ff-17082065159b",
+  "work_head_sha": "33843c2a3566a67d606e998e6bd2906fc887650e",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T21:30:59Z",
+    "evidence_ref": "NOT_EVALUATED: no new deterministic work-selection run was used to create this checkpoint; the checkpoint has zero routing authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T21:30:59Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T21:30:59Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_18",
+      "lock_branch": "lock/5aac3f38d7e2bc396461d09e0bcd2e1cffb9262a0b451371174b8a304e7ee8f5",
+      "state": "ACTIVE",
+      "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+      "lease_id": "9f86b96f-c58d-4710-a077-0cdf96dc054e",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:38:27Z",
+      "observed_at": "2026-09-13T21:30:59Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:78 head df39a441f958799588d1620e6aa23b6b73a9abd1",
+      "operation": "RECONCILE_WITH_BUNDLE_V4_AND_EXACT_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR 78 read back mergeable with base 07c506acad2bd6a7bfc883ca9b26c337eff5b1d9",
+        "compare 07c506acad2bd6a7bfc883ca9b26c337eff5b1d9...d671433b92c2f606497bcec3736aed16b878ff7c returned behind_by 0 and only intended Issue 18 paths",
+        "GitHub Actions run 34783874331 validate job 103795694798 concluded success after continuity, Reliability, coordination, relevant lock history, repository tests, local Supabase startup, and Supabase database tests"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/work-admissions.json:github-issue-18",
+      "operation": "ADMISSION_STATE_TRANSITION_ADMITTED_TO_COMPLETE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "branch head 33843c2a3566a67d606e998e6bd2906fc887650e read back github-issue-18 state COMPLETE",
+        "same readback preserved github-issue-57 state ADMITTED"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:78",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:18",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_18",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REVALIDATE_CHECKPOINT_BEARING_PR_HEAD_THEN_ENTER_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/resume-reconciliation-policy.json",
+    "scripts/evaluate_resume_reconciliation.py",
+    "tests/test_resume_reconciliation.py",
+    "continuity/bootstrap.json",
+    "governance/goal-registry.json",
+    "governance/thread-lifecycle-policy.json",
+    "governance/work-admissions.json",
+    "coordination/work/fae2f300-205f-4cb2-b7ff-17082065159b.json",
+    "GITHUB_PR:78",
+    "GITHUB_ISSUE:18",
+    "GITHUB_ACTIONS_RUN:34783874331",
+    "GIT_HISTORY:CP-000001-843ff7db@f800cf99a52065b2d72754d5230552c52a47eb53",
+    "GIT_HISTORY:CP-000002-51b48c9d@5ca8df5ae2665c20b7d8e975722bc16f56f7946e",
+    "GIT_HISTORY:CP-000003-0d020963@2fc3a716b9ab3a61411778f5e1c9e9ea9fd955cd"
+  ]
+}
