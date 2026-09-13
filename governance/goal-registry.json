@@ -30,7 +30,10 @@
         "PROTECTED_INTEGRATION_AND_MAIN_READBACK_VERIFIED"
       ],
       "satisfied_condition_ids": [],
-      "child_goal_ids": [],
+      "child_goal_ids": [
+        "d228edb6-8219-491d-a484-27f3068e8120",
+        "a31e10eb-9715-4dd1-b206-a0b00c9b261e"
+      ],
       "execution_attempts": [
         {
           "work_id": "941b4a91-994e-45c4-a49b-7e9c6fc2254b",
@@ -45,6 +48,69 @@
         "GITHUB_ISSUE:55",
         "GITHUB_ISSUE:54",
         "GITHUB_ISSUE:18"
+      ],
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "goal_id": "d228edb6-8219-491d-a484-27f3068e8120",
+      "root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "parent_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "return_to_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "goal_relation": "ISSUE_CONSOLIDATION",
+      "goal_state": "COMPLETE",
+      "title": "Classify and consolidate overlapping Issue requirements",
+      "completion_condition_ids": [
+        "ISSUE_CONSOLIDATION_PR_65_MERGED",
+        "ISSUE_CONSOLIDATION_MAIN_READBACK_0B2611_VERIFIED",
+        "ISSUE_CONSOLIDATION_POST_MERGE_VALIDATE_34748272359_SUCCESS"
+      ],
+      "satisfied_condition_ids": [
+        "ISSUE_CONSOLIDATION_PR_65_MERGED",
+        "ISSUE_CONSOLIDATION_MAIN_READBACK_0B2611_VERIFIED",
+        "ISSUE_CONSOLIDATION_POST_MERGE_VALIDATE_34748272359_SUCCESS"
+      ],
+      "child_goal_ids": [],
+      "execution_attempts": [
+        {
+          "work_id": "123a2163-5618-4e37-8dfc-74024feba75a",
+          "attempt_state": "TERMINAL_SUCCESS"
+        }
+      ],
+      "source_refs": [
+        "GITHUB_PR:65",
+        "GITHUB_MAIN:0b2611fba37f8b4cb44574264c1463e2d1366126",
+        "GITHUB_CHECK:103700088584",
+        "GITHUB_ISSUE:61",
+        "governance/issue-consolidation-registry.json"
+      ],
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "goal_id": "a31e10eb-9715-4dd1-b206-a0b00c9b261e",
+      "root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "parent_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "return_to_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "goal_relation": "DEFECT_REPAIR",
+      "goal_state": "VERIFYING",
+      "title": "Verify RCA-0001 root-cause repair without losing the parent goal",
+      "completion_condition_ids": [
+        "RCA_0001_PR_67_REQUIRED_VALIDATE_SUCCESS",
+        "RCA_0001_PROTECTED_INTEGRATION_VERIFIED",
+        "RCA_0001_POST_MERGE_MAIN_READBACK_VERIFIED"
+      ],
+      "satisfied_condition_ids": [],
+      "child_goal_ids": [],
+      "execution_attempts": [
+        {
+          "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+          "attempt_state": "ACTIVE"
+        }
+      ],
+      "source_refs": [
+        "ROOT_CAUSE_REPAIR:RCA-0001",
+        "GITHUB_PR:67",
+        "GITHUB_ISSUE:49",
+        "GITHUB_ACTIONS_RUN:34749203341"
       ],
       "runtime_control_authority": "NONE"
     }
