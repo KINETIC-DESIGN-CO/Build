@@ -10,7 +10,8 @@ from pathlib import Path
 FULL_COMMIT_SHA = re.compile(r"^[0-9a-fA-F]{40}$")
 STABLE_SEMVER = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 USES_LINE = re.compile(r"^(?P<indent>\s*)(?:-\s*)?uses:\s*(?P<value>.+?)\s*$")
-VERSION_LINE = re.compile(r"^\s*version:\s*(?P<value>[^#]+?)\s*(?:#.*)?$")
+WITH_LINE = re.compile(r"^(?P<indent>\s*)with:\s*(?:#.*)?$")
+VERSION_LINE = re.compile(r"^(?P<indent>\s*)version:\s*(?P<value>[^#]+?)\s*(?:#.*)?$")
 STEP_START = re.compile(r"^(?P<indent>\s*)-\s+(?:name|uses|run):")
 
 
@@ -45,6 +46,29 @@ def _step_end(lines: list[str], uses_index: int, step_indent: int) -> int:
         if match and len(match.group("indent")) <= step_indent:
             return index
     return len(lines)
+
+
+def _with_versions(lines: list[str], start: int, end: int) -> list[tuple[int, str]]:
+    """Return version values that are direct members of a with: mapping."""
+    with_blocks: list[tuple[int, int]] = []
+    for index in range(start, end):
+        match = WITH_LINE.match(lines[index])
+        if match:
+            with_blocks.append((index, len(match.group("indent"))))
+
+    versions: list[tuple[int, str]] = []
+    for with_index, with_indent in with_blocks:
+        for index in range(with_index + 1, end):
+            line = lines[index]
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            indent = len(line) - len(line.lstrip())
+            if indent <= with_indent:
+                break
+            version_match = VERSION_LINE.match(line)
+            if version_match and len(version_match.group("indent")) > with_indent:
+                versions.append((index + 1, _strip_yaml_scalar(version_match.group("value"))))
+    return versions
 
 
 def validate_workflow_text(text: str, source: str = "<workflow>") -> list[str]:
@@ -84,13 +108,7 @@ def validate_workflow_text(text: str, source: str = "<workflow>") -> list[str]:
 
         uses_indent = len(match.group("indent"))
         end = _step_end(lines, index, _step_indent(line, uses_indent))
-        versions: list[tuple[int, str]] = []
-        for child_index in range(index + 1, end):
-            version_match = VERSION_LINE.match(lines[child_index])
-            if version_match:
-                versions.append(
-                    (child_index + 1, _strip_yaml_scalar(version_match.group("value")))
-                )
+        versions = _with_versions(lines, index + 1, end)
 
         if len(versions) != 1:
             errors.append(
