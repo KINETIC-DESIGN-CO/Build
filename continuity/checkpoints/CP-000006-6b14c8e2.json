@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000006-6b14c8e2",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T06:08:38Z",
+  "source_main_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
+  "work_id": "4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+  "work_branch": "work/4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+  "work_head_sha": "23f6df5c53653e7a30898c6f1c09c42dd0602e83",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000005-f19a620d.json",
+    "blob_sha": "572b455223249ed9c7df50e425260dc34d73cb3c"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T06:08:38Z",
+    "evidence_ref": "PR #46 integration, main readback, post-merge validation, and both required claim releases are now live-verified; fresh deterministic redispatch remains pending",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0013",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T06:08:38Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "state": "RELEASED",
+      "work_id": "4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+      "lease_id": "91349b2e-6d50-43a4-b8d0-2d14361d8f7c",
+      "generation": 18,
+      "expires_at": "2026-09-13T09:31:41Z",
+      "observed_at": "2026-09-13T06:08:38Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "RELEASED",
+      "work_id": "4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+      "lease_id": "6c7a9e31-8b54-4f20-91d3-5e8a74c6b2f0",
+      "generation": 14,
+      "expires_at": "2026-09-13T09:31:41Z",
+      "observed_at": "2026-09-13T06:08:38Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a/coordination/lock.json",
+      "operation": "ATTEMPT_RELEASE_CONTINUITY_SYNC_GENERATION_14_WITH_STALE_BLOB",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GitHub contents update returned HTTP 409 because blob 0be70ca43149e48078374f18e03c6420c11816fc was no longer current",
+        "protocol-required immediate fresh read followed before any retry"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a/coordination/lock.json",
+      "operation": "VERIFY_FINAL_CONTINUITY_SYNC_RELEASE_STATE_AFTER_CAS_CONFLICT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "live lock blob 4e25ce715c946b2f0f38c2a4d6442c944910f079 is RELEASED generation 14 with the same ownership cycle",
+        "lock branch head 3bbf36ea88b550f3d62d2cd1f630e64916d06c5f has message coordination: release continuity sync claim at 2026-09-13T06:07:51Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1.json",
+      "operation": "DECLARE_TERMINAL_RELEASE_CHECKPOINT_PATH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GitHub commit 23f6df5c53653e7a30898c6f1c09c42dd0602e83",
+        "work-record blob f6a6d405be9d2499504982b5378f744c929dea10"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0013",
+    "VD-0014",
+    "VD-0015",
+    "VD-0016"
+  ],
+  "decision_rationale_refs": [
+    "DR-0003",
+    "DR-0005",
+    "DR-0006"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:continuity_sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RUN_FRESH_DETERMINISTIC_WORK_SELECTION_FROM_CURRENT_MAIN_AND_LIVE_LOCKS",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoint-policy.json",
+    "continuity/current.json",
+    "coordination/protocol.json",
+    "governance/work-selection-policy.json",
+    "coordination/work/4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1.json",
+    "GITHUB_PR:46",
+    "GITHUB_MAIN:285e0eb3e07e275a424c6e9ab90c7b40c44792fd"
+  ]
+}
