@@ -14,6 +14,7 @@
     "continuity/checkpoint-policy.json",
     "continuity/checkpoint-template.json",
     "continuity/checkpoint.schema.json",
+    "continuity/checkpoints/CP-000001-a91c7f2e.json",
     "continuity/decision-rationale.jsonl",
     "continuity/directive-ledger.jsonl",
     "continuity/schema/bootstrap.schema.json",
