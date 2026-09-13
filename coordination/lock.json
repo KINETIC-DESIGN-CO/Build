@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "component:lock_history_validation",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "4691936b-aebd-4b34-b327-a6ae5a38d717",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "43bca837-1003-4970-95b3-f706ed5a118f"
+  },
+  "implementation_branch": "work/4691936b-aebd-4b34-b327-a6ae5a38d717",
+  "lease_id": "65d6f58c-e4d9-412b-baa3-1a6e7a0e16a6",
+  "base_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
+  "acquired_at": "2026-09-13T09:06:23Z",
+  "heartbeat_at": "2026-09-13T09:06:23Z",
+  "expires_at": "2026-09-13T13:06:23Z",
+  "runtime_control_authority": "NONE"
+}
