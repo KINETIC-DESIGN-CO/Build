@@ -12,7 +12,7 @@
     "checkpoint_authority": {"const": "EVIDENCE_ONLY"},
     "checkpoint_schema_path": {"const": "continuity/schema/checkpoint.schema.json"},
     "policy_path": {"const": "continuity/checkpoint-policy.json"},
-    "field_order": {"type": "array", "minItems": 20, "maxItems": 20, "uniqueItems": true, "items": {"enum": ["schema_version", "checkpoint_id", "authority", "runtime_control_authority", "created_at", "source_main_sha", "work_id", "work_branch", "work_head_sha", "trigger_ids", "previous_checkpoint", "selected_work", "canonical_snapshot", "claim_observations", "operation_results", "directive_refs", "decision_rationale_refs", "research_refs", "live_verify", "resume_candidate", "context_refs"]}},
+    "field_order": {"type": "array", "minItems": 21, "maxItems": 21, "uniqueItems": true, "items": {"enum": ["schema_version", "checkpoint_id", "authority", "runtime_control_authority", "created_at", "source_main_sha", "work_id", "work_branch", "work_head_sha", "trigger_ids", "previous_checkpoint", "selected_work", "canonical_snapshot", "claim_observations", "operation_results", "directive_refs", "decision_rationale_refs", "research_refs", "live_verify", "resume_candidate", "context_refs"]}},
     "fill_instructions": {
       "type": "object",
       "additionalProperties": false,
