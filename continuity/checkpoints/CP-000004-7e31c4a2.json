@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000004-7e31c4a2",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:14:11Z",
+  "source_main_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
+  "work_id": "af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+  "work_branch": "work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+  "work_head_sha": "f1e5c24a15e8c65c01c68e2ecfa6e5661ae02f80",
+  "trigger_ids": [
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000003-9f32a6c1.json",
+    "blob_sha": "985316afa14ef5093cc908f761e650836310b3c1"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T19:14:11Z",
+    "evidence_ref": "PR #73 protected integration is terminal-success; deterministic selection must be rerun after the final component claim is released and read back.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_F5BC289_STALE_VS_LIVE_MAIN_8327A520"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:14:11Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_architecture",
+      "lock_branch": "lock/a8d719815632c854da757419af97ff9e6bf9afb222a6edc79e2f2defa4c11619",
+      "state": "ACTIVE",
+      "work_id": "af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+      "lease_id": "5f40c44e-7a8a-4308-b5dc-f385bdd1da20",
+      "generation": 1,
+      "expires_at": "2026-09-13T22:33:40Z",
+      "observed_at": "2026-09-13T19:14:11Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "github:pr=73",
+      "operation": "REQUIRED_PULL_REQUEST_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34775683491",
+        "github:pr=73:head=f1e5c24a15e8c65c01c68e2ecfa6e5661ae02f80"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github:merge_group:pr=73",
+      "operation": "MERGE_QUEUE_LATEST_BASE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34776795387",
+        "github:merge_group_head=8327a520d48f8724f58a55ea1bd17817ead280d2"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github:pr=73",
+      "operation": "MERGE_THROUGH_REQUIRED_MERGE_QUEUE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:pr=73:merged_at=2026-09-13T19:11:28Z",
+        "github:main=8327a520d48f8724f58a55ea1bd17817ead280d2"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github:main=8327a520d48f8724f58a55ea1bd17817ead280d2",
+      "operation": "POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34776927764",
+        "github:job=103776634271:conclusion=success"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:pr=73",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main=8327a520d48f8724f58a55ea1bd17817ead280d2",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:workflow_run=34776927764",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/a8d719815632c854da757419af97ff9e6bf9afb222a6edc79e2f2defa4c11619",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Release and read back the final active component:reliability_recovery_architecture claim, then rerun deterministic work selection before beginning Phase 0 Reliability source contracts.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "architecture/reliability-recovery-v1.md",
+    "architecture/reliability-recovery-implementation-v1.md",
+    "continuity/checkpoints/CP-000003-9f32a6c1.json",
+    "github:pr=73",
+    "github:workflow_run=34776795387",
+    "github:workflow_run=34776927764",
+    "github:main=8327a520d48f8724f58a55ea1bd17817ead280d2"
+  ]
+}
