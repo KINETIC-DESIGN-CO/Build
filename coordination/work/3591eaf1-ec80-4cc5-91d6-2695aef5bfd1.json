@@ -17,6 +17,7 @@
     "continuity/response-contract.json",
     "continuity/schema/bootstrap.schema.json",
     "continuity/schema/response-contract.schema.json",
+    "coordination/README.md",
     "coordination/protocol.json",
     "governance/problem-intake-policy.json",
     "governance/schema/problem-intake-policy.schema.json",
