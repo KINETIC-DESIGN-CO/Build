@@ -13,6 +13,7 @@
     ".github/workflows/continuity.yml",
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000002-a0a938d8.json",
+    "continuity/checkpoints/CP-000003-6f4c2a91.json",
     "continuity/response-contract.json",
     "continuity/schema/bootstrap.schema.json",
     "continuity/schema/response-contract.schema.json",
