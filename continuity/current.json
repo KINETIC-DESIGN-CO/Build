@@ -3,7 +3,7 @@
   "manifest_revision": 27,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-13T08:21:09Z",
+  "updated_at": "2026-09-13T08:31:43Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
   "current_component": "multi_thread_coordination_hardening",
@@ -103,7 +103,7 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-13T08:21:09Z",
+      "observed_at": "2026-09-13T08:31:43Z",
       "repository_id": 1366835183,
       "full_name": "KINETIC-DESIGN-CO/Build",
       "visibility": "public",
@@ -115,15 +115,15 @@
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": false,
       "ruleset_merge_queue_required": true,
-      "open_pull_request_count": 3,
-      "latest_continuity_workflow_run_id": 34747081943,
+      "open_pull_request_count": 4,
+      "latest_continuity_workflow_run_id": 34746715141,
       "latest_continuity_workflow_conclusion": "success",
       "latest_merge_group_workflow_run_id": 34746613926,
       "latest_merge_group_workflow_conclusion": "success"
     },
     "supabase": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-13T06:55:25Z",
+      "observed_at": "2026-09-13T08:31:43Z",
       "project_id": "jnenguxodtgwbskhdsxt",
       "project_status": "ACTIVE_HEALTHY",
       "region": "us-west-2",
@@ -152,13 +152,13 @@
     },
     "vercel": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-13T06:55:25Z",
+      "observed_at": "2026-09-13T08:31:43Z",
       "target": null,
       "reason": "No exact Life Vercel infrastructure target is authorized."
     },
     "canonical_invocation": {
       "status": "NOT_RUN",
-      "observed_at": "2026-09-13T08:21:09Z",
+      "observed_at": "2026-09-13T08:31:43Z",
       "reason": "Fresh authorized Supabase reads show zero deployed Edge Functions, no exact Life Vercel target is authorized, and the exact tool life.invoke is not verified live."
     },
     "watchdog_automation": {
