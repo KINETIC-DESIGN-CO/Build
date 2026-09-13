@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "work_id": "1e30d5b6-c5dc-47c9-ae1c-4c2357d97a71",
+  "title": "Close Issue 12 admission after verified CI pin integration",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "ed6d5ef0-1fa3-4c81-a8ea-2f7391994625"
+  },
+  "implementation_branch": "work/1e30d5b6-c5dc-47c9-ae1c-4c2357d97a71",
+  "base_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
+  "component_id": "issue_12",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000001-c4f1a8e2.json",
+    "governance/work-admissions.json",
+    "tests/test_work_selection.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_12",
+      "lock_branch": "lock/ee12c98e107cf314f3213e283e140154225f5c73273756dc9e75cc8c10a11a1e",
+      "lease_id": "c53a2aba-a83b-4307-808c-fa83af90573c",
+      "generation": 3
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}

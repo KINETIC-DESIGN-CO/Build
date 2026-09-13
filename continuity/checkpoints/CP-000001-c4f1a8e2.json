@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-c4f1a8e2",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T06:34:14Z",
+  "source_main_sha": "91cd437d5ce1c46809b87f2baa49588c28650a07",
+  "work_id": "1e30d5b6-c5dc-47c9-ae1c-4c2357d97a71",
+  "work_branch": "work/1e30d5b6-c5dc-47c9-ae1c-4c2357d97a71",
+  "work_head_sha": "7d83e4cf96e3cc5e0154856ef057f503a0f76db8",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "SELECTED_WORK_OR_RANK_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 4,
+    "selected_work_id": "github-issue-12",
+    "evaluated_at": "2026-09-13T06:34:14Z",
+    "evidence_ref": "governance/work-selection-policy.json + governance/work-admissions.json + component:issue_12 generation 3 ACTIVE_UNEXPIRED + continuity:sync generation 15 owned by different work with INTERSECTION_EMPTY for Issue 12",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0013",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T06:34:14Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_12",
+      "lock_branch": "lock/ee12c98e107cf314f3213e283e140154225f5c73273756dc9e75cc8c10a11a1e",
+      "state": "ACTIVE",
+      "work_id": "1e30d5b6-c5dc-47c9-ae1c-4c2357d97a71",
+      "lease_id": "c53a2aba-a83b-4307-808c-fa83af90573c",
+      "generation": 3,
+      "expires_at": "2026-09-13T10:22:47Z",
+      "observed_at": "2026-09-13T06:34:14Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "b818fbcb-f95c-484a-91bb-66c2f9f16755",
+      "lease_id": "49d96c8e-de5b-41f3-8a63-da3d92d95997",
+      "generation": 15,
+      "expires_at": "2026-09-13T10:09:41Z",
+      "observed_at": "2026-09-13T06:34:14Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "state": "ACTIVE",
+      "work_id": "b818fbcb-f95c-484a-91bb-66c2f9f16755",
+      "lease_id": "da5d4ae6-ddd0-4d54-8907-4263413d6557",
+      "generation": 19,
+      "expires_at": "2026-09-13T10:09:41Z",
+      "observed_at": "2026-09-13T06:34:14Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "lock:component:issue_12",
+      "operation": "TAKEOVER_EXPIRED_GENERATION_2_AS_GENERATION_3",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "lock branch lock/ee12c98e107cf314f3213e283e140154225f5c73273756dc9e75cc8c10a11a1e blob 8ff154a06f319554a07570f830ce2b1c0714ae8a"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "pull_request:42",
+      "operation": "CLOSE_SUPERSEDED_EXPIRED_GENERATION_DRAFT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR 42 state closed merged=false at 2026-09-13T06:28:09Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "pull_request:48",
+      "operation": "MERGE_THROUGH_REQUIRED_MERGE_QUEUE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR 48 merge commit 91cd437d5ce1c46809b87f2baa49588c28650a07",
+        "merge_group run 34742832055 conclusion success"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main:91cd437d5ce1c46809b87f2baa49588c28650a07",
+      "operation": "POST_MERGE_REQUIRED_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "push workflow run 34742955915 conclusion success"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0006",
+    "VD-0007",
+    "VD-0008",
+    "VD-0009"
+  ],
+  "decision_rationale_refs": [
+    "DR-0004",
+    "DR-0005"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "REPOSITORY",
+      "title": "actions/checkout v7.0.1 tag",
+      "url": "https://github.com/actions/checkout/releases/tag/v7.0.1",
+      "observed_date": "2026-09-13",
+      "supported_claim": "The reviewed actions/checkout v7.0.1 release resolves to commit 3d3c42e5aac5ba805825da76410c181273ba90b1."
+    },
+    {
+      "source_kind": "REPOSITORY",
+      "title": "actions/setup-python v7.0.0 tag",
+      "url": "https://github.com/actions/setup-python/releases/tag/v7.0.0",
+      "observed_date": "2026-09-13",
+      "supported_claim": "The reviewed actions/setup-python v7.0.0 release resolves to commit 5fda3b95a4ea91299a34e894583c3862153e4b97."
+    },
+    {
+      "source_kind": "REPOSITORY",
+      "title": "supabase/setup-cli v3.0.0 tag",
+      "url": "https://github.com/supabase/setup-cli/releases/tag/v3.0.0",
+      "observed_date": "2026-09-13",
+      "supported_claim": "The reviewed supabase/setup-cli v3.0.0 release resolves to commit 46f7f98c7f948ad727d22c1e67fab04c223a0520."
+    },
+    {
+      "source_kind": "REPOSITORY",
+      "title": "Supabase CLI v2.117.0 release",
+      "url": "https://github.com/supabase/cli/releases/tag/v2.117.0",
+      "observed_date": "2026-09-13",
+      "supported_claim": "GitHub's current latest non-prerelease Supabase CLI release is v2.117.0."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "pull_request:48",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_12",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "governance/work-admissions.json",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "CHANGE_ONLY_GITHUB_ISSUE_12_ADMISSION_FROM_ADMITTED_TO_COMPLETE_UPDATE_WORK_RECORD_VALIDATE_AND_INTEGRATE_THROUGH_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoint-policy.json",
+    "continuity/current.json",
+    "governance/work-selection-policy.json",
+    "governance/work-admissions.json",
+    "coordination/protocol.json",
+    "GITHUB_ISSUE:12",
+    "GITHUB_PR:42",
+    "GITHUB_PR:48",
+    "GITHUB_RUN:34742712400",
+    "GITHUB_RUN:34742832055",
+    "GITHUB_RUN:34742955915",
+    "GITHUB_MAIN:91cd437d5ce1c46809b87f2baa49588c28650a07"
+  ]
+}

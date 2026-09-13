@@ -20,7 +20,7 @@
       "source_issue_number": 12,
       "component_id": "issue_12",
       "dispatch_tier": 100,
-      "state": "ADMITTED",
+      "state": "COMPLETE",
       "depends_on": []
     },
     {
@@ -36,7 +36,7 @@
       "source_issue_number": 16,
       "component_id": "issue_16",
       "dispatch_tier": 100,
-      "state": "ADMITTED",
+      "state": "REMOVED",
       "depends_on": []
     },
     {

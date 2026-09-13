@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_id": "3a1d6f25-2d89-45ec-a86b-43e730fa862e",
+  "title": "Synchronize issue lifecycle closures and terminal redispatch directive",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "2cc0f144-9af4-4906-8829-3ffd9b23e8f5"
+  },
+  "implementation_branch": "work/3a1d6f25-2d89-45ec-a86b-43e730fa862e",
+  "base_sha": "ef08e38696715b9e7803db8589bbad23a98807e9",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000001-5ef4a72c.json",
+    "continuity/current.json",
+    "continuity/directive-ledger.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "d39831ad-ac88-4648-a882-9d41b6ec61e1",
+      "generation": 20
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "d6587c30-92c1-43c2-a36b-f9e3c718475d",
+      "generation": 16
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
