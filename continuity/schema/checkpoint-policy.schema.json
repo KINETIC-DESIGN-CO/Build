@@ -4,7 +4,7 @@
   "title": "Life Continuity Checkpoint Policy",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "policy_id", "runtime_control_authority", "checkpoint_authority", "checkpoint_directory", "checkpoint_filename_pattern", "checkpoint_template_path", "checkpoint_schema_path", "directive_ledger_path", "decision_rationale_path", "storage_branch_rule", "discovery_precondition", "latest_checkpoint_rule", "missing_checkpoint_rule", "trigger_mode", "trigger_ids", "mutation_terminal_states", "interruption_states", "merge_group_terminal_states", "post_merge_validate_terminal_states", "cadence", "coalescing_rule", "recursion_rule", "final_claim_rule", "evidence_classes", "live_verify_required_classes", "resume_rule", "control_decision_kinds_forbidden_from_checkpoint_authority", "unknown_preservation_rule", "volatile_state_rule", "directive_rule", "research_rule"],
+  "required": ["schema_version", "policy_id", "runtime_control_authority", "checkpoint_authority", "checkpoint_directory", "checkpoint_filename_pattern", "checkpoint_template_path", "checkpoint_schema_path", "directive_ledger_path", "decision_rationale_path", "storage_branch_rule", "discovery_precondition", "latest_checkpoint_rule", "missing_checkpoint_rule", "goal_snapshot_enforcement_utc", "goal_snapshot_rule", "trigger_mode", "trigger_ids", "mutation_terminal_states", "interruption_states", "merge_group_terminal_states", "post_merge_validate_terminal_states", "cadence", "coalescing_rule", "recursion_rule", "final_claim_rule", "evidence_classes", "live_verify_required_classes", "resume_rule", "control_decision_kinds_forbidden_from_checkpoint_authority", "unknown_preservation_rule", "volatile_state_rule", "directive_rule", "research_rule"],
   "properties": {
     "schema_version": {"const": 1},
     "policy_id": {"const": "life-continuity-checkpoint-v1"},
@@ -20,6 +20,8 @@
     "discovery_precondition": {"const": "DERIVE_WORK_ID_AND_IMPLEMENTATION_BRANCH_FROM_FRESH_LIVE_COORDINATION_STATE_BEFORE_CHECKPOINT_DISCOVERY"},
     "latest_checkpoint_rule": {"const": "ON_DERIVED_IMPLEMENTATION_BRANCH_FILTER_SCHEMA_VALID_CHECKPOINTS_TO_EXACT_WORK_ID_THEN_SELECT_MAX_CREATED_AT_THEN_CHECKPOINT_ID_LEXICOGRAPHIC"},
     "missing_checkpoint_rule": {"const": "NO_SCHEMA_VALID_CHECKPOINT_FOR_DERIVED_WORK_ID_RETURNS_NONE_AND_DOES_NOT_BLOCK_BOOTSTRAP"},
+    "goal_snapshot_enforcement_utc": {"type": "string", "format": "date-time"},
+    "goal_snapshot_rule": {"const": "CHECKPOINT_CREATED_AT_UTC_GTE_GOAL_SNAPSHOT_ENFORCEMENT_UTC_MUST_INCLUDE_GOAL_SNAPSHOT_WITH_ROOT_ACTIVE_AND_EXACT_ACTIVE_PATH_AS_HISTORICAL_OBSERVATION_ONLY"},
     "trigger_mode": {"const": "ANY_TRUE"},
     "trigger_ids": {"type": "array", "minItems": 14, "maxItems": 14, "uniqueItems": true, "items": {"enum": ["EXPLICIT_CHECKPOINT_REQUESTED", "MUTATION_RESULT_TERMINAL", "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED", "CANONICAL_LIVE_MISMATCH_SET_CHANGED", "SELECTED_WORK_OR_RANK_CHANGED", "OPEN_BLOCKER_SET_CHANGED", "LIVE_MAIN_SHA_CHANGED", "TRACKED_PR_STATE_CHANGED", "MERGE_GROUP_TERMINAL", "POST_MERGE_VALIDATE_TERMINAL", "INTERRUPTED_OPERATION_UNRESOLVED", "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE", "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT", "ELAPSED_SECONDS_GTE_LIMIT_WITH_NEW_EVIDENCE"]}},
     "mutation_terminal_states": {"type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true, "items": {"enum": ["SUCCESS", "FAILURE", "NO_RESULT", "TIMEOUT", "UNKNOWN"]}},
