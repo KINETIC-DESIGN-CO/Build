@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Problem Intake and Resolution Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_id",
+    "runtime_control_authority",
+    "assistant_procedure_authority",
+    "intake",
+    "problem_evaluation",
+    "current_continuity_split"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "policy_id": {"const": "life-problem-intake-and-resolution-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "assistant_procedure_authority": {"const": "ASSISTANT_PROCEDURE_ONLY"},
+    "intake": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "repository",
+        "title_prefix",
+        "intake_authority",
+        "input_classes",
+        "create_exemption_id",
+        "create_exemption_conditions",
+        "create_exemption_effect",
+        "projection_rule",
+        "edit_rule"
+      ],
+      "properties": {
+        "provider": {"const": "GITHUB_ISSUE"},
+        "repository": {"const": "KINETIC-DESIGN-CO/Build"},
+        "title_prefix": {"const": "[LIFE-INTAKE] "},
+        "intake_authority": {"const": "ZERO"},
+        "input_classes": {
+          "const": ["VINCE_DIRECTIVE","VINCE_CORRECTION","PROBLEM_CANDIDATE","VERIFIED_DEFECT"]
+        },
+        "create_exemption_id": {"const": "ZERO_AUTHORITY_INTAKE_ISSUE_CREATE"},
+        "create_exemption_conditions": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "create_exemption_effect": {"const": "CONTINUITY_SYNC_PREARM_NOT_REQUIRED_FOR_THIS_CREATE_ONLY_OPERATION"},
+        "projection_rule": {"type": "string", "minLength": 1},
+        "edit_rule": {"type": "string", "minLength": 1}
+      }
+    },
+    "problem_evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trigger",
+        "required_steps",
+        "states",
+        "verified_defect_evidence_classes",
+        "remove_rule",
+        "keep_rule",
+        "repair_rule",
+        "blocked_evidence_rule",
+        "no_passive_outcome_rule",
+        "completion_rule"
+      ],
+      "properties": {
+        "trigger": {"const": "AFTER_ANY_OBSERVED_SYSTEM_ERROR_BLOCKER_FRICTION_OR_STALE_MECHANISM"},
+        "required_steps": {"type":"array","minItems":8,"maxItems":8,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+        "states": {"type":"array","minItems":14,"maxItems":14,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+        "verified_defect_evidence_classes": {
+          "const": [
+            "REQUIRED_CHECK_FAILURE",
+            "SCHEMA_OR_INVARIANT_VIOLATION",
+            "AUTHORITATIVE_LIVE_MISMATCH",
+            "VERSIONED_FALSIFICATION_FAILURE",
+            "VERIFIED_PLATFORM_INCOMPATIBILITY"
+          ]
+        },
+        "remove_rule": {"type":"string","minLength":1},
+        "keep_rule": {"type":"string","minLength":1},
+        "repair_rule": {"type":"string","minLength":1},
+        "blocked_evidence_rule": {"type":"string","minLength":1},
+        "no_passive_outcome_rule": {"type":"string","minLength":1},
+        "completion_rule": {"type":"string","minLength":1}
+      }
+    },
+    "current_continuity_split": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_projection_resource",
+        "canonical_projection_rule",
+        "intake_rule",
+        "existing_claim_migration"
+      ],
+      "properties": {
+        "canonical_projection_resource": {"const": "continuity:sync"},
+        "canonical_projection_rule": {"const": "KEEP_SINGLE_WRITER_FOR_CANONICAL_CONTINUITY_PROJECTION_AND_MAIN_INTEGRATION"},
+        "intake_rule": {"const": "DO_NOT_REQUIRE_CANONICAL_PROJECTION_RESOURCE_FOR_ZERO_AUTHORITY_INTAKE_ISSUE_CREATE_WHEN_ALL_CREATE_EXEMPTION_CONDITIONS_PASS"},
+        "existing_claim_migration": {"const": "NO_EXISTING_ACTIVE_CONTINUITY_SYNC_CLAIM_IS_RELEASED_TAKEN_OVER_OR_MUTATED_BY_THIS_POLICY"}
+      }
+    }
+  }
+}
