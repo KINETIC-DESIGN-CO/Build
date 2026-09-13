@@ -10,10 +10,7 @@
   "base_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
   "component_id": "lock_history_validation",
   "repo_paths": [
-    ".github/workflows/continuity.yml",
-    "governance/root-cause-repairs.json",
-    "scripts/validate_relevant_lock_history.py",
-    "tests/test_relevant_lock_history.py"
+    "governance/root-cause-repairs.json"
   ],
   "external_targets": [],
   "claims": [
