@@ -241,6 +241,13 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertIn("resource coverage mismatch", proc.stderr)
 
     def test_completed_current_work_with_empty_admitted_queue_has_no_parallel_work(self):
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
+        for item in admissions["items"]:
+            if item["state"] == "ADMITTED":
+                item["state"] = "COMPLETE"
+        ADMISSIONS_PATH.write_text(
+            json.dumps(admissions, indent=2) + "\n", encoding="utf-8"
+        )
         current = json.loads(CURRENT_PATH.read_text())
         current["current_status"] = "COMPLETE"
         CURRENT_PATH.write_text(
