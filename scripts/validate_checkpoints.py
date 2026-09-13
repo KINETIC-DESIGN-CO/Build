@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import json
+import re
+import sys
+from pathlib import Path
+
+import validate_continuity as vc
+
+ROOT = Path(__file__).resolve().parents[1]
+CONT = ROOT / "continuity"
+ERRORS: list[str] = []
+
+
+def fail(code: str, message: str) -> None:
+    ERRORS.append(f"{code}: {message}")
+
+
+def load_schema(rel: str):
+    before = len(vc.ERRORS)
+    schema = vc.load_and_validate_schema(ROOT / rel)
+    if len(vc.ERRORS) > before:
+        return None
+    return schema
+
+
+def validate_jsonl_records(path: Path, schema, label: str) -> list[dict]:
+    rows = vc.load_jsonl(path)
+    if schema is not None:
+        for index, row in enumerate(rows, 1):
+            vc.validate_instance_against_schema(row, schema, f"{label} line {index}")
+    return rows
+
+
+def main() -> int:
+    vc.ERRORS.clear()
+
+    policy = vc.load_json(CONT / "checkpoint-policy.json")
+    template = vc.load_json(CONT / "checkpoint-template.json")
+    if not isinstance(policy, dict) or not isinstance(template, dict):
+        fail("CP001_LOAD", "checkpoint policy and template must be JSON objects")
+    else:
+        if policy.get("checkpoint_template_path") != "continuity/checkpoint-template.json":
+            fail("CP002_POLICY", "checkpoint_template_path mismatch")
+        if policy.get("checkpoint_schema_path") != "continuity/checkpoint.schema.json":
+            fail("CP002_POLICY", "checkpoint_schema_path mismatch")
+        if template.get("checkpoint_schema_path") != policy.get("checkpoint_schema_path"):
+            fail("CP002_POLICY", "template checkpoint_schema_path must match policy")
+        if template.get("policy_path") != "continuity/checkpoint-policy.json":
+            fail("CP002_POLICY", "template policy_path mismatch")
+        if policy.get("checkpoint_authority") != "EVIDENCE_ONLY" or template.get("checkpoint_authority") != "EVIDENCE_ONLY":
+            fail("CP003_AUTHORITY", "checkpoint policy/template authority must be EVIDENCE_ONLY")
+        if policy.get("runtime_control_authority") != "NONE" or template.get("runtime_control_authority") != "NONE":
+            fail("CP003_AUTHORITY", "checkpoint policy/template runtime authority must be NONE")
+
+    policy_schema = load_schema("continuity/schema/checkpoint-policy.schema.json")
+    template_schema = load_schema("continuity/schema/checkpoint-template.schema.json")
+    checkpoint_schema = load_schema("continuity/checkpoint.schema.json")
+    directive_schema = load_schema("continuity/directive-record.schema.json")
+    rationale_schema = load_schema("continuity/decision-rationale.schema.json")
+
+    if policy is not None and policy_schema is not None:
+        vc.validate_instance_against_schema(policy, policy_schema, "continuity/checkpoint-policy.json")
+    if template is not None and template_schema is not None:
+        vc.validate_instance_against_schema(template, template_schema, "continuity/checkpoint-template.json")
+
+    directives = validate_jsonl_records(CONT / "directive-ledger.jsonl", directive_schema, "continuity/directive-ledger.jsonl")
+    directive_ids: set[str] = set()
+    for row in directives:
+        rid = row.get("id") if isinstance(row, dict) else None
+        if rid in directive_ids:
+            fail("CP004_DUPLICATE", f"duplicate directive id {rid}")
+        if isinstance(rid, str):
+            directive_ids.add(rid)
+    for row in directives:
+        if not isinstance(row, dict):
+            continue
+        for ref in row.get("supersedes", []):
+            if ref == row.get("id") or ref not in directive_ids:
+                fail("CP005_REFERENCE", f"directive {row.get('id')} invalid supersedes reference {ref}")
+
+    rationales = validate_jsonl_records(CONT / "decision-rationale.jsonl", rationale_schema, "continuity/decision-rationale.jsonl")
+    rationale_ids: set[str] = set()
+    for row in rationales:
+        rid = row.get("id") if isinstance(row, dict) else None
+        if rid in rationale_ids:
+            fail("CP004_DUPLICATE", f"duplicate rationale id {rid}")
+        if isinstance(rid, str):
+            rationale_ids.add(rid)
+        if isinstance(row, dict):
+            for ref in row.get("directive_ids", []):
+                if ref not in directive_ids:
+                    fail("CP005_REFERENCE", f"rationale {rid} references missing directive {ref}")
+
+    placement = vc.load_json(ROOT / "governance/placement-policy.json")
+    if isinstance(policy, dict) and isinstance(placement, dict):
+        if policy.get("control_decision_kinds_forbidden_from_checkpoint_authority") != placement.get("control_decision_kinds"):
+            fail("CP003_AUTHORITY", "checkpoint forbidden control kinds must exactly equal placement-policy control_decision_kinds")
+
+    pattern = None
+    if isinstance(policy, dict):
+        try:
+            pattern = re.compile(str(policy.get("checkpoint_filename_pattern", "")))
+        except re.error as exc:
+            fail("CP002_POLICY", f"checkpoint filename pattern invalid: {exc}")
+
+    checkpoints: list[dict] = []
+    for path in sorted((CONT / "checkpoints").glob("CP-*.json")):
+        if pattern is not None and pattern.fullmatch(path.name) is None:
+            fail("CP006_FILENAME", f"checkpoint filename rejected by policy: {path.name}")
+        record = vc.load_json(path)
+        if not isinstance(record, dict):
+            continue
+        checkpoints.append(record)
+        if checkpoint_schema is not None:
+            vc.validate_instance_against_schema(record, checkpoint_schema, str(path.relative_to(ROOT)))
+        if record.get("checkpoint_id") != path.stem:
+            fail("CP006_FILENAME", f"{path.name} checkpoint_id must equal filename stem")
+        for ref in record.get("directive_refs", []):
+            if ref not in directive_ids:
+                fail("CP005_REFERENCE", f"{path.name} references missing directive {ref}")
+        for ref in record.get("decision_rationale_refs", []):
+            if ref not in rationale_ids:
+                fail("CP005_REFERENCE", f"{path.name} references missing rationale {ref}")
+        for operation in record.get("operation_results", []):
+            if isinstance(operation, dict) and operation.get("readback_state") == "VERIFIED" and operation.get("result") != "SUCCESS":
+                fail("CP007_READBACK", f"{path.name} VERIFIED readback requires SUCCESS result")
+
+    if not checkpoints:
+        fail("CP008_REQUIRED", "at least one CP-* checkpoint must exist")
+
+    required_paths = [
+        "continuity/checkpoint-policy.json",
+        "continuity/checkpoint-template.json",
+        "continuity/directive-ledger.jsonl",
+        "continuity/decision-rationale.jsonl",
+        "continuity/checkpoint.schema.json",
+        "continuity/directive-record.schema.json",
+        "continuity/decision-rationale.schema.json",
+    ]
+    bootstrap = vc.load_json(CONT / "bootstrap.json")
+    if isinstance(bootstrap, dict):
+        required_files = set(bootstrap.get("required_files", []))
+        for rel in required_paths:
+            if rel not in required_files:
+                fail("CP009_BOOTSTRAP", f"bootstrap missing checkpoint dependency {rel}")
+        for step in (
+            "READ_LIVE_COORDINATION_FOR_CHECKPOINT_DISCOVERY",
+            "READ_LATEST_WORK_CHECKPOINT",
+            "READ_CHECKPOINT_PROVENANCE",
+        ):
+            if step not in bootstrap.get("resume_algorithm", []):
+                fail("CP009_BOOTSTRAP", f"bootstrap resume_algorithm missing {step}")
+        if "python scripts/validate_checkpoints.py" not in str(bootstrap.get("validation_command", "")):
+            fail("CP009_BOOTSTRAP", "bootstrap validation_command missing validate_checkpoints.py")
+
+    for path in (
+        CONT / "checkpoint-policy.json",
+        CONT / "checkpoint-template.json",
+        CONT / "checkpoint.schema.json",
+        CONT / "directive-record.schema.json",
+        CONT / "decision-rationale.schema.json",
+    ):
+        vc.check_format(path, "json")
+    vc.check_format(CONT / "directive-ledger.jsonl", "jsonl")
+    vc.check_format(CONT / "decision-rationale.jsonl", "jsonl")
+    for path in (CONT / "checkpoints").glob("CP-*.json"):
+        vc.check_format(path, "json")
+
+    all_errors = [*vc.ERRORS, *ERRORS]
+    if all_errors:
+        for error in all_errors:
+            print(error, file=sys.stderr)
+        return 1
+    print("Life checkpoint provenance: VALID")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
