@@ -106,7 +106,7 @@ def validate_registry(registry, schema, policy):
     goals = registry["goals"]
     if not isinstance(goals, list) or not goals:
         fail("goals must be a nonempty array")
-    goal_keys = {"goal_id","root_goal_id","parent_goal_id","return_to_goal_id","component_id","goal_relation","goal_state","terminal_cleanup_state","title","completion_condition_ids","satisfied_condition_ids","child_goal_ids","execution_attempts","source_refs","runtime_control_authority"}
+    goal_keys = {"goal_id","root_goal_id","parent_goal_id","return_to_goal_id","component_id","goal_relation","goal_state","terminal_cleanup_state","title","description","completion_condition_ids","satisfied_condition_ids","child_goal_ids","execution_attempts","source_refs","runtime_control_authority"}
     by_id = {}
     attempt_owner = {}
     for goal in goals:
@@ -127,8 +127,10 @@ def validate_registry(registry, schema, policy):
             fail("goal relation/state invalid")
         if goal["terminal_cleanup_state"] not in policy["terminal_cleanup_states"]:
             fail("terminal_cleanup_state invalid")
-        if not isinstance(goal["title"], str) or not goal["title"]:
+        if not isinstance(goal["title"], str) or not goal["title"] or len(goal["title"]) > 200:
             fail("goal title invalid")
+        if not isinstance(goal["description"], str) or not goal["description"] or len(goal["description"]) > 500:
+            fail("goal description invalid")
         completion = unique_strings(goal["completion_condition_ids"], f"{gid}.completion_condition_ids", CONDITION, 1)
         satisfied = unique_strings(goal["satisfied_condition_ids"], f"{gid}.satisfied_condition_ids", CONDITION)
         if not set(satisfied).issubset(completion):
