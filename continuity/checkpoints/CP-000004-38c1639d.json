@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000004-38c1639d",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T22:04:38Z",
+  "source_main_sha": "d45b66906fb1503771eb1b3caa60614c0e6772e5",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "2e39e2cfd90ac2bdc7c7bf5768ec45cd118bb087",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000003-dfc4836d.json",
+    "blob_sha": "574a97cd8c080d398a31ff43d94f5302c55cc59c"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-13T22:04:38Z",
+    "evidence_ref": "governance/work-selection-policy.json:v4 + governance/work-admissions.json:github-issue-57 ADMITTED + live component:issue_57 generation 1 ACTIVE and unexpired through 2026-09-14T00:05:56Z; active root component:goal_lifecycle_identity is independently held by work 3edfca10-ac11-4a79-bd31-72bd84165594 generation 2, so exact resource sets remain disjoint and this work remains PARALLEL_ASSIGNED.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_78A6909_STALE_VS_LIVE_MAIN_D45B669"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T22:04:38Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T22:04:38Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "efaad927-c5ea-43dc-9154-53aa339c307a",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:05:56Z",
+      "observed_at": "2026-09-13T22:04:38Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:43:20Z",
+      "observed_at": "2026-09-13T22:04:38Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:83 Add Build-native Semantic Firewall v1 source boundary",
+      "operation": "RECONCILE_SEMANTIC_FIREWALL_WORK_WITH_CURRENT_MAIN_USING_TWO_PARENT_COMMIT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=de0d362cdb5dc8a3a32cffbca659aa7d45e48335",
+        "github:compare:base=d45b66906fb1503771eb1b3caa60614c0e6772e5:behind_by=0"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github-actions:34783372915",
+      "operation": "REQUIRED_VALIDATE_BEFORE_STALE_TEST_REPAIR",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "semantic-firewall-validator=PASS",
+        "repository-test=tests.test_continuity.ContinuityTests.test_bootstrap_loads_goal_lifecycle_before_work_selection:bundle_version_literal_4"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "tests/test_continuity.py",
+      "operation": "REPLACE_STALE_BOOTSTRAP_BUNDLE_VERSION_LITERAL_WITH_SCHEMA_DERIVED_ASSERTION_AND_VERSION_INCREMENT_FALSIFICATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=1f7c246f67d45ca211fa7514254e95713c11a8fb",
+        "governance/root-cause-repairs.json:RCA-0003"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github-actions:34784818909",
+      "operation": "REQUIRED_VALIDATE_AFTER_STALE_TEST_REPAIR",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "semantic-firewall-validator=PASS",
+        "repository-tests=280_PASS_1_ERROR",
+        "sole-error=test_root_cause_repair.RootCauseRepairTests.test_canonical_package_validates:RCA-0003-disposition-invalid"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/root-cause-repairs.json:RCA-0003",
+      "operation": "ALIGN_REPAIR_DISPOSITION_WITH_CLOSED_KEEP_REPLACE_MODIFY_COMBINE_REMOVE_VOCABULARY",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=b0da605243337bdd7b4ee00fd78373a71547e40d",
+        "selected_disposition=COMBINE_VERSION_INCREMENT_FALSIFICATION_WITH_SCHEMA_VALIDATION"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/4264779b-70c5-4381-b619-f2c3204dc4f3.json",
+      "operation": "DECLARE_CP_000004_PATH_BEFORE_CHECKPOINT_CREATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=2e39e2cfd90ac2bdc7c7bf5768ec45cd118bb087",
+        "github:blob=cbea15b1e7db22bb63ce98fa5bb7f2e5c8fc2335"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github-actions:34785667861",
+      "operation": "REQUIRED_VALIDATE_DURING_TWO_STEP_CHECKPOINT_PUBLICATION",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "continuity-validator=PASS",
+        "reliability-validator=PASS",
+        "semantic-firewall-validator=PASS",
+        "coordination-validator=FAIL:declared_checkpoint_path_not_yet_present_in_changed_paths"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "VERIFY_CANONICAL_INVOCATION_RUNTIME_SURFACE",
+      "result": "NO_RESULT",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "project_status=ACTIVE_HEALTHY",
+        "edge_function_count=0",
+        "database_function_life.invoke=absent",
+        "canonical_invocation=NOT_RUN"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0002",
+    "VD-0011"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "GitHub Merge Queue remains the selected protected latest-base integration mechanism; the live Protect-main ruleset currently requires it."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-13",
+      "supported_claim": "The Semantic Firewall source slice requires no paid Supabase capability and current Free-plan constraints do not require preview branching for this work."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Open Policy Agent Documentation",
+      "url": "https://www.openpolicyagent.org/docs/latest/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "A generic policy engine can separate policy decisions from enforcement but does not replace Life's trusted evidence issuance, authoritative persistence, or non-bypassable effect enforcement boundary."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Cedar Authorization",
+      "url": "https://docs.cedarpolicy.com/auth/authorization.html",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Cedar's principal-action-resource-context authorization model remains a future evaluation candidate rather than a replacement for Life's evidence provenance and receipt persistence contract."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "NIST SP 800-207 Zero Trust Architecture",
+      "url": "https://csrc.nist.gov/pubs/sp/800/207/final",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Separate policy decision and enforcement points support retaining an explicit non-bypassable control/effect boundary rather than treating model output as authorization."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=d45b66906fb1503771eb1b3caa60614c0e6772e5",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:83:Add Build-native Semantic Firewall v1 source boundary",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "VERIFY_REQUIRED_VALIDATE_AFTER_CP_000004_COMPLETES_DECLARED_PATH_COVERAGE; REPAIR_ANY_MACHINE_FAILURE_WITHOUT_WEAKENING_DETECTORS; ENTER_REQUIRED_GITHUB_MERGE_QUEUE_ONLY_AFTER_FINAL_HEAD_VALIDATE_PASS.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57",
+    "GITHUB_PR:83:Add Build-native Semantic Firewall v1 source boundary",
+    "GITHUB_ACTIONS_RUN:34783372915",
+    "GITHUB_ACTIONS_RUN:34784818909",
+    "GITHUB_ACTIONS_RUN:34785667861",
+    "governance/root-cause-repairs.json:RCA-0003",
+    "governance/goal-registry.json:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "continuity/current.json:A-0014:Terminal Redispatch & Issue Lifecycle Closure",
+    "contracts/semantic-firewall-v1/spec.json",
+    "architecture/semantic-firewall-v1.md",
+    "continuity/bootstrap.json:bundle_version=5",
+    "GITHUB_RULESET:22998982:Protect-main"
+  ]
+}
