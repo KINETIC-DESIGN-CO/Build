@@ -94,7 +94,7 @@
       "goal_state": "VERIFYING",
       "title": "Verify RCA-0001 root-cause repair without losing the parent goal",
       "completion_condition_ids": [
-        "RCA_0001_PR_67_REQUIRED_VALIDATE_SUCCESS",
+        "RCA_0001_REQUIRED_VALIDATE_SUCCESS",
         "RCA_0001_PROTECTED_INTEGRATION_VERIFIED",
         "RCA_0001_POST_MERGE_MAIN_READBACK_VERIFIED"
       ],
@@ -109,8 +109,8 @@
       "source_refs": [
         "ROOT_CAUSE_REPAIR:RCA-0001",
         "GITHUB_PR:67",
-        "GITHUB_ISSUE:49",
-        "GITHUB_ACTIONS_RUN:34749203341"
+        "GITHUB_PR:69",
+        "GITHUB_ISSUE:49"
       ],
       "runtime_control_authority": "NONE"
     }
