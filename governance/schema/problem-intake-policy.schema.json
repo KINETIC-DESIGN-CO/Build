@@ -10,7 +10,7 @@
     "assistant_procedure_authority",
     "intake",
     "problem_evaluation",
-    "current_continuity_split"
+    "continuity_integration"
   ],
   "properties": {
     "schema_version": {"const": 1},
@@ -50,7 +50,7 @@
           "uniqueItems": true,
           "items": {"type": "string", "minLength": 1}
         },
-        "create_exemption_effect": {"const": "CONTINUITY_SYNC_PREARM_NOT_REQUIRED_FOR_THIS_CREATE_ONLY_OPERATION"},
+        "create_exemption_effect": {"const": "INTAKE_ISSUE_IS_DURABLE_ZERO_AUTHORITY_EVIDENCE_AND_DOES_NOT_REQUIRE_IMMEDIATE_CANONICAL_CONTINUITY_PROJECTION"},
         "problem_identity_rule": {"type":"string","minLength":1},
         "dedupe_rule": {"type":"string","minLength":1},
         "projection_rule": {"type": "string", "minLength": 1},
@@ -116,20 +116,24 @@
         "completion_rule": {"type":"string","minLength":1}
       }
     },
-    "current_continuity_split": {
+    "continuity_integration": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "canonical_projection_resource",
+        "mode",
+        "global_claim_resource_key",
+        "global_claim_effect",
+        "intake_issue_rule",
         "canonical_projection_rule",
-        "intake_rule",
-        "existing_claim_migration"
+        "legacy_claim_rule"
       ],
       "properties": {
-        "canonical_projection_resource": {"const": "continuity:sync"},
-        "canonical_projection_rule": {"const": "KEEP_SINGLE_WRITER_FOR_CANONICAL_CONTINUITY_PROJECTION_AND_MAIN_INTEGRATION"},
-        "intake_rule": {"const": "DO_NOT_REQUIRE_CANONICAL_PROJECTION_RESOURCE_FOR_ZERO_AUTHORITY_INTAKE_ISSUE_CREATE_WHEN_ALL_CREATE_EXEMPTION_CONDITIONS_PASS"},
-        "existing_claim_migration": {"const": "NO_EXISTING_ACTIVE_CONTINUITY_SYNC_CLAIM_IS_RELEASED_TAKEN_OVER_OR_MUTATED_BY_THIS_POLICY"}
+        "mode": {"const": "WORK_BRANCH_CAPTURE_PLUS_PROTECTED_MERGE"},
+        "global_claim_resource_key": {"const": null},
+        "global_claim_effect": {"const": "NONE"},
+        "intake_issue_rule": {"const": "ZERO_AUTHORITY_INTAKE_ISSUE_CREATE_IS_DURABLE_EVIDENCE_AND_HAS_ZERO_WORK_SELECTION_PREEMPTION_EFFECT"},
+        "canonical_projection_rule": {"const": "REPOSITORY_CONTINUITY_CHANGES_ARE_CAPTURED_ON_WORK_BRANCHES_AND_REACH_MAIN_ONLY_THROUGH_REQUIRED_VALIDATE_AND_GITHUB_MERGE_QUEUE"},
+        "legacy_claim_rule": {"const": "LEGACY_CONTINUITY_SYNC_LOCKS_HAVE_ZERO_WORK_SELECTION_LANE_OR_PREEMPTION_EFFECT"}
       }
     }
   }
