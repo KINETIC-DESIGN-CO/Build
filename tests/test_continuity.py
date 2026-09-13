@@ -56,6 +56,10 @@ class ContinuityTests(unittest.TestCase):
             ["EVALUATE_WORK_SELECTION", "CONTINUE_FROM_NEXT_ACTION"],
         )
         self.assertIn(
+            "EVALUATE_PERSISTENT_INTAKE_AND_PROBLEMS",
+            bootstrap["resume_algorithm"],
+        )
+        self.assertIn(
             "python scripts/select_work.py --validate-policy",
             bootstrap["validation_command"],
         )
@@ -66,8 +70,11 @@ class ContinuityTests(unittest.TestCase):
             "continuity/schema/response-contract.schema.json",
             "governance/work-selection-policy.json",
             "governance/schema/work-selection-policy.schema.json",
+            "governance/problem-intake-policy.json",
+            "governance/schema/problem-intake-policy.schema.json",
             "scripts/select_work.py",
             "tests/test_work_selection.py",
+            "tests/test_problem_intake_policy.py",
         ):
             self.assertIn(required, bootstrap["required_files"])
 
@@ -163,7 +170,7 @@ class ContinuityTests(unittest.TestCase):
         )
         self.assertEqual(
             bootstrap["continuity_sync_rule"],
-            "A repository mutation whose changed paths are a nonempty subset of continuity_sync_paths is CONTINUITY_SYNC and does not require a second continuity update solely because that continuity mutation occurred, including a pull-request merge to main. A GitHub mutation whose target branch matches work/<lowercase-UUIDv4> or lock/<64-lowercase-hex> and does not update main is SOURCE_WORKSPACE_MUTATION and does not require continuity synchronization solely because it occurred; that branch's Git history and live machine state are its exact evidence. Creation of the work branch from current main is included. Any update to main whose changed paths are not a nonempty subset of continuity_sync_paths is never exempt. Git history remains the exact byte-history for every exempt mutation.",
+            "A repository mutation whose changed paths are a nonempty subset of continuity_sync_paths is CONTINUITY_SYNC and does not require a second continuity update solely because that continuity mutation occurred, including a pull-request merge to main. A GitHub mutation whose target branch matches work/<lowercase-UUIDv4> or lock/<64-lowercase-hex> and does not update main is SOURCE_WORKSPACE_MUTATION and does not require continuity synchronization solely because it occurred; that branch's Git history and live machine state are its exact evidence. Creation of the work branch from current main is included. A create-only GitHub Issue mutation is ZERO_AUTHORITY_INTAKE_ISSUE_CREATE and does not require continuity synchronization before creation iff every exact create_exemption_condition in governance/problem-intake-policy.json passes; the new Issue has zero control authority and every later mutation of that Issue uses normal continuity and resource rules. Any update to main whose changed paths are not a nonempty subset of continuity_sync_paths is never exempt. Git history remains the exact byte-history for every repository exemption.",
         )
 
     def test_schema_rejects_missing_nested_required_field(self):
