@@ -92,7 +92,26 @@
         "repair_rule": {"type":"string","minLength":1},
         "blocked_evidence_rule": {"type":"string","minLength":1},
         "repair_item_rule": {"type":"string","minLength":1},
-        "bootstrap_effect": {"type":"string","minLength":1},
+        "bootstrap_effect": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "execute_before_work_selection_states",
+            "execute_before_work_selection_effect",
+            "continue_to_work_selection_states",
+            "continue_to_work_selection_effect",
+            "preserve_without_drop_states",
+            "preserve_without_drop_effect"
+          ],
+          "properties": {
+            "execute_before_work_selection_states": {"const":["REPAIR_REQUIRED","REMOVE_REQUIRED"]},
+            "execute_before_work_selection_effect": {"const":"EXECUTE_OR_ENTER_ONE_EXACT_BLOCKED_STATE_BEFORE_EVALUATE_WORK_SELECTION"},
+            "continue_to_work_selection_states": {"const":["KEEP_REQUIRED","VERIFIED_FIXED","VERIFIED_REMOVED","REJECTED_NOT_PROBLEM"]},
+            "continue_to_work_selection_effect": {"const":"CONTINUE_TO_EVALUATE_WORK_SELECTION"},
+            "preserve_without_drop_states": {"const":["PROBLEM_CANDIDATE","VERIFIED_DEFECT","BLOCKED_RESOURCE","BLOCKED_AUTHORIZATION","BLOCKED_COST","BLOCKED_PLATFORM","BLOCKED_EVIDENCE","VERIFYING"]},
+            "preserve_without_drop_effect": {"const":"PRESERVE_STATE_AND_DO_NOT_DROP_THE_PROBLEM"}
+          }
+        },
         "no_passive_outcome_rule": {"type":"string","minLength":1},
         "completion_rule": {"type":"string","minLength":1}
       }
