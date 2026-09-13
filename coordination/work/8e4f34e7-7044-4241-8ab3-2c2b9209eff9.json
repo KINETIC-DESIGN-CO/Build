@@ -13,6 +13,7 @@
     ".github/workflows/issue-lifecycle.yml",
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000001-c4a1d8e7.json",
+    "continuity/checkpoints/CP-000002-6e4d12a9.json",
     "governance/issue-lifecycle-policy.json",
     "governance/root-cause-repair-policy.json",
     "governance/root-cause-repairs.json",
