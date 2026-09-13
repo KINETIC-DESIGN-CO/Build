@@ -89,7 +89,7 @@ class ResponseContractPresentationTests(unittest.TestCase):
             "SOURCE_OWNERSHIP_ALONE_CANNOT_ASSERT_CONTINUOUS_BACKGROUND_EXECUTION",
             self.orientation["execution_state_rule"],
         )
-        self.assertIn("THIS_THREAD_OWNS_SELECTED_EXECUTABLE_WORK", self.contract["current_job_rule"])
+        self.assertTrue(self.contract["current_job_rule"].startswith("NEXT_STEP_STATES_THE_EXACT_WORK_THIS_THREAD_OWNS_AND_WILL_EXECUTE"))
 
     def test_pre_close_review_and_suggestion_are_exact(self):
         self.assertEqual(
@@ -116,7 +116,7 @@ class ResponseContractPresentationTests(unittest.TestCase):
     def test_ending_stays_compact(self):
         self.assertEqual(
             self.orientation["end_rule"],
-            "IMMEDIATELY_BEFORE_ENDING_ACTION_CARD_RENDER_ACTIVE_ROOT_GOAL_TITLE_ONLY_WITHOUT_DESCRIPTION_OR_REPEATED_TRACKED_WORK_TABLE_UNLESS_USER_EXPLICITLY_REQUESTS_FINAL_AUDIT",
+            "IMMEDIATELY_BEFORE_NEXT_STEP_RENDER_ACTIVE_ROOT_GOAL_TITLE_ONLY_WITHOUT_DESCRIPTION",
         )
 
 
