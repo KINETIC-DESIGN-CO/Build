@@ -50,7 +50,7 @@
           "root_goal_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
           "parent_goal_id": {"type": ["string", "null"], "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
           "return_to_goal_id": {"type": ["string", "null"], "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
-          "goal_relation": {"enum": ["ROOT", "PREREQUISITE", "BLOCKER_REPAIR", "CONTINUITY_CAPTURE", "VERIFICATION", "TERMINAL_CLEANUP", "DEFECT_REPAIR", "IMPLEMENTATION_CHILD"]},
+          "goal_relation": {"enum": ["ROOT", "PREREQUISITE", "BLOCKER_REPAIR", "CONTINUITY_CAPTURE", "VERIFICATION", "TERMINAL_CLEANUP", "DEFECT_REPAIR", "ISSUE_CONSOLIDATION", "IMPLEMENTATION_CHILD"]},
           "goal_state": {"enum": ["ACTIVE", "BLOCKED_RESOURCE", "BLOCKED_AUTHORIZATION", "BLOCKED_COST", "BLOCKED_PLATFORM", "VERIFYING", "COMPLETE", "REMOVED"]},
           "title": {"type": "string", "minLength": 1},
           "completion_condition_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}},
