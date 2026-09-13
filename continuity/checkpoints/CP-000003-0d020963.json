@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-0d020963",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T20:44:07Z",
+  "source_main_sha": "496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+  "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+  "work_branch": "work/fae2f300-205f-4cb2-b7ff-17082065159b",
+  "work_head_sha": "b11e9f858eca474f5103ea631e2879e35774731d",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "INTERRUPTED_OPERATION_UNRESOLVED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-51b48c9d.json",
+    "blob_sha": "5ca8df5ae2665c20b7d8e975722bc16f56f7946e"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-18",
+    "evaluated_at": "2026-09-13T19:38:27Z",
+    "evidence_ref": "The deterministic selector selected github-issue-18 after Issue 21 terminal binding and release. The later interrupted merge-conflict operation was reconciled against the same exact work_id, branch, claim identity, current main, and PR before continuing this nonterminal work item.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T20:44:07Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_18",
+      "lock_branch": "lock/5aac3f38d7e2bc396461d09e0bcd2e1cffb9262a0b451371174b8a304e7ee8f5",
+      "state": "ACTIVE",
+      "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+      "lease_id": "9f86b96f-c58d-4710-a077-0cdf96dc054e",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:38:27Z",
+      "observed_at": "2026-09-13T20:44:07Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:78",
+      "operation": "MERGE_QUEUE_ENROLLMENT_THEN_CONCURRENT_MAIN_CONFLICT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR 78 timeline recorded added_to_merge_queue at 2026-09-13T20:12:03Z",
+        "PR 80 merged first and GitHub subsequently removed PR 78 from the queue",
+        "GitHub readback showed PR 78 nonmergeable after the admissions-registry overlap"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "repository:1366835183/main",
+      "operation": "CONCURRENT_MAIN_ADVANCE_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR 80 — Admit Semantic Firewall Phase B to deterministic dispatch advanced main to 6f6b498b546e5681f357fc06c9d4e83aa38cc1c8",
+        "PR 81 — Enforce Phase 0 Reliability and Recovery contracts advanced main to 496dc41475ba7ce0f65e27395c4c4e059c394cf5"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/fae2f300-205f-4cb2-b7ff-17082065159b",
+      "operation": "ACCIDENTAL_REF_MOVE_ARTIFACT_CLEANUP",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Misrouted ref-move attempts created __oops_no__, DO_NOT_USE, NOPE, and THIS_CALL_SHOULD_NOT_BE_CONTENTS on the work branch",
+        "Each accidental file was deleted before the successful dedicated ref operation",
+        "Final PR changed-file set contains only the intended Issue 18 work paths plus the work record"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/fae2f300-205f-4cb2-b7ff-17082065159b@a7d18fa446c55bda0c2cad7200a88281481f43c0",
+      "operation": "RECONCILE_WITH_CURRENT_MAIN_AND_FAST_FORWARD_REF",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Merge commit a7d18fa446c55bda0c2cad7200a88281481f43c0 has parents 43f0eabda29a0858cfa930c5b2d4b3bfd3cd9b77 and 496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+        "continuity/bootstrap.json readback preserves Reliability and Recovery files and adds resume reconciliation policy evaluator and tests",
+        "governance/work-admissions.json readback preserves github-issue-57 ADMITTED and records github-issue-18 COMPLETE",
+        "Dedicated GitHub update_ref returned success and branch readback matched a7d18fa446c55bda0c2cad7200a88281481f43c0"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:78",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:18",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_18",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_EXACT_RECONCILED_PR_HEAD_VALIDATION_THEN_REENTER_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/resume-reconciliation-policy.json",
+    "scripts/evaluate_resume_reconciliation.py",
+    "tests/test_resume_reconciliation.py",
+    "continuity/bootstrap.json",
+    "governance/work-admissions.json",
+    "governance/work-selection-policy.json",
+    "coordination/protocol.json",
+    "coordination/work/fae2f300-205f-4cb2-b7ff-17082065159b.json",
+    "GITHUB_PR:78",
+    "GITHUB_PR:80",
+    "GITHUB_PR:81",
+    "GITHUB_ISSUE:18",
+    "GITHUB_MAIN:496dc41475ba7ce0f65e27395c4c4e059c394cf5"
+  ]
+}
