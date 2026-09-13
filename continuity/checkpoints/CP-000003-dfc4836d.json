@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-dfc4836d",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T21:14:29Z",
+  "source_main_sha": "07c506acad2bd6a7bfc883ca9b26c337eff5b1d9",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "83ad11c82588cf235bf13f1529f14833f6576dff",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-a2622ab0.json",
+    "blob_sha": "621dd8c05c44496b7f2e080cabad3e6100afdb43"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-13T21:14:29Z",
+    "evidence_ref": "governance/work-selection-policy.json:v4 + governance/work-admissions.json:github-issue-57 + live component:issue_57 generation 1; active root component is held by work 3edfca10-ac11-4a79-bd31-72bd84165594 so this thread remains disjoint parallel work.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_F5BC289_STALE_VS_LIVE_MAIN_07C506AC"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T21:14:29Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T21:14:29Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "efaad927-c5ea-43dc-9154-53aa339c307a",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:05:56Z",
+      "observed_at": "2026-09-13T21:14:29Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:43:20Z",
+      "observed_at": "2026-09-13T21:14:29Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "operation": "RECONCILE_WITH_CURRENT_MAIN_USING_TWO_PARENT_COMMIT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=a7ff98f061456e3329b26d5cf7c9bc0dcee5f45c",
+        "github:compare:behind_by=0"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "operation": "ADD_BUILD_NATIVE_SEMANTIC_FIREWALL_V1_SOURCE_VALIDATOR_TESTS_BOOTSTRAP_AND_CI",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=83ad11c82588cf235bf13f1529f14833f6576dff",
+        "github:branch_readback=83ad11c82588cf235bf13f1529f14833f6576dff"
+      ]
+    },
+    {
+      "system": "OTHER",
+      "target": "tests/test_semantic_firewall_v1.py",
+      "operation": "LOCAL_SEMANTIC_FIREWALL_FALSIFICATION_TESTS",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "python:unittest:16_tests:OK"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0002",
+    "VD-0011"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "GitHub Managing a merge queue",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Required Merge Queue plus merge_group validation remains the selected latest-base source-integration path; no custom global integration mutex is needed."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-13",
+      "supported_claim": "The authorized organization remains compatible with the Free plan and this source-only Semantic Firewall slice requires no paid Supabase feature."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "OpenAI Structured Outputs",
+      "url": "https://openai.com/index/introducing-structured-outputs-in-the-api/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Schema-constrained model output can combine at a shape boundary but does not establish Life authorization, factual provenance, or trusted receipt persistence."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Open Policy Agent Documentation",
+      "url": "https://www.openpolicyagent.org/docs",
+      "observed_date": "2026-09-13",
+      "supported_claim": "A generic policy engine is a future evaluation candidate, not a replacement for Life's current evidence-binding and trusted-receipt contract."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Cedar Policy Language Documentation",
+      "url": "https://docs.cedarpolicy.com/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Cedar's authorization model is a future policy-evaluation candidate but does not by itself replace Life's evidence provenance and receipt persistence boundary."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering",
+      "url": "https://arxiv.org/abs/2602.23193",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Structured validated intentions plus deterministic orchestration and persisted evidence support keeping semantic admissibility separate from projection and effect execution."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main=07c506acad2bd6a7bfc883ca9b26c337eff5b1d9",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Open the protected pull request for the Semantic Firewall v1 source slice, verify required validate CI, reconcile any failure without weakening detectors, then use Merge Queue only after all required checks pass.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57",
+    "governance/goal-registry.json:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "architecture/reference/semantic-firewall-import-provenance.json",
+    "architecture/semantic-firewall-v1.md",
+    "contracts/semantic-firewall-v1/spec.json",
+    "reliability/spec.json",
+    "continuity/bootstrap.json:bundle_version=5"
+  ]
+}
