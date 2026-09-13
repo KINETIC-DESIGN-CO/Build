@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-5ef4a72c",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T06:57:59Z",
+  "source_main_sha": "52ad688966cb9764cb4f384463d9fe11ded793cb",
+  "work_id": "3a1d6f25-2d89-45ec-a86b-43e730fa862e",
+  "work_branch": "work/3a1d6f25-2d89-45ec-a86b-43e730fa862e",
+  "work_head_sha": "94bb6cc82c8815da1c29cf7c6ef94641bff2c54b",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "SELECTED_WORK_OR_RANK_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "FOREGROUND",
+    "selected_rank": 0,
+    "selected_work_id": "CONTINUITY_SYNC",
+    "evaluated_at": "2026-09-13T06:57:59Z",
+    "evidence_ref": "live component:continuity_sync generation 20 and continuity:sync generation 16 are ACTIVE_UNEXPIRED for work 3a1d6f25-2d89-45ec-a86b-43e730fa862e while canonical main continuity tracks an older GitHub head",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T06:57:59Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "state": "ACTIVE",
+      "work_id": "3a1d6f25-2d89-45ec-a86b-43e730fa862e",
+      "lease_id": "d39831ad-ac88-4648-a882-9d41b6ec61e1",
+      "generation": 20,
+      "expires_at": "2026-09-13T10:41:05Z",
+      "observed_at": "2026-09-13T06:57:59Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "3a1d6f25-2d89-45ec-a86b-43e730fa862e",
+      "lease_id": "d6587c30-92c1-43c2-a36b-f9e3c718475d",
+      "generation": 16,
+      "expires_at": "2026-09-13T10:41:05Z",
+      "observed_at": "2026-09-13T06:57:59Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "issue:2",
+      "operation": "CLOSE_COMPLETED_ISSUE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Issue #2 state=closed state_reason=completed closed_at=2026-09-13T06:49:57Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "issue:12",
+      "operation": "CLOSE_COMPLETED_ISSUE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Issue #12 state=closed state_reason=completed closed_at=2026-09-13T06:50:56Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/current.json",
+      "operation": "SYNCHRONIZE_LIVE_MAIN_AND_TERMINAL_ISSUE_LIFECYCLE_NEXT_ACTION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "branch commit 4784249ec020d984c062e5e95d9604c79b358494"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/directive-ledger.jsonl",
+      "operation": "APPEND_VD_0017_AND_VD_0018",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "branch commit 5af211a3b3c550e6f42b7fdc22ab454a7ab99055"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0017",
+    "VD-0018"
+  ],
+  "decision_rationale_refs": [
+    "DR-0003",
+    "DR-0005",
+    "DR-0006"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "RESEARCH_PAPER",
+      "title": "Effective Strategies for Asynchronous Software Engineering Agents",
+      "url": "https://arxiv.org/abs/2603.21489",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Asynchronous software-engineering agents benefit from centralized task delegation with isolated workspaces and explicit integration, supporting deterministic redispatch of idle workers to independent tasks."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:2",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:12",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:continuity_sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "pull_request:51",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "VALIDATE_THIS_CONTINUITY_SYNC_BRANCH_CREATE_PR_AND_ENTER_REQUIRED_MERGE_QUEUE_THEN_VERIFY_MAIN_AND_RELEASE_SYNC_CLAIMS_BEFORE_REDISPATCH",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoint-policy.json",
+    "continuity/current.json",
+    "continuity/directive-ledger.jsonl",
+    "governance/work-selection-policy.json",
+    "governance/work-admissions.json",
+    "coordination/protocol.json",
+    "GITHUB_ISSUE:2",
+    "GITHUB_ISSUE:12",
+    "GITHUB_PR:50",
+    "GITHUB_RUN:34743361678",
+    "GITHUB_RUN:34743462599",
+    "GITHUB_PR:51",
+    "GITHUB_RUN:34743865561",
+    "GITHUB_MAIN:52ad688966cb9764cb4f384463d9fe11ded793cb"
+  ]
+}
