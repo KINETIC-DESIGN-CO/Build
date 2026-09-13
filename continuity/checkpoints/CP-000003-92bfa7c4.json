@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-92bfa7c4",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:17:56Z",
+  "source_main_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
+  "work_id": "71824e85-f192-43f3-9a68-a90a332fb1e0",
+  "work_branch": "work/71824e85-f192-43f3-9a68-a90a332fb1e0",
+  "work_head_sha": "84dda64bd96a730fc2f8c320adeb7f93ecccc278",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-b0cf7906.json",
+    "blob_sha": "ffe8f71ba4a08789f00ee7f6373756c35d2db06b"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-21",
+    "evaluated_at": "2026-09-13T19:17:56Z",
+    "evidence_ref": "Issue 21 remains selected under the active generation-4 claim. The first head after the COMPLETE transition failed only selector test fixtures whose assumptions no longer matched the canonical admission transition; the production selector was unchanged and the fixture repair is versioned on the same branch.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:17:56Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_21",
+      "lock_branch": "lock/3193a55f9456d3ece2a30033010c4f6116751aad61410c06945be459de3227eb",
+      "state": "ACTIVE",
+      "work_id": "71824e85-f192-43f3-9a68-a90a332fb1e0",
+      "lease_id": "67607383-0d52-48a6-9eb7-e257018a8b56",
+      "generation": 4,
+      "expires_at": "2026-09-13T23:03:15Z",
+      "observed_at": "2026-09-13T19:17:56Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:75 head 16da52635a28210e9fb33f7c235718bda39c8518",
+      "operation": "TERMINAL_STATE_HEAD_VALIDATE",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34777126069 job 103777172462 failed only at Run repository tests",
+        "continuity, source coordination, and relevant lock-history validation passed",
+        "test_parallel_auto_selection_skips_owned_component and test_manual_selector_tie_break_remains_deterministic indexed a nonexistent second dependency-ready admitted item after Issue 21 became COMPLETE",
+        "test_dependency_blocks_issue_18_when_issue_21_not_complete did not construct the stated not-complete dependency condition"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "tests/test_work_selection.py",
+      "operation": "REPAIR_TERMINAL_TRANSITION_TEST_FIXTURES",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "multi-candidate tests explicitly set Issue 21 ADMITTED and make Issue 18 dependency-free inside isolated test fixtures",
+        "dependency-block test explicitly sets Issue 21 ADMITTED before evaluating Issue 18",
+        "production scripts/select_work.py unchanged"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "repository:1366835183/main",
+      "operation": "PRE_QUEUE_MAIN_READ",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "main head remains 8327a520d48f8724f58a55ea1bd17817ead280d2"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:75",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:21",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_21",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_CHECKPOINT_BEARING_EXACT_PR_HEAD_VALIDATE_SUCCESS_THEN_ENTER_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "tests/test_work_selection.py",
+    "governance/user-observation-policy.json",
+    "continuity/user-observations.jsonl",
+    "continuity/bootstrap.json",
+    "coordination/work/71824e85-f192-43f3-9a68-a90a332fb1e0.json",
+    "GITHUB_PR:75",
+    "GITHUB_RUN:34777126069",
+    "GITHUB_ISSUE:21",
+    "GITHUB_MAIN:8327a520d48f8724f58a55ea1bd17817ead280d2"
+  ]
+}
