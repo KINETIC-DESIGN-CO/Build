@@ -35,9 +35,27 @@ class ContinuityTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("VALID", result.stdout)
 
+    def test_bootstrap_bundle_version_increment_is_schema_valid(self):
+        td, dst = self.copy_repo()
+        try:
+            p = dst / "continuity/bootstrap.json"
+            obj = json.loads(p.read_text())
+            obj["bundle_version"] += 1
+            self.write_json(p, obj)
+            result = self.run_validator(dst)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("VALID", result.stdout)
+        finally:
+            td.cleanup()
+
     def test_bootstrap_loads_goal_lifecycle_before_work_selection(self):
         bootstrap = json.loads((ROOT / "continuity/bootstrap.json").read_text())
-        self.assertEqual(bootstrap["bundle_version"], 4)
+        schema = json.loads(
+            (ROOT / "continuity/schema/bootstrap.schema.json").read_text()
+        )
+        version_rule = schema["properties"]["bundle_version"]
+        self.assertIsInstance(bootstrap["bundle_version"], int)
+        self.assertGreaterEqual(bootstrap["bundle_version"], version_rule["minimum"])
         self.assertEqual(
             bootstrap["required_read_order"][:8],
             [

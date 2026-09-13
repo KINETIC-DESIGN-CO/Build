@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Semantic Firewall v1 Reliability Verification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "verification_id", "effect_request_id", "operation_sha256", "effect_state", "required_postconditions_state", "readback_source_class", "readback_ref", "observed_at"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "verification_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "effect_request_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "operation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "effect_state": {"type": "string", "enum": ["NOT_EVALUATED", "NO_EFFECT_VERIFIED", "EFFECT_VERIFIED", "PARTIAL_EFFECT_VERIFIED", "EFFECT_UNKNOWN"]},
+    "required_postconditions_state": {"type": "string", "enum": ["PASS", "FAIL", "UNKNOWN", "NOT_RUN", "NOT_APPLICABLE"]},
+    "readback_source_class": {"type": "string", "enum": ["AUTHORITATIVE_READBACK"]},
+    "readback_ref": {"type": "string", "minLength": 1},
+    "observed_at": {"type": "string", "format": "date-time"}
+  }
+}
