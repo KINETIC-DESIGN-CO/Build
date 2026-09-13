@@ -131,7 +131,7 @@
   ],
   "resume_candidate": {
     "operation_state": "PENDING",
-    "candidate_next_operation": "REQUIRE_NEW_CHECKPOINT_HEAD_VALIDATE_SUCCESS_THEN_ENTER_GITHUB_MERGE_QUEUE_AND_VERIFY_MERGE_GROUP_VALIDATE",
+    "candidate_next_operation": "REQUIRE_THIS_CHECKPOINTED_PR_HEAD_VALIDATE_SUCCESS_THEN_ENTER_GITHUB_MERGE_QUEUE_AND_VERIFY_MERGE_GROUP_VALIDATE",
     "authority": "NONE"
   },
   "context_refs": [
