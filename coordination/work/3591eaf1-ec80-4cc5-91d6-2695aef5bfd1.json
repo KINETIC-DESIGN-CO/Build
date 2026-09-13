@@ -26,6 +26,12 @@
       "lock_branch": "lock/982cc2746a3b0a0ea178aff66946b5634b379fc05845d177da9b68713b68b4a3",
       "lease_id": "9a7a5779-f0fa-4a91-84f9-72a815e1420c",
       "generation": 1
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "931bf543-658e-4352-8445-ea446246691e",
+      "generation": 17
     }
   ],
   "runtime_control_authority": "NONE"
