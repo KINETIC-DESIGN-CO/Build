@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest import mock
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "validate_lock_history.py"
 spec = importlib.util.spec_from_file_location("validate_lock_history", SCRIPT)
@@ -68,9 +71,40 @@ def entry(lock_value: dict, committed_at: datetime, sha_char: str) -> dict:
     }
 
 
+def load_protocol_from_dict(value: dict) -> dict:
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "protocol.json"
+        path.write_text(json.dumps(value), encoding="utf-8")
+        with mock.patch.object(mod, "PROTOCOL_PATH", path):
+            return mod.load_protocol()
+
+
 class LockHistoryTests(unittest.TestCase):
     def test_initial_active_generation_one_valid(self):
         mod.validate_history([lock()], PROTOCOL)
+
+    def test_protocol_v2_remains_supported(self):
+        loaded = load_protocol_from_dict(dict(PROTOCOL))
+        self.assertEqual(loaded["protocol_id"], "life-source-coordination-v2")
+
+    def test_protocol_v3_supported_without_weakening_lease_contract(self):
+        value = dict(PROTOCOL)
+        value["protocol_id"] = "life-source-coordination-v3"
+        loaded = load_protocol_from_dict(value)
+        self.assertEqual(loaded["protocol_id"], "life-source-coordination-v3")
+
+    def test_unknown_protocol_version_fails_closed(self):
+        value = dict(PROTOCOL)
+        value["protocol_id"] = "life-source-coordination-v4"
+        with self.assertRaises(mod.ValidationError):
+            load_protocol_from_dict(value)
+
+    def test_supported_protocol_wrong_duration_still_fails(self):
+        value = dict(PROTOCOL)
+        value["protocol_id"] = "life-source-coordination-v3"
+        value["lease_duration_seconds"] = 14399
+        with self.assertRaises(mod.ValidationError):
+            load_protocol_from_dict(value)
 
     def test_invalid_duration_fails(self):
         value = lock()
