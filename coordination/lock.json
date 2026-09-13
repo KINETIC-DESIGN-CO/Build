@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:reliability_recovery_contracts",
   "generation": 2,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
   "worker": {
     "kind": "chatgpt",
