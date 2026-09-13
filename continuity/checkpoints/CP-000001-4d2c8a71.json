@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-4d2c8a71",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T08:05:13Z",
+  "source_main_sha": "4cdeceec9da3333404fbe0cda9f632a134a5f302",
+  "work_id": "1ad0ae6f-0e52-4056-8934-fd792cd35097",
+  "work_branch": "work/1ad0ae6f-0e52-4056-8934-fd792cd35097",
+  "work_head_sha": "6f0b953179633649031badd77216d462b173e2da",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T08:05:13Z",
+    "evidence_ref": "No executable selector invocation surface was used for this evidence-only release checkpoint; work selection must be reevaluated from fresh live state.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T08:05:13Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:continuity_projection_concurrency",
+      "lock_branch": "lock/6b66f78e139c57cc38318062475d7fb18f1be3cc4cf8e3e62f2e8a257c483776",
+      "state": "ACTIVE",
+      "work_id": "1ad0ae6f-0e52-4056-8934-fd792cd35097",
+      "lease_id": "007e6fa6-f482-4421-aba2-22556e1d7cf3",
+      "generation": 1,
+      "expires_at": "2026-09-13T11:46:06Z",
+      "observed_at": "2026-09-13T08:05:13Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "work/1ad0ae6f-0e52-4056-8934-fd792cd35097",
+      "operation": "VERSION_WORK_SELECTION_V4",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "main governance/work-selection-policy.json schema_version=4",
+        "main scripts/select_work.py merged via PR #62"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "pull/62",
+      "operation": "PROTECTED_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "merge_group workflow 34746613926 success",
+        "merged main 4cdeceec9da3333404fbe0cda9f632a134a5f302"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "workflow/34746715141",
+      "operation": "POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "validate job completed success",
+        "repository tests and Supabase database tests completed success"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [
+    "DR-0006"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "GitHub Merge Queue provides latest-base integration with required checks, so unrelated source work does not require a custom global continuity work lock."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering",
+      "url": "https://arxiv.org/abs/2602.23193",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Typed append-only evidence with deterministic orchestration supports concurrent agent work without making narrative state a global authority mutex."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:continuity_projection_concurrency",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RELEASE_COMPONENT_CONTINUITY_PROJECTION_CONCURRENCY_CLAIM_AFTER_CHECKPOINT_READBACK",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_PR:62",
+    "GITHUB_MAIN:4cdeceec9da3333404fbe0cda9f632a134a5f302",
+    "GITHUB_MERGE_GROUP_RUN:34746613926",
+    "GITHUB_POST_MERGE_RUN:34746715141",
+    "governance/work-selection-policy.json",
+    "scripts/select_work.py",
+    "tests/test_work_selection.py",
+    "coordination/work/1ad0ae6f-0e52-4056-8934-fd792cd35097.json"
+  ]
+}
