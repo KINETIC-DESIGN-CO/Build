@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "catalog_id": "life-reliability-operation-contracts-v1",
+  "runtime_control_authority": "NONE",
+  "operation_contracts": [
+    {
+      "operation_contract_id": "ROP-0001",
+      "name": "IDEMPOTENT_PROTECTED_STATE_CHANGE",
+      "effect_class": "STATE_CHANGING",
+      "duplicate_effect_risk": "YES",
+      "idempotency_mode": "EXACT_KEY",
+      "retry_budget": 2,
+      "retryable_attempt_result_states": ["FAILURE", "NO_RESULT", "TIMEOUT", "UNKNOWN"],
+      "retryable_effect_states": ["NO_EFFECT_VERIFIED"],
+      "readback_mode": "AUTHORITATIVE_READBACK",
+      "postcondition_ids": ["RPOST-0001", "RPOST-0002"],
+      "compensation_contract_id": "ROP-0003",
+      "fail_closed_disposition": "QUARANTINE",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "operation_contract_id": "ROP-0002",
+      "name": "NON_IDEMPOTENT_PROTECTED_STATE_CHANGE",
+      "effect_class": "STATE_CHANGING",
+      "duplicate_effect_risk": "YES",
+      "idempotency_mode": "NONE",
+      "retry_budget": 0,
+      "retryable_attempt_result_states": [],
+      "retryable_effect_states": [],
+      "readback_mode": "AUTHORITATIVE_READBACK",
+      "postcondition_ids": ["RPOST-0001", "RPOST-0002"],
+      "compensation_contract_id": null,
+      "fail_closed_disposition": "QUARANTINE",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "operation_contract_id": "ROP-0003",
+      "name": "IDEMPOTENT_COMPENSATION_STATE_CHANGE",
+      "effect_class": "STATE_CHANGING",
+      "duplicate_effect_risk": "YES",
+      "idempotency_mode": "EXACT_KEY",
+      "retry_budget": 1,
+      "retryable_attempt_result_states": ["FAILURE", "NO_RESULT", "TIMEOUT", "UNKNOWN"],
+      "retryable_effect_states": ["NO_EFFECT_VERIFIED"],
+      "readback_mode": "AUTHORITATIVE_READBACK",
+      "postcondition_ids": ["RPOST-0005"],
+      "compensation_contract_id": null,
+      "fail_closed_disposition": "ESCALATE",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "operation_contract_id": "ROP-0004",
+      "name": "UNREADABLE_PROTECTED_STATE_CHANGE",
+      "effect_class": "STATE_CHANGING",
+      "duplicate_effect_risk": "YES",
+      "idempotency_mode": "NONE",
+      "retry_budget": 0,
+      "retryable_attempt_result_states": [],
+      "retryable_effect_states": [],
+      "readback_mode": "READBACK_UNAVAILABLE",
+      "postcondition_ids": ["RPOST-0002"],
+      "compensation_contract_id": null,
+      "fail_closed_disposition": "ESCALATE",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "operation_contract_id": "ROP-0005",
+      "name": "AUTHORITATIVE_READ_ONLY_OBSERVATION",
+      "effect_class": "READ_ONLY",
+      "duplicate_effect_risk": "NO",
+      "idempotency_mode": "NONE",
+      "retry_budget": 2,
+      "retryable_attempt_result_states": ["FAILURE", "NO_RESULT", "TIMEOUT", "UNKNOWN"],
+      "retryable_effect_states": ["NOT_EVALUATED"],
+      "readback_mode": "READBACK_UNAVAILABLE",
+      "postcondition_ids": [],
+      "compensation_contract_id": null,
+      "fail_closed_disposition": "ABORT",
+      "runtime_control_authority": "NONE"
+    }
+  ]
+}
