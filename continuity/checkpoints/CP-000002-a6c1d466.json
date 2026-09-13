@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-a6c1d466",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T04:19:41Z",
+  "source_main_sha": "336da390b9b30adf55f513ff7ccf8916808a4d8c",
+  "work_id": "8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
+  "work_branch": "work/8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
+  "work_head_sha": "d72366e823d4744c456974cf69d478608b750ba3",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT",
+    "ELAPSED_SECONDS_GTE_LIMIT_WITH_NEW_EVIDENCE"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/2026-09-13T034308Z.json",
+    "blob_sha": "134eda81d520a6f7643b6b7c56f2e8d15e395723"
+  },
+  "selected_work": {
+    "worker_lane": "FOREGROUND",
+    "selected_rank": 0,
+    "selected_work_id": "CONTINUITY_SYNC",
+    "evaluated_at": "2026-09-13T04:19:41Z",
+    "evidence_ref": "governance/work-selection-policy.json + live continuity:sync generation 13 + main/current mismatch",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0012",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA",
+      "POST_PR44_COORDINATION_STATE",
+      "CURRENT_NEXT_ACTION_STALENESS"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T04:19:41Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:continuity_checkpoint",
+      "lock_branch": "lock/633e581db31e4024994ea6bc8dba00fd4709d967063b0708babfa3f49423386e",
+      "state": "ACTIVE",
+      "work_id": "8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
+      "lease_id": "daa9cf67-3ee4-4840-a507-bab3ce798add",
+      "generation": 1,
+      "expires_at": "2026-09-13T07:43:08Z",
+      "observed_at": "2026-09-13T04:10:27Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
+      "lease_id": "4a440c77-88bf-4833-840e-1a740c43d81e",
+      "generation": 13,
+      "expires_at": "2026-09-13T08:13:44Z",
+      "observed_at": "2026-09-13T04:13:44Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a/coordination/lock.json",
+      "operation": "REACQUIRE_CONTINUITY_SYNC_GENERATION_13",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GitHub commit ec095b2b5f6c4ec6573ad31d9c17daead4dffddd",
+        "lock blob bb12039aaad5274eb60acbfa12fe33807e092d03"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/directive-ledger.jsonl",
+      "operation": "CREATE_DIRECTIVE_PROVENANCE_LEDGER",
+      "result": "SUCCESS",
+      "readback_state": "NOT_RUN",
+      "evidence_refs": [
+        "GitHub commit bf4604a9e3372f3736365ad7c88f814c34b5105d"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/decision-rationale.jsonl",
+      "operation": "CREATE_DECISION_RATIONALE_LEDGER",
+      "result": "SUCCESS",
+      "readback_state": "NOT_RUN",
+      "evidence_refs": [
+        "GitHub commit c0748b162eb6c63148f391eea8a2dbc0b66ad03a"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0002",
+    "VD-0003",
+    "VD-0004",
+    "VD-0005",
+    "VD-0006",
+    "VD-0007",
+    "VD-0008",
+    "VD-0009",
+    "VD-0010",
+    "VD-0011",
+    "VD-0012",
+    "VD-0013",
+    "VD-0014",
+    "VD-0015",
+    "VD-0016"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0003",
+    "DR-0004",
+    "DR-0005",
+    "DR-0006",
+    "DR-0007"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Admin controls, security, and compliance for plugins and apps",
+      "url": "https://help.openai.com/en/articles/11509118",
+      "observed_date": "2026-09-12",
+      "supported_claim": "App permission settings do not override safety protections."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-12",
+      "supported_claim": "Free plan is $0, has two active projects, and does not include Branching."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering",
+      "url": "https://arxiv.org/abs/2602.23193",
+      "observed_date": "2026-09-12",
+      "supported_claim": "Validated append-only events with deterministic orchestration and projected state can support traceable multi-agent engineering workflows."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "ruleset:22998982",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "pull_request:42",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:continuity_checkpoint",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "project:jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "INTEGRATE_CHECKPOINT_POLICY_TEMPLATE_PROVENANCE_SCHEMAS_INTO_BOOTSTRAP_VALIDATOR_AND_TESTS",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoint-policy.json",
+    "continuity/checkpoint-template.json",
+    "continuity/directive-ledger.jsonl",
+    "continuity/decision-rationale.jsonl",
+    "coordination/protocol.json",
+    "governance/work-selection-policy.json",
+    "GITHUB_PR:44",
+    "GITHUB_PR:42",
+    "GITHUB_ISSUE:18",
+    "GITHUB_ISSUE:21"
+  ]
+}
