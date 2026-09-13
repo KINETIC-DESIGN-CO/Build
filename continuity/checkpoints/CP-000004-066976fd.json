@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000004-066976fd",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T20:01:44Z",
+  "source_main_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
+  "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+  "work_branch": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
+  "work_head_sha": "70cbab8478a33cd103da6e98c61c9f1327d4a306",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000003-f47c0e62.json",
+    "blob_sha": "43c2480029c1aa162374a9dd34a193dbbf80c90a"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 0,
+    "selected_work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+    "evaluated_at": "2026-09-13T20:01:44Z",
+    "evidence_ref": "Keep the previously selected nonterminal interrupted Semantic Firewall Phase A work through its required terminal claim-release boundary. No strictly higher-precedence rank exists. PR #76 is merged, post-merge validation succeeded, and the exact generation-2 component claim remains ACTIVE and unexpired pending final release.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T20:01:44Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:semantic_firewall_source_intake",
+      "lock_branch": "lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab",
+      "state": "ACTIVE",
+      "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+      "lease_id": "d9c103b6-9c73-40fe-94a0-035a8a8ed6f6",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:27:27Z",
+      "observed_at": "2026-09-13T20:01:44Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:76",
+      "operation": "EXACT_HEAD_VALIDATE_AND_PROTECTED_MERGE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR head validate run 34778743077 succeeded",
+        "merge_group run 34778885614 succeeded",
+        "PR #76 merged=true",
+        "merge commit 29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "repository:1366835183/main",
+      "operation": "POST_MERGE_VALIDATE_AND_CANONICAL_ARTIFACT_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "post-merge run 34779004067 succeeded on 29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
+        "architecture/reference/semantic-firewall-import-provenance.json read back from merged main",
+        "tests/test_semantic_firewall_import.py read back from merged main",
+        "selected legacy source tree and per-file blob identities are recorded on merged main"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/0f68d6ae-75a0-4616-9814-819554f5f643.json",
+      "operation": "ADD_FINAL_CHECKPOINT_PATH",
+      "result": "SUCCESS",
+      "readback_state": "PENDING_LIVE_VERIFY",
+      "evidence_refs": [
+        "work-record update commit 70cbab8478a33cd103da6e98c61c9f1327d4a306"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0022"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue - GitHub Docs",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "The required merge_group check is the latest-base protected integration gate used by Phase A."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering",
+      "url": "https://arxiv.org/abs/2602.23193",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Structured validated agent intentions and deterministic event/projected-state handling support Life's separation of evidence capture from control authority."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:76",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "workflow_run:34779004067",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:semantic_firewall_source_intake",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RELEASE_GENERATION_2_SEMANTIC_FIREWALL_SOURCE_INTAKE_CLAIM_READ_BACK_RELEASE_THEN_RERUN_DETERMINISTIC_DISPATCH",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57",
+    "GITHUB_PR:76",
+    "WORK_ID:0f68d6ae-75a0-4616-9814-819554f5f643",
+    "VD-0022",
+    "DR-0001",
+    "DR-0002",
+    "GITHUB_MAIN:29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
+    "GITHUB_POST_MERGE_RUN:34779004067"
+  ]
+}
