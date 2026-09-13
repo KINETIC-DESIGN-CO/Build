@@ -9,7 +9,7 @@
   "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
   "work_head_sha": "fc846c517d8a6dd554469a635d8dcc971ea7a6c4",
   "trigger_ids": [
-    "GITHUB_MUTATION",
+    "MUTATION_RESULT_TERMINAL",
     "LIVE_MAIN_SHA_CHANGED",
     "TRACKED_PR_STATE_CHANGED",
     "MERGE_GROUP_TERMINAL",
