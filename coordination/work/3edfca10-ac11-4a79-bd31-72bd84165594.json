@@ -37,6 +37,7 @@
     "tests/test_response_contract_presentation.py",
     "tests/test_resume_reconciliation.py",
     "tests/test_thread_lifecycle.py",
+    "tests/test_watchdog.py",
     "tests/test_work_fence.py",
     "tests/test_work_fence_lock_migration.py"
   ],
