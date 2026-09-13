@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "registry_id": "life-engineering-goal-registry-v1",
+  "runtime_control_authority": "NONE",
+  "engineering_goal_authority": "DETERMINISTIC_EVALUATION_ONLY",
+  "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+  "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+  "active_path": [
+    "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+  ],
+  "authorized_root_transition_id": null,
+  "goals": [
+    {
+      "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "parent_goal_id": null,
+      "return_to_goal_id": null,
+      "goal_relation": "ROOT",
+      "goal_state": "ACTIVE",
+      "title": "Unify stable goal identity with lifecycle and parent-first redispatch",
+      "completion_condition_ids": [
+        "GOAL_REGISTRY_SCHEMA_VERSIONED_AND_VALIDATED",
+        "ACTIVE_GOAL_PATH_VALIDATED",
+        "EXECUTION_ATTEMPT_MAPPING_VERSIONED_AND_VALIDATED",
+        "PARENT_RETURN_SELECTION_VERSIONED_AND_FALSIFIED",
+        "TERMINAL_REDISPATCH_PARENT_FIRST_VERSIONED_AND_FALSIFIED",
+        "DEFECT_REPAIR_CHILD_RELATION_VERSIONED_AND_FALSIFIED",
+        "ISSUE_CONSOLIDATION_CHILD_RELATION_VERSIONED_AND_FALSIFIED",
+        "INTERRUPTION_RESUME_GOAL_IDENTITY_VERSIONED_AND_FALSIFIED",
+        "PROTECTED_INTEGRATION_AND_MAIN_READBACK_VERIFIED"
+      ],
+      "satisfied_condition_ids": [],
+      "child_goal_ids": [],
+      "execution_attempts": [
+        {
+          "work_id": "941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+          "attempt_state": "ACTIVE"
+        }
+      ],
+      "source_refs": [
+        "VINCE_DIRECTIVE:PARENT_GOAL_CURRENT_THREAD",
+        "GITHUB_ISSUE:59",
+        "GITHUB_ISSUE:61",
+        "GITHUB_ISSUE:49",
+        "GITHUB_ISSUE:55",
+        "GITHUB_ISSUE:54",
+        "GITHUB_ISSUE:18"
+      ],
+      "runtime_control_authority": "NONE"
+    }
+  ]
+}
