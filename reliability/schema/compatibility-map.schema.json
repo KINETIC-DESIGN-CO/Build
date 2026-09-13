@@ -29,7 +29,7 @@
     },
     "goal_identity": {
       "type":"object","additionalProperties":false,"required":["current_owner_path","relationship","rule","state"],
-      "properties":{"relationship":{"type":"string","const":"COMBINE_PENDING_GOAL_OWNER_IMPLEMENTATION"},"current_owner_path":{"type":["string","null"]},"state":{"type":"string","enum":["PENDING_IMPLEMENTATION","ACTIVE"]},"rule":{"type":"string","minLength":1}}
+      "properties":{"relationship":{"type":"string","const":"COMBINE_ACTIVE_CANONICAL_GOAL_OWNER"},"current_owner_path":{"type":"string","const":"governance/goal-registry.json"},"state":{"type":"string","const":"ACTIVE"},"rule":{"type":"string","const":"RELIABILITY_PRESERVES_ROOT_AND_PARENT_IDENTITIES_FROM_THE_CANONICAL_GOAL_OWNER_AND_DOES_NOT_INFER_SEMANTIC_IDENTITY_FROM_WORK_ID"}}
     }
   }
 }
