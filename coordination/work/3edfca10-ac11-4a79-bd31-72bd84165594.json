@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
   "title": "Unify stable goal identity with terminal thread handoff",
   "worker": {
@@ -10,8 +10,11 @@
   "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
   "component_id": "goal_lifecycle_identity",
   "repo_paths": [
+    ".github/workflows/continuity.yml",
+    "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000002-a0a938d8.json",
     "continuity/response-contract.json",
+    "continuity/schema/bootstrap.schema.json",
     "continuity/schema/response-contract.schema.json",
     "coordination/protocol.json",
     "coordination/schema/lock.schema.json",
@@ -61,5 +64,8 @@
       "generation": 1
     }
   ],
+  "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+  "planned_goal_revision": 1,
+  "pending_external_effect_state": "NONE",
   "runtime_control_authority": "NONE"
 }
