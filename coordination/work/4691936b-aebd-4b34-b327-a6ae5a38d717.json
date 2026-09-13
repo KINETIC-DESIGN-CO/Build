@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "work_id": "4691936b-aebd-4b34-b327-a6ae5a38d717",
+  "title": "Scope required lock-history validation to current work claims",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "43bca837-1003-4970-95b3-f706ed5a118f"
+  },
+  "implementation_branch": "work/4691936b-aebd-4b34-b327-a6ae5a38d717",
+  "base_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
+  "component_id": "lock_history_validation",
+  "repo_paths": [
+    ".github/workflows/continuity.yml",
+    "governance/root-cause-repairs.json",
+    "scripts/validate_relevant_lock_history.py",
+    "tests/test_relevant_lock_history.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:lock_history_validation",
+      "lock_branch": "lock/b01d7eb513474626f092988da6d4000ad6fe55e8c6e5162c4a6588636e9b4ade",
+      "lease_id": "65d6f58c-e4d9-412b-baa3-1a6e7a0e16a6",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
