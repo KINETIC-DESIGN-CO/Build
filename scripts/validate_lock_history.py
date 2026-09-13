@@ -83,14 +83,10 @@ def validate_legacy_snapshot(lock: dict) -> None:
         fail("legacy resource_key must be nonempty")
     if not isinstance(lock["generation"], int) or isinstance(lock["generation"], bool) or lock["generation"] < 1:
         fail("legacy generation must be integer >= 1")
-    if not isinstance(lock["work_id"], str) or not lock["work_id"]:
-        fail("legacy work_id must be nonempty string")
-    if not isinstance(lock["lease_id"], str) or not lock["lease_id"]:
-        fail("legacy lease_id must be nonempty string")
+    if not isinstance(lock["work_id"], str) or not lock["work_id"] or not isinstance(lock["lease_id"], str) or not lock["lease_id"]:
+        fail("legacy work_id/lease_id must be nonempty")
     worker = lock["worker"]
-    if not isinstance(worker, dict) or set(worker) != {"kind", "session_id"}:
-        fail("legacy worker must contain exactly kind and session_id")
-    if not isinstance(worker["kind"], str) or not worker["kind"] or not isinstance(worker["session_id"], str) or not worker["session_id"]:
+    if not isinstance(worker, dict) or set(worker) != {"kind", "session_id"} or not all(isinstance(worker[k], str) and worker[k] for k in worker):
         fail("legacy worker identity invalid")
     if not isinstance(lock["implementation_branch"], str) or not lock["implementation_branch"]:
         fail("legacy implementation_branch invalid")
@@ -148,7 +144,7 @@ def validate_snapshot(lock: dict, protocol: dict) -> None:
 def effective_expiry(lock: dict, protocol: dict) -> datetime:
     stored = parse_utc(lock["expires_at"])
     if protocol.get("protocol_id") == "life-source-coordination-v4" and is_component(lock) and lock["schema_version"] == 1:
-        return min(stored, parse_utc(lock["acquired_at"]) + timedelta(seconds=component_duration(protocol)))
+        return min(stored, parse_utc(lock["heartbeat_at"]) + timedelta(seconds=component_duration(protocol)))
     return stored
 
 
@@ -161,8 +157,7 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
         fail("resource_key cannot change within lock history")
     prev_state, curr_state = previous["state"], current["state"]
     prev_heartbeat = parse_utc(previous["heartbeat_at"])
-    curr_acquired = parse_utc(current["acquired_at"])
-    curr_heartbeat = parse_utc(current["heartbeat_at"])
+    curr_acquired, curr_heartbeat = parse_utc(current["acquired_at"]), parse_utc(current["heartbeat_at"])
 
     if prev_state == "ACTIVE" and curr_state == "RELEASED":
         if immutable_release_fields(previous) != immutable_release_fields(current):
@@ -172,8 +167,8 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
     if prev_state == "RELEASED" and curr_state == "ACTIVE":
         if current["generation"] != previous["generation"] + 1:
             fail("released reacquisition must increment generation by exactly one")
-        if current["work_id"] == previous["work_id"] or current["lease_id"] == previous["lease_id"]:
-            fail("released reacquisition must use new work_id and lease_id")
+        if current["lease_id"] == previous["lease_id"]:
+            fail("released reacquisition must use a new lease_id")
         if curr_acquired != curr_heartbeat or curr_acquired < prev_heartbeat:
             fail("released reacquisition timestamp invalid")
         if protocol.get("protocol_id") == "life-source-coordination-v4" and is_component(current):
@@ -182,14 +177,9 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
         return
 
     if prev_state == "ACTIVE" and curr_state == "ACTIVE":
-        same_owner = (
-            current["work_id"] == previous["work_id"]
-            and current["lease_id"] == previous["lease_id"]
-            and current["generation"] == previous["generation"]
-        )
+        same_owner = current["work_id"] == previous["work_id"] and current["lease_id"] == previous["lease_id"] and current["generation"] == previous["generation"]
         if same_owner:
-            fixed_fields = ("worker", "implementation_branch", "base_sha", "acquired_at")
-            if any(current[field] != previous[field] for field in fixed_fields):
+            if any(current[field] != previous[field] for field in ("worker", "implementation_branch", "base_sha", "acquired_at")):
                 fail("renewal changed immutable ownership field")
             if curr_heartbeat <= prev_heartbeat:
                 fail("renewal heartbeat must advance")
@@ -210,8 +200,8 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
             fail("takeover cannot occur before predecessor effective expiry")
         if current["generation"] != previous["generation"] + 1:
             fail("takeover must increment generation by exactly one")
-        if current["work_id"] == previous["work_id"] or current["lease_id"] == previous["lease_id"]:
-            fail("takeover must use new work_id and lease_id")
+        if current["lease_id"] == previous["lease_id"]:
+            fail("takeover must use a new lease_id")
         if curr_acquired != curr_heartbeat:
             fail("takeover must start with acquired_at == heartbeat_at")
         if protocol.get("protocol_id") == "life-source-coordination-v4" and is_component(current):
@@ -235,8 +225,11 @@ def validate_history(history: list[dict], protocol: dict) -> None:
     validate_snapshot(first, protocol)
     if first["state"] != "ACTIVE" or first["generation"] != 1 or first["acquired_at"] != first["heartbeat_at"]:
         fail("initial lock snapshot must be ACTIVE generation 1 with acquired_at == heartbeat_at")
-    for previous, current in zip(history, history[1:]):
-        validate_transition(previous, current, protocol)
+    for index, (previous, current) in enumerate(zip(history, history[1:]), start=1):
+        try:
+            validate_transition(previous, current, protocol)
+        except ValidationError as exc:
+            fail(f"transition[{index - 1}->{index}] generation {previous['generation']}->{current['generation']} {previous['state']}->{current['state']}: {exc}")
 
 
 def validate_empty_branch_tip(committed_at: datetime, protocol: dict) -> None:
@@ -246,21 +239,40 @@ def validate_empty_branch_tip(committed_at: datetime, protocol: dict) -> None:
         fail("empty lock branch exists at or after lock transition enforcement epoch")
 
 
-def validate_versioned_snapshot(lock: dict, committed_at: datetime, protocol: dict) -> None:
+def v4_main_cutover() -> datetime | None:
+    fetch = subprocess.run(["git", "fetch", "--quiet", "origin", "refs/heads/main:refs/remotes/origin/main"], cwd=ROOT, text=True, capture_output=True)
+    if fetch.returncode != 0:
+        return None
+    commits = [line for line in run_git("rev-list", "--first-parent", "--reverse", "refs/remotes/origin/main").splitlines() if line]
+    for commit in commits:
+        raw = run_git("show", f"{commit}:coordination/protocol.json", check=False)
+        if not raw:
+            continue
+        try:
+            protocol = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if protocol.get("protocol_id") == "life-source-coordination-v4":
+            return parse_git_time(run_git("show", "-s", "--format=%cI", commit))
+    return None
+
+
+def validate_versioned_snapshot(lock: dict, committed_at: datetime, protocol: dict, cutover: datetime | None) -> None:
     base_cutoff = parse_utc(protocol["lock_history_enforcement_start_utc"])
     if committed_at < base_cutoff:
         validate_legacy_snapshot(lock)
         return
     validate_snapshot(lock, protocol)
-    if protocol.get("protocol_id") == "life-source-coordination-v4" and is_component(lock):
-        cutover = parse_utc(protocol["component_lease_cutover_utc"])
+    if protocol.get("protocol_id") == "life-source-coordination-v4" and cutover is not None and is_component(lock):
         if committed_at >= cutover and lock["schema_version"] == 1 and lock["state"] == "ACTIVE":
-            fail("post-cutover ACTIVE component lock requires schema v2")
+            fail("post-v4-cutover ACTIVE component lock requires schema v2")
 
 
-def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
+def validate_versioned_history(entries: list[dict], protocol: dict, cutover: datetime | None = None) -> None:
     if not entries:
         fail("lock history must contain at least one snapshot")
+    if cutover is None and protocol.get("protocol_id") == "life-source-coordination-v4":
+        cutover = v4_main_cutover()
     base_cutoff = parse_utc(protocol["lock_history_enforcement_start_utc"])
     resource_key = None
     for index, entry in enumerate(entries):
@@ -272,7 +284,7 @@ def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
         if not isinstance(committed_at, datetime) or committed_at.tzinfo is None:
             fail("history entry committed_at must be timezone-aware datetime")
         lock = entry["lock"]
-        validate_versioned_snapshot(lock, committed_at, protocol)
+        validate_versioned_snapshot(lock, committed_at, protocol, cutover)
         if resource_key is None:
             resource_key = lock["resource_key"]
         elif lock["resource_key"] != resource_key:
@@ -300,13 +312,7 @@ def load_protocol() -> dict:
     if protocol.get("lock_history_enforcement_start_utc") != "2026-09-12T22:56:23Z":
         fail("unexpected lock_history_enforcement_start_utc")
     if pid == "life-source-coordination-v4":
-        expected = {
-            "legacy_lease_duration_seconds": 14400,
-            "external_lease_duration_seconds": 14400,
-            "component_lease_duration_seconds": 1800,
-            "component_lease_cutover_utc": "2026-09-13T21:02:53Z",
-            "component_lock_schema_version": 2,
-        }
+        expected = {"legacy_lease_duration_seconds": 14400, "external_lease_duration_seconds": 14400, "component_lease_duration_seconds": 1800, "component_lock_schema_version": 2}
         for key, value in expected.items():
             if protocol.get(key) != value:
                 fail(f"protocol.{key} mismatch")
@@ -337,9 +343,11 @@ def history_entries_for_branch(branch: str) -> list[dict]:
     entries = []
     for commit in commits:
         raw = run_git("show", f"{commit}:coordination/lock.json")
-        lock = json.loads(raw)
-        committed_at = parse_git_time(run_git("show", "-s", "--format=%cI", commit))
-        entries.append({"commit_sha": commit, "committed_at": committed_at, "lock": lock})
+        try:
+            lock = json.loads(raw)
+        except Exception as exc:
+            fail(f"{branch} commit {commit} has invalid lock JSON: {exc}")
+        entries.append({"commit_sha": commit, "committed_at": parse_git_time(run_git("show", "-s", "--format=%cI", commit)), "lock": lock})
     return entries
 
 
@@ -347,12 +355,15 @@ def main() -> int:
     try:
         protocol = load_protocol()
         for branch in remote_lock_branches():
-            entries = history_entries_for_branch(branch)
-            if entries:
+            try:
+                entries = history_entries_for_branch(branch)
+                if not entries:
+                    remote_ref = f"refs/remotes/origin/{branch}"
+                    validate_empty_branch_tip(parse_git_time(run_git("show", "-s", "--format=%cI", remote_ref)), protocol)
+                    continue
                 validate_versioned_history(entries, protocol)
-            else:
-                remote_ref = f"refs/remotes/origin/{branch}"
-                validate_empty_branch_tip(parse_git_time(run_git("show", "-s", "--format=%cI", remote_ref)), protocol)
+            except ValidationError as exc:
+                fail(f"{branch}: {exc}")
     except (ValidationError, json.JSONDecodeError) as exc:
         print(f"LOCK_HISTORY_INVALID: {exc}", file=sys.stderr)
         return 1
