@@ -27,8 +27,7 @@
     "governance/schema/goal-policy.schema.json",
     "governance/schema/goal-registry.schema.json",
     "scripts/validate_goal_graph.py",
-    "tests/test_goal_graph.py",
-    "watchdog/spec.json"
+    "tests/test_goal_graph.py"
   ],
   "external_targets": [],
   "claims": [
