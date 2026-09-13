@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/governance/schema/work-admissions.schema.json",
+  "$id": "https://github.com/Vinanonymous/Build/blob/main/governance/schema/work-admissions.schema.json",
   "title": "Life Engineering Work Admissions",
   "type": "object",
   "additionalProperties": false,
@@ -32,7 +32,7 @@
       "pattern": "^E-[0-9]{4}$"
     },
     "source_repository": {
-      "const": "KINETIC-DESIGN-CO/Build"
+      "const": "Vinanonymous/Build"
     },
     "tie_break_rule": {
       "const": "DISPATCH_TIER_ASC_SOURCE_ISSUE_ASC_WORK_ITEM_ID_ASC"

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-c5e91a42",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T07:45:33Z",
+  "source_main_sha": "dcfb42bbd7f08cf2a655878c29a49becf7352a53",
+  "work_id": "7b2e4a6c-8f31-4d65-a2c9-5e781f0b3d44",
+  "work_branch": "work/7b2e4a6c-8f31-4d65-a2c9-5e781f0b3d44",
+  "work_head_sha": "b6bf223492d216e1035c20454187363a2b71798f",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-7e1c4a90.json",
+    "blob_sha": "18d96e6c8e999e3d7817b5ee87d16c4dc81dd8a9"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 4,
+    "selected_work_id": "github-issue-17",
+    "evaluated_at": "2026-09-13T07:45:33Z",
+    "evidence_ref": "Issue #17 remains the nonterminal selected work item; component:issue_17 generation 1 is ACTIVE for this exact work ID and continuity:sync generation 17 is ACTIVE for a different work ID with an empty resource intersection for Issue #17 source work",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T07:45:33Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_17",
+      "lock_branch": "lock/5d5ae1fe9fc98097e0c98dddf51191909e219a76f31dcdd66d3202ff9395c85b",
+      "state": "ACTIVE",
+      "work_id": "7b2e4a6c-8f31-4d65-a2c9-5e781f0b3d44",
+      "lease_id": "4d9a02e1-b3f6-4c78-9a52-1e7d0f6c8b31",
+      "generation": 1,
+      "expires_at": "2026-09-13T11:28:58Z",
+      "observed_at": "2026-09-13T07:44:47Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "3591eaf1-ec80-4cc5-91d6-2695aef5bfd1",
+      "lease_id": "931bf543-658e-4352-8445-ea446246691e",
+      "generation": 17,
+      "expires_at": "2026-09-13T11:19:10Z",
+      "observed_at": "2026-09-13T07:44:47Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "workflow_run:34745634103",
+      "operation": "REPAIRED_PR_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR #60 exact head 285b0653c4f88454bee4c33dd1337c1f7b0adc79",
+        "immutable CI pins, continuity, source coordination, lock history, repository tests, pinned Supabase CLI setup, local database startup, and database tests all passed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/7b2e4a6c-8f31-4d65-a2c9-5e781f0b3d44.json",
+      "operation": "DECLARE_REPAIRED_GREEN_HEAD_CHECKPOINT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "commit b6bf223492d216e1035c20454187363a2b71798f",
+        "work-record blob 0aefde2c8ab2b22c687cd0d74343cdce2d384458"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0017",
+    "VD-0018"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "pull_request:60",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_17",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_FINAL_EXACT_PR_HEAD_VALIDATE_SUCCESS_THEN_ENTER_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "tests/test_lock_history.py",
+    "tests/test_work_selection.py",
+    "scripts/validate_lock_history.py",
+    "scripts/select_work.py",
+    "coordination/work/7b2e4a6c-8f31-4d65-a2c9-5e781f0b3d44.json",
+    "GITHUB_PR:60",
+    "GITHUB_RUN:34745634103",
+    "GITHUB_ISSUE:17",
+    "GITHUB_MAIN:dcfb42bbd7f08cf2a655878c29a49becf7352a53"
+  ]
+}
