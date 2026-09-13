@@ -83,7 +83,7 @@ class ThreadLifecycleTests(unittest.TestCase):
         root["child_goal_ids"].append(child_id)
         registry["goals"].append({
             "goal_id":child_id,"root_goal_id":root["goal_id"],"parent_goal_id":root["goal_id"],"return_to_goal_id":root["goal_id"],
-            "component_id":"child_goal","goal_relation":"VERIFICATION","goal_state":"COMPLETE","terminal_cleanup_state":"VERIFIED","title":"Verification child",
+            "component_id":"child_goal","goal_relation":"VERIFICATION","goal_state":"COMPLETE","terminal_cleanup_state":"VERIFIED","title":"Verification child","description":"Verify terminal child return to the nonterminal parent goal.",
             "completion_condition_ids":["CHILD_DONE"],"satisfied_condition_ids":["CHILD_DONE"],"child_goal_ids":[],
             "execution_attempts":[{"work_id":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","attempt_state":"TERMINAL_SUCCESS"}],
             "source_refs":["TEST"],"runtime_control_authority":"NONE"
