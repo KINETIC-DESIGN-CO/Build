@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_id": "4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+  "title": "Synchronize checkpoint completion and canonical work state",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "c2b95af8-4a72-4d90-a1c5-86f7b3e2d641"
+  },
+  "implementation_branch": "work/4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+  "base_sha": "db13de0c69294c52d1c2417efee2f38d72ccbc2e",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "91349b2e-6d50-43a4-b8d0-2d14361d8f7c",
+      "generation": 18
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "6c7a9e31-8b54-4f20-91d3-5e8a74c6b2f0",
+      "generation": 14
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
