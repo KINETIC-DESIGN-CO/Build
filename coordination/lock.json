@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "component:reliability_recovery_contracts",
-  "generation": 1,
-  "state": "RELEASED",
+  "generation": 2,
+  "state": "ACTIVE",
   "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
   "worker": {
     "kind": "chatgpt",
     "session_id": "b9668a3e-eb54-4bbc-ac14-fda1324f259a"
   },
   "implementation_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
-  "lease_id": "99a1ea0a-1b32-44cd-8ec8-9951ebc8618d",
-  "base_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
-  "acquired_at": "2026-09-13T19:14:11Z",
-  "heartbeat_at": "2026-09-13T19:14:11Z",
-  "expires_at": "2026-09-13T23:14:11Z",
+  "lease_id": "65d35d8e-1607-4a71-966f-30025c4319e9",
+  "base_sha": "07c506acad2bd6a7bfc883ca9b26c337eff5b1d9",
+  "acquired_at": "2026-09-13T20:48:33Z",
+  "heartbeat_at": "2026-09-13T20:48:33Z",
+  "expires_at": "2026-09-14T00:48:33Z",
   "runtime_control_authority": "NONE"
 }
