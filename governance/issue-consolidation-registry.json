@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "registry_id": "life-issue-consolidation-registry-v1",
+  "runtime_control_authority": "NONE",
+  "engineering_consolidation_authority": "DETERMINISTIC_EVALUATION_ONLY",
+  "activation_state": "SOURCE_ONLY_NOT_YET_CONSUMED_BY_WORK_SELECTION",
+  "parent_goal_binding": {
+    "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "binding_state": "PENDING_PARENT_GOAL_MAIN_INTEGRATION",
+    "source_ref": "GITHUB_PR:63"
+  },
+  "canonical_requirements": [
+    {"canonical_requirement_id":"CR-VERIFIED-DEFECT-REPAIR","canonical_work_identity_id":"2910e7b9-87d8-4a82-b0ff-330b47037bf6","acceptance_condition_ids":["DEFECT_REPAIR_LIFECYCLE_VERSIONED_AND_FALSIFIED"],"source_requirement_refs":["ISSUE-49:DEFAULT"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-EXECUTE-SELECTED-WORK","canonical_work_identity_id":"2910e7b9-87d8-4a82-b0ff-330b47037bf6","acceptance_condition_ids":["AUTHORIZED_UNBLOCKED_SELECTION_EXECUTES_WITHOUT_REDUNDANT_CONFIRMATION"],"source_requirement_refs":["ISSUE-54:DEFAULT"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-DURABLE-LESSON-INTAKE","canonical_work_identity_id":"2910e7b9-87d8-4a82-b0ff-330b47037bf6","acceptance_condition_ids":["REUSABLE_LESSON_DURABILITY_AND_PROMOTION_VERSIONED_AND_FALSIFIED"],"source_requirement_refs":["ISSUE-55:DEFAULT"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-STABLE-GOAL-IDENTITY","canonical_work_identity_id":"2910e7b9-87d8-4a82-b0ff-330b47037bf6","acceptance_condition_ids":["STABLE_ROOT_GOAL_AND_PARENT_RETURN_VERSIONED_AND_FALSIFIED"],"source_requirement_refs":["ISSUE-59:DEFAULT"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-ISSUE-CONSOLIDATION","canonical_work_identity_id":"2910e7b9-87d8-4a82-b0ff-330b47037bf6","acceptance_condition_ids":["ISSUE_CONSOLIDATION_CHILD_RELATION_VERSIONED_AND_FALSIFIED"],"source_requirement_refs":["ISSUE-61:DEFAULT"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-VINCE-OBSERVATION-PROVENANCE","canonical_work_identity_id":"1e93e628-a60a-4c8e-994d-8dab06123afd","acceptance_condition_ids":["VINCE_OBSERVATION_PROVENANCE_VERSIONED_AND_FALSIFIED"],"source_requirement_refs":["ISSUE-21:DEFAULT"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-RESUME-RECONCILIATION","canonical_work_identity_id":"9eb4eb4e-57c0-4d1d-a1c4-211101589976","acceptance_condition_ids":["RESUME_RECONCILIATION_VERSIONED_AND_FALSIFIED"],"source_requirement_refs":["ISSUE-18:DEFAULT"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-SCHEMA-ENFORCEMENT","canonical_work_identity_id":"0f2edbce-71aa-4b4e-bc2a-22671058a59e","acceptance_condition_ids":["FULL_JSON_SCHEMA_ENFORCEMENT_VERSIONED_AND_FALSIFIED"],"source_requirement_refs":["ISSUE-15:DEFAULT"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-SEMANTIC-FIREWALL-SOURCE-INTAKE","canonical_work_identity_id":"009ef75e-6015-410b-b704-56694a5ef86e","acceptance_condition_ids":["SEMANTIC_FIREWALL_SOURCE_INTAKE_VERIFIED"],"source_requirement_refs":["ISSUE-57:PHASE_A_SOURCE_INTAKE"],"lifecycle_state":"ACTIVE"},
+    {"canonical_requirement_id":"CR-SEMANTIC-FIREWALL-ACTIVATION","canonical_work_identity_id":"b586d8d8-e815-45d0-ba7e-f75f0ef759f6","acceptance_condition_ids":["SEMANTIC_FIREWALL_ACTIVATION_VERIFIED"],"source_requirement_refs":["ISSUE-57:PHASE_B_ACTIVATION"],"lifecycle_state":"ACTIVE"}
+  ],
+  "source_requirements": [
+    {"source_requirement_ref":"ISSUE-49:DEFAULT","source_issue_number":49,"source_fragment_id":"DEFAULT","canonical_requirement_id":"CR-VERIFIED-DEFECT-REPAIR","acceptance_condition_ids":["DEFECT_REPAIR_LIFECYCLE_VERSIONED_AND_FALSIFIED"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-54:DEFAULT","source_issue_number":54,"source_fragment_id":"DEFAULT","canonical_requirement_id":"CR-EXECUTE-SELECTED-WORK","acceptance_condition_ids":["AUTHORIZED_UNBLOCKED_SELECTION_EXECUTES_WITHOUT_REDUNDANT_CONFIRMATION"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-55:DEFAULT","source_issue_number":55,"source_fragment_id":"DEFAULT","canonical_requirement_id":"CR-DURABLE-LESSON-INTAKE","acceptance_condition_ids":["REUSABLE_LESSON_DURABILITY_AND_PROMOTION_VERSIONED_AND_FALSIFIED"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-59:DEFAULT","source_issue_number":59,"source_fragment_id":"DEFAULT","canonical_requirement_id":"CR-STABLE-GOAL-IDENTITY","acceptance_condition_ids":["STABLE_ROOT_GOAL_AND_PARENT_RETURN_VERSIONED_AND_FALSIFIED"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-61:DEFAULT","source_issue_number":61,"source_fragment_id":"DEFAULT","canonical_requirement_id":"CR-ISSUE-CONSOLIDATION","acceptance_condition_ids":["ISSUE_CONSOLIDATION_CHILD_RELATION_VERSIONED_AND_FALSIFIED"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-21:DEFAULT","source_issue_number":21,"source_fragment_id":"DEFAULT","canonical_requirement_id":"CR-VINCE-OBSERVATION-PROVENANCE","acceptance_condition_ids":["VINCE_OBSERVATION_PROVENANCE_VERSIONED_AND_FALSIFIED"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-18:DEFAULT","source_issue_number":18,"source_fragment_id":"DEFAULT","canonical_requirement_id":"CR-RESUME-RECONCILIATION","acceptance_condition_ids":["RESUME_RECONCILIATION_VERSIONED_AND_FALSIFIED"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-15:DEFAULT","source_issue_number":15,"source_fragment_id":"DEFAULT","canonical_requirement_id":"CR-SCHEMA-ENFORCEMENT","acceptance_condition_ids":["FULL_JSON_SCHEMA_ENFORCEMENT_VERSIONED_AND_FALSIFIED"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-57:PHASE_A_SOURCE_INTAKE","source_issue_number":57,"source_fragment_id":"PHASE_A_SOURCE_INTAKE","canonical_requirement_id":"CR-SEMANTIC-FIREWALL-SOURCE-INTAKE","acceptance_condition_ids":["SEMANTIC_FIREWALL_SOURCE_INTAKE_VERIFIED"],"eligibility_state":"ACTIVE"},
+    {"source_requirement_ref":"ISSUE-57:PHASE_B_ACTIVATION","source_issue_number":57,"source_fragment_id":"PHASE_B_ACTIVATION","canonical_requirement_id":"CR-SEMANTIC-FIREWALL-ACTIVATION","acceptance_condition_ids":["SEMANTIC_FIREWALL_ACTIVATION_VERIFIED"],"eligibility_state":"ACTIVE"}
+  ],
+  "dependencies": [
+    {"requirement_id":"CR-RESUME-RECONCILIATION","depends_on_requirement_id":"CR-VINCE-OBSERVATION-PROVENANCE","dependency_id":"DEP-0001"},
+    {"requirement_id":"CR-SEMANTIC-FIREWALL-ACTIVATION","depends_on_requirement_id":"CR-SCHEMA-ENFORCEMENT","dependency_id":"DEP-0002"},
+    {"requirement_id":"CR-SEMANTIC-FIREWALL-ACTIVATION","depends_on_requirement_id":"CR-SEMANTIC-FIREWALL-SOURCE-INTAKE","dependency_id":"DEP-0003"}
+  ],
+  "independence_assertions": [
+    {"assertion_id":"IA-0001","left_requirement_id":"CR-SEMANTIC-FIREWALL-SOURCE-INTAKE","right_requirement_id":"CR-SCHEMA-ENFORCEMENT"}
+  ],
+  "candidate_pairs": [
+    {"left_source_requirement_ref":"ISSUE-49:DEFAULT","right_source_requirement_ref":"ISSUE-54:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-49:DEFAULT","right_source_requirement_ref":"ISSUE-55:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-49:DEFAULT","right_source_requirement_ref":"ISSUE-59:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-49:DEFAULT","right_source_requirement_ref":"ISSUE-61:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-54:DEFAULT","right_source_requirement_ref":"ISSUE-55:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-54:DEFAULT","right_source_requirement_ref":"ISSUE-59:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-54:DEFAULT","right_source_requirement_ref":"ISSUE-61:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-55:DEFAULT","right_source_requirement_ref":"ISSUE-59:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-55:DEFAULT","right_source_requirement_ref":"ISSUE-61:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-59:DEFAULT","right_source_requirement_ref":"ISSUE-61:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"COMBINE_REQUIRED"},
+    {"left_source_requirement_ref":"ISSUE-18:DEFAULT","right_source_requirement_ref":"ISSUE-21:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"DEPENDENCY"},
+    {"left_source_requirement_ref":"ISSUE-57:PHASE_A_SOURCE_INTAKE","right_source_requirement_ref":"ISSUE-15:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"INDEPENDENT"},
+    {"left_source_requirement_ref":"ISSUE-57:PHASE_B_ACTIVATION","right_source_requirement_ref":"ISSUE-15:DEFAULT","classification_state":"CLASSIFIED","expected_relationship":"DEPENDENCY"},
+    {"left_source_requirement_ref":"ISSUE-57:PHASE_B_ACTIVATION","right_source_requirement_ref":"ISSUE-57:PHASE_A_SOURCE_INTAKE","classification_state":"CLASSIFIED","expected_relationship":"DEPENDENCY"}
+  ],
+  "excluded_issues": [
+    {"source_issue_number":53,"eligibility_state":"EXCLUDED_INVALID_INTAKE","reason_id":"ACCIDENTAL_TEMP_ISSUE_RECORDED_BY_ISSUE_49_WORK"}
+  ],
+  "source_refs": [
+    "GITHUB_ISSUE:61",
+    "GITHUB_PR:63",
+    "GOVERNANCE_WORK_ADMISSIONS:ISSUE_18_DEPENDS_ON_ISSUE_21",
+    "VINCE_DIRECTIVE:AUTOMATIC_ISSUE_COMBINATION_AND_DEDUPLICATION"
+  ]
+}
