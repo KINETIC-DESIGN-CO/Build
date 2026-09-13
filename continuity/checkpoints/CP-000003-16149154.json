@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-16149154",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T18:46:34Z",
+  "source_main_sha": "ba4254469e26e9ebefee4c3b14b84ca90001c040",
+  "work_id": "20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+  "work_branch": "work/20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+  "work_head_sha": "ba7e0355aa710c9ea9f90dbc811a9a5e74b2c6a9",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-fd37f38c.json",
+    "blob_sha": "0dc2c034394adeebf91f631cc6e9571f7eb7acd7"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-15",
+    "evaluated_at": "2026-09-13T18:46:34Z",
+    "evidence_ref": "Issue 15 terminal reconciliation remains the selected work item under this active component claim; the repaired PR head passed required validation, while protected main independently advanced through PR 71.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T18:46:34Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_15",
+      "lock_branch": "lock/9d2d67391fdccea8d9371e7139cfced4484a6280e2d715393dc97ba5aa623ad0",
+      "state": "ACTIVE",
+      "work_id": "20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+      "lease_id": "90089f9b-a238-440f-b6d7-75ebd76873c1",
+      "generation": 4,
+      "expires_at": "2026-09-13T22:34:50Z",
+      "observed_at": "2026-09-13T18:46:34Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:72 head cb3a20ec5b389cb073347483f1600c99a04c31fb",
+      "operation": "PR_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34775479526 job 103772698383 concluded success",
+        "continuity validation, source coordination, relevant lock history, all repository tests, local Supabase startup, and Supabase database tests passed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "repository:1366835183/main",
+      "operation": "READ_PROTECTED_MAIN_AFTER_CONCURRENT_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "main head ba4254469e26e9ebefee4c3b14b84ca90001c040",
+        "merge commit for PR 71"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:72",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:15",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_15",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_FINAL_EXACT_PR_HEAD_VALIDATE_SUCCESS_THEN_ENTER_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "tests/test_work_selection.py",
+    "coordination/work/20a51999-3d6e-4bcc-9b00-9ea42b7ecabf.json",
+    "GITHUB_PR:72",
+    "GITHUB_RUN:34775479526",
+    "GITHUB_ISSUE:15",
+    "GITHUB_MAIN:ba4254469e26e9ebefee4c3b14b84ca90001c040"
+  ]
+}
