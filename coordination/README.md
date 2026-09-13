@@ -32,6 +32,20 @@ A resource's lock branch is deterministic:
 
 The branch contains `coordination/lock.json`, validated by `coordination/schema/lock.schema.json`. GitHub's file-SHA update semantics provide optimistic compare-and-swap behavior: competing claim updates based on the same prior lock version cannot both succeed.
 
+### First lock publication
+
+For a resource with no existing lock branch, the first visible lock ref must already point to a commit containing a valid ACTIVE generation-1 `coordination/lock.json`. Do **not** create the lock branch at `main` or another base commit and then add the lock file in a later mutation.
+
+The exact first-acquisition sequence is:
+
+1. Build the generation-1 lock JSON in memory without publishing a lock ref.
+2. Create a Git tree that contains `coordination/lock.json` on top of the exact acquisition base.
+3. Create a commit whose parent is that acquisition base and whose tree contains the lock file.
+4. Create the deterministic `lock/<64hex>` ref directly at that prebuilt commit.
+5. Read back the ref and `coordination/lock.json` before treating the claim as acquired.
+
+Until step 4, no lock ref exists. This prevents another validator from observing a post-enforcement lock branch with no lock snapshot while acquisition is between API calls. A persistent empty lock branch remains invalid and `scripts/validate_lock_history.py` continues to reject it.
+
 If a lock update fails because the live file changed, the worker must read the live lock again before any retry or new acquisition attempt for that resource. A stale compare-and-swap result is never retried from the stale snapshot.
 
 Claims last exactly 14,400 seconds from the current heartbeat. Renew a claim only when 1,800 seconds or less remain. Renewal preserves the ownership cycle and immutable lease fields, advances `heartbeat_at`, and sets `expires_at` exactly 14,400 seconds after the new heartbeat.

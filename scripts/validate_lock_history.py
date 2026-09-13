@@ -10,17 +10,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL_PATH = ROOT / "coordination" / "protocol.json"
-WORK_DIR = ROOT / "coordination" / "work"
+
 UUID4_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 LOCK_BRANCH_RE = re.compile(r"^refs/heads/(lock/[0-9a-f]{64})$")
-LOCK_BRANCH_NAME_RE = re.compile(r"^lock/[0-9a-f]{64}$")
 LOCK_KEYS = {
     "schema_version", "resource_key", "generation", "state", "work_id", "worker",
     "implementation_branch", "lease_id", "base_sha", "acquired_at", "heartbeat_at",
     "expires_at", "runtime_control_authority",
 }
-SUPPORTED_PROTOCOL_IDS = {"life-source-coordination-v2", "life-source-coordination-v3"}
+SUPPORTED_PROTOCOL_IDS = {
+    "life-source-coordination-v2",
+    "life-source-coordination-v3",
+}
 
 
 class ValidationError(RuntimeError):
@@ -75,19 +77,28 @@ def validate_legacy_snapshot(lock: dict) -> None:
         fail("legacy lock snapshot schema/authority mismatch")
     if lock["state"] not in {"ACTIVE", "RELEASED"}:
         fail("legacy lock state invalid")
-    for key in ("resource_key", "work_id", "lease_id", "implementation_branch"):
-        if not isinstance(lock[key], str) or not lock[key]:
-            fail(f"legacy {key} must be nonempty string")
+    if not isinstance(lock["resource_key"], str) or not lock["resource_key"]:
+        fail("legacy resource_key must be nonempty")
     if not isinstance(lock["generation"], int) or lock["generation"] < 1:
         fail("legacy generation must be integer >= 1")
+    if not isinstance(lock["work_id"], str) or not lock["work_id"]:
+        fail("legacy work_id must be nonempty string")
+    if not isinstance(lock["lease_id"], str) or not lock["lease_id"]:
+        fail("legacy lease_id must be nonempty string")
     worker = lock["worker"]
     if not isinstance(worker, dict) or set(worker) != {"kind", "session_id"}:
         fail("legacy worker must contain exactly kind and session_id")
-    if not all(isinstance(worker[key], str) and worker[key] for key in ("kind", "session_id")):
-        fail("legacy worker fields must be nonempty strings")
+    if not isinstance(worker["kind"], str) or not worker["kind"]:
+        fail("legacy worker.kind must be nonempty string")
+    if not isinstance(worker["session_id"], str) or not worker["session_id"]:
+        fail("legacy worker.session_id must be nonempty string")
+    if not isinstance(lock["implementation_branch"], str) or not lock["implementation_branch"]:
+        fail("legacy implementation_branch must be nonempty string")
     if not SHA_RE.fullmatch(str(lock["base_sha"])):
         fail("legacy base_sha invalid")
-    acquired, heartbeat, expires = map(parse_utc, (lock["acquired_at"], lock["heartbeat_at"], lock["expires_at"]))
+    acquired = parse_utc(lock["acquired_at"])
+    heartbeat = parse_utc(lock["heartbeat_at"])
+    expires = parse_utc(lock["expires_at"])
     if not (acquired <= heartbeat < expires):
         fail("legacy lock timestamp ordering invalid")
 
@@ -110,37 +121,45 @@ def validate_snapshot_shape(lock: dict) -> None:
         fail("implementation_branch must match work_id")
     if not SHA_RE.fullmatch(str(lock["base_sha"])):
         fail("base_sha invalid")
-    acquired, heartbeat, expires = map(parse_utc, (lock["acquired_at"], lock["heartbeat_at"], lock["expires_at"]))
+    acquired = parse_utc(lock["acquired_at"])
+    heartbeat = parse_utc(lock["heartbeat_at"])
+    expires = parse_utc(lock["expires_at"])
     if not (acquired <= heartbeat < expires):
         fail("lock timestamp ordering invalid")
 
 
 def validate_snapshot(lock: dict, protocol: dict) -> None:
     validate_snapshot_shape(lock)
-    heartbeat, expires = map(parse_utc, (lock["heartbeat_at"], lock["expires_at"]))
+    heartbeat = parse_utc(lock["heartbeat_at"])
+    expires = parse_utc(lock["expires_at"])
     if int((expires - heartbeat).total_seconds()) != protocol["lease_duration_seconds"]:
         fail("lock lease duration must equal protocol.lease_duration_seconds")
 
 
 def immutable_release_fields(lock: dict) -> tuple:
-    keys = (
-        "resource_key", "generation", "work_id", "worker", "implementation_branch", "lease_id",
-        "base_sha", "acquired_at", "heartbeat_at", "expires_at", "runtime_control_authority",
+    return (
+        lock["resource_key"], lock["generation"], lock["work_id"], lock["worker"],
+        lock["implementation_branch"], lock["lease_id"], lock["base_sha"], lock["acquired_at"],
+        lock["heartbeat_at"], lock["expires_at"], lock["runtime_control_authority"],
     )
-    return tuple(lock[key] for key in keys)
 
 
 def validate_transition_semantics(previous: dict, current: dict, protocol: dict) -> None:
     if previous["resource_key"] != current["resource_key"]:
         fail("resource_key cannot change within lock history")
-    prev_state, curr_state = previous["state"], current["state"]
-    prev_heartbeat, prev_expires = map(parse_utc, (previous["heartbeat_at"], previous["expires_at"]))
-    curr_acquired, curr_heartbeat = map(parse_utc, (current["acquired_at"], current["heartbeat_at"]))
+
+    prev_state = previous["state"]
+    curr_state = current["state"]
+    prev_heartbeat = parse_utc(previous["heartbeat_at"])
+    prev_expires = parse_utc(previous["expires_at"])
+    curr_acquired = parse_utc(current["acquired_at"])
+    curr_heartbeat = parse_utc(current["heartbeat_at"])
 
     if prev_state == "ACTIVE" and curr_state == "RELEASED":
         if immutable_release_fields(previous) != immutable_release_fields(current):
             fail("release must preserve prior owner and timestamps")
         return
+
     if prev_state == "RELEASED" and curr_state == "ACTIVE":
         if current["generation"] != previous["generation"] + 1:
             fail("released reacquisition must increment generation by exactly one")
@@ -151,10 +170,16 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
         if curr_acquired < prev_heartbeat:
             fail("released reacquisition cannot predate predecessor heartbeat")
         return
+
     if prev_state == "ACTIVE" and curr_state == "ACTIVE":
-        same_owner = all(current[key] == previous[key] for key in ("work_id", "lease_id", "generation"))
+        same_owner = (
+            current["work_id"] == previous["work_id"]
+            and current["lease_id"] == previous["lease_id"]
+            and current["generation"] == previous["generation"]
+        )
         if same_owner:
-            if any(current[key] != previous[key] for key in ("worker", "implementation_branch", "base_sha", "acquired_at")):
+            fixed_fields = ("worker", "implementation_branch", "base_sha", "acquired_at")
+            if any(current[field] != previous[field] for field in fixed_fields):
                 fail("renewal changed immutable ownership field")
             if curr_heartbeat <= prev_heartbeat:
                 fail("renewal heartbeat must advance")
@@ -164,6 +189,7 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
             if remaining > protocol["renew_when_remaining_seconds_lte"]:
                 fail("renewal occurred before configured renewal window")
             return
+
         if curr_acquired < prev_expires:
             fail("takeover cannot occur before predecessor expiry")
         if current["generation"] != previous["generation"] + 1:
@@ -173,6 +199,7 @@ def validate_transition_semantics(previous: dict, current: dict, protocol: dict)
         if curr_acquired != curr_heartbeat:
             fail("takeover must start with acquired_at == heartbeat_at")
         return
+
     fail(f"illegal lock transition {prev_state}->{curr_state}")
 
 
@@ -201,13 +228,9 @@ def validate_history(history: list[dict], protocol: dict) -> None:
 def validate_empty_branch_tip(committed_at: datetime, protocol: dict) -> None:
     if not isinstance(committed_at, datetime) or committed_at.tzinfo is None:
         fail("empty lock branch tip timestamp must be timezone-aware datetime")
-    if committed_at >= parse_utc(protocol["lock_history_enforcement_start_utc"]):
+    cutoff = parse_utc(protocol["lock_history_enforcement_start_utc"])
+    if committed_at >= cutoff:
         fail("empty lock branch exists at or after lock transition enforcement epoch")
-
-
-def validate_empty_branch_reference(branch: str, committed_at: datetime, protocol: dict, referenced: set[str]) -> None:
-    if branch in referenced:
-        validate_empty_branch_tip(committed_at, protocol)
 
 
 def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
@@ -220,25 +243,31 @@ def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
             fail("history entry keys mismatch")
         if not SHA_RE.fullmatch(str(entry["commit_sha"])):
             fail("history entry commit_sha invalid")
-        committed_at, lock = entry["committed_at"], entry["lock"]
+        committed_at = entry["committed_at"]
         if not isinstance(committed_at, datetime) or committed_at.tzinfo is None:
             fail("history entry committed_at must be timezone-aware datetime")
+        lock = entry["lock"]
+
         if committed_at < cutoff:
             validate_legacy_snapshot(lock)
         else:
             validate_snapshot(lock, protocol)
+
         if resource_key is None:
             resource_key = lock["resource_key"]
         elif lock["resource_key"] != resource_key:
             fail("resource_key cannot change within lock history")
+
         if committed_at < cutoff:
             continue
+
         if index == 0:
             if lock["state"] != "ACTIVE" or lock["generation"] != 1:
                 fail("enforced initial lock snapshot must be ACTIVE generation 1")
             if lock["acquired_at"] != lock["heartbeat_at"]:
                 fail("enforced initial lock snapshot must have acquired_at == heartbeat_at")
             continue
+
         previous_entry = entries[index - 1]
         previous = previous_entry["lock"]
         if previous_entry["committed_at"] < cutoff:
@@ -248,7 +277,10 @@ def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
         try:
             validate_transition_semantics(previous, lock, protocol)
         except ValidationError as exc:
-            fail(f"transition[{index - 1}->{index}] generation {previous['generation']}->{lock['generation']} {previous['state']}->{lock['state']}: {exc}")
+            fail(
+                f"transition[{index - 1}->{index}] generation {previous['generation']}->{lock['generation']} "
+                f"{previous['state']}->{lock['state']}: {exc}"
+            )
 
 
 def load_protocol() -> dict:
@@ -266,8 +298,9 @@ def load_protocol() -> dict:
 
 
 def remote_lock_branches() -> list[str]:
+    output = run_git("ls-remote", "--heads", "origin", "refs/heads/lock/*")
     branches = []
-    for line in run_git("ls-remote", "--heads", "origin", "refs/heads/lock/*").splitlines():
+    for line in output.splitlines():
         if not line:
             continue
         parts = line.split()
@@ -280,30 +313,14 @@ def remote_lock_branches() -> list[str]:
     return sorted(branches)
 
 
-def referenced_lock_branches() -> set[str]:
-    branches: set[str] = set()
-    for path in sorted(WORK_DIR.glob("*.json")):
-        try:
-            record = json.loads(path.read_text(encoding="utf-8"))
-        except Exception as exc:
-            fail(f"{path.relative_to(ROOT)} has invalid work-record JSON: {exc}")
-        claims = record.get("claims")
-        if not isinstance(claims, list):
-            fail(f"{path.relative_to(ROOT)} claims must be an array")
-        for claim in claims:
-            if not isinstance(claim, dict):
-                fail(f"{path.relative_to(ROOT)} claim must be an object")
-            branch = claim.get("lock_branch")
-            if not isinstance(branch, str) or not LOCK_BRANCH_NAME_RE.fullmatch(branch):
-                fail(f"{path.relative_to(ROOT)} claim lock_branch invalid")
-            branches.add(branch)
-    return branches
-
-
 def history_entries_for_branch(branch: str) -> list[dict]:
     remote_ref = f"refs/remotes/origin/{branch}"
     run_git("fetch", "--quiet", "origin", f"refs/heads/{branch}:{remote_ref}")
-    commits = [line for line in run_git("log", "--reverse", "--format=%H", remote_ref, "--", "coordination/lock.json").splitlines() if line]
+    commits = [
+        line for line in run_git(
+            "log", "--reverse", "--format=%H", remote_ref, "--", "coordination/lock.json"
+        ).splitlines() if line
+    ]
     entries = []
     for commit in commits:
         raw = run_git("show", f"{commit}:coordination/lock.json")
@@ -311,25 +328,21 @@ def history_entries_for_branch(branch: str) -> list[dict]:
             lock = json.loads(raw)
         except Exception as exc:
             fail(f"{branch} commit {commit} has invalid lock JSON: {exc}")
-        entries.append({
-            "commit_sha": commit,
-            "committed_at": parse_git_time(run_git("show", "-s", "--format=%cI", commit)),
-            "lock": lock,
-        })
+        committed_at = parse_git_time(run_git("show", "-s", "--format=%cI", commit))
+        entries.append({"commit_sha": commit, "committed_at": committed_at, "lock": lock})
     return entries
 
 
 def main() -> int:
     try:
         protocol = load_protocol()
-        referenced = referenced_lock_branches()
         for branch in remote_lock_branches():
             try:
                 entries = history_entries_for_branch(branch)
                 if not entries:
                     remote_ref = f"refs/remotes/origin/{branch}"
                     tip_time = parse_git_time(run_git("show", "-s", "--format=%cI", remote_ref))
-                    validate_empty_branch_reference(branch, tip_time, protocol, referenced)
+                    validate_empty_branch_tip(tip_time, protocol)
                     continue
                 validate_versioned_history(entries, protocol)
             except ValidationError as exc:

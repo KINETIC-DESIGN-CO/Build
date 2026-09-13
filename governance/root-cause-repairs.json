@@ -58,6 +58,54 @@
         "ROOT_CAUSE_POLICY_FORBIDS_PATCH_ONLY_TERMINAL_SHORTCUT"
       ],
       "verification_state": "SOURCE_CI_SUCCESS_RUN_34747883131_PROTECTED_INTEGRATION_AND_POST_MERGE_READBACK_PENDING"
+    },
+    {
+      "repair_id": "RCA-0002",
+      "root_goal_ref": "GITHUB_ISSUE:49",
+      "state": "VERIFYING",
+      "failure_refs": [
+        "github-actions:34749147069:Validate lock history",
+        "github:lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab:TRANSIENT_EMPTY_REF"
+      ],
+      "violated_invariant_ids": [
+        "FIRST_VISIBLE_LOCK_REF_CONTAINS_GENERATION_ONE_SNAPSHOT",
+        "GLOBAL_LOCK_HISTORY_VALIDATION_NOT_RACY_WITH_NEW_ACQUISITION"
+      ],
+      "origin_commit_refs": [
+        "c19aa46023c8e5ffe5f523f800868335674587c2",
+        "634e20f875b83d502c42625226263e619aa4a929"
+      ],
+      "history_evidence_refs": [
+        "634e20f875b83d502c42625226263e619aa4a929",
+        "0a53782fa5ad2a16bb384e5a81116da1c1cfe296"
+      ],
+      "root_cause_classes": [
+        "LOCK_REF_PUBLISHED_BEFORE_FIRST_LOCK_SNAPSHOT",
+        "DETECTOR_AND_ACQUISITION_PROTOCOL_NOT_CLOSED_UNDER_CONCURRENCY"
+      ],
+      "affected_surfaces": [
+        "coordination/protocol.json",
+        "coordination/README.md",
+        "tests/test_initial_lock_publication.py",
+        "governance/root-cause-repairs.json"
+      ],
+      "dependent_validator_surfaces": [
+        "scripts/validate_coordination.py",
+        "scripts/validate_lock_history.py",
+        "tests/test_lock_history.py",
+        ".github/workflows/continuity.yml"
+      ],
+      "selected_dispositions": [
+        "KEEP_POST_EPOCH_EMPTY_LOCK_BRANCH_REJECTION",
+        "MODIFY_FIRST_ACQUISITION_TO_PREBUILD_LOCK_COMMIT_BEFORE_REF_PUBLICATION",
+        "COMBINE_ATOMIC_FIRST_PUBLICATION_WITH_EXISTING_COMPARE_AND_SWAP_TRANSITIONS"
+      ],
+      "recurrence_test_ids": [
+        "PROTOCOL_REQUIRES_PREBUILT_GENERATION_ONE_LOCK_COMMIT",
+        "PROTOCOL_FORBIDS_VISIBLE_EMPTY_POST_EPOCH_LOCK_REF",
+        "POST_EPOCH_EMPTY_LOCK_BRANCH_DETECTOR_REMAINS_FAIL_CLOSED"
+      ],
+      "verification_state": "SOURCE_REPAIR_VERSIONED_CI_AND_PROTECTED_INTEGRATION_PENDING"
     }
   ]
 }
