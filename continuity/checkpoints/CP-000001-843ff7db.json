@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-843ff7db",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:43:51Z",
+  "source_main_sha": "78a6909eac444b42964716dd6d845b34af752192",
+  "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+  "work_branch": "work/fae2f300-205f-4cb2-b7ff-17082065159b",
+  "work_head_sha": "8873d7370bb2bd07f79eb89e14f98959c0051918",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "SELECTED_WORK_OR_RANK_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-18",
+    "evaluated_at": "2026-09-13T19:38:27Z",
+    "evidence_ref": "After Issue 21 reached COMPLETE, GitHub Issue 21 closed completed, its generation-4 component claim was released, and current main was read back, the deterministic work selector evaluated the current COMPLETE foreground plus work-admissions registry and selected github-issue-18 as the only dependency-ready ADMITTED item; the deterministic component:issue_18 lock ref was absent before compare-and-swap acquisition.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:43:51Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_18",
+      "lock_branch": "lock/5aac3f38d7e2bc396461d09e0bcd2e1cffb9262a0b451371174b8a304e7ee8f5",
+      "state": "ACTIVE",
+      "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+      "lease_id": "9f86b96f-c58d-4710-a077-0cdf96dc054e",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:38:27Z",
+      "observed_at": "2026-09-13T19:43:51Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "lock:component:issue_21",
+      "operation": "FINAL_CLAIM_RELEASE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "component:issue_21 generation 4 read back RELEASED under work 71824e85-f192-43f3-9a68-a90a332fb1e0"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github-issue-18",
+      "operation": "DETERMINISTIC_REDISPATCH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "current main work-admissions shows Issue 18 ADMITTED and dependency Issue 21 COMPLETE",
+        "exact current-main scripts/select_work.py dispatch semantics returned SELECT rank 3 github-issue-18 component:issue_18",
+        "deterministic component:issue_18 lock branch was absent before acquisition"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "lock:component:issue_18",
+      "operation": "INITIAL_GENERATION_ONE_CLAIM_PUBLICATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "valid ACTIVE generation-1 lock commit was created before ref publication",
+        "lock ref read back work fae2f300-205f-4cb2-b7ff-17082065159b lease 9f86b96f-c58d-4710-a077-0cdf96dc054e generation 1"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/fae2f300-205f-4cb2-b7ff-17082065159b",
+      "operation": "VERSION_RESUME_RECONCILIATION_MECHANISM",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "bootstrap-required resume reconciliation policy versioned",
+        "deterministic evaluator versioned",
+        "falsification tests versioned including same-work, different-work, UNKNOWN, NOT_RUN, released/expired claims, cue/session non-authority",
+        "existing work-selection interruption rule and user-observation UO-0002 retained rather than duplicated"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:18",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_18",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "OPEN_PROTECTED_PR_AND_REQUIRE_EXACT_PR_HEAD_VALIDATION",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/resume-reconciliation-policy.json",
+    "scripts/evaluate_resume_reconciliation.py",
+    "tests/test_resume_reconciliation.py",
+    "continuity/bootstrap.json",
+    "continuity/user-observations.jsonl:UO-0002",
+    "governance/work-selection-policy.json",
+    "coordination/protocol.json",
+    "coordination/work/fae2f300-205f-4cb2-b7ff-17082065159b.json",
+    "GITHUB_ISSUE:18",
+    "GITHUB_ISSUE:21",
+    "GITHUB_MAIN:78a6909eac444b42964716dd6d845b34af752192"
+  ]
+}
