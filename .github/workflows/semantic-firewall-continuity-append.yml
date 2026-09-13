@@ -1,0 +1,35 @@
+name: semantic-firewall-continuity-append
+
+on:
+  push:
+    branches:
+      - work/0f68d6ae-75a0-4616-9814-819554f5f643
+
+permissions:
+  contents: write
+
+jobs:
+  append:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout work branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: work/0f68d6ae-75a0-4616-9814-819554f5f643
+          fetch-depth: 0
+      - name: Append exact continuity events and remove helper
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -q '"id":"E-0119"' continuity/events.jsonl
+          cat >> continuity/events.jsonl <<'EOF'
+          {"id":"E-0119","event_type":"VINCE_DIRECTIVE","occurred_at":"2026-09-13T18:41:29Z","summary":"Vince designated Semantic Firewall as priority #1 and directed this thread to continue the migration; VD-0021 preserves the exact directive as evidence only with zero Life runtime priority authority.","targets":["VD-0021","GITHUB_ISSUE:57","CR-SEMANTIC-FIREWALL-SOURCE-INTAKE"],"result":"AUTHORIZED_ENGINEERING_WORK","verification_status":"VERIFIED","related_decision_ids":[],"runtime_control_authority":"NONE"}
+          {"id":"E-0120","event_type":"GITHUB_MUTATION","occurred_at":"2026-09-13T18:41:29Z","summary":"Semantic Firewall Phase A resumed under generation-2 component ownership after the prior generation-1 lease expired. A new work branch and record were created from current main, all 13 legacy Semantic Firewall blobs from Vinanonymous/life commit 6cc602f2ac18599aa67c0352ce81fbd404dcb40f were verified byte-identical by Git blob SHA and attached in one commit, and Build-native provenance plus falsification tests were staged. No runtime, Supabase, Vercel, or Project Instruction mutation occurred.","targets":["WORK_ID:0f68d6ae-75a0-4616-9814-819554f5f643","component:semantic_firewall_source_intake","contracts/semantic-firewall/**","architecture/reference/semantic-firewall-import-provenance.json","tests/test_semantic_firewall_import.py"],"result":"STAGED_ON_WORK_BRANCH","verification_status":"VERIFIED","related_decision_ids":[],"runtime_control_authority":"NONE"}
+          EOF
+          rm .github/workflows/semantic-firewall-continuity-append.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add continuity/events.jsonl .github/workflows/semantic-firewall-continuity-append.yml
+          git commit -m 'Record Semantic Firewall Phase A continuity events'
+          git push origin HEAD:work/0f68d6ae-75a0-4616-9814-819554f5f643
