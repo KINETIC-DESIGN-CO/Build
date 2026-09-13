@@ -9,6 +9,10 @@
   "checkpoint_schema_path": "continuity/schema/checkpoint.schema.json",
   "directive_ledger_path": "continuity/directive-ledger.jsonl",
   "decision_rationale_path": "continuity/decision-rationale.jsonl",
+  "storage_branch_rule": "WRITE_CHECKPOINT_TO_EXACT_IMPLEMENTATION_BRANCH_FOR_CHECKPOINT_WORK_ID",
+  "discovery_precondition": "DERIVE_WORK_ID_AND_IMPLEMENTATION_BRANCH_FROM_FRESH_LIVE_COORDINATION_STATE_BEFORE_CHECKPOINT_DISCOVERY",
+  "latest_checkpoint_rule": "ON_DERIVED_IMPLEMENTATION_BRANCH_FILTER_SCHEMA_VALID_CHECKPOINTS_TO_EXACT_WORK_ID_THEN_SELECT_MAX_CREATED_AT_THEN_CHECKPOINT_ID_LEXICOGRAPHIC",
+  "missing_checkpoint_rule": "NO_SCHEMA_VALID_CHECKPOINT_FOR_DERIVED_WORK_ID_RETURNS_NONE_AND_DOES_NOT_BLOCK_BOOTSTRAP",
   "trigger_mode": "ANY_TRUE",
   "trigger_ids": [
     "EXPLICIT_CHECKPOINT_REQUESTED",
