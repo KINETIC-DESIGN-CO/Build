@@ -3,7 +3,7 @@
   "template_id": "life-checkpoint-fill-template-v1",
   "runtime_control_authority": "NONE",
   "checkpoint_authority": "EVIDENCE_ONLY",
-  "checkpoint_schema_path": "continuity/schema/checkpoint.schema.json",
+  "checkpoint_schema_path": "continuity/checkpoint.schema.json",
   "policy_path": "continuity/checkpoint-policy.json",
   "field_order": [
     "schema_version",
