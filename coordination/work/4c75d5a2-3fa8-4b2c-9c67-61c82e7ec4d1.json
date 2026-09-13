@@ -10,8 +10,7 @@
   "base_sha": "db13de0c69294c52d1c2417efee2f38d72ccbc2e",
   "component_id": "continuity_sync",
   "repo_paths": [
-    "continuity/current.json",
-    "continuity/events.jsonl"
+    "continuity/current.json"
   ],
   "external_targets": [],
   "claims": [
