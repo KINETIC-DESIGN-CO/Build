@@ -11,6 +11,7 @@
   "component_id": "continuity_sync",
   "repo_paths": [
     "continuity/checkpoints/CP-000001-b7e2a91c.json",
+    "continuity/checkpoints/CP-000002-7ac41e9b.json",
     "continuity/current.json",
     "tests/test_work_selection.py"
   ],
