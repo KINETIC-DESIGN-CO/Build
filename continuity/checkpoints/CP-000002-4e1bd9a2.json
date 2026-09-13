@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-4e1bd9a2",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T08:43:06Z",
+  "source_main_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
+  "work_id": "6dbf3e44-a818-40f6-9b4d-7234d6a9624c",
+  "work_branch": "work/6dbf3e44-a818-40f6-9b4d-7234d6a9624c",
+  "work_head_sha": "953fe899ae1c8cf210ffd7932df414dfa23e0a74",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-bca856ce.json",
+    "blob_sha": "a37abbfeb57cbedbce900f4a05d13065853ccbe0"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T08:43:06Z",
+    "evidence_ref": "The selected same-thread reconciliation reached protected integration. This checkpoint is the evidence-only pre-release checkpoint; live dispatch is rerun only after release readback.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T08:43:06Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:continuity_projection_concurrency",
+      "lock_branch": "lock/6b66f78e139c57cc38318062475d7fb18f1be3cc4cf8e3e62f2e8a257c483776",
+      "state": "ACTIVE",
+      "work_id": "6dbf3e44-a818-40f6-9b4d-7234d6a9624c",
+      "lease_id": "2106b57d-56cb-4425-b1fa-436c4aef7f37",
+      "generation": 2,
+      "expires_at": "2026-09-13T12:21:09Z",
+      "observed_at": "2026-09-13T08:43:06Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "continuity/events.jsonl",
+      "operation": "STALE_COMPARE_AND_SWAP_UPDATE_ATTEMPT",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GitHub contents update returned HTTP 409 because the branch blob no longer matched main blob 1f96a563c248af7ba4b4afe3934464355898f22a",
+        "fresh branch readback showed events E-0113 through E-0118 already present at blob 07f20ab0d81900ddc4d5b92697ebe069d0daaabb",
+        "no stale retry or overwrite was performed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "pull/66",
+      "operation": "PROTECTED_INTEGRATION_CONTINUITY_RECONCILIATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR 66 merged true at 2026-09-13T08:40:24Z",
+        "merge_group workflow 34748172879 success",
+        "main 0b2611fba37f8b4cb44574264c1463e2d1366126"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "workflow_run:34748272359",
+      "operation": "POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "continuity validation success",
+        "source coordination validation success",
+        "lock history validation success",
+        "repository tests success",
+        "local Supabase startup success",
+        "database tests success"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "GitHub Merge Queue provides protected latest-base integration with required checks for concurrent source work."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Supabase Free does not include Branching, so the authorized production database remains a shared serialized external target."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:continuity_projection_concurrency",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "pull:66",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "project:jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RELEASE_COMPONENT_CLAIM_THEN_RERUN_LIVE_DETERMINISTIC_DISPATCH",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_PR:66",
+    "GITHUB_MAIN:0b2611fba37f8b4cb44574264c1463e2d1366126",
+    "GITHUB_MERGE_GROUP_RUN:34748172879",
+    "GITHUB_POST_MERGE_RUN:34748272359",
+    "continuity/checkpoints/CP-000001-bca856ce.json",
+    "continuity/decisions.jsonl:D-0022",
+    "continuity/decision-rationale.jsonl:DR-0009",
+    "continuity/events.jsonl:E-0113..E-0118",
+    "continuity/current.json:manifest_revision=27"
+  ]
+}
