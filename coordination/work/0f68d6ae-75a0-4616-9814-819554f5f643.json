@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
-  "title": "Import and verify legacy Semantic Firewall Phase A source corpus",
+  "title": "Semantic Firewall Phase A: import and verify exact legacy source corpus",
   "worker": {
     "kind": "chatgpt",
     "session_id": "8a245f96-a61b-4269-8abd-df583d4b0235"
