@@ -13,6 +13,7 @@
     "continuity/checkpoints/CP-000001-b7e2a91c.json",
     "continuity/checkpoints/CP-000002-7ac41e9b.json",
     "continuity/checkpoints/CP-000003-2d9f6a40.json",
+    "continuity/checkpoints/CP-000004-e42d1c93.json",
     "continuity/current.json",
     "tests/test_work_selection.py"
   ],
