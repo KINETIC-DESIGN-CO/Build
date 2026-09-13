@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-a2622ab0",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T20:38:59Z",
+  "source_main_sha": "496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "faf33bb4b961503e09e4a091242d7fc6c3a2c09b",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-31ed3239.json",
+    "blob_sha": "273b968b34d7b78a510fa57e992c633bae73415d"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+    "evaluated_at": "2026-09-13T20:38:59Z",
+    "evidence_ref": "github-issue-57 remains canonical ADMITTED with dependency github-issue-15 COMPLETE; this nonterminal rank-3 work item holds ACTIVE unexpired component:issue_57 generation-1 ownership; the prior admission operation PR #80 is merged and no lower-rank interrupted operation is unresolved. Same-rank work cannot preempt this nonterminal selection.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T20:38:59Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "efaad927-c5ea-43dc-9154-53aa339c307a",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:05:56Z",
+      "observed_at": "2026-09-13T20:29:11Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "github:pr=80",
+      "operation": "PHASE_B_CANONICAL_ADMISSION_PROTECTED_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:pr=80:merged_at=2026-09-13T20:13:26Z",
+        "github:merge_commit=6f6b498b546e5681f357fc06c9d4e83aa38cc1c8"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3:__never__",
+      "operation": "ACCIDENTAL_SCRATCH_CREATE_THEN_DELETE",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:create_commit=57b21bd7bd7284e062a0342daf8be86fb4cc635d",
+        "github:delete_commit=22dcc3ab522f94f2599c02a73d520ac8c21e83e7",
+        "github:readback=404:file_absent"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3:__merge_marker__",
+      "operation": "ACCIDENTAL_SCRATCH_CREATE_THEN_DELETE",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:create_commit=e5294b384d3af2a46acc5b42864ff2f100fe5b6d",
+        "github:delete_commit=816db784f6f103abbbf331bb44b4b768b6fd3e7d",
+        "github:readback=404:file_absent"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "operation": "RECONCILE_WITH_CURRENT_MAIN_USING_TWO_PARENT_COMMIT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:work_head=faf33bb4b961503e09e4a091242d7fc6c3a2c09b",
+        "github:parent_work=816db784f6f103abbbf331bb44b4b768b6fd3e7d",
+        "github:parent_main=496dc41475ba7ce0f65e27395c4c4e059c394cf5",
+        "github:tree=d286b93ca0a9390c8925cb072af2c0407b722a55"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0002",
+    "VD-0011",
+    "VD-0022"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue - GitHub Docs",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Required merge-group validation remains the protected latest-base integration gate."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Structured Outputs - OpenAI",
+      "url": "https://platform.openai.com/docs/guides/structured-outputs",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Schema-conforming model output does not replace exact authorization, provenance, or runtime evidence."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering",
+      "url": "https://arxiv.org/abs/2602.23193",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Structured validated evidence and deterministic orchestration support separating typed control inputs from later effect execution."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:issue_57",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "COMMIT_BUILD_NATIVE_SEMANTIC_FIREWALL_V1_SOURCE_VALIDATOR_TESTS_BOOTSTRAP_AND_CI_THEN_OPEN_PROTECTED_PR",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57",
+    "WORK_ID:4264779b-70c5-4381-b619-f2c3204dc4f3",
+    "contracts/semantic-firewall",
+    "reliability/spec.json",
+    "reliability/compatibility-map.json",
+    "GITHUB_MAIN:496dc41475ba7ce0f65e27395c4c4e059c394cf5"
+  ]
+}
