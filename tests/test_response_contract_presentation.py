@@ -12,13 +12,13 @@ class ResponseContractPresentationTests(unittest.TestCase):
         self.contract = json.loads((ROOT / "continuity/response-contract.json").read_text())
         self.orientation = self.contract["architecture_thread_orientation"]
 
-    def test_goal_description_is_standalone_and_never_blockquoted(self):
+    def test_goal_description_uses_separately_bounded_quote_blocks(self):
         self.assertEqual(
             self.orientation["start_description_rule"],
-            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_STANDALONE_TEXT_PARAGRAPH_WITHOUT_MARKDOWN_BLOCKQUOTE_WITH_SENTENCE_COUNT_IN:1,2",
+            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_QUOTE_BLOCK_WITH_SENTENCE_COUNT_IN:1,2",
         )
-        self.assertIn("WITHOUT_MARKDOWN_BLOCKQUOTE", self.orientation["child_rule"])
-        self.assertNotIn("QUOTE_BLOCK", self.orientation["start_description_rule"])
+        self.assertIn("SEPARATELY_BOUNDED_QUOTE_BLOCK", self.orientation["child_rule"])
+        self.assertIn("QUOTE_BLOCK_CONTAINS_ONLY_GOAL_DESCRIPTION", self.orientation["description_boundary_rule"])
 
     def test_required_regions_are_closed_and_compositional(self):
         self.assertEqual(
