@@ -8,18 +8,16 @@ import os
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_PATH = ROOT / "governance" / "work-fence-policy.json"
 SCHEMA_PATH = ROOT / "governance" / "schema" / "work-fence-policy.schema.json"
 REGISTRY_PATH = ROOT / "governance" / "goal-registry.json"
-PROTOCOL_PATH = ROOT / "coordination" / "protocol.json"
 WORK_RECORD_RE = re.compile(r"^coordination/work/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.json$")
 UUID4_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-
 V1_LOCK_KEYS = {
     "schema_version", "resource_key", "generation", "state", "work_id", "worker",
     "implementation_branch", "lease_id", "base_sha", "acquired_at", "heartbeat_at",
@@ -39,7 +37,7 @@ EXPECTED_POLICY = {
     "canonical_evaluator": "scripts/evaluate_work_fence.py",
     "canonical_selector_entrypoint": "scripts/select_work.py",
     "component_stale_after_seconds": 1800,
-    "legacy_v1_component_effective_expiry_rule": "USE_STORED_EXPIRES_AT_UNTIL_NEXT_SCHEMA_V2_TRANSITION",
+    "legacy_v1_component_effective_expiry_rule": "AFTER_V4_MAIN_INTEGRATION_EFFECTIVE_EXPIRY_IS_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_COMPONENT_STALE_AFTER_SECONDS",
     "goal_revision_fence_rule": "WHEN_GOAL_ID_IS_NON_NULL_PLANNED_GOAL_REVISION_MUST_EQUAL_CANONICAL_GOAL_REVISION",
     "goal_revision_mismatch_result": "REPLAN_REQUIRED",
     "generation_fence_rule": "WORK_RECORD_CLAIM_GENERATION_MUST_EQUAL_LIVE_CLAIM_GENERATION_AND_LIVE_CLAIM_WORK_ID_MUST_EQUAL_WORK_RECORD_WORK_ID",
@@ -58,7 +56,7 @@ EXPECTED_POLICY = {
         "WORK_SELECTION_DISPATCH", "PULL_REQUEST_VALIDATION", "MERGE_GROUP_VALIDATION",
     ],
     "thread_wakeup_dependency": "FORBIDDEN",
-    "takeover_rule": "EXPIRED_COMPONENT_CLAIM_OR_EXACT_REASSIGNMENT_REQUEST_MAY_TRANSFER_OWNERSHIP_ONLY_BY_GENERATION_PLUS_ONE_WITH_NEW_WORK_ID_AND_NEW_LEASE_ID",
+    "takeover_rule": "COMPONENT_OWNERSHIP_TRANSFER_REQUIRES_PREDECESSOR_RELEASED_OR_EFFECTIVELY_EXPIRED_AND_GENERATION_PLUS_ONE_WITH_NEW_LEASE_ID;WORK_ID_MAY_REMAIN_SAME_FOR_DURABLE_WORK_RECOVERY",
     "renewal_event_types": ["PROTECTED_MUTATION_COMMITTED", "REQUIRED_CHECKPOINT_WRITTEN"],
     "background_heartbeat_requirement": "NONE",
     "scheduled_sweep_authority": "ADVISORY_ONLY",
@@ -105,14 +103,10 @@ def validate_policy(policy: dict | None = None, schema: dict | None = None) -> d
     schema = schema or load_json(SCHEMA_PATH)
     if policy != EXPECTED_POLICY:
         fail("work-fence policy drift")
-    if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
-        fail("work-fence schema must use draft 2020-12")
-    if schema.get("additionalProperties") is not False:
-        fail("work-fence schema must forbid root additionalProperties")
-    if set(schema.get("required", [])) != set(EXPECTED_POLICY):
-        fail("work-fence schema required keys mismatch")
-    if set(schema.get("properties", {})) != set(EXPECTED_POLICY):
-        fail("work-fence schema properties mismatch")
+    if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema" or schema.get("additionalProperties") is not False:
+        fail("work-fence schema header mismatch")
+    if set(schema.get("required", [])) != set(EXPECTED_POLICY) or set(schema.get("properties", {})) != set(EXPECTED_POLICY):
+        fail("work-fence schema keys mismatch")
     return policy
 
 
@@ -123,19 +117,15 @@ def validate_lock_snapshot(lock: dict, resource_key: str | None = None) -> dict:
     expected = V1_LOCK_KEYS if version == 1 else V2_LOCK_KEYS if version == 2 else None
     if expected is None or set(lock) != expected:
         fail("live claim schema/keys mismatch")
-    if lock.get("runtime_control_authority") != "NONE":
-        fail("live claim runtime authority mismatch")
-    if lock.get("state") not in {"ACTIVE", "RELEASED"}:
-        fail("live claim state invalid")
+    if lock.get("runtime_control_authority") != "NONE" or lock.get("state") not in {"ACTIVE", "RELEASED"}:
+        fail("live claim authority/state invalid")
     if resource_key is not None and lock.get("resource_key") != resource_key:
         fail("live claim resource_key mismatch")
     if not isinstance(lock.get("generation"), int) or isinstance(lock.get("generation"), bool) or lock["generation"] < 1:
         fail("live claim generation invalid")
     if not UUID4_RE.fullmatch(str(lock.get("work_id", ""))) or not UUID4_RE.fullmatch(str(lock.get("lease_id", ""))):
         fail("live claim work_id/lease_id invalid")
-    acquired = parse_utc(lock.get("acquired_at"))
-    heartbeat = parse_utc(lock.get("heartbeat_at"))
-    expires = parse_utc(lock.get("expires_at"))
+    acquired, heartbeat, expires = map(parse_utc, (lock.get("acquired_at"), lock.get("heartbeat_at"), lock.get("expires_at")))
     if not (acquired <= heartbeat < expires):
         fail("live claim timestamp ordering invalid")
     if version == 2:
@@ -143,10 +133,7 @@ def validate_lock_snapshot(lock: dict, resource_key: str | None = None) -> dict:
             fail("schema v2 lock is reserved for component resources")
         if lock.get("lease_contract") != "COMPONENT_1800":
             fail("schema v2 component lease_contract mismatch")
-        if lock.get("lease_event_type") not in {
-            "ACQUIRE", "TAKEOVER", "REACQUIRE", "RENEW_PROTECTED_MUTATION",
-            "RENEW_REQUIRED_CHECKPOINT",
-        }:
+        if lock.get("lease_event_type") not in {"ACQUIRE", "TAKEOVER", "REACQUIRE", "RENEW_PROTECTED_MUTATION", "RENEW_REQUIRED_CHECKPOINT"}:
             fail("schema v2 component lease_event_type invalid")
         if int((expires - heartbeat).total_seconds()) != EXPECTED_POLICY["component_stale_after_seconds"]:
             fail("schema v2 component duration must equal component_stale_after_seconds")
@@ -156,13 +143,15 @@ def validate_lock_snapshot(lock: dict, resource_key: str | None = None) -> dict:
 def effective_component_expiry(lock: dict, policy: dict | None = None) -> datetime:
     policy = policy or EXPECTED_POLICY
     validate_lock_snapshot(lock)
+    stored = parse_utc(lock["expires_at"])
     if not str(lock["resource_key"]).startswith("component:"):
-        return parse_utc(lock["expires_at"])
+        return stored
+    heartbeat = parse_utc(lock["heartbeat_at"])
     if lock["schema_version"] == 2:
-        duration = int((parse_utc(lock["expires_at"]) - parse_utc(lock["heartbeat_at"])).total_seconds())
-        if duration != policy["component_stale_after_seconds"]:
+        if int((stored - heartbeat).total_seconds()) != policy["component_stale_after_seconds"]:
             fail("schema v2 component duration must equal component_stale_after_seconds")
-    return parse_utc(lock["expires_at"])
+        return stored
+    return min(stored, heartbeat + timedelta(seconds=policy["component_stale_after_seconds"]))
 
 
 def goal_by_id(registry: dict, goal_id: str) -> dict:
@@ -175,24 +164,14 @@ def goal_by_id(registry: dict, goal_id: str) -> dict:
     return matches[0]
 
 
-def evaluate_record_claim(
-    record: dict,
-    claim: dict,
-    live_lock: dict,
-    registry: dict,
-    observed_at: datetime,
-    policy: dict | None = None,
-) -> dict:
+def evaluate_record_claim(record: dict, claim: dict, live_lock: dict, registry: dict, observed_at: datetime, policy: dict | None = None) -> dict:
     policy = policy or EXPECTED_POLICY
-    unresolved = set(policy["external_effect_unresolved_states"])
     effect_state = record.get("pending_external_effect_state")
-    if effect_state in unresolved:
+    if effect_state in set(policy["external_effect_unresolved_states"]):
         return {"result": policy["external_effect_unresolved_result"], "reason": "EXTERNAL_EFFECT_UNRESOLVED"}
     if effect_state not in policy["external_effect_states"]:
         fail("pending_external_effect_state invalid")
-
-    goal_id = record.get("goal_id")
-    planned_revision = record.get("planned_goal_revision")
+    goal_id, planned_revision = record.get("goal_id"), record.get("planned_goal_revision")
     if goal_id is not None:
         if not isinstance(goal_id, str) or UUID4_RE.fullmatch(goal_id) is None:
             fail("work record goal_id invalid")
@@ -203,19 +182,12 @@ def evaluate_record_claim(
         if planned_revision != canonical_revision:
             return {"result": policy["goal_revision_mismatch_result"], "reason": "GOAL_REVISION_MISMATCH"}
         signal = goal.get("control_signal")
-        if not isinstance(signal, dict):
-            fail("canonical goal control_signal missing")
-        state = signal.get("state")
-        if state not in policy["control_signal_states"]:
+        if not isinstance(signal, dict) or signal.get("state") not in policy["control_signal_states"]:
             fail("canonical goal control signal invalid")
-        if state != "NONE" and signal.get("target_work_id") == record.get("work_id"):
-            return {
-                "result": "REASSIGNMENT_REQUIRED" if state == "REASSIGNMENT_REQUESTED" else "REPLAN_REQUIRED",
-                "reason": "CONTROL_SIGNAL_ACTIVE",
-            }
+        if signal["state"] != "NONE" and signal.get("target_work_id") == record.get("work_id"):
+            return {"result": "REASSIGNMENT_REQUIRED" if signal["state"] == "REASSIGNMENT_REQUESTED" else "REPLAN_REQUIRED", "reason": "CONTROL_SIGNAL_ACTIVE"}
     elif planned_revision is not None:
         fail("planned_goal_revision must be null when goal_id is null")
-
     resource_key = claim.get("resource_key")
     if not isinstance(resource_key, str) or not resource_key.startswith("component:"):
         fail("evaluate_record_claim requires a component claim")
@@ -236,25 +208,20 @@ def load_live_lock(claim: dict) -> dict:
     if branch != expected_lock_branch(str(claim.get("resource_key", ""))):
         fail("claim lock_branch mismatch")
     remote_ref = f"refs/remotes/origin/{branch}"
-    fetch = subprocess.run(
-        ["git", "fetch", "--quiet", "origin", f"refs/heads/{branch}:{remote_ref}"],
-        cwd=ROOT, text=True, capture_output=True,
-    )
-    if fetch.returncode != 0:
+    proc = subprocess.run(["git", "fetch", "--quiet", "origin", f"refs/heads/{branch}:{remote_ref}"], cwd=ROOT, text=True, capture_output=True)
+    if proc.returncode:
         fail(f"missing live lock branch {branch}")
-    raw = git("show", f"{remote_ref}:coordination/lock.json")
     try:
-        return json.loads(raw)
-    except Exception as exc:
+        return validate_lock_snapshot(json.loads(git("show", f"{remote_ref}:coordination/lock.json")), claim["resource_key"])
+    except json.JSONDecodeError as exc:
         fail(f"invalid live lock JSON on {branch}: {exc}")
 
 
 def protocol_id_at(commit_sha: str) -> str:
     try:
-        obj = json.loads(git("show", f"{commit_sha}:coordination/protocol.json"))
+        value = json.loads(git("show", f"{commit_sha}:coordination/protocol.json")).get("protocol_id")
     except Exception as exc:
         fail(f"cannot read base coordination protocol: {exc}")
-    value = obj.get("protocol_id")
     if not isinstance(value, str):
         fail("base coordination protocol_id missing")
     return value
@@ -263,20 +230,17 @@ def protocol_id_at(commit_sha: str) -> str:
 def event_diff(event_name: str, event: dict, github_sha: str) -> tuple[str, str, list[str]]:
     if event_name == "pull_request":
         pr = event.get("pull_request") or {}
-        base_sha = str((pr.get("base") or {}).get("sha") or "")
-        head_sha = str((pr.get("head") or {}).get("sha") or "")
+        base_sha, head_sha = str((pr.get("base") or {}).get("sha") or ""), str((pr.get("head") or {}).get("sha") or "")
         if not SHA_RE.fullmatch(base_sha) or not SHA_RE.fullmatch(head_sha):
             fail("pull_request base/head SHA invalid")
-        paths = [p for p in git("diff", "--name-only", f"{base_sha}...{head_sha}").splitlines() if p]
-        return base_sha, head_sha, sorted(paths)
+        return base_sha, head_sha, sorted(p for p in git("diff", "--name-only", f"{base_sha}...{head_sha}").splitlines() if p)
     if event_name == "merge_group":
         group = event.get("merge_group") or {}
         head_sha = str(group.get("head_sha") or "")
         if not SHA_RE.fullmatch(head_sha) or (github_sha and head_sha != github_sha):
             fail("merge_group head SHA invalid")
         base_sha = git("rev-parse", f"{head_sha}^1")
-        paths = [p for p in git("diff", "--name-only", f"{base_sha}..{head_sha}").splitlines() if p]
-        return base_sha, head_sha, sorted(paths)
+        return base_sha, head_sha, sorted(p for p in git("diff", "--name-only", f"{base_sha}..{head_sha}").splitlines() if p)
     fail("work-fence event validation supports pull_request and merge_group only")
 
 
@@ -290,29 +254,19 @@ def validate_current_event() -> str:
         fail("GITHUB_EVENT_PATH missing")
     event = json.loads(Path(event_path).read_text(encoding="utf-8"))
     base_sha, _head_sha, changed = event_diff(event_name, event, os.environ.get("GITHUB_SHA", ""))
-
-    # The v3 -> v4 migration itself is validated under the predecessor coordination
-    # contract. After v4 is on main, every later protected PR/merge-group must use v2
-    # work evidence and the fence below.
     if protocol_id_at(base_sha) != "life-source-coordination-v4":
         return "WORK_FENCE_MIGRATION_COMPATIBILITY_PASS"
-
     work_paths = [path for path in changed if WORK_RECORD_RE.fullmatch(path)]
     if len(work_paths) != 1:
         fail("post-v4 protected event must change exactly one work record")
     record = load_json(ROOT / work_paths[0])
     if set(record) != V2_WORK_KEYS or record.get("schema_version") != 2:
         fail("post-v4 protected event requires schema v2 work record")
-    if record.get("runtime_control_authority") != "NONE":
-        fail("work record runtime authority mismatch")
-    if record.get("pending_external_effect_state") not in policy["external_effect_states"]:
-        fail("work record pending_external_effect_state invalid")
+    if record.get("runtime_control_authority") != "NONE" or record.get("pending_external_effect_state") not in policy["external_effect_states"]:
+        fail("post-v4 work record fence fields invalid")
     registry = load_json(REGISTRY_PATH)
     observed_at = datetime.now(timezone.utc)
-    component_claims = [
-        claim for claim in record.get("claims", [])
-        if isinstance(claim, dict) and str(claim.get("resource_key", "")).startswith("component:")
-    ]
+    component_claims = [claim for claim in record.get("claims", []) if isinstance(claim, dict) and str(claim.get("resource_key", "")).startswith("component:")]
     if not component_claims:
         fail("post-v4 work record requires at least one component claim")
     for claim in component_claims:
@@ -330,23 +284,16 @@ def main() -> int:
     args = parser.parse_args()
     try:
         if args.validate_policy:
-            validate_policy()
-            print("WORK_FENCE_POLICY_VALID")
+            validate_policy(); print("WORK_FENCE_POLICY_VALID")
         elif args.validate_current_event:
             print(validate_current_event())
         elif args.evidence:
             evidence = json.loads(Path(args.evidence).read_text(encoding="utf-8"))
-            required = {"record", "claim", "live_lock", "registry", "observed_at"}
-            if not isinstance(evidence, dict) or set(evidence) != required:
+            if not isinstance(evidence, dict) or set(evidence) != {"record", "claim", "live_lock", "registry", "observed_at"}:
                 fail("evidence keys mismatch")
-            result = evaluate_record_claim(
-                evidence["record"], evidence["claim"], evidence["live_lock"],
-                evidence["registry"], parse_utc(evidence["observed_at"]), validate_policy(),
-            )
-            print(json.dumps(result, indent=2))
+            print(json.dumps(evaluate_record_claim(evidence["record"], evidence["claim"], evidence["live_lock"], evidence["registry"], parse_utc(evidence["observed_at"]), validate_policy()), indent=2))
         else:
-            validate_policy()
-            print("WORK_FENCE_POLICY_VALID")
+            validate_policy(); print("WORK_FENCE_POLICY_VALID")
         return 0
     except (FenceError, OSError, json.JSONDecodeError) as exc:
         print(f"WORK_FENCE_INVALID: {exc}", file=sys.stderr)
