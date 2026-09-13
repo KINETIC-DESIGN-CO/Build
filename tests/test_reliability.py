@@ -130,6 +130,41 @@ class ReliabilityTests(unittest.TestCase):
         finally:
             td.cleanup()
 
+    def test_goal_identity_active_owner_must_be_canonical_registry(self):
+        td, dst = self.copy_repo()
+        try:
+            spec_path = dst / "reliability/spec.json"
+            spec = json.loads(spec_path.read_text())
+            spec["cross_links"]["goal_root_identity_owner_path"] = "governance/work-selection-policy.json"
+            self.write_json(spec_path, spec)
+            self.assert_rejected(self.run_validator(dst), "R004_SOURCE_LINK")
+        finally:
+            td.cleanup()
+
+    def test_goal_identity_state_must_match_across_artifacts(self):
+        td, dst = self.copy_repo()
+        try:
+            path = dst / "reliability/compatibility-map.json"
+            obj = json.loads(path.read_text())
+            obj["goal_identity"]["relationship"] = "COMBINE_PENDING_GOAL_OWNER_IMPLEMENTATION"
+            obj["goal_identity"]["current_owner_path"] = None
+            obj["goal_identity"]["state"] = "PENDING_IMPLEMENTATION"
+            self.write_json(path, obj)
+            self.assert_rejected(self.run_validator(dst), "R009_COMPATIBILITY")
+        finally:
+            td.cleanup()
+
+    def test_active_goal_identity_cannot_use_pending_relationship(self):
+        td, dst = self.copy_repo()
+        try:
+            path = dst / "reliability/compatibility-map.json"
+            obj = json.loads(path.read_text())
+            obj["goal_identity"]["relationship"] = "COMBINE_PENDING_GOAL_OWNER_IMPLEMENTATION"
+            self.write_json(path, obj)
+            self.assert_rejected(self.run_validator(dst), "R009_COMPATIBILITY")
+        finally:
+            td.cleanup()
+
     def test_duplicate_invariant_identity_is_rejected(self):
         td, dst = self.copy_repo()
         try:
