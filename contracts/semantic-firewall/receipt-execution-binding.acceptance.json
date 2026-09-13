@@ -1,0 +1,412 @@
+{
+  "contract_id": "semantic_firewall.receipt_execution_binding",
+  "purpose": "Permit receipt evidence to support control-contract eligibility only when structural receipt linkage is satisfied, decision-kind identity is bound, and fresh execution evidence is derived from a private snapshot of the exact observed repository artifact bytes.",
+  "fixture": {
+    "contract_id": "00000000-0000-0000-0000-000000000001",
+    "decision_kind": "AUTHORIZATION",
+    "artifacts": {
+      "CONTRACT": {
+        "id": "semantic_firewall.artifact.control_request_acceptance",
+        "path": "contracts/semantic-firewall/control-request.acceptance.json"
+      },
+      "VALIDATOR": {
+        "id": "semantic_firewall.artifact.control_request_runner",
+        "path": "contracts/semantic-firewall/run_control_request_acceptance.py"
+      },
+      "EVALUATOR": {
+        "id": "semantic_firewall.artifact.contract_reference_runner",
+        "path": "contracts/semantic-firewall/run_contract_reference_acceptance.py"
+      },
+      "TEST_SUITE": {
+        "id": "semantic_firewall.artifact.contract_reference_acceptance",
+        "path": "contracts/semantic-firewall/contract-reference.acceptance.json"
+      }
+    }
+  },
+  "acceptance_cases": [
+    {
+      "case_id": "baseline_consumable",
+      "mutations": [],
+      "expected": "CONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "contract_hash_self_consistent_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ARTIFACT_HASH",
+          "role": "CONTRACT"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validator_hash_self_consistent_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ARTIFACT_HASH",
+          "role": "VALIDATOR"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "evaluator_hash_self_consistent_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ARTIFACT_HASH",
+          "role": "EVALUATOR"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_suite_hash_self_consistent_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ARTIFACT_HASH",
+          "role": "TEST_SUITE"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validator_id_self_consistent_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ARTIFACT_ID",
+          "role": "VALIDATOR"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "evaluator_id_self_consistent_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ARTIFACT_ID",
+          "role": "EVALUATOR"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_receipt_id_self_consistent_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_RECEIPT_ID",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_receipt_id_self_consistent_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_RECEIPT_ID",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_stdout_hash_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_HASH",
+          "kind": "VALIDATION",
+          "field": "stdout_sha256"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_stderr_hash_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_HASH",
+          "kind": "VALIDATION",
+          "field": "stderr_sha256"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_stdout_hash_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_HASH",
+          "kind": "TEST",
+          "field": "stdout_sha256"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_stderr_hash_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_HASH",
+          "kind": "TEST",
+          "field": "stderr_sha256"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_exit_code_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_EXIT_CODE",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_exit_code_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_EXIT_CODE",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_boolean_exit_code_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_EXIT_CODE_BOOLEAN",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_boolean_exit_code_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_EXIT_CODE_BOOLEAN",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_execution_result_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_RESULT",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_execution_result_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_RESULT",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_runtime_version_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_RUNTIME",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_runtime_version_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_RUNTIME",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_runtime_implementation_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_IMPLEMENTATION",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_runtime_implementation_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EXECUTION_IMPLEMENTATION",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_artifact_path_substitution_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ARTIFACT_PATH",
+          "kind": "VALIDATION",
+          "role": "VALIDATOR"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_artifact_path_substitution_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ARTIFACT_PATH",
+          "kind": "TEST",
+          "role": "EVALUATOR"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_evidence_hash_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EVIDENCE_HASH",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_evidence_hash_forgery_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_EVIDENCE_HASH",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "validation_envelope_receipt_copy_mismatch_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ENVELOPE_RECEIPT_COPY",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "test_envelope_receipt_copy_mismatch_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_ENVELOPE_RECEIPT_COPY",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "authorization_to_effect_execution_replay_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_DECISION_KIND",
+          "value": "EFFECT_EXECUTION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "authorization_to_mutation_replay_rejected",
+      "mutations": [
+        {
+          "op": "FORGE_DECISION_KIND",
+          "value": "MUTATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "missing_validation_envelope_rejected",
+      "mutations": [
+        {
+          "op": "REMOVE_ENVELOPE",
+          "kind": "VALIDATION"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "missing_test_envelope_rejected",
+      "mutations": [
+        {
+          "op": "REMOVE_ENVELOPE",
+          "kind": "TEST"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "extra_envelope_role_rejected",
+      "mutations": [
+        {
+          "op": "ADD_EXTRA_ENVELOPE"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    },
+    {
+      "case_id": "extra_top_level_field_rejected",
+      "mutations": [
+        {
+          "op": "ADD_EXTRA_TOP_LEVEL_FIELD"
+        }
+      ],
+      "expected": "UNCONSUMABLE",
+      "require_structural_eligible": true
+    }
+  ]
+}
