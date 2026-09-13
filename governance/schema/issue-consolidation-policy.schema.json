@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/governance/schema/issue-consolidation-policy.schema.json",
+  "title": "Life Issue Consolidation Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","policy_id","runtime_control_authority","engineering_consolidation_authority","unit_of_consolidation","source_issue_rule","candidate_discovery","terminal_relationships","classification_states","relationship_derivation","dispatch_rules","issue_eligibility_states","dependency_rules","integration"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "policy_id": {"const": "life-issue-consolidation-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "engineering_consolidation_authority": {"const": "DETERMINISTIC_EVALUATION_ONLY"},
+    "unit_of_consolidation": {"const": "ATOMIC_REQUIREMENT_NOT_RAW_ISSUE"},
+    "source_issue_rule": {"type": "string", "minLength": 1},
+    "candidate_discovery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authority","permitted_sources","effect"],
+      "properties": {
+        "authority": {"const": "ZERO"},
+        "permitted_sources": {"const": ["EXACT_ISSUE_CROSS_REFERENCE","SEMANTIC_OR_VECTOR_RETRIEVAL","MODEL_OR_HUMAN_REVIEW","MACHINE_IDENTITY_COLLISION"]},
+        "effect": {"const": "NOMINATE_CANDIDATE_PAIR_ONLY"}
+      }
+    },
+    "terminal_relationships": {"const": ["DUPLICATE","COMBINE_REQUIRED","DEPENDENCY","INDEPENDENT"]},
+    "classification_states": {"const": ["UNRESOLVED","CLASSIFIED"]},
+    "relationship_derivation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["duplicate_rule","combine_rule","dependency_rule","independent_rule","unresolved_rule","ambiguity_rule"],
+      "properties": {
+        "duplicate_rule": {"type":"string","minLength":1},
+        "combine_rule": {"type":"string","minLength":1},
+        "dependency_rule": {"type":"string","minLength":1},
+        "independent_rule": {"type":"string","minLength":1},
+        "unresolved_rule": {"type":"string","minLength":1},
+        "ambiguity_rule": {"type":"string","minLength":1}
+      }
+    },
+    "dispatch_rules": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "issue_eligibility_states": {"const": ["ACTIVE","COMPLETE","REMOVED","EXCLUDED_INVALID_INTAKE"]},
+    "dependency_rules": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "integration": {
+      "type":"object","additionalProperties":false,
+      "required":["registry_path","schema_path","validator_path","selector_activation_state","selector_activation_requires"],
+      "properties":{
+        "registry_path":{"const":"governance/issue-consolidation-registry.json"},
+        "schema_path":{"const":"governance/schema/issue-consolidation-registry.schema.json"},
+        "validator_path":{"const":"scripts/validate_issue_consolidation.py"},
+        "selector_activation_state":{"enum":["SOURCE_ONLY_NOT_YET_CONSUMED_BY_WORK_SELECTION","LIVE_WORK_SELECTION_CONSUMER"]},
+        "selector_activation_requires":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}}
+      }
+    }
+  }
+}

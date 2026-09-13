@@ -166,7 +166,7 @@ def validate_admissions(a,schema):
     keys={"schema_version","registry_id","runtime_control_authority","engineering_work_selection_authority","authorization_ref","source_repository","tie_break_rule","items"}
     if not isinstance(a,dict) or set(a)!=keys:
         fail("admissions root keys mismatch")
-    if a["schema_version"]!=1 or a["registry_id"]!="life-engineering-work-admissions-v1" or a["runtime_control_authority"]!="NONE" or a["engineering_work_selection_authority"]!="DETERMINISTIC_EVALUATION_ONLY" or a["source_repository"]!="KINETIC-DESIGN-CO/Build" or a["tie_break_rule"]!=PARALLEL_ADMISSION["tie_break_rule"]:
+    if a["schema_version"]!=1 or a["registry_id"]!="life-engineering-work-admissions-v1" or a["runtime_control_authority"]!="NONE" or a["engineering_work_selection_authority"]!="DETERMINISTIC_EVALUATION_ONLY" or a["source_repository"]!="Vinanonymous/Build" or a["tie_break_rule"]!=PARALLEL_ADMISSION["tie_break_rule"]:
         fail("admissions root invariant mismatch")
     if re.fullmatch(r"E-[0-9]{4}",str(a["authorization_ref"])) is None:
         fail("admissions.authorization_ref must be E-NNNN")

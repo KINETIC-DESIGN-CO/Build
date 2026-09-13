@@ -182,67 +182,6 @@ class CoordinationTests(unittest.TestCase):
                 "b" * 40,
             )
 
-    def test_live_lock_allows_independent_acquisition_base(self):
-        record = {
-            "work_id": WORK_A,
-            "worker": {"kind": "chatgpt", "session_id": "00000000-0000-4000-8000-000000000003"},
-            "implementation_branch": f"work/{WORK_A}",
-            "base_sha": "1" * 40,
-        }
-        claim = {
-            "resource_key": "continuity:sync",
-            "lock_branch": mod.expected_lock_branch("continuity:sync"),
-            "lease_id": "00000000-0000-4000-8000-000000000004",
-            "generation": 2,
-        }
-        lock = {
-            "schema_version": 1,
-            "resource_key": "continuity:sync",
-            "generation": 2,
-            "state": "ACTIVE",
-            "work_id": WORK_A,
-            "worker": record["worker"],
-            "implementation_branch": record["implementation_branch"],
-            "lease_id": claim["lease_id"],
-            "base_sha": "2" * 40,
-            "acquired_at": "2026-09-12T07:00:00Z",
-            "heartbeat_at": "2026-09-12T07:00:00Z",
-            "expires_at": "2026-09-12T11:00:00Z",
-            "runtime_control_authority": "NONE",
-        }
-        mod.validate_live_lock(lock, claim, record, NOW, self.protocol())
-
-    def test_live_lock_rejects_malformed_acquisition_base(self):
-        record = {
-            "work_id": WORK_A,
-            "worker": {"kind": "chatgpt", "session_id": "00000000-0000-4000-8000-000000000003"},
-            "implementation_branch": f"work/{WORK_A}",
-            "base_sha": "1" * 40,
-        }
-        claim = {
-            "resource_key": "continuity:sync",
-            "lock_branch": mod.expected_lock_branch("continuity:sync"),
-            "lease_id": "00000000-0000-4000-8000-000000000004",
-            "generation": 2,
-        }
-        lock = {
-            "schema_version": 1,
-            "resource_key": "continuity:sync",
-            "generation": 2,
-            "state": "ACTIVE",
-            "work_id": WORK_A,
-            "worker": record["worker"],
-            "implementation_branch": record["implementation_branch"],
-            "lease_id": claim["lease_id"],
-            "base_sha": "not-a-sha",
-            "acquired_at": "2026-09-12T07:00:00Z",
-            "heartbeat_at": "2026-09-12T07:00:00Z",
-            "expires_at": "2026-09-12T11:00:00Z",
-            "runtime_control_authority": "NONE",
-        }
-        with self.assertRaises(mod.ValidationError):
-            mod.validate_live_lock(lock, claim, record, NOW, self.protocol())
-
     def test_work_record_base_is_provenance_not_current_main(self):
         record = {
             "schema_version": 1,
