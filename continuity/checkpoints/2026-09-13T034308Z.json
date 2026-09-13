@@ -1,0 +1,29 @@
+{
+  "checkpoint_version": 1,
+  "authority": "EVIDENCE_ONLY",
+  "created_at": "2026-09-13T03:43:08Z",
+  "source_main_sha": "336da390b9b30adf55f513ff7ccf8916808a4d8c",
+  "work_id": "8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
+  "branch": "work/8e26797c-59d8-49c8-9f18-5ba7f4f0ec4e",
+  "facts": {
+    "pr_44_merge_sha": "336da390b9b30adf55f513ff7ccf8916808a4d8c",
+    "pr_44_merge_group_run": 34735380711,
+    "pr_44_post_merge_run": 34735493999,
+    "pr_44_verified": true,
+    "pr_42_state": "OPEN_DRAFT",
+    "pr_42_head_sha": "e797348c79759981e8dd9cf783c2bc61cf8eb32a",
+    "issue_16_claim_state": "ACTIVE",
+    "issue_16_claim_expires_at": "2026-09-13T06:39:20Z",
+    "work_admissions_source_repository": "Vinanonymous/Build",
+    "work_admissions_issue_16_state": "ADMITTED",
+    "current_json_recorded_main_sha": "b55ee94b1102093a19eacc981695ea2e5bff1174",
+    "current_json_recorded_next_action": "A-0012",
+    "supabase_status": "ACTIVE_HEALTHY",
+    "supabase_edge_function_count": 0,
+    "vercel_status": "NOT_RUN",
+    "canonical_invocation": "NOT_RUN",
+    "continuity_sync_observed_state": "RELEASED",
+    "continuity_sync_observed_generation": 12,
+    "continuity_sync_acquisition_result": "NOT_ACQUIRED"
+  }
+}

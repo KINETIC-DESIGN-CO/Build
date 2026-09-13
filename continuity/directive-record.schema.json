@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/continuity/directive-record.schema.json",
+  "title": "Life Vince Directive Provenance Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "input_class",
+    "direct_quote",
+    "conversation_context",
+    "scope",
+    "lifecycle",
+    "rationale",
+    "implementation_status",
+    "implementation_refs",
+    "research_refs",
+    "supersedes",
+    "authority",
+    "runtime_control_authority"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^VD-[0-9]{4}$"
+    },
+    "input_class": {
+      "enum": [
+        "VINCE_DIRECTIVE",
+        "VINCE_CORRECTION",
+        "VINCE_AUTHORIZED_CHANGE",
+        "VINCE_PERSONALLY_VERIFIED_OBSERVATION"
+      ]
+    },
+    "direct_quote": {
+      "type": "string",
+      "minLength": 1
+    },
+    "conversation_context": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "enum": [
+        "PROJECT_PERSISTENT",
+        "TEMPORARY_HUMAN_WORKFLOW",
+        "THREAD_LOCAL"
+      ]
+    },
+    "lifecycle": {
+      "enum": [
+        "ACTIVE",
+        "SUPERSEDED",
+        "RETIRED"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "implementation_status": {
+      "enum": [
+        "LIVE",
+        "SOURCE_ONLY_PARTIAL",
+        "PLANNED",
+        "IN_PROGRESS",
+        "ACTIVE_TEMPORARY",
+        "NOT_IMPLEMENTED",
+        "RETIRED"
+      ]
+    },
+    "implementation_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "research_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "supersedes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^VD-[0-9]{4}$"
+      }
+    },
+    "authority": {
+      "const": "EVIDENCE_ONLY"
+    },
+    "runtime_control_authority": {
+      "const": "NONE"
+    }
+  }
+}

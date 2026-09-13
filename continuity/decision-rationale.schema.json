@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/continuity/decision-rationale.schema.json",
+  "title": "Life Decision Rationale Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "topic",
+    "status",
+    "disposition",
+    "directive_ids",
+    "selected",
+    "alternatives",
+    "rationale",
+    "repository_evidence",
+    "research",
+    "limitations",
+    "reevaluate_when",
+    "authority",
+    "runtime_control_authority"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^DR-[0-9]{4}$"
+    },
+    "topic": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_]+$"
+    },
+    "status": {
+      "enum": [
+        "LIVE",
+        "LIVE_PARTIAL",
+        "ADOPTED_PENDING_IMPLEMENTATION",
+        "IN_PROGRESS",
+        "PROPOSAL",
+        "RETIRED"
+      ]
+    },
+    "disposition": {
+      "enum": [
+        "KEEP",
+        "REPLACE",
+        "MODIFY",
+        "COMBINE",
+        "REMOVE",
+        "COPY_VERIFY_ADAPT",
+        "EVALUATE"
+      ]
+    },
+    "directive_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^VD-[0-9]{4}$"
+      }
+    },
+    "selected": {
+      "type": "string",
+      "minLength": 1
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate",
+          "disposition",
+          "reason"
+        ],
+        "properties": {
+          "candidate": {
+            "type": "string",
+            "minLength": 1
+          },
+          "disposition": {
+            "enum": [
+              "KEEP",
+              "REPLACE",
+              "MODIFY",
+              "COMBINE",
+              "REMOVE",
+              "EVALUATE"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository_evidence": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "research": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "title",
+          "url",
+          "supports"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "OFFICIAL",
+              "ACADEMIC",
+              "REDDIT",
+              "REPOSITORY",
+              "OTHER"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "minLength": 1
+          },
+          "supports": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "reevaluate_when": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z0-9_]+$"
+      }
+    },
+    "authority": {
+      "const": "EVIDENCE_ONLY"
+    },
+    "runtime_control_authority": {
+      "const": "NONE"
+    }
+  }
+}

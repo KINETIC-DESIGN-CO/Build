@@ -1,0 +1,70 @@
+{
+  "checkpoint_context_version": 1,
+  "authority": "EVIDENCE_ONLY",
+  "checkpoint_id": "life-foreground-2026-09-13T034308Z",
+  "persistent_requirements_observed_in_current_thread": {
+    "self_checking_system": true,
+    "self_evolving_system": true,
+    "staleness_detection_required": true,
+    "continuous_improvement_required": true,
+    "fresh_research_purpose": "FEATURE_DISCOVERY_AND_ARCHITECTURE_IMPROVEMENT_NOT_ROUTINE_COMPLIANCE_ONLY",
+    "existing_implementation_has_preservation_privilege": false,
+    "semantic_firewall_principles_apply_before_migration": true,
+    "thread_local_requirements_should_be_versioned_for_future_threads": true,
+    "frequent_machine_readable_checkpoints_required": true,
+    "chat_summary_is_authoritative_continuity_state": false,
+    "project_instruction_edits_require_exact_vince_authorization": true,
+    "project_instruction_duplicate_removal_should_be_reported_when_repository_replacement_is_live": true
+  },
+  "architecture_direction": {
+    "semantic_firewall_legacy_source": "Vinanonymous/life:contracts/semantic-firewall/",
+    "semantic_firewall_disposition": "COPY_VERIFY_ADAPT",
+    "continuity_target": "TYPED_CANONICAL_EVIDENCE_TO_DETERMINISTIC_PROJECTOR_TO_GENERATED_CURRENT_AND_HANDOFF_TO_FRESH_LIVE_HYDRATION_TO_DETERMINISTIC_SELECTION",
+    "generated_current_json_target": true,
+    "generated_handoff_target": true,
+    "live_lock_values_are_committed_authority": false,
+    "merge_queue_kept": true,
+    "merge_group_validation_kept": true,
+    "post_merge_verification_kept": true,
+    "ordinary_repo_file_exclusive_leases_kept": false,
+    "component_claims_kept": true,
+    "shared_external_resource_claims_kept": true
+  },
+  "remaining_high_priority_work": {
+    "admissions_identity_and_lifecycle": "OPEN",
+    "terminal_work_claim_cleanup": "OPEN",
+    "current_json_live_state_drift": "OPEN",
+    "bootstrap_dependency_closure": "OPEN",
+    "pr_42_immutable_ci": "OPEN_DRAFT",
+    "semantic_firewall_migration": "NOT_STARTED_IN_BUILD",
+    "deterministic_projector": "NOT_STARTED_IN_BUILD",
+    "live_hydration_layer": "NOT_STARTED_IN_BUILD",
+    "frequent_checkpoint_policy": "NOT_YET_VERSIONED_ON_MAIN",
+    "system_evolution_policy": "NOT_YET_VERSIONED_ON_MAIN",
+    "concurrency_falsification_exercise": "NOT_YET_RUN"
+  },
+  "open_issue_dispositions_at_checkpoint": {
+    "2": "REMOVE_OR_CLOSE_VISIBILITY_ONLY",
+    "12": "KEEP",
+    "15": "KEEP_PENDING_DELTA_CHECK",
+    "16": "REPLACE_OR_COMPLETE_AFTER_PR_44",
+    "17": "COMBINE_OR_COMPLETE_PENDING_ACCEPTANCE_DELTA",
+    "18": "KEEP_DEPENDS_ON_21",
+    "21": "KEEP",
+    "30": "RECONCILE_LIFECYCLE"
+  },
+  "project_instruction_blocks_already_listed_as_repository_migration_candidates": [
+    "PRE_RESPONSE_RESEARCH",
+    "REEVALUATION",
+    "FACT_VERIFICATION",
+    "PLATFORM_FEATURES",
+    "COPY_PASTE",
+    "NEXT_STEP_RESPONSE_COUNTER",
+    "CONNECTED_APP_MUTATIONS",
+    "VERSIONED_CHANGES",
+    "CANONICAL_INVOCATION",
+    "PROJECT_INSTRUCTION_STATE_REVIEW"
+  ],
+  "canonical_invocation_status": "NOT_RUN",
+  "authorized_vercel_target": null
+}
