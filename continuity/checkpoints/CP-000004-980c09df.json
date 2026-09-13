@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000004-980c09df",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T07:24:58Z",
+  "source_main_sha": "dcfb42bbd7f08cf2a655878c29a49becf7352a53",
+  "work_id": "aef1b9ab-362c-4621-b695-759f12287125",
+  "work_branch": "work/aef1b9ab-362c-4621-b695-759f12287125",
+  "work_head_sha": "e888790ab94283f73eb5ebc12eefc32210e5f75a",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000003-95ab713e.json",
+    "blob_sha": "a6af79adc5788ae5aca9b145bc1f7e23bb7be9e6"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 4,
+    "selected_work_id": "github-issue-16",
+    "evaluated_at": "2026-09-13T07:24:58Z",
+    "evidence_ref": "Issue #16 terminal lifecycle cleanup remains nonterminal only until its generation-2 component claim is released; continuity:sync generation 17 is ACTIVE for a different work item and does not intersect this final component-claim release",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T07:24:58Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_16",
+      "lock_branch": "lock/e850da97747d9640bd6611ea81a9551cf69323068833fd4ad19da9ab45c7d74d",
+      "state": "ACTIVE",
+      "work_id": "aef1b9ab-362c-4621-b695-759f12287125",
+      "lease_id": "ea12bef7-95e5-4c27-b626-d2b7c084abfb",
+      "generation": 2,
+      "expires_at": "2026-09-13T10:43:06Z",
+      "observed_at": "2026-09-13T07:24:58Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "3591eaf1-ec80-4cc5-91d6-2695aef5bfd1",
+      "lease_id": "931bf543-658e-4352-8445-ea446246691e",
+      "generation": 17,
+      "expires_at": "2026-09-13T11:19:10Z",
+      "observed_at": "2026-09-13T07:24:58Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "pull_request:51",
+      "operation": "ENTER_REQUIRED_MERGE_QUEUE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "issue event 31045993993 added_to_merge_queue at 2026-09-13T07:18:10Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "workflow_run:34744902365",
+      "operation": "MERGE_GROUP_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "merge-group candidate dcfb42bbd7f08cf2a655878c29a49becf7352a53 based on main 96d2552b2fc33758914ddaf217982dc72ddb9bfc",
+        "immutable pins, continuity, source coordination, lock history, repository tests, pinned Supabase CLI setup, local database startup, and database tests all passed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "pull_request:51",
+      "operation": "MERGE_QUEUE_MAIN_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR #51 merged at 2026-09-13T07:20:58Z",
+        "merged main read back at dcfb42bbd7f08cf2a655878c29a49becf7352a53"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "workflow_run:34745008384",
+      "operation": "POST_MERGE_MAIN_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "validate completed successfully on main dcfb42bbd7f08cf2a655878c29a49becf7352a53",
+        "repository and Supabase database tests passed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "issue:16",
+      "operation": "CLOSE_REMOVED_ADMISSION_ISSUE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "governance/work-admissions.json on main reads github-issue-16 state REMOVED",
+        "Issue #16 independently reads state closed, state_reason not_planned, closed_at 2026-09-13T07:23:46Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/aef1b9ab-362c-4621-b695-759f12287125.json",
+      "operation": "DECLARE_FINAL_RELEASE_CHECKPOINT_PATH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "commit e888790ab94283f73eb5ebc12eefc32210e5f75a",
+        "work-record blob b865719d19bae4ef80f4e5b5c538ff663a6d5dd4"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0017",
+    "VD-0018"
+  ],
+  "decision_rationale_refs": [
+    "DR-0003"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:16",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_16",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RELEASE_COMPONENT_ISSUE_16_GENERATION_2_THEN_RERUN_LIVE_DETERMINISTIC_DISPATCH_WITH_CONTINUITY_SYNC_GENERATION_17_LEFT_TO_ITS_CURRENT_OWNER",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "governance/work-selection-policy.json",
+    "coordination/protocol.json",
+    "coordination/work/aef1b9ab-362c-4621-b695-759f12287125.json",
+    "continuity/directive-ledger.jsonl:VD-0017",
+    "continuity/directive-ledger.jsonl:VD-0018",
+    "GITHUB_PR:51",
+    "GITHUB_ISSUE:16",
+    "GITHUB_RUN:34744902365",
+    "GITHUB_RUN:34745008384",
+    "GITHUB_MAIN:dcfb42bbd7f08cf2a655878c29a49becf7352a53"
+  ]
+}
