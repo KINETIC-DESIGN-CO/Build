@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_id": "9ba22592-f255-4fa8-bd33-7d493ebeb22e",
+  "title": "Synchronize A-0012 merge-queue completion",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "cfaced0f-a463-4ed5-9ec2-ebe5c3202815"
+  },
+  "implementation_branch": "work/9ba22592-f255-4fa8-bd33-7d493ebeb22e",
+  "base_sha": "b55ee94b1102093a19eacc981695ea2e5bff1174",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "a70711f6-33ba-4f8a-b050-c0bbf2a39945",
+      "generation": 17
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "438a091b-acb9-44fd-bce7-e07ac82f6839",
+      "generation": 12
+    },
+    {
+      "resource_key": "repo-file:continuity/current.json",
+      "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
+      "lease_id": "71380c9b-b564-471f-8abc-4321da2402f6",
+      "generation": 23
+    },
+    {
+      "resource_key": "repo-file:continuity/events.jsonl",
+      "lock_branch": "lock/39f6fe37d46d90b57cd3d8c841abca3f344cb235d875f9867747b15b1077b38f",
+      "lease_id": "6db4cb7e-b7f2-49d7-8841-966392e0b9ee",
+      "generation": 20
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
