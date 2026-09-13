@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "bundle_version": 3,
+  "bundle_version": 4,
   "canonical_repository": {
     "repository_id": 1366835183,
     "full_name": "KINETIC-DESIGN-CO/Build",
@@ -14,6 +14,8 @@
     "continuity/response-contract.json",
     "continuity/current.json",
     "governance/work-selection-policy.json",
+    "governance/goal-policy.json",
+    "governance/goal-registry.json",
     "continuity/checkpoint-policy.json",
     "continuity/checkpoint-template.json",
     "governance/work-admissions.json",
@@ -39,14 +41,18 @@
     "governance/schema/placement-policy.schema.json",
     "governance/schema/work-selection-policy.schema.json",
     "governance/schema/work-admissions.schema.json",
+    "governance/schema/goal-policy.schema.json",
+    "governance/schema/goal-registry.schema.json",
     "scripts/validate_continuity.py",
     "scripts/validate_coordination.py",
     "scripts/validate_lock_history.py",
+    "scripts/validate_goal_graph.py",
     "continuity/tools/validate_checkpoints.py",
     "scripts/select_work.py",
     "tests/test_continuity.py",
     "tests/test_coordination.py",
     "tests/test_lock_history.py",
+    "tests/test_goal_graph.py",
     "continuity/tests/test_checkpoints.py",
     "tests/test_work_selection.py",
     ".github/workflows/continuity.yml"
@@ -57,6 +63,8 @@
     "continuity/response-contract.json",
     "continuity/current.json",
     "governance/work-selection-policy.json",
+    "governance/goal-policy.json",
+    "governance/goal-registry.json",
     "continuity/checkpoint-policy.json",
     "continuity/checkpoint-template.json",
     "governance/work-admissions.json",
@@ -80,6 +88,7 @@
     "VERIFY_REFERENCED_LIVE_OBJECTS",
     "MARK_STALE_OR_MISMATCHED_STATE_NOT_RUN",
     "APPLY_LATER_VINCE_CORRECTIONS",
+    "EVALUATE_ACTIVE_GOAL_PATH",
     "EVALUATE_WORK_SELECTION",
     "CONTINUE_FROM_NEXT_ACTION"
   ],
@@ -103,5 +112,5 @@
     ".github/workflows/continuity.yml"
   ],
   "continuity_sync_rule": "A repository mutation whose changed paths are a nonempty subset of continuity_sync_paths is CONTINUITY_SYNC and does not require a second continuity update solely because that continuity mutation occurred, including a pull-request merge to main. A GitHub mutation whose target branch matches work/<lowercase-UUIDv4> or lock/<64-lowercase-hex> and does not update main is SOURCE_WORKSPACE_MUTATION and does not require continuity synchronization solely because it occurred; that branch's Git history and live machine state are its exact evidence. Creation of the work branch from current main is included. Any update to main whose changed paths are not a nonempty subset of continuity_sync_paths is never exempt. Git history remains the exact byte-history for every exempt mutation.",
-  "validation_command": "python scripts/validate_continuity.py && python scripts/validate_coordination.py && python scripts/validate_lock_history.py && python continuity/tools/validate_checkpoints.py && python continuity/tests/test_checkpoints.py && python scripts/select_work.py --validate-policy && python -m unittest discover -s tests -p 'test_*.py'"
+  "validation_command": "python scripts/validate_continuity.py && python scripts/validate_coordination.py && python scripts/validate_lock_history.py && python scripts/validate_goal_graph.py && python continuity/tools/validate_checkpoints.py && python continuity/tests/test_checkpoints.py && python scripts/select_work.py --validate-policy && python -m unittest discover -s tests -p 'test_*.py'"
 }
