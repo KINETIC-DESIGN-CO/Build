@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-3f1f3e12",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:04:54Z",
+  "source_main_sha": "8a11d81b3f8f2752a8f93e42f582b877e2ca3963",
+  "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+  "work_branch": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
+  "work_head_sha": "79ec6a39aab7e5b312fd7d341f91aadf17237091",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "INTERRUPTED_OPERATION_UNRESOLVED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 0,
+    "selected_work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+    "evaluated_at": "2026-09-13T19:03:46Z",
+    "evidence_ref": "GitHub Actions run 34776521571 executed current-main scripts/select_work.py against the exact interrupted-operation evidence and asserted decision SELECT, effective_rank 0, selected_work RESUME_INTERRUPTED_OPERATION, and condition INTERRUPTED_OPERATION_UNRESOLVED; live component claim generation 2 still binds this work ID and branch.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:04:54Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:semantic_firewall_source_intake",
+      "lock_branch": "lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab",
+      "state": "ACTIVE",
+      "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+      "lease_id": "d9c103b6-9c73-40fe-94a0-035a8a8ed6f6",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:27:27Z",
+      "observed_at": "2026-09-13T19:04:54Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "component:semantic_firewall_source_intake",
+      "operation": "TAKE_OVER_EXPIRED_GENERATION_1_CLAIM_AS_GENERATION_2",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab generation 2 ACTIVE",
+        "lease d9c103b6-9c73-40fe-94a0-035a8a8ed6f6 expires 2026-09-13T22:27:27Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "contracts/semantic-firewall/**",
+      "operation": "COPY_VERIFY_EXACT_LEGACY_SOURCE_CORPUS",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "legacy source Vinanonymous/life@6cc602f2ac18599aa67c0352ce81fbd404dcb40f",
+        "selected source tree ca4b5d72897f17dc2f9d929186f41d6c93ba2dbc",
+        "work commit 8abe3cbdb0fe12533e77b51c9222ac7cdb70d1eb",
+        "13 destination Git blob identities equal their source Git blob identities"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "architecture/reference/semantic-firewall-import-provenance.json and tests/test_semantic_firewall_import.py",
+      "operation": "STAGE_BUILD_NATIVE_PROVENANCE_AND_FALSIFICATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "provenance artifact records SOURCE_ONLY and activation_state NOT_RUN",
+        "test pins exact 13-file tree/blob identities, executes six legacy acceptance runners, and rejects direct inner receipt-runner invocation"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/directive-ledger.jsonl and continuity/events.jsonl",
+      "operation": "PERSIST_PRIORITY_DIRECTIVE_AND_PHASE_A_EVENTS",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "VD-0022 exact quote: This is priority #1 so please continue",
+        "E-0119 VINCE_DIRECTIVE",
+        "E-0120 GITHUB_MUTATION"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "scripts/select_work.py on main",
+      "operation": "EVALUATE_INTERRUPTED_OPERATION_SELECTION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34776521571",
+        "job 103775519530 success",
+        "effective_rank=0",
+        "selected_work=RESUME_INTERRUPTED_OPERATION"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0022"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue - GitHub Docs",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "A public organization-owned repository can use GitHub Merge Queue to validate queued changes against the target branch without requiring the topic branch to be manually rebased first."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Introducing Structured Outputs in the API",
+      "url": "https://openai.com/index/introducing-structured-outputs-in-the-api/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Structured Outputs constrains model output to a schema but does not prevent mistakes inside schema-valid values, so it can combine at the output-shape boundary but cannot replace trusted control evidence."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:semantic_firewall_source_intake",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "project:jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "OPEN_SEMANTIC_FIREWALL_PHASE_A_PULL_REQUEST_REQUIRE_PR_HEAD_VALIDATE_THEN_GITHUB_MERGE_QUEUE_POST_MERGE_READBACK_AND_FINAL_COMPONENT_CLAIM_RELEASE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57",
+    "WORK_ID:0f68d6ae-75a0-4616-9814-819554f5f643",
+    "VD-0022",
+    "DR-0001",
+    "DR-0002",
+    "legacy:Vinanonymous/life@6cc602f2ac18599aa67c0352ce81fbd404dcb40f",
+    "architecture/reference/semantic-firewall-import-provenance.json",
+    "tests/test_semantic_firewall_import.py",
+    "GITHUB_ACTIONS_RUN:34776521571",
+    "GITHUB_MAIN:8a11d81b3f8f2752a8f93e42f582b877e2ca3963"
+  ]
+}

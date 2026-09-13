@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-a61d9b73",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:10:48Z",
+  "source_main_sha": "8a11d81b3f8f2752a8f93e42f582b877e2ca3963",
+  "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+  "work_branch": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
+  "work_head_sha": "2dcadecfb20f5a0e06ef759adeefb6003e1efb0f",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-3f1f3e12.json",
+    "blob_sha": "f28fd19bb8941941bc2c84fd170c6fd4838eb0c6"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 0,
+    "selected_work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+    "evaluated_at": "2026-09-13T19:10:48Z",
+    "evidence_ref": "Current-main selector run 34776521571 selected RESUME_INTERRUPTED_OPERATION at rank 0; generation-2 component claim remains ACTIVE and unexpired for this work ID. PR #74 is open and the repaired head 2dcadecfb20f5a0e06ef759adeefb6003e1efb0f passed required validation in run 34776742377.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:10:48Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:semantic_firewall_source_intake",
+      "lock_branch": "lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab",
+      "state": "ACTIVE",
+      "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+      "lease_id": "d9c103b6-9c73-40fe-94a0-035a8a8ed6f6",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:27:27Z",
+      "observed_at": "2026-09-13T19:10:48Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:74 head ea3fa5b8ee23a75db91c1337b4427cb2294b8ccd",
+      "operation": "PR_HEAD_VALIDATE",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34776631886 job 103775816422 failed at Validate source coordination",
+        "continuity bundle validation passed before the source-coordination failure"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/0f68d6ae-75a0-4616-9814-819554f5f643.json",
+      "operation": "REPAIR_WORK_RECORD_CHANGED_PATH_COVERAGE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "removed the work record's own path from repo_paths because validator excludes it from declared changed-path coverage",
+        "first repair run 34776710784 still failed source coordination, proving an additional defect remained"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/0f68d6ae-75a0-4616-9814-819554f5f643.json",
+      "operation": "REPAIR_WORK_RECORD_PATH_ORDER",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "validate_coordination.py requires repo_paths to equal sorted(repo_paths)",
+        "repo_paths were reordered lexicographically without changing declared scope"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:74 head 2dcadecfb20f5a0e06ef759adeefb6003e1efb0f",
+      "operation": "PR_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34776742377 job 103776123031 completed success",
+        "immutable CI pins, continuity, source coordination, relevant lock history, repository tests, local Supabase startup, and Supabase database tests all passed"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0022"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue - GitHub Docs",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Required GitHub Merge Queue remains the selected latest-base integration mechanism after PR-head validation."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:74",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:semantic_firewall_source_intake",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_THIS_CHECKPOINTED_PR_HEAD_VALIDATE_SUCCESS_THEN_ENTER_GITHUB_MERGE_QUEUE_AND_VERIFY_MERGE_GROUP_VALIDATE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57",
+    "GITHUB_PR:74",
+    "GITHUB_RUN:34776631886",
+    "GITHUB_RUN:34776710784",
+    "GITHUB_RUN:34776742377",
+    "WORK_ID:0f68d6ae-75a0-4616-9814-819554f5f643",
+    "VD-0022",
+    "DR-0001",
+    "DR-0002",
+    "GITHUB_MAIN:8a11d81b3f8f2752a8f93e42f582b877e2ca3963"
+  ]
+}

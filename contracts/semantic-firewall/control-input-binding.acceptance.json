@@ -1,0 +1,91 @@
+{
+  "contract_id": "semantic_firewall.control_input_binding",
+  "purpose": "Prove only the input-binding precondition for a Semantic Firewall control decision: exact contract content must be bound to an exact typed input snapshot; required inputs must match exactly, be KNOWN, use contract-allowed declared source-type tokens, and satisfy any contract-defined age bound. This suite does not by itself prove contract-reference eligibility, source authenticity, authorization, or final control PASS.",
+  "fixture": {
+    "control_request": {
+      "decision_kind": "ROUTING",
+      "contract_id": "00000000-0000-0000-0000-000000000101"
+    },
+    "contract": {
+      "contract_id": "00000000-0000-0000-0000-000000000101",
+      "decision_kind": "ROUTING",
+      "required_inputs": [
+        {"name": "excluded_schemas", "value_type": "STRING_SET", "accepted_source_types": ["OWNER_CURRENT_INSTRUCTION"], "max_age_seconds": null},
+        {"name": "included_object_classes", "value_type": "STRING_SET", "accepted_source_types": ["OWNER_CURRENT_INSTRUCTION"], "max_age_seconds": null},
+        {"name": "project_id", "value_type": "STRING", "accepted_source_types": ["CURRENT_TOOL_OBSERVATION"], "max_age_seconds": 300}
+      ]
+    },
+    "input_snapshot": {
+      "snapshot_id": "00000000-0000-0000-0000-000000000102",
+      "inputs": [
+        {
+          "name": "excluded_schemas",
+          "state": "KNOWN",
+          "source_type": "OWNER_CURRENT_INSTRUCTION",
+          "source_ref": "conversation:2026-09-10:response-37",
+          "source_version": "response-37",
+          "observed_at": "2026-09-11T01:50:00Z",
+          "value_type": "STRING_SET",
+          "value": ["auth", "extensions", "graphql", "graphql_public", "information_schema", "pg_catalog", "pgbouncer", "realtime", "storage", "supabase_migrations", "vault"],
+          "value_sha256": "2dc11126706833b8277f76d49eaff738813ac277bf0a3634dfabb3d774f0190f"
+        },
+        {
+          "name": "included_object_classes",
+          "state": "KNOWN",
+          "source_type": "OWNER_CURRENT_INSTRUCTION",
+          "source_ref": "conversation:2026-09-10:response-37",
+          "source_version": "response-37",
+          "observed_at": "2026-09-11T01:50:00Z",
+          "value_type": "STRING_SET",
+          "value": ["BRANCH", "EDGE_FUNCTION", "EVENT_TRIGGER", "EXTENSION", "FUNCTION", "MATERIALIZED_VIEW", "POLICY", "PROCEDURE", "TABLE", "TRIGGER", "VIEW"],
+          "value_sha256": "938d0e29b3df5ae99b95a47a277c9afa8d1dfca68b3c501efd50854cafb5176f"
+        },
+        {
+          "name": "project_id",
+          "state": "KNOWN",
+          "source_type": "CURRENT_TOOL_OBSERVATION",
+          "source_ref": "supabase:project:bxnncaanwczgglrhtymh",
+          "source_version": "2026-09-11T01:50:00Z",
+          "observed_at": "2026-09-11T01:50:00Z",
+          "value_type": "STRING",
+          "value": "bxnncaanwczgglrhtymh",
+          "value_sha256": "de627d6417d51a3db7c5951891037b5f584c8e0b61169a4400a0d64f453e6bf8"
+        }
+      ]
+    },
+    "evaluation": {
+      "evaluated_at": "2026-09-11T01:52:00Z",
+      "contract_sha256": "8850c2a9b26ed367fd130c642238caa607e69a73f4bd12c6bb1a69452f1965dc",
+      "input_snapshot_sha256": "f7d58282013d617f07b19888354e863a6f24e3b5cb9b41b921bc41d440d25645"
+    }
+  },
+  "acceptance_cases": [
+    {"case_id": "exact_enumerated_routing_scope_eligible", "mutations": [], "rebind": false, "expected": "INPUTS_BOUND"},
+    {"case_id": "authorization_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "AUTHORIZATION"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {"case_id": "priority_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "PRIORITY"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {"case_id": "state_transition_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "STATE_TRANSITION"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {"case_id": "completion_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "COMPLETION"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {"case_id": "verification_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "VERIFICATION"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {"case_id": "escalation_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "ESCALATION"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {"case_id": "release_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "RELEASE"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {"case_id": "mutation_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "MUTATION"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {"case_id": "effect_execution_input_binding_eligible", "mutations": [{"op": "SET_DECISION_KIND", "value": "EFFECT_EXECUTION"}], "rebind": true, "expected": "INPUTS_BOUND"},
+    {
+      "case_id": "routing_free_text_scope_predicate_rejected",
+      "mutations": [{"op": "ADD_INPUT", "input": {"name": "predicate_text", "state": "KNOWN", "source_type": "OWNER_CURRENT_INSTRUCTION", "source_ref": "conversation:2026-09-10:assistant-plan", "source_version": "assistant-plan", "observed_at": "2026-09-11T01:51:00Z", "value_type": "STRING", "value": "architecture-bearing objects that can materially inform the successor design", "value_sha256": "f5dbc0d5a6608fd984fe2e465a6d9b8df5ea8f1d26d96d88ed751a18ccfeff73"}}],
+      "rebind": true,
+      "expected": "INPUTS_UNBOUND"
+    },
+    {"case_id": "missing_required_input_rejected", "mutations": [{"op": "REMOVE_INPUT", "name": "included_object_classes"}], "rebind": true, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "unknown_required_input_rejected", "mutations": [{"op": "SET_INPUT_FIELD", "name": "project_id", "field": "state", "value": "UNKNOWN"}, {"op": "SET_INPUT_FIELD", "name": "project_id", "field": "value", "value": null}], "rebind": true, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "stale_current_input_rejected", "mutations": [{"op": "SET_INPUT_FIELD", "name": "project_id", "field": "observed_at", "value": "2026-09-11T01:40:00Z"}], "rebind": true, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "future_observation_rejected", "mutations": [{"op": "SET_INPUT_FIELD", "name": "project_id", "field": "observed_at", "value": "2026-09-11T01:53:00Z"}], "rebind": true, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "wrong_source_type_rejected", "mutations": [{"op": "SET_INPUT_FIELD", "name": "project_id", "field": "source_type", "value": "OWNER_CURRENT_INSTRUCTION"}], "rebind": true, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "value_type_mismatch_rejected", "mutations": [{"op": "SET_INPUT_FIELD", "name": "project_id", "field": "value_type", "value": "INTEGER"}, {"op": "SET_INPUT_FIELD", "name": "project_id", "field": "value", "value": 123}], "rebind": true, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "contract_change_without_rebinding_rejected", "mutations": [{"op": "SET_REQUIRED_INPUT_FIELD", "name": "project_id", "field": "max_age_seconds", "value": 600}], "rebind": false, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "snapshot_change_without_rebinding_rejected", "mutations": [{"op": "SET_INPUT_FIELD", "name": "project_id", "field": "source_version", "value": "2026-09-11T01:51:00Z"}], "rebind": false, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "request_contract_id_mismatch_rejected", "mutations": [{"op": "SET_REQUEST_FIELD", "field": "contract_id", "value": "00000000-0000-0000-0000-000000000199"}], "rebind": false, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "evaluation_contract_hash_forgery_rejected", "mutations": [{"op": "SET_EVALUATION_FIELD", "field": "contract_sha256", "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}], "rebind": false, "expected": "INPUTS_UNBOUND"},
+    {"case_id": "evaluation_snapshot_hash_forgery_rejected", "mutations": [{"op": "SET_EVALUATION_FIELD", "field": "input_snapshot_sha256", "value": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}], "rebind": false, "expected": "INPUTS_UNBOUND"}
+  ]
+}
