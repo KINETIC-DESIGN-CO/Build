@@ -3,7 +3,7 @@
   "title": "Life Response Contract",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version","contract_id","runtime_control_authority","default_mode","required_sections","state_terms","plain_english_rule","technical_only_exception","precision_rule","platform_feature_fields","copy_paste_rule","completion_rule","progression_rule","persistence_status_values","persistence_disclosure_rule","current_job_rule","no_duplicate_authority_rule"],
+  "required": ["schema_version","contract_id","runtime_control_authority","default_mode","required_sections","state_terms","plain_english_rule","technical_only_exception","precision_rule","platform_feature_fields","copy_paste_rule","completion_rule","progression_rule","no_duplicate_authority_rule"],
   "properties": {
     "schema_version": {"const": 1},
     "contract_id": {"const": "life-response-contract-v1"},
@@ -18,7 +18,6 @@
         "STATE_CLASSIFICATION",
         "PROGRESSION",
         "TECHNICAL_DETAIL",
-        "PERSISTENCE_STATUS",
         "NEXT_STEP",
         "RESPONSE_COUNTER"
       ]
@@ -31,11 +30,6 @@
     "copy_paste_rule": {"type":"string","minLength":1},
     "completion_rule": {"type":"string","minLength":1},
     "progression_rule": {"type":"string","minLength":1},
-    "persistence_status_values": {
-      "const": ["THREAD_ONLY","DURABLE_INTAKE_RECORDED","QUEUED","IMPLEMENTING","LIVE","BLOCKED"]
-    },
-    "persistence_disclosure_rule": {"type":"string","minLength":1},
-    "current_job_rule": {"const":"NEXT_STEP_STATES_THE_EXACT_WORK_THIS_THREAD_OWNS_AND_WILL_EXECUTE;IF_THIS_THREAD_HAS_NO_WORK_TO_CONTINUE_OUTPUT_EXACTLY_THIS_THREAD_CAN_BE_CLOSED"},
     "no_duplicate_authority_rule": {"type":"string","minLength":1}
   }
 }
