@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "repo-file:tests/test_ci_pins.py",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "f1890de5-ef50-458e-93c7-7a5b2a8698c7",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "86848f04-930d-43c4-993c-5148fe3f43b6"
+  },
+  "implementation_branch": "work/f1890de5-ef50-458e-93c7-7a5b2a8698c7",
+  "lease_id": "1fa713ae-cb42-426c-b112-207517c7a430",
+  "base_sha": "05b024f750527cecba170bcc904691f5f5f43450",
+  "acquired_at": "2026-09-13T01:12:47Z",
+  "heartbeat_at": "2026-09-13T01:12:47Z",
+  "expires_at": "2026-09-13T05:12:47Z",
+  "runtime_control_authority": "NONE"
+}
