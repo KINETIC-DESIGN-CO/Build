@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "repo-file:tests/test_lock_history_protocol_compat.py",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "1ffbfe6c-b88a-4b17-9b76-d056f01a6dc6",
   "worker": {
     "kind": "chatgpt",
