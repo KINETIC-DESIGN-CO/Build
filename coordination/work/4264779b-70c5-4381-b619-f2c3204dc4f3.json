@@ -10,8 +10,20 @@
   "base_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
   "component_id": "issue_57",
   "repo_paths": [
-    "continuity/checkpoints/CP-000001-31ed3239.json",
-    "governance/work-admissions.json"
+    ".github/workflows/continuity.yml",
+    "architecture/semantic-firewall-v1.md",
+    "continuity/bootstrap.json",
+    "continuity/checkpoints/CP-000002-a2622ab0.json",
+    "contracts/semantic-firewall-v1/control-contract.schema.json",
+    "contracts/semantic-firewall-v1/control-receipt.schema.json",
+    "contracts/semantic-firewall-v1/control-request.schema.json",
+    "contracts/semantic-firewall-v1/effect-request.schema.json",
+    "contracts/semantic-firewall-v1/input-snapshot.schema.json",
+    "contracts/semantic-firewall-v1/reliability-verification.schema.json",
+    "contracts/semantic-firewall-v1/spec.json",
+    "scripts/evaluate_semantic_firewall.py",
+    "scripts/validate_semantic_firewall.py",
+    "tests/test_semantic_firewall_v1.py"
   ],
   "external_targets": [],
   "claims": [
