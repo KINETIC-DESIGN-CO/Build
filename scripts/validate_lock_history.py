@@ -19,6 +19,10 @@ LOCK_KEYS = {
     "implementation_branch", "lease_id", "base_sha", "acquired_at", "heartbeat_at",
     "expires_at", "runtime_control_authority",
 }
+SUPPORTED_PROTOCOL_IDS = {
+    "life-source-coordination-v2",
+    "life-source-coordination-v3",
+}
 
 
 class ValidationError(RuntimeError):
@@ -281,8 +285,8 @@ def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
 
 def load_protocol() -> dict:
     protocol = json.loads(PROTOCOL_PATH.read_text(encoding="utf-8"))
-    if protocol.get("protocol_id") != "life-source-coordination-v2":
-        fail("lock-history validator requires life-source-coordination-v2")
+    if protocol.get("protocol_id") not in SUPPORTED_PROTOCOL_IDS:
+        fail("lock-history validator requires a supported source-coordination protocol")
     if protocol.get("lease_duration_seconds") != 14400:
         fail("unexpected lease_duration_seconds")
     if protocol.get("renew_when_remaining_seconds_lte") != 1800:
