@@ -10,9 +10,9 @@
   "base_sha": "ef08e38696715b9e7803db8589bbad23a98807e9",
   "component_id": "continuity_sync",
   "repo_paths": [
+    "continuity/checkpoints/CP-000001-5ef4a72c.json",
     "continuity/current.json",
-    "continuity/directive-ledger.jsonl",
-    "continuity/checkpoints/CP-000001-5ef4a72c.json"
+    "continuity/directive-ledger.jsonl"
   ],
   "external_targets": [],
   "claims": [
