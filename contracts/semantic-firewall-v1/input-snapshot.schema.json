@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Semantic Firewall v1 Input Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "snapshot_id", "captured_at", "inputs"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "snapshot_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "inputs": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["name", "state", "source_type", "source_ref", "source_version", "observed_at", "value_type", "value_json", "value_json_sha256"],
+        "properties": {
+          "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+          "state": {"type": "string", "enum": ["KNOWN", "UNKNOWN", "UNVERIFIED", "NOT_RUN"]},
+          "source_type": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "source_ref": {"type": "string", "minLength": 1},
+          "source_version": {"type": "string", "minLength": 1},
+          "observed_at": {"type": ["string", "null"], "format": "date-time"},
+          "value_type": {"type": "string", "enum": ["STRING", "INTEGER", "BOOLEAN", "STRING_SET", "SHA256", "OBJECT"]},
+          "value_json": {"type": ["string", "null"]},
+          "value_json_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    }
+  }
+}
