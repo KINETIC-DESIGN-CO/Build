@@ -12,6 +12,7 @@
   "repo_paths": [
     "architecture/reference/semantic-firewall-import-provenance.json",
     "continuity/checkpoints/CP-000001-3f1f3e12.json",
+    "continuity/checkpoints/CP-000002-a61d9b73.json",
     "continuity/directive-ledger.jsonl",
     "continuity/events.jsonl",
     "contracts/semantic-firewall/artifact-byte-identity.acceptance.json",
