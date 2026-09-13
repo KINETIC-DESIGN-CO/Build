@@ -12,8 +12,10 @@
   "repo_paths": [
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000001-0c214599.json",
+    "continuity/checkpoints/CP-000002-b0cf7906.json",
     "continuity/user-observations.jsonl",
     "governance/user-observation-policy.json",
+    "governance/work-admissions.json",
     "scripts/evaluate_user_observation.py",
     "tests/test_user_observation.py"
   ],
