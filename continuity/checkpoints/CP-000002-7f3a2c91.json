@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-7f3a2c91",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T20:09:38Z",
+  "source_main_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_head_sha": "350a975846f5a1411645046646a1d91d38fca82e",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-4e72b93a.json",
+    "blob_sha": "0f1767efa5ae64f263604f26f6fd1a7b31e1b176"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T20:09:38Z",
+    "evidence_ref": "Vince explicitly directed continuation of the already-active Phase 0 Reliability work; the live component claim remains ACTIVE and unexpired. This checkpoint has zero work-selection authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_F5BC289_STALE_VS_LIVE_MAIN_29A42101"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T20:09:38Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "99a1ea0a-1b32-44cd-8ec8-9951ebc8618d",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:14:11Z",
+      "observed_at": "2026-09-13T20:09:38Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {"system":"GITHUB","target":"reliability/spec.json","operation":"BIND_CANONICAL_USER_OBSERVATION_PROVENANCE","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=7c21cbf1bd6af0d6b53b210958869863a59f3a4d"]},
+    {"system":"GITHUB","target":"reliability/postconditions.json","operation":"CREATE_POSTCONDITION_CATALOG","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=9c9a446a8f28ffa388c4f166982735138ff1cff6"]},
+    {"system":"GITHUB","target":"reliability/operation-catalog.json","operation":"CREATE_OPERATION_CONTRACT_CATALOG","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=06598bcb44f48b5e4467a794e3b128ef8bbacce9"]},
+    {"system":"GITHUB","target":"reliability/recovery-policy.json","operation":"CREATE_DETERMINISTIC_RECOVERY_TABLE","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=0cab1e0847d7f19a29b7d47275fb899a34b67707"]},
+    {"system":"GITHUB","target":"reliability/compatibility-map.json","operation":"CREATE_EXISTING_MECHANISM_COMPATIBILITY_MAP","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=e881432c9e6193b75afc9b5e8893a54c08f45bdd"]},
+    {"system":"GITHUB","target":"reliability/schema/invariants.schema.json","operation":"CREATE_SCHEMA","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=d9abd64d8d80f873739a41a9229c4be4c28489da"]},
+    {"system":"GITHUB","target":"reliability/schema/postconditions.schema.json","operation":"CREATE_SCHEMA","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=e1b2b37982533cba45ebbd8a9745033b472e9356"]},
+    {"system":"GITHUB","target":"reliability/schema/operation-catalog.schema.json","operation":"CREATE_SCHEMA","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=251644055b5b8f7e21885bb57df1b59ee22dfb39"]},
+    {"system":"GITHUB","target":"reliability/schema/recovery-policy.schema.json","operation":"CREATE_SCHEMA","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=6465ebc7bf2083787a930d17958b2d4aba3c6408"]},
+    {"system":"GITHUB","target":"reliability/schema/compatibility-map.schema.json","operation":"CREATE_SCHEMA","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=b391fbfb078a0a135bfe1ae397b490e7f4bb385f"]},
+    {"system":"GITHUB","target":"reliability/schema/spec.schema.json","operation":"CREATE_SCHEMA","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=b8d0b691da64e745215778dbbeb1bdc78c104910"]},
+    {"system":"GITHUB","target":"work/8bc19d08-14ca-4077-a223-1e3ef9f0368f","operation":"RECONCILE_WITH_MAIN_29A42101_PRESERVING_PHASE0_PATHS","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["github:commit=350a975846f5a1411645046646a1d91d38fca82e","github:parent_main=29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b"]}
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {"evidence_class":"LIVE_GITHUB","target":"github:main=29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b","required":true},
+    {"evidence_class":"LIVE_GITHUB","target":"work/8bc19d08-14ca-4077-a223-1e3ef9f0368f","required":true},
+    {"evidence_class":"LIVE_GITHUB","target":"lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa","required":true},
+    {"evidence_class":"LIVE_SUPABASE","target":"jnenguxodtgwbskhdsxt","required":true},
+    {"evidence_class":"LIVE_VERCEL","target":"NO_AUTHORIZED_TARGET","required":true}
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Version Phase 0 semantic validator and falsification tests, then integrate Reliability validation into bootstrap and protected CI.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "architecture/reliability-recovery-v1.md",
+    "architecture/reliability-recovery-implementation-v1.md",
+    "reliability/spec.json",
+    "reliability/invariants.json",
+    "reliability/operation-catalog.json",
+    "reliability/recovery-policy.json",
+    "governance/user-observation-policy.json",
+    "continuity/user-observations.jsonl",
+    "GITHUB_PR:76:Semantic Firewall Phase A — import and verify exact legacy source corpus",
+    "github:main=29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b"
+  ]
+}

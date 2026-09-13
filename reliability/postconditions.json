@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "catalog_id": "life-reliability-postconditions-v1",
+  "runtime_control_authority": "NONE",
+  "postconditions": [
+    {
+      "postcondition_id": "RPOST-0001",
+      "name": "AUTHORITATIVE_EFFECT_READBACK",
+      "verification_dimension": "EFFECT_STATE",
+      "required_evidence_role": "AUTHORITATIVE_READBACK",
+      "pass_rule": "AUTHORITATIVE_READBACK_MATCHES_THE_EXACT_TARGET_EFFECT_DECLARED_BY_THE_OPERATION_CONTRACT",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "postcondition_id": "RPOST-0002",
+      "name": "REQUIRED_OPERATION_POSTCONDITIONS_PASS",
+      "verification_dimension": "POSTCONDITION_STATE",
+      "required_evidence_role": "POSTCONDITION_PROOF",
+      "pass_rule": "EVERY_POSTCONDITION_ID_DECLARED_REQUIRED_BY_THE_OPERATION_CONTRACT_HAS_STATE_PASS",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "postcondition_id": "RPOST-0003",
+      "name": "RECURRENCE_FALSIFICATION_PASS",
+      "verification_dimension": "RECURRENCE_PREVENTION",
+      "required_evidence_role": "REGRESSION_PROOF",
+      "pass_rule": "THE_VERSIONED_RECURRENCE_FALSIFICATION_FOR_THE_REPAIR_PASSES_AFTER_THE_REPAIR_AND_CANNOT_BE_SATISFIED_BY_OCCURRENCE_REPAIR_ONLY",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "postcondition_id": "RPOST-0004",
+      "name": "PARENT_RESTORATION_READBACK",
+      "verification_dimension": "PARENT_RESTORATION",
+      "required_evidence_role": "PARENT_CONTEXT",
+      "pass_rule": "THE_REEVALUATED_ACTIVE_GOAL_PATH_SELECTS_THE_NONTERMINAL_PARENT_OR_ROOT_BEFORE_UNRELATED_BACKLOG_WORK",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "postcondition_id": "RPOST-0005",
+      "name": "COMPENSATION_EFFECT_READBACK",
+      "verification_dimension": "EFFECT_STATE",
+      "required_evidence_role": "AUTHORITATIVE_READBACK",
+      "pass_rule": "AUTHORITATIVE_READBACK_PROVES_THE_COMPENSATION_CONTRACT_POSTCONDITION_FOR_THE_EXACT_TARGET",
+      "runtime_control_authority": "NONE"
+    }
+  ]
+}

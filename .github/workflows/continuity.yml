@@ -25,6 +25,8 @@ jobs:
         run: python scripts/validate_ci_pins.py
       - name: Validate continuity bundle
         run: python scripts/validate_continuity.py
+      - name: Validate Reliability contracts
+        run: python scripts/validate_reliability.py
       - name: Validate source coordination
         run: python scripts/validate_coordination.py
       - name: Validate relevant lock history
