@@ -16,60 +16,16 @@
   "schedule": {
     "timezone": "America/Denver",
     "cadence": "HOURLY",
-    "deep_audit_local_hours": [
-      2,
-      14
-    ],
+    "deep_audit_local_hours": [2, 14],
     "daily_summary_local_hour": 14,
     "schedule_contract_id": "build-watchdog-hourly-denver-v1"
   },
-  "audit_layers": [
-    "CONTROL_PLANE",
-    "DEEP",
-    "SELF_AUDIT"
-  ],
-  "detector_states": [
-    "PASS",
-    "FAIL",
-    "UNVERIFIED",
-    "UNKNOWN",
-    "NOT_RUN",
-    "EXPECTED_NOT_RUN"
-  ],
-  "finding_lifecycle_states": [
-    "VERIFIED_OPEN",
-    "FIX_APPEARS_PRESENT_VERIFICATION_PENDING",
-    "VERIFIED_RESOLVED"
-  ],
-  "deep_audit_states": [
-    "COMPLETE_PASS",
-    "COMPLETE_FINDINGS",
-    "PARTIAL"
-  ],
-  "severity_states": [
-    "CRITICAL",
-    "HIGH",
-    "MEDIUM",
-    "LOW"
-  ],
-  "allowed_predicate_ops": [
-    "EQ",
-    "NE",
-    "IN",
-    "NOT_IN",
-    "REGEX",
-    "LT",
-    "LTE",
-    "GT",
-    "GTE",
-    "SET_EQ",
-    "SUBSET",
-    "DIFF_EMPTY",
-    "HASH_EQ",
-    "EXISTS",
-    "AND",
-    "OR"
-  ],
+  "audit_layers": ["CONTROL_PLANE", "DEEP", "SELF_AUDIT"],
+  "detector_states": ["PASS", "FAIL", "UNVERIFIED", "UNKNOWN", "NOT_RUN", "EXPECTED_NOT_RUN"],
+  "finding_lifecycle_states": ["VERIFIED_OPEN", "FIX_APPEARS_PRESENT_VERIFICATION_PENDING", "VERIFIED_RESOLVED"],
+  "deep_audit_states": ["COMPLETE_PASS", "COMPLETE_FINDINGS", "PARTIAL"],
+  "severity_states": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+  "allowed_predicate_ops": ["EQ", "NE", "IN", "NOT_IN", "REGEX", "LT", "LTE", "GT", "GTE", "SET_EQ", "SUBSET", "DIFF_EMPTY", "HASH_EQ", "EXISTS", "AND", "OR"],
   "read_failure": {
     "retry_count": 1,
     "after_retry_failure": "UNVERIFIED",
@@ -109,83 +65,28 @@
       "governance/placement-policy.json",
       "continuity/response-contract.json"
     ],
-    "source_contract_fingerprints": [
-      {
-        "path": "continuity/bootstrap.json",
-        "git_blob_sha": "eab55ac6039dfb4697584ffb9a62bb17a825ad24"
-      },
-      {
-        "path": "continuity/response-contract.json",
-        "git_blob_sha": "16a898981cdb116f0ebd81a1376ea9e8d8d3addd"
-      },
-      {
-        "path": "coordination/protocol.json",
-        "git_blob_sha": "37086dc524587498d79d618b18da0983f44e4cab"
-      },
-      {
-        "path": "governance/placement-policy.json",
-        "git_blob_sha": "67bf3afb6a76f513c35008a5c516964747d34cb4"
-      }
+    "source_contract_paths": [
+      "continuity/bootstrap.json",
+      "continuity/response-contract.json",
+      "coordination/protocol.json",
+      "governance/placement-policy.json"
     ],
-    "source_contract_change_effect": "REQUIRE_WATCHDOG_COMPATIBILITY_REVIEW",
-    "drift_states": [
-      "CURRENT",
-      "EXECUTOR_STALE",
-      "SCHEDULE_STALE",
-      "SOURCE_INVALID",
-      "CAPABILITY_DRIFT",
-      "AUTHORITY_DRIFT",
-      "OBSERVABILITY_LOSS"
-    ],
+    "source_contract_validation_mode": "CURRENT_TREE_STRUCTURAL_COMPATIBILITY",
+    "source_contract_change_effect": "RUN_CURRENT_TREE_STRUCTURAL_COMPATIBILITY_VALIDATION",
+    "drift_states": ["CURRENT", "EXECUTOR_STALE", "SCHEDULE_STALE", "SOURCE_INVALID", "CAPABILITY_DRIFT", "AUTHORITY_DRIFT", "OBSERVABILITY_LOSS"],
     "instruction_adjustment_mode": "VERSIONED_SOURCE_ONLY",
     "task_prompt_mutation": "FORBIDDEN",
     "authority_expansion": "FORBIDDEN",
-    "on_executor_or_schedule_mismatch": [
-      "DISABLE_ISSUE_MUTATIONS",
-      "RUN_READ_ONLY_CONTROL_PLANE_AUDIT",
-      "NOTIFY_OWNER"
-    ],
+    "on_executor_or_schedule_mismatch": ["DISABLE_ISSUE_MUTATIONS", "RUN_READ_ONLY_CONTROL_PLANE_AUDIT", "NOTIFY_OWNER"],
     "capability_assumptions": [
-      {
-        "id": "CHATGPT_SCHEDULED_MAX_STANDARD_FREQUENCY",
-        "expected": "HOURLY",
-        "source_class": "OPENAI_OFFICIAL"
-      },
-      {
-        "id": "CHATGPT_SCHEDULED_GITHUB_APP_SUPPORTED",
-        "expected": true,
-        "source_class": "OPENAI_OFFICIAL"
-      },
-      {
-        "id": "GITHUB_PUBLIC_STANDARD_ACTIONS_COST",
-        "expected": "FREE",
-        "source_class": "GITHUB_OFFICIAL"
-      },
-      {
-        "id": "GITHUB_PUBLIC_RULESETS_ON_FREE",
-        "expected": true,
-        "source_class": "GITHUB_OFFICIAL"
-      },
-      {
-        "id": "GITHUB_PUBLIC_ORGANIZATION_MERGE_QUEUE_SUPPORTED",
-        "expected": true,
-        "source_class": "GITHUB_OFFICIAL"
-      },
-      {
-        "id": "SUPABASE_PLAN",
-        "expected": "FREE",
-        "source_class": "AUTHORIZED_SYSTEM"
-      },
-      {
-        "id": "SUPABASE_FREE_BRANCHING_INCLUDED",
-        "expected": false,
-        "source_class": "SUPABASE_OFFICIAL"
-      },
-      {
-        "id": "VERCEL_HOBBY_HOURLY_CRON_SUPPORTED",
-        "expected": false,
-        "source_class": "VERCEL_OFFICIAL"
-      }
+      {"id": "CHATGPT_SCHEDULED_MAX_STANDARD_FREQUENCY", "expected": "HOURLY", "source_class": "OPENAI_OFFICIAL"},
+      {"id": "CHATGPT_SCHEDULED_GITHUB_APP_SUPPORTED", "expected": true, "source_class": "OPENAI_OFFICIAL"},
+      {"id": "GITHUB_PUBLIC_STANDARD_ACTIONS_COST", "expected": "FREE", "source_class": "GITHUB_OFFICIAL"},
+      {"id": "GITHUB_PUBLIC_RULESETS_ON_FREE", "expected": true, "source_class": "GITHUB_OFFICIAL"},
+      {"id": "GITHUB_PUBLIC_ORGANIZATION_MERGE_QUEUE_SUPPORTED", "expected": true, "source_class": "GITHUB_OFFICIAL"},
+      {"id": "SUPABASE_PLAN", "expected": "FREE", "source_class": "AUTHORIZED_SYSTEM"},
+      {"id": "SUPABASE_FREE_BRANCHING_INCLUDED", "expected": false, "source_class": "SUPABASE_OFFICIAL"},
+      {"id": "VERCEL_HOBBY_HOURLY_CRON_SUPPORTED", "expected": false, "source_class": "VERCEL_OFFICIAL"}
     ],
     "architecture_compatibility_rule": "ALL_REGISTERED_ASSUMPTIONS_PASS",
     "source_change_rule": "REVALIDATE_ALL_REGISTERED_ASSUMPTIONS"
