@@ -84,6 +84,13 @@ class WatchdogValidationTests(unittest.TestCase):
                 with self.assertRaises(vw.ValidationError):
                     vw.validate_source_contract_documents(docs)
 
+    def test_response_contract_epoch_drift_fails(self):
+        docs = copy.deepcopy(BASE_SOURCE_DOCS)
+        docs["continuity/response-contract.json"]["schema_version"] = 1
+        docs["continuity/response-contract.json"]["contract_id"] = "life-response-contract-v1"
+        with self.assertRaises(vw.ValidationError):
+            vw.validate_source_contract_documents(docs)
+
     def test_coordination_protocol_epoch_drift_fails(self):
         docs = copy.deepcopy(BASE_SOURCE_DOCS)
         docs["coordination/protocol.json"]["protocol_id"] = "life-source-coordination-v4"
