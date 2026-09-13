@@ -24,7 +24,8 @@
     "scripts/validate_coordination.py",
     "tests/test_coordination.py",
     "tests/test_initial_lock_publication.py",
-    "tests/test_problem_intake_policy.py"
+    "tests/test_problem_intake_policy.py",
+    "tests/test_repository_identity.py"
   ],
   "external_targets": [],
   "claims": [
