@@ -120,7 +120,7 @@
       },
       {
         "path": "coordination/protocol.json",
-        "git_blob_sha": "02d0a3c2a93eb2aa380eabcd45a84513b28c9b21"
+        "git_blob_sha": "4cf50ab920607ee667ec4413c45d3acb2979c9ee"
       },
       {
         "path": "governance/placement-policy.json",
