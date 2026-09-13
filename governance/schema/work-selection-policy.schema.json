@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Vinanonymous/Build/blob/main/governance/schema/work-selection-policy.schema.json",
+  "$id": "https://github.com/KINETIC-DESIGN-CO/Build/blob/main/governance/schema/work-selection-policy.schema.json",
   "title": "Life Engineering Work Selection Policy",
   "type": "object",
   "additionalProperties": false,
@@ -22,14 +22,15 @@
     "runtime_control_authority",
     "same_or_lower_priority_rule",
     "schema_version",
+    "terminal_redispatch",
     "worker_lanes"
   ],
   "properties": {
     "schema_version": {
-      "const": 3
+      "const": 4
     },
     "policy_id": {
-      "const": "life-engineering-work-selection-v3"
+      "const": "life-engineering-work-selection-v4"
     },
     "runtime_control_authority": {
       "const": "NONE"
@@ -320,6 +321,56 @@
         "missing_lock_rule": {
           "type": "string",
           "minLength": 1
+        }
+      }
+    },
+    "terminal_redispatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trigger",
+        "same_thread_action",
+        "issue_review_rule",
+        "selection_rule",
+        "claim_rule",
+        "race_rule",
+        "repeat_rule",
+        "stop_states"
+      ],
+      "properties": {
+        "trigger": {
+          "const": "SELECTED_WORK_TERMINAL_AND_REQUIRED_COMPLETION_CLEANUP_VERIFIED"
+        },
+        "same_thread_action": {
+          "const": "RERUN_LIVE_FRESH_THREAD_DISPATCH_WITHOUT_USER_PROMPT"
+        },
+        "issue_review_rule": {
+          "const": "RUN_PLACEMENT_POLICY_OPEN_ISSUE_REVIEW_BEFORE_EACH_NEW_MUTABLE_WORK_ITEM"
+        },
+        "selection_rule": {
+          "const": "WHEN_RANK_0_TO_3_INACTIVE_SELECT_FIRST_DISPATCHABLE_ADMITTED_ITEM_BY_TIE_BREAK_WHOSE_COMPONENT_CLAIM_IS_NOT_ACTIVE_UNEXPIRED"
+        },
+        "claim_rule": {
+          "const": "ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP_BEFORE_MUTATION"
+        },
+        "race_rule": {
+          "const": "ON_CLAIM_COMPARE_AND_SWAP_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH_WITHOUT_USER_PROMPT"
+        },
+        "repeat_rule": {
+          "const": "AFTER_EACH_TERMINAL_WORK_ITEM_REPEAT_TERMINAL_REDISPATCH"
+        },
+        "stop_states": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "NO_ELIGIBLE_WORK",
+              "REQUIRED_LIVE_READ_NOT_RUN",
+              "UNSUPPORTED_OR_UNAUTHORIZED_OPERATION"
+            ]
+          }
         }
       }
     },
