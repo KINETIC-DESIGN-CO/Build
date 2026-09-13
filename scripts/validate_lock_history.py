@@ -45,6 +45,18 @@ def parse_utc(value: object) -> datetime:
         fail(f"invalid timestamp: {value!r}")
 
 
+def parse_git_time(value: str) -> datetime:
+    if not isinstance(value, str) or not value:
+        fail("git commit timestamp missing")
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        fail(f"invalid git commit timestamp: {value!r}")
+    if parsed.tzinfo is None:
+        fail("git commit timestamp must be timezone-aware")
+    return parsed
+
+
 def validate_worker(worker: object) -> None:
     if not isinstance(worker, dict) or set(worker) != {"kind", "session_id"}:
         fail("worker must contain exactly kind and session_id")
@@ -54,7 +66,7 @@ def validate_worker(worker: object) -> None:
         fail("worker.kind invalid")
 
 
-def validate_snapshot(lock: dict, protocol: dict) -> None:
+def validate_snapshot_shape(lock: dict) -> None:
     if not isinstance(lock, dict) or set(lock) != LOCK_KEYS:
         fail("lock snapshot keys mismatch")
     if lock["schema_version"] != 1 or lock["runtime_control_authority"] != "NONE":
@@ -77,11 +89,17 @@ def validate_snapshot(lock: dict, protocol: dict) -> None:
     expires = parse_utc(lock["expires_at"])
     if not (acquired <= heartbeat < expires):
         fail("lock timestamp ordering invalid")
+
+
+def validate_snapshot(lock: dict, protocol: dict) -> None:
+    validate_snapshot_shape(lock)
+    heartbeat = parse_utc(lock["heartbeat_at"])
+    expires = parse_utc(lock["expires_at"])
     if int((expires - heartbeat).total_seconds()) != protocol["lease_duration_seconds"]:
         fail("lock lease duration must equal protocol.lease_duration_seconds")
 
 
-def immutable_owner_fields(lock: dict) -> tuple:
+def immutable_release_fields(lock: dict) -> tuple:
     return (
         lock["resource_key"], lock["generation"], lock["work_id"], lock["worker"],
         lock["implementation_branch"], lock["lease_id"], lock["base_sha"], lock["acquired_at"],
@@ -89,9 +107,7 @@ def immutable_owner_fields(lock: dict) -> tuple:
     )
 
 
-def validate_transition(previous: dict, current: dict, protocol: dict) -> None:
-    validate_snapshot(previous, protocol)
-    validate_snapshot(current, protocol)
+def validate_transition_semantics(previous: dict, current: dict, protocol: dict) -> None:
     if previous["resource_key"] != current["resource_key"]:
         fail("resource_key cannot change within lock history")
 
@@ -103,7 +119,7 @@ def validate_transition(previous: dict, current: dict, protocol: dict) -> None:
     curr_heartbeat = parse_utc(current["heartbeat_at"])
 
     if prev_state == "ACTIVE" and curr_state == "RELEASED":
-        if immutable_owner_fields(previous) != immutable_owner_fields(current):
+        if immutable_release_fields(previous) != immutable_release_fields(current):
             fail("release must preserve prior owner and timestamps")
         return
 
@@ -150,6 +166,12 @@ def validate_transition(previous: dict, current: dict, protocol: dict) -> None:
     fail(f"illegal lock transition {prev_state}->{curr_state}")
 
 
+def validate_transition(previous: dict, current: dict, protocol: dict) -> None:
+    validate_snapshot(previous, protocol)
+    validate_snapshot(current, protocol)
+    validate_transition_semantics(previous, current, protocol)
+
+
 def validate_history(history: list[dict], protocol: dict) -> None:
     if not history:
         fail("lock history must contain at least one snapshot")
@@ -166,6 +188,51 @@ def validate_history(history: list[dict], protocol: dict) -> None:
             fail(f"transition[{index - 1}->{index}] generation {previous['generation']}->{current['generation']} {previous['state']}->{current['state']}: {exc}")
 
 
+def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
+    if not entries:
+        fail("lock history must contain at least one snapshot")
+    cutoff = parse_utc(protocol["lock_history_enforcement_start_utc"])
+    resource_key = None
+    for index, entry in enumerate(entries):
+        if not isinstance(entry, dict) or set(entry) != {"commit_sha", "committed_at", "lock"}:
+            fail("history entry keys mismatch")
+        if not SHA_RE.fullmatch(str(entry["commit_sha"])):
+            fail("history entry commit_sha invalid")
+        committed_at = entry["committed_at"]
+        if not isinstance(committed_at, datetime) or committed_at.tzinfo is None:
+            fail("history entry committed_at must be timezone-aware datetime")
+        lock = entry["lock"]
+        validate_snapshot_shape(lock)
+        if resource_key is None:
+            resource_key = lock["resource_key"]
+        elif lock["resource_key"] != resource_key:
+            fail("resource_key cannot change within lock history")
+
+        if committed_at < cutoff:
+            continue
+
+        validate_snapshot(lock, protocol)
+        if index == 0:
+            if lock["state"] != "ACTIVE" or lock["generation"] != 1:
+                fail("enforced initial lock snapshot must be ACTIVE generation 1")
+            if lock["acquired_at"] != lock["heartbeat_at"]:
+                fail("enforced initial lock snapshot must have acquired_at == heartbeat_at")
+            continue
+
+        previous_entry = entries[index - 1]
+        previous = previous_entry["lock"]
+        validate_snapshot_shape(previous)
+        if previous_entry["committed_at"] >= cutoff:
+            validate_snapshot(previous, protocol)
+        try:
+            validate_transition_semantics(previous, lock, protocol)
+        except ValidationError as exc:
+            fail(
+                f"transition[{index - 1}->{index}] generation {previous['generation']}->{lock['generation']} "
+                f"{previous['state']}->{lock['state']}: {exc}"
+            )
+
+
 def load_protocol() -> dict:
     protocol = json.loads(PROTOCOL_PATH.read_text(encoding="utf-8"))
     if protocol.get("protocol_id") != "life-source-coordination-v2":
@@ -174,6 +241,9 @@ def load_protocol() -> dict:
         fail("unexpected lease_duration_seconds")
     if protocol.get("renew_when_remaining_seconds_lte") != 1800:
         fail("unexpected renew_when_remaining_seconds_lte")
+    if protocol.get("lock_history_enforcement_start_utc") != "2026-09-12T22:56:23Z":
+        fail("unexpected lock_history_enforcement_start_utc")
+    parse_utc(protocol["lock_history_enforcement_start_utc"])
     return protocol
 
 
@@ -193,7 +263,7 @@ def remote_lock_branches() -> list[str]:
     return sorted(branches)
 
 
-def history_for_branch(branch: str) -> list[dict]:
+def history_entries_for_branch(branch: str) -> list[dict]:
     remote_ref = f"refs/remotes/origin/{branch}"
     run_git("fetch", "--quiet", "origin", f"refs/heads/{branch}:{remote_ref}")
     commits = [
@@ -201,14 +271,16 @@ def history_for_branch(branch: str) -> list[dict]:
             "log", "--reverse", "--format=%H", remote_ref, "--", "coordination/lock.json"
         ).splitlines() if line
     ]
-    history = []
+    entries = []
     for commit in commits:
         raw = run_git("show", f"{commit}:coordination/lock.json")
         try:
-            history.append(json.loads(raw))
+            lock = json.loads(raw)
         except Exception as exc:
             fail(f"{branch} commit {commit} has invalid lock JSON: {exc}")
-    return history
+        committed_at = parse_git_time(run_git("show", "-s", "--format=%cI", commit))
+        entries.append({"commit_sha": commit, "committed_at": committed_at, "lock": lock})
+    return entries
 
 
 def main() -> int:
@@ -216,8 +288,7 @@ def main() -> int:
         protocol = load_protocol()
         for branch in remote_lock_branches():
             try:
-                history = history_for_branch(branch)
-                validate_history(history, protocol)
+                validate_versioned_history(history_entries_for_branch(branch), protocol)
             except ValidationError as exc:
                 fail(f"{branch}: {exc}")
     except ValidationError as exc:
