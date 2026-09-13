@@ -242,6 +242,36 @@ class LockHistoryTests(unittest.TestCase):
             PROTOCOL,
         )
 
+    def test_pre_epoch_non_uuid_session_is_legacy_evidence(self):
+        legacy = lock()
+        legacy["worker"] = {"kind": "chatgpt", "session_id": "legacy-session"}
+        mod.validate_versioned_history(
+            [entry(legacy, datetime(2026, 9, 12, 22, 55, tzinfo=timezone.utc), "a")],
+            PROTOCOL,
+        )
+
+    def test_post_epoch_non_uuid_session_is_rejected(self):
+        invalid = lock()
+        invalid["worker"] = {"kind": "chatgpt", "session_id": "legacy-session"}
+        with self.assertRaises(mod.ValidationError):
+            mod.validate_versioned_history(
+                [entry(invalid, datetime(2026, 9, 12, 22, 57, tzinfo=timezone.utc), "a")],
+                PROTOCOL,
+            )
+
+    def test_pre_epoch_empty_lock_branch_is_legacy_namespace(self):
+        mod.validate_empty_branch_tip(
+            datetime(2026, 9, 12, 22, 55, tzinfo=timezone.utc),
+            PROTOCOL,
+        )
+
+    def test_post_epoch_empty_lock_branch_is_rejected(self):
+        with self.assertRaises(mod.ValidationError):
+            mod.validate_empty_branch_tip(
+                datetime(2026, 9, 12, 22, 57, tzinfo=timezone.utc),
+                PROTOCOL,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
