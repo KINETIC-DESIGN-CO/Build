@@ -14,6 +14,7 @@
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000001-4e72b93a.json",
     "continuity/checkpoints/CP-000002-7f3a2c91.json",
+    "continuity/checkpoints/CP-000003-91c64a2e.json",
     "reliability/compatibility-map.json",
     "reliability/invariants.json",
     "reliability/operation-catalog.json",
