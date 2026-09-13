@@ -10,9 +10,15 @@
   "base_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
   "component_id": "auto_issue_dispatch",
   "repo_paths": [
-    "governance/work-selection-policy.json",
+    ".github/workflows/issue-lifecycle.yml",
+    "continuity/bootstrap.json",
+    "governance/issue-lifecycle-policy.json",
+    "governance/schema/issue-lifecycle-policy.schema.json",
     "governance/schema/work-selection-policy.schema.json",
+    "governance/work-selection-policy.json",
     "scripts/select_work.py",
+    "scripts/validate_issue_lifecycle.py",
+    "tests/test_issue_lifecycle.py",
     "tests/test_work_selection.py"
   ],
   "external_targets": [],
