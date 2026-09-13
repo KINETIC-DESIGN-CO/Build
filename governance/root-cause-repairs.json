@@ -62,7 +62,7 @@
     {
       "repair_id": "RCA-0002",
       "root_goal_ref": "continuity/current.json:A-0014",
-      "state": "REPAIRING",
+      "state": "VERIFIED_FIXED",
       "failure_refs": [
         "github-actions:34748616720:validate_lock_history",
         "github-lock-branch:lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab"
@@ -77,7 +77,12 @@
       ],
       "history_evidence_refs": [
         "60bf80bef57154b0639d2f5328917b22bc425935",
-        "0b2611fba37f8b4cb44574264c1463e2d1366126"
+        "0b2611fba37f8b4cb44574264c1463e2d1366126",
+        "github-pr:68",
+        "github-actions:34749126025",
+        "github-actions:34750006786",
+        "github-main:11c8741ee8955e9f64df9e56346939e378430766",
+        "github-actions:34750093554"
       ],
       "root_cause_classes": [
         "GLOBAL_LIVE_NAMESPACE_VALIDATION_CONTRADICTS_EXACT_RESOURCE_INTERSECTION",
@@ -105,7 +110,7 @@
         "GLOBAL_AUDIT_STILL_REJECTS_POST_EPOCH_EMPTY_LOCK_BRANCH",
         "PULL_REQUEST_SCOPE_DERIVES_FROM_EXACT_EVENT_BASE_AND_HEAD"
       ],
-      "verification_state": "REPAIR_SOURCE_AND_RECURRENCE_TESTS_PENDING"
+      "verification_state": "SOURCE_CI_34749126025_SUCCESS;MERGE_GROUP_34750006786_SUCCESS;MAIN_11c8741ee8955e9f64df9e56346939e378430766_READBACK_VERIFIED;POST_MERGE_34750093554_SUCCESS"
     }
   ]
 }
