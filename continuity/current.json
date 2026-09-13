@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "manifest_revision": 22,
+  "manifest_revision": 23,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-12T22:56:23Z",
+  "updated_at": "2026-09-13T01:59:31Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
-  "phase": "IMPLEMENTATION",
-  "current_component": "multi_thread_coordination_hardening",
-  "current_status": "ACTIVE",
+  "phase": "VERIFICATION",
+  "current_component": "build_repository_watchdog",
+  "current_status": "BLOCKED",
   "authorized_targets": {
     "github": {
       "repository_id": 1366835183,
@@ -23,14 +23,13 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Make Life multi-thread development self-dispatching and collision-safe so a fresh thread deterministically joins foreground or parallel work from exact live state without Vince manually assigning a lane or issue.",
+    "goal": "Verify the first scheduled Build Repository Watchdog execution against the versioned executor, schedule, self-audit, and required GitHub/Supabase read contract.",
     "completion_conditions": [
-      "AUTOMATIC_FRESH_THREAD_LANE_SELECTION_VERSIONED_AND_TESTED",
-      "ADMITTED_READY_WORK_AUTO_SELECTION_VERSIONED_AND_TESTED",
-      "ACTIVE_CLAIM_INTERSECTION_AUTO_EVALUATION_VERSIONED_AND_TESTED",
-      "GITHUB_MERGE_QUEUE_RULE_ACTIVE_AND_MERGE_GROUP_VALIDATE_VERIFIED",
-      "LEASE_TRANSITION_INVARIANTS_EXECUTABLY_ENFORCED",
-      "MULTI_THREAD_HARDENING_MERGED_AND_POST_MERGE_VERIFIED"
+      "WATCHDOG_FIRST_SCHEDULED_RUN_EXECUTED",
+      "WATCHDOG_FIRST_RUN_EXECUTOR_CONTRACT_MATCH_VERIFIED",
+      "WATCHDOG_FIRST_RUN_SCHEDULE_CONTRACT_MATCH_VERIFIED",
+      "WATCHDOG_FIRST_RUN_SELF_AUDIT_STATE_CLASSIFIED",
+      "WATCHDOG_FIRST_RUN_REQUIRED_READ_RESULTS_CLASSIFIED"
     ]
   },
   "active_decision_ids": [
@@ -43,12 +42,12 @@
     "D-0008",
     "D-0009",
     "D-0010",
-    "D-0013",
     "D-0014",
     "D-0015",
     "D-0016",
     "D-0017",
-    "D-0019"
+    "D-0019",
+    "D-0020"
   ],
   "retired_decision_ids": [
     "D-0101",
@@ -104,19 +103,19 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-12T22:56:23Z",
+      "observed_at": "2026-09-13T01:59:31Z",
       "repository_id": 1366835183,
       "full_name": "KINETIC-DESIGN-CO/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "cfdadffef27e21ea8b1a0ab5b9e8fc04b2495441",
+      "head_sha": "b55ee94b1102093a19eacc981695ea2e5bff1174",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
-      "ruleset_strict_required_status_checks": true,
-      "open_pull_request_count": 0,
-      "latest_continuity_workflow_run_id": 34722379900,
+      "ruleset_strict_required_status_checks": false,
+      "open_pull_request_count": 1,
+      "latest_continuity_workflow_run_id": 34730467528,
       "latest_continuity_workflow_conclusion": "success"
     },
     "supabase": {
@@ -177,10 +176,10 @@
     }
   },
   "next_action": {
-    "id": "A-0012",
-    "kind": "IMPLEMENT",
-    "target": "MULTI_THREAD_AUTOMATIC_DISPATCH_AND_COORDINATION_HARDENING",
-    "description": "Replace custom integration:main PR and merge serialization with a required GitHub merge queue and merge_group-backed validate check while preserving exact component, repository-file, continuity, and external-target claims; enforce lease-state and generation transitions; merge and post-merge verify the source changes, then directly verify the main ruleset merge queue.",
+    "id": "A-0011",
+    "kind": "DESIGN",
+    "target": "BUILD_REPOSITORY_WATCHDOG_RUN_EVIDENCE_CHANNEL",
+    "description": "Select and version an exact machine-readable watchdog run-evidence mechanism that a scheduled watchdog cycle can produce and a later Life worker can read to verify executor-contract identity, schedule-contract identity, self-audit state, and required GitHub/Supabase read classifications without granting prose or model judgment control authority; then execute one watchdog cycle and verify those exact fields.",
     "authorization_effect": "NONE"
   }
 }
