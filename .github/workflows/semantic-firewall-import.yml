@@ -1,0 +1,194 @@
+name: semantic-firewall-import
+
+on:
+  push:
+    branches:
+      - work/1762b5f1-6b0d-4e45-9670-770b5409181c
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          ref: work/1762b5f1-6b0d-4e45-9670-770b5409181c
+      - name: Copy and verify exact legacy Semantic Firewall corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_REPO='https://github.com/Vinanonymous/life.git'
+          SOURCE_COMMIT='6cc602f2ac18599aa67c0352ce81fbd404dcb40f'
+          BASELINE_COMMIT='c46179c730a5e7b94214433a59bdd3c85d18b31f'
+          SOURCE_TREE='ca4b5d72897f17dc2f9d929186f41d6c93ba2dbc'
+          rm -rf /tmp/life-semantic-firewall-source
+          git clone --quiet "$SOURCE_REPO" /tmp/life-semantic-firewall-source
+          git -C /tmp/life-semantic-firewall-source checkout --quiet --detach "$SOURCE_COMMIT"
+          test "$(git -C /tmp/life-semantic-firewall-source rev-parse HEAD)" = "$SOURCE_COMMIT"
+          git -C /tmp/life-semantic-firewall-source cat-file -e "${BASELINE_COMMIT}^{commit}"
+          test "$(git -C /tmp/life-semantic-firewall-source rev-parse "${SOURCE_COMMIT}:contracts/semantic-firewall")" = "$SOURCE_TREE"
+          rm -rf contracts/semantic-firewall
+          mkdir -p contracts
+          cp -a /tmp/life-semantic-firewall-source/contracts/semantic-firewall contracts/
+          python - <<'PY'
+          import hashlib
+          import json
+          import pathlib
+          import subprocess
+
+          source_root = pathlib.Path('/tmp/life-semantic-firewall-source')
+          root = pathlib.Path('.')
+          source_commit = '6cc602f2ac18599aa67c0352ce81fbd404dcb40f'
+          baseline_commit = 'c46179c730a5e7b94214433a59bdd3c85d18b31f'
+          source_tree = 'ca4b5d72897f17dc2f9d929186f41d6c93ba2dbc'
+          expected = {
+              'contracts/semantic-firewall/artifact-byte-identity.acceptance.json': 'f5af029e83b3ae115934cbc3684c59390252dd85',
+              'contracts/semantic-firewall/contract-reference.acceptance.json': 'fe5bbb12f7365c5bf0405a0ee78397ab8b934654',
+              'contracts/semantic-firewall/control-input-binding.acceptance.json': '8a74bfc60f2d62941e75ad33258069e3378865a1',
+              'contracts/semantic-firewall/control-request.acceptance.json': 'adfbf6a823120990fd5782db3ac51ae62146f05b',
+              'contracts/semantic-firewall/receipt-execution-binding.acceptance.json': 'e522a1f7ea72474204ad00ed384caadb6cc714d2',
+              'contracts/semantic-firewall/receipt_execution_binding_inner.py': '771e97168051f0f19c3f384d72da8ed83d802aef',
+              'contracts/semantic-firewall/run_artifact_byte_identity_acceptance.py': 'b1f4bfe92601cd78e59a851e20cd344a53bb9704',
+              'contracts/semantic-firewall/run_contract_reference_acceptance.py': 'ad952e8aea4388a5782865735bf7630c136cffcd',
+              'contracts/semantic-firewall/run_control_input_binding_acceptance.py': '44677fa47b344c3e6a018c4e4dc51daa5395de29',
+              'contracts/semantic-firewall/run_control_request_acceptance.py': 'c40a0aebcaecc7aac671638c436f262b870788f4',
+              'contracts/semantic-firewall/run_receipt_execution_binding_acceptance.py': '37ecc081c99f7145317dc6445eb4abf0fd303b83',
+              'contracts/semantic-firewall/run_typed_contract_evaluation_acceptance.py': '8d1b80205a0a3fd9fede9d767eb3a6b54010950a',
+              'contracts/semantic-firewall/typed-contract-evaluation.acceptance.json': 'fdef722d326e26582b731b804ce5ab9e4ab9d601',
+          }
+          def git_blob_sha(data: bytes) -> str:
+              return hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
+          files = []
+          for path, sha in sorted(expected.items()):
+              source_bytes = (source_root / path).read_bytes()
+              target_bytes = (root / path).read_bytes()
+              source_sha = git_blob_sha(source_bytes)
+              target_sha = git_blob_sha(target_bytes)
+              if source_sha != sha or target_sha != sha or source_bytes != target_bytes:
+                  raise SystemExit(f'byte identity failed for {path}: source={source_sha} target={target_sha} expected={sha}')
+              files.append({'path': path, 'source_blob_sha1': sha, 'byte_size': len(target_bytes)})
+          provenance = {
+              'schema_version': 1,
+              'authority': 'EVIDENCE_ONLY',
+              'runtime_control_authority': 'NONE',
+              'source_repository': 'Vinanonymous/life',
+              'source_commit': source_commit,
+              'audited_baseline_commit': baseline_commit,
+              'source_semantic_firewall_tree_sha1': source_tree,
+              'copy_mode': 'BYTE_FOR_BYTE',
+              'files': files,
+              'source_comparison': {
+                  'baseline_to_source_relationship': 'DIVERGED_FROM_COMMON_ANCESTOR',
+                  'source_head_adds': [
+                      'contracts/semantic-firewall/control-input-binding.acceptance.json',
+                      'contracts/semantic-firewall/run_control_input_binding_acceptance.py'
+                  ],
+                  'source_head_updates': [
+                      'contracts/semantic-firewall/run_receipt_execution_binding_acceptance.py'
+                  ]
+              },
+              'dispositions': [
+                  {'mechanism': 'CLOSED_TEN_CONTROL_DECISION_KINDS', 'disposition': 'KEEP'},
+                  {'mechanism': 'TESTED_LEGACY_SEMANTIC_FIREWALL_CORPUS', 'disposition': 'COPY_VERIFY_ADAPT'},
+                  {'mechanism': 'REBUILD_FROM_MEMORY', 'disposition': 'REMOVE'},
+                  {'mechanism': 'WHOLESALE_LEGACY_RUNTIME', 'disposition': 'REMOVE'},
+                  {'mechanism': 'MODEL_STRUCTURED_OUTPUT_AS_RUNTIME_AUTHORITY_REPLACEMENT', 'disposition': 'REMOVE'},
+                  {'mechanism': 'DETERMINISTIC_CONTROL_INTERCEPTION', 'disposition': 'COMBINE'}
+              ],
+              'activation_state': 'SOURCE_ONLY_NO_RUNTIME_AUTHORITY'
+          }
+          (root / 'contracts/semantic-firewall/import-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
+
+          test_text = r'''from __future__ import annotations
+
+import hashlib
+import json
+import subprocess
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+PROVENANCE = ROOT / "contracts" / "semantic-firewall" / "import-provenance.json"
+RUNNERS = [
+    "run_control_request_acceptance.py",
+    "run_contract_reference_acceptance.py",
+    "run_artifact_byte_identity_acceptance.py",
+    "run_control_input_binding_acceptance.py",
+    "run_receipt_execution_binding_acceptance.py",
+    "run_typed_contract_evaluation_acceptance.py",
+]
+
+def git_blob_sha(data: bytes) -> str:
+    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\\0" + data).hexdigest()
+
+class SemanticFirewallImportTests(unittest.TestCase):
+    def test_imported_bytes_match_pinned_legacy_blobs(self):
+        manifest = json.loads(PROVENANCE.read_text(encoding="utf-8"))
+        self.assertEqual(manifest["authority"], "EVIDENCE_ONLY")
+        self.assertEqual(manifest["runtime_control_authority"], "NONE")
+        self.assertEqual(manifest["activation_state"], "SOURCE_ONLY_NO_RUNTIME_AUTHORITY")
+        self.assertEqual(manifest["source_commit"], "6cc602f2ac18599aa67c0352ce81fbd404dcb40f")
+        for item in manifest["files"]:
+            data = (ROOT / item["path"]).read_bytes()
+            self.assertEqual(len(data), item["byte_size"], item["path"])
+            self.assertEqual(git_blob_sha(data), item["source_blob_sha1"], item["path"])
+
+    def test_legacy_acceptance_corpus_passes_in_build(self):
+        base = ROOT / "contracts" / "semantic-firewall"
+        for runner in RUNNERS:
+            proc = subprocess.run([sys.executable, str(base / runner)], cwd=ROOT, text=True, capture_output=True)
+            self.assertEqual(proc.returncode, 0, f"{runner} failed\\nSTDOUT:\\n{proc.stdout}\\nSTDERR:\\n{proc.stderr}")
+
+if __name__ == "__main__":
+    unittest.main()
+'''
+          (root / 'tests/test_semantic_firewall_import.py').write_text(test_text, encoding='utf-8')
+
+          repo_paths = sorted(list(expected) + [
+              'contracts/semantic-firewall/import-provenance.json',
+              'tests/test_semantic_firewall_import.py',
+          ])
+          work = {
+              'schema_version': 1,
+              'work_id': '1762b5f1-6b0d-4e45-9670-770b5409181c',
+              'title': 'Import exact legacy Semantic Firewall source and acceptance corpus',
+              'worker': {'kind': 'chatgpt', 'session_id': '8d44ae11-1c0c-42e4-840b-202c3bdcf1d9'},
+              'implementation_branch': 'work/1762b5f1-6b0d-4e45-9670-770b5409181c',
+              'base_sha': '0b2611fba37f8b4cb44574264c1463e2d1366126',
+              'component_id': 'semantic_firewall_source_intake',
+              'repo_paths': repo_paths,
+              'external_targets': [],
+              'claims': [{
+                  'resource_key': 'component:semantic_firewall_source_intake',
+                  'lock_branch': 'lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab',
+                  'lease_id': '51698c23-a656-41ce-b255-c4417137fbd3',
+                  'generation': 1
+              }],
+              'runtime_control_authority': 'NONE'
+          }
+          path = root / 'coordination/work/1762b5f1-6b0d-4e45-9670-770b5409181c.json'
+          path.parent.mkdir(parents=True, exist_ok=True)
+          path.write_text(json.dumps(work, indent=2) + '\n', encoding='utf-8')
+          PY
+          python contracts/semantic-firewall/run_control_request_acceptance.py
+          python contracts/semantic-firewall/run_contract_reference_acceptance.py
+          python contracts/semantic-firewall/run_artifact_byte_identity_acceptance.py
+          python contracts/semantic-firewall/run_control_input_binding_acceptance.py
+          python contracts/semantic-firewall/run_receipt_execution_binding_acceptance.py
+          python contracts/semantic-firewall/run_typed_contract_evaluation_acceptance.py
+          python -m unittest tests.test_semantic_firewall_import
+      - name: Commit permanent Phase A artifacts and remove helper
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/semantic-firewall-import.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Import exact legacy Semantic Firewall corpus with provenance'
+          git push origin HEAD:work/1762b5f1-6b0d-4e45-9670-770b5409181c
