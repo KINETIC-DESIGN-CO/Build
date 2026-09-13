@@ -32,19 +32,50 @@ def fail(message: str) -> None:
     raise SelectorError(message)
 
 
+def git(*args: str) -> str:
+    proc = subprocess.run(["git", *args], cwd=ROOT, text=True, capture_output=True)
+    if proc.returncode != 0:
+        fail(f"git {' '.join(args)} failed: {proc.stderr.strip()}")
+    return proc.stdout.strip()
+
+
+def canonical_main_protocol_id() -> str:
+    errors = []
+    for ref in ("refs/remotes/origin/main", "main"):
+        proc = subprocess.run(
+            ["git", "show", f"{ref}:coordination/protocol.json"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+        )
+        if proc.returncode == 0:
+            try:
+                value = json.loads(proc.stdout).get("protocol_id")
+            except json.JSONDecodeError as exc:
+                fail(f"canonical main protocol JSON invalid at {ref}: {exc}")
+            if not isinstance(value, str):
+                fail(f"canonical main protocol_id missing at {ref}")
+            return value
+        errors.append(proc.stderr.strip())
+    fail("canonical main protocol unavailable: " + " | ".join(error for error in errors if error))
+
+
 def validate_lock(key: str, lock: object):
     if lock is None:
         return None
     try:
         return fence.validate_lock_snapshot(lock, key)
     except fence.FenceError as exc:
-        fail(f"dispatch lock invalid for {key}: {exc}")
+        message = str(exc)
+        if "schema/keys mismatch" in message:
+            fail(f"dispatch lock invalid for {key}: lock shape mismatch")
+        fail(f"dispatch lock invalid for {key}: {message}")
 
 
-def active(key: str, lock: dict | None, now: datetime) -> bool:
+def active(key: str, lock: dict | None, now: datetime, v4_active: bool) -> bool:
     if lock is None or lock["state"] != "ACTIVE":
         return False
-    if key.startswith("component:"):
+    if key.startswith("component:") and (lock["schema_version"] == 2 or v4_active):
         return now < fence.effective_component_expiry(lock)
     return now < fence.parse_utc(lock["expires_at"])
 
@@ -58,9 +89,10 @@ def dispatch(snapshot: dict, current: dict, admissions: dict, by_id: dict):
     if not isinstance(resources, dict) or set(resources) != set(required):
         fail(f"dispatch snapshot resource coverage mismatch: required={required}")
     locks = {key: validate_lock(key, resources[key]) for key in required}
+    v4_active = canonical_main_protocol_id() == "life-source-coordination-v4"
     status, blockers, action_id = legacy.current_fields(current)
     current_key = f"component:{current['current_component']}"
-    foreground = status in {"ACTIVE", "BLOCKED"} and not active(current_key, locks[current_key], now)
+    foreground = status in {"ACTIVE", "BLOCKED"} and not active(current_key, locks[current_key], now, v4_active)
     if foreground:
         if status == "BLOCKED" and blockers:
             rank, selected = 1, "CLEAR_CURRENT_BLOCKERS"
@@ -85,7 +117,7 @@ def dispatch(snapshot: dict, current: dict, admissions: dict, by_id: dict):
         }
     for item in legacy.ready_items(admissions, by_id):
         key = f"component:{item['component_id']}"
-        if not active(key, locks[key], now):
+        if not active(key, locks[key], now, v4_active):
             return {
                 "decision": "SELECT",
                 "worker_lane": "PARALLEL_ASSIGNED",
