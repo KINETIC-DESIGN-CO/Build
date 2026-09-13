@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-152791c5",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T09:02:02Z",
+  "source_main_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
+  "work_id": "123a2163-5618-4e37-8dfc-74024feba75a",
+  "work_branch": "work/123a2163-5618-4e37-8dfc-74024feba75a",
+  "work_head_sha": "0bc470916cc47abcccb2ee53a5829524041f2df1",
+  "trigger_ids": ["LIVE_MAIN_SHA_CHANGED","TRACKED_PR_STATE_CHANGED","MERGE_GROUP_TERMINAL","POST_MERGE_VALIDATE_TERMINAL","BEFORE_FINAL_REQUIRED_CLAIM_RELEASE"],
+  "previous_checkpoint": {"path":"continuity/checkpoints/CP-000001-07742374.json","blob_sha":"b535520467bfde93b04e4f982ad4163fed398ed6"},
+  "selected_work": {"worker_lane":"NOT_EVALUATED","selected_rank":null,"selected_work_id":null,"evaluated_at":"2026-09-13T09:02:02Z","evidence_ref":"Terminal checkpoint for the already-selected issue_consolidation work item; no new production work-selection result is asserted by this checkpoint.","authority":"HISTORICAL_OBSERVATION_ONLY"},
+  "canonical_snapshot": {"current_component":"multi_thread_coordination_hardening","current_status":"COMPLETE","current_next_action_id":"A-0014","canonical_live_mismatch_ids":["GITHUB_MAIN_HEAD_SHA"],"open_blocker_ids":["B-0004"],"observed_at":"2026-09-13T09:02:02Z"},
+  "claim_observations": [{"resource_key":"component:issue_consolidation","lock_branch":"lock/d219f73c3ef27fa9e216c98f5dac2d69d4d1c5792def75ca0f06efb8c609470c","state":"ACTIVE","work_id":"123a2163-5618-4e37-8dfc-74024feba75a","lease_id":"e8391ad2-b816-4dbc-917b-f9d14a9c57af","generation":1,"expires_at":"2026-09-13T12:23:13Z","observed_at":"2026-09-13T09:02:02Z","live_verify_required":true}],
+  "operation_results": [
+    {"system":"GITHUB","target":"GITHUB_PR:65","operation":"Protected integration through GitHub Merge Queue","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["GITHUB_MERGE_GROUP_RUN:34748172192","GITHUB_MAIN_CONTAINS:governance/issue-consolidation-policy.json","GITHUB_MAIN_CONTAINS:governance/issue-consolidation-registry.json"]},
+    {"system":"GITHUB","target":"github:main@0b2611fba37f8b4cb44574264c1463e2d1366126","operation":"Post-merge required repository validation","result":"SUCCESS","readback_state":"VERIFIED","evidence_refs":["GITHUB_WORKFLOW_RUN:34748272359","GITHUB_ISSUE_LIFECYCLE_RUN:34748272358"]},
+    {"system":"GITHUB","target":"continuity/checkpoints/CP-000002-152791c5.json","operation":"Two checkpoint creates through the contents wrapper returned upstream 502; authoritative readback showed the target absent after each attempt before switching to Git objects","result":"FAILURE","readback_state":"VERIFIED","evidence_refs":["GITHUB_READBACK:404_NOT_FOUND_AFTER_FIRST_502","GITHUB_READBACK:404_NOT_FOUND_AFTER_SECOND_502"]}
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [
+    {"source_kind":"OFFICIAL","title":"Managing a merge queue","url":"https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue","observed_date":"2026-09-13","supported_claim":"Required GitHub Actions checks for merge queues must run on merge_group events."},
+    {"source_kind":"ACADEMIC","title":"ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering","url":"https://arxiv.org/abs/2602.23193","observed_date":"2026-09-13","supported_claim":"Structured append-only evidence plus deterministic orchestration supports replayable concurrent agent workflows."}
+  ],
+  "live_verify": [
+    {"evidence_class":"LIVE_GITHUB","target":"github:main","required":true},
+    {"evidence_class":"LIVE_GITHUB","target":"component:issue_consolidation","required":true},
+    {"evidence_class":"LIVE_GITHUB","target":"GITHUB_PR:63","required":true},
+    {"evidence_class":"LIVE_GITHUB","target":"component:auto_issue_dispatch","required":true}
+  ],
+  "resume_candidate": {"operation_state":"SUCCESS","candidate_next_operation":"Release component:issue_consolidation generation 1 after this checkpoint readback, then freshly evaluate parent-goal and dispatcher claims for selector activation integration.","authority":"NONE"},
+  "context_refs": ["GITHUB_PR:65","GITHUB_PR:63","GITHUB_WORKFLOW_RUN:34748172192","GITHUB_WORKFLOW_RUN:34748272359","governance/issue-consolidation-policy.json","governance/issue-consolidation-registry.json"]
+}

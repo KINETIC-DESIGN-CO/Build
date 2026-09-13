@@ -11,6 +11,7 @@
   "component_id": "issue_consolidation",
   "repo_paths": [
     "continuity/checkpoints/CP-000001-07742374.json",
+    "continuity/checkpoints/CP-000002-152791c5.json",
     "governance/issue-consolidation-policy.json",
     "governance/issue-consolidation-registry.json",
     "governance/schema/issue-consolidation-policy.schema.json",
