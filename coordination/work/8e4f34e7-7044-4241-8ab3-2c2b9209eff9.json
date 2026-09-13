@@ -11,12 +11,7 @@
   "component_id": "auto_issue_dispatch",
   "repo_paths": [
     "continuity/checkpoints/CP-000002-6e4d12a9.json",
-    "coordination/orphan-lock-branches.json",
-    "coordination/schema/orphan-lock-branches.schema.json",
-    "governance/root-cause-repairs.json",
-    "scripts/validate_lock_history.py",
-    "scripts/validate_lock_history_core.py",
-    "tests/test_orphan_lock_quarantine.py"
+    "governance/root-cause-repairs.json"
   ],
   "external_targets": [],
   "claims": [
