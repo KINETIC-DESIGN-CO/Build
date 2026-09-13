@@ -126,7 +126,7 @@ Each mutable work item uses one exact `work/<UUIDv4>` branch. Shared-resource ow
 - `component:<component_id>` for the component being changed;
 - exact shared external-resource claims, including the single Supabase production key when applicable.
 
-Ordinary repository paths are **not** exclusive lease resources. Every changed path is recorded exactly in the work record, while isolated branches, Git conflict detection, the required `validate` check, and Merge Queue handle source-file concurrency.
+Ordinary repository paths are **not** exclusive lease resources. Every changed repository path is still recorded exactly in the work record, while isolated work branches, Git conflict detection, the required `validate` check, and Merge Queue `merge_group` validation handle source-file concurrency.
 
 `integration:main` is no longer a source-integration lease. Main integration is performed only through the required Merge Queue.
 
@@ -135,6 +135,18 @@ A work record's `base_sha` is work-item origin provenance and must be an ancesto
 First publication of a new lock is atomic: the generation-1 lock commit is built before the deterministic lock ref becomes visible. Post-enforcement empty lock refs remain fail-closed. Existing lock history is validated for legal duration, renewal, release, reacquisition, and takeover transitions.
 
 Claim ownership is determined by the exact `resource_key + work_id + lease_id + generation`; `worker.session_id` is an audit label only.
+
+## Stable goal identity and thread lifecycle
+
+Life engineering work distinguishes a semantic goal from an execution attempt. The semantic root/parent goal is represented by a stable `goal_id` in the versioned goal registry. Work IDs, branches, lease IDs, generations, worker sessions, retries, repairs, verification steps, and continuity writes are execution/provenance identities and do not silently replace the semantic root.
+
+The active goal path is the exact parent chain from `active_root_goal_id` to `active_goal_id`. Typed child work may temporarily become active for a prerequisite, blocker repair, continuity capture, verification, terminal cleanup, defect repair, Issue consolidation, or implementation child. A terminal child returns to its nonterminal parent before unrelated root selection.
+
+The thread-lifecycle evaluator runs before ordinary work selection. It can resume an unresolved interrupted operation, continue the active goal, return to a parent, delegate to ordinary work selection when another work item owns the active component, require terminal cleanup, or enter terminal handoff. Missing/invalid/stale evidence cannot produce terminal handoff or unrelated-root switching.
+
+A terminal root does not silently begin unrelated work. After terminal cleanup is verified, Life may discover the first otherwise-dispatchable admitted candidate without acquiring its claim. The candidate has advisory effect only. The thread may be closed, or Vince may explicitly continue with the candidate; automatic unrelated execution after terminal root is forbidden unless an exact versioned authorized root transition supplies the new root.
+
+Checkpoint goal snapshots are historical evidence only. New checkpoints after the goal-snapshot enforcement boundary record the active root, active goal, and exact active path so a replacement thread can recover the semantic objective, but the replacement must reread the goal registry and live claims before acting.
 
 ## Deterministic work selection
 
@@ -147,7 +159,7 @@ Work-selection policy v4, recorded by `D-0022`, removed the former global contin
 
 Pending continuity events, canonical/live mismatches, and legacy `continuity:sync` locks have zero work-selection or lane-selection authority. Continuity is captured on work branches and integrated through protected GitHub validation rather than by globally serializing otherwise disjoint engineering work.
 
-A completed foreground does not make every fresh thread idle. The multi-thread hardening added deterministic fresh-thread lane derivation and admitted-work selection so eligible disjoint work can continue in parallel.
+The lifecycle boundary is evaluated before this selector. While a semantic root remains nonterminal, unrelated admitted backlog cannot replace that root merely because another execution step completed. When the lifecycle evaluator returns `DELEGATE_TO_WORK_SELECTION`, the v4 selector continues to provide deterministic lane/rank selection for the exact eligible work surface.
 
 ## Issue lifecycle, consolidation, and root-cause repair
 
@@ -173,13 +185,13 @@ The continuity bundle separates exact compact state from detailed narrative and 
 - checkpoint policy/template/schema and checkpoint artifacts: evidence captured during work, never live authority;
 - deterministic validators/tests and protected GitHub Actions.
 
-Checkpoints are evidence-only. A resumed worker must reread live GitHub/Supabase/Vercel state and rerun deterministic selection; a checkpoint cannot authorize takeover, release, routing, completion, or mutation.
+Checkpoints are evidence-only. A resumed worker must reread live GitHub/Supabase/Vercel state and rerun deterministic lifecycle/work selection; a checkpoint cannot authorize takeover, release, routing, completion, or mutation.
 
-The checkpoint policy uses exact triggers including terminal mutation results, selected-work changes, live-main changes, tracked PR state changes, merge-group/post-merge terminal events, unresolved interruptions, claim-release boundaries, tool-result count, and elapsed time with new evidence.
+The checkpoint policy uses exact triggers including terminal mutation results, selected-work changes, live-main changes, tracked PR state changes, merge-group/post-merge terminal events, unresolved interruptions, claim-release boundaries, tool-result count, and elapsed time with new evidence. New goal-aware checkpoints additionally preserve the active semantic goal path as historical evidence without granting it current authority.
 
 ## Persistent self-improvement direction
 
-Vince's persistent directives require Life to detect stale or defective mechanisms, make reusable lessons durable, remove unnecessary blockers, preserve root/parent goals through detours, execute already-authorized unblocked work rather than asking redundant permission, and continue dispatching eligible work after terminal completion.
+Vince's persistent directives require Life to detect stale or defective mechanisms, make reusable lessons durable, remove unnecessary blockers, preserve root/parent goals through detours, and execute already-authorized unblocked work rather than asking redundant permission. When a root reaches verified terminal state, Life may discover the next eligible candidate, but the terminal handoff presents close/continue choices instead of automatically starting unrelated work.
 
 These directives do not grant prose control authority. The selected direction is to convert them into typed, versioned, falsified, protected mechanisms. Where source exists but selector/runtime consumption is explicitly inactive, it remains source-only until the required integration is merged and verified.
 
@@ -203,9 +215,9 @@ Current MCP/OAuth research must continue to be reevaluated before runtime implem
 
 This narrative does **not** define the current foreground, current lane, open-PR count, active lock ownership, or exact next operation. Those facts change too quickly and must not be duplicated here as authoritative current state.
 
-A worker must use `continuity/current.json` for the compact canonical snapshot, then hydrate all volatile facts from authorized systems, verify current lock/PR/workflow state, apply later Vince corrections, and run the deterministic selector. If those sources disagree with this narrative, this file is stale evidence and must be repaired.
+A worker must use `continuity/current.json` for the compact canonical snapshot, then hydrate all volatile facts from authorized systems, verify current lock/PR/workflow state, apply later Vince corrections, evaluate the typed thread-lifecycle boundary, and run deterministic work selection only when that boundary delegates or otherwise requires it. If those sources disagree with this narrative, this file is stale evidence and must be repaired.
 
-As of the September 13, 2026 reconciliation that produced this revision, PR #58 had merged through Merge Queue and passed post-merge validation, while the stable-goal/lifecycle work and two root-cause verification follow-ups remained separate open PRs. Those observations are historical context only, not future routing authority.
+As of the September 13, 2026 reconciliation that produced the prior revision, PR #58 had merged through Merge Queue and passed post-merge validation, while the stable-goal/lifecycle work and two root-cause verification follow-ups remained separate open PRs. Those observations are historical context only, not future routing authority.
 
 ## Cost constraints
 
@@ -224,10 +236,11 @@ A future Life thread must:
 7. verify referenced PRs, workflow runs, rulesets, work records, and live resource claims;
 8. classify stale, missing, mismatched, unsupported, failed, or unverified evidence using the required state vocabulary;
 9. apply later Vince corrections;
-10. run deterministic work selection and continue the selected work.
+10. evaluate the typed thread-lifecycle boundary and effective semantic goal;
+11. run deterministic work selection only as allowed by that boundary, then continue the selected parent/child operation.
 
 Historical observations in this file never satisfy a later response's fresh-verification requirement.
 
 ## Last bundle-authoring timestamp
 
-`2026-09-13T18:32:20Z`
+`2026-09-13T19:41:23Z`
