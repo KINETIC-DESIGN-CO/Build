@@ -311,7 +311,14 @@ def load_live_lock(claim: dict) -> dict:
         fail(f"invalid coordination/lock.json on {branch}: {exc}")
 
 
-def validate_live_lock(lock: dict, claim: dict, record: dict, now: datetime, protocol: dict) -> None:
+def validate_live_lock(
+    lock: dict,
+    claim: dict,
+    record: dict,
+    now: datetime,
+    protocol: dict,
+    head_sha: str,
+) -> None:
     required = {"schema_version", "resource_key", "generation", "state", "work_id", "worker", "implementation_branch", "lease_id", "base_sha", "acquired_at", "heartbeat_at", "expires_at", "runtime_control_authority"}
     if set(lock) != required:
         fail(f"live lock keys mismatch for {claim['resource_key']}")
@@ -325,11 +332,17 @@ def validate_live_lock(lock: dict, claim: dict, record: dict, now: datetime, pro
         "worker": record["worker"],
         "implementation_branch": record["implementation_branch"],
         "lease_id": claim["lease_id"],
-        "base_sha": record["base_sha"],
     }
     for key, value in exact_pairs.items():
         if lock[key] != value:
             fail(f"live lock {claim['resource_key']} mismatch at {key}")
+    if not SHA_RE.fullmatch(str(lock["base_sha"])):
+        fail(f"live lock base_sha invalid: {claim['resource_key']}")
+    if subprocess.run(
+        ["git", "merge-base", "--is-ancestor", lock["base_sha"], head_sha],
+        cwd=ROOT,
+    ).returncode != 0:
+        fail(f"live lock base_sha must be an ancestor of PR head: {claim['resource_key']}")
     acquired = parse_utc(lock["acquired_at"])
     heartbeat = parse_utc(lock["heartbeat_at"])
     expires = parse_utc(lock["expires_at"])
@@ -367,7 +380,7 @@ def validate_pull_request_event(event: dict, protocol: dict) -> None:
         fail("work record path/work_id mismatch")
     now = datetime.now(timezone.utc)
     for claim in record["claims"]:
-        validate_live_lock(load_live_lock(claim), claim, record, now, protocol)
+        validate_live_lock(load_live_lock(claim), claim, record, now, protocol, head_sha)
 
 
 def validate_merge_group_event(event: dict, github_sha: str) -> None:
