@@ -56,6 +56,10 @@ class CheckpointTests(unittest.TestCase):
             "continuity/decision-rationale.schema.json",
             "governance/work-admissions.json",
             "governance/schema/work-admissions.schema.json",
+            "governance/goal-policy.json",
+            "governance/goal-registry.json",
+            "scripts/validate_goal_graph.py",
+            "tests/test_goal_graph.py",
             "scripts/validate_lock_history.py",
             "tests/test_lock_history.py",
             "continuity/tools/validate_checkpoints.py",
@@ -66,8 +70,10 @@ class CheckpointTests(unittest.TestCase):
             "READ_LIVE_COORDINATION_FOR_CHECKPOINT_DISCOVERY",
             "READ_LATEST_WORK_CHECKPOINT",
             "READ_CHECKPOINT_PROVENANCE",
+            "EVALUATE_ACTIVE_GOAL_PATH",
         ):
             self.assertIn(step, bootstrap["resume_algorithm"])
+        self.assertIn("python scripts/validate_goal_graph.py", bootstrap["validation_command"])
         self.assertIn("python scripts/validate_lock_history.py", bootstrap["validation_command"])
         self.assertIn("python continuity/tools/validate_checkpoints.py", bootstrap["validation_command"])
         self.assertIn("python continuity/tests/test_checkpoints.py", bootstrap["validation_command"])
@@ -79,7 +85,9 @@ class CheckpointTests(unittest.TestCase):
         self.assertEqual(policy["cadence"]["elapsed_seconds_limit"], 1800)
         self.assertEqual(policy["cadence"]["elapsed_trigger_min_new_evidence_items"], 1)
         self.assertEqual(policy["checkpoint_authority"], "EVIDENCE_ONLY")
+        self.assertEqual(policy["goal_snapshot_enforcement_utc"], "2026-09-13T08:32:54Z")
         template = json.loads((ROOT / "continuity/checkpoint-template.json").read_text())
+        self.assertIn("goal_snapshot", template["field_order"])
         self.assertIn("MODEL_JUDGMENT_AS_TRIGGER", template["prohibited_interpretations"])
 
     def test_unknown_checkpoint_trigger_is_rejected(self):
@@ -158,6 +166,40 @@ class CheckpointTests(unittest.TestCase):
             result = self.run_validator(dst)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("required const", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_checkpoint_after_enforcement_requires_goal_snapshot(self):
+        td, dst = self.copy_repo()
+        try:
+            path = self.checkpoint_path(dst)
+            obj = json.loads(path.read_text())
+            obj["created_at"] = "2026-09-13T08:32:54Z"
+            obj.pop("goal_snapshot", None)
+            self.write_json(path, obj)
+            result = self.run_validator(dst)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("requires goal_snapshot after enforcement", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_goal_snapshot_path_must_start_at_root_and_end_at_active(self):
+        td, dst = self.copy_repo()
+        try:
+            path = self.checkpoint_path(dst)
+            obj = json.loads(path.read_text())
+            obj["created_at"] = "2026-09-13T08:32:54Z"
+            obj["goal_snapshot"] = {
+                "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+                "active_goal_id": "5c4d26d4-f821-4db5-9f5c-dccce3eaa697",
+                "active_path": ["5c4d26d4-f821-4db5-9f5c-dccce3eaa697"],
+                "observed_at": "2026-09-13T08:32:54Z",
+                "authority": "HISTORICAL_OBSERVATION_ONLY",
+            }
+            self.write_json(path, obj)
+            result = self.run_validator(dst)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("must start at active_root_goal_id", result.stderr)
         finally:
             td.cleanup()
 
