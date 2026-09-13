@@ -10,14 +10,9 @@
   "base_sha": "dcfb42bbd7f08cf2a655878c29a49becf7352a53",
   "component_id": "continuity_projection_concurrency",
   "repo_paths": [
-    "continuity/bootstrap.json",
-    "coordination/README.md",
-    "coordination/protocol.json",
     "governance/schema/work-selection-policy.schema.json",
     "governance/work-selection-policy.json",
     "scripts/select_work.py",
-    "scripts/validate_coordination.py",
-    "tests/test_coordination.py",
     "tests/test_work_selection.py"
   ],
   "external_targets": [],
