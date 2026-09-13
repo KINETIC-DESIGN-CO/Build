@@ -29,12 +29,6 @@
       "generation": 3
     },
     {
-      "resource_key": "integration:main",
-      "lock_branch": "lock/138c728d71ab409c9ab9f7805063b24bebef209ef2f0ffe6db6a1db4263307a9",
-      "lease_id": "77bbd508-07a4-4711-96fa-ec85f0b837e6",
-      "generation": 34
-    },
-    {
       "resource_key": "repo-file:.github/workflows/continuity.yml",
       "lock_branch": "lock/00f987781a44716a2501b39c58085c5e00bb6b8089d0883f660f4a0980d3bf3a",
       "lease_id": "6228ffa1-b054-45d7-aabf-7f415e0fdc7c",
