@@ -15,7 +15,8 @@
     "governance/resume-reconciliation-policy.json",
     "governance/work-admissions.json",
     "scripts/evaluate_resume_reconciliation.py",
-    "tests/test_resume_reconciliation.py"
+    "tests/test_resume_reconciliation.py",
+    "tests/test_work_selection.py"
   ],
   "external_targets": [],
   "claims": [
