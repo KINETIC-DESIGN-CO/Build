@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "work_id": "5b096f69-fb33-4518-980b-77c25e3e2492",
+  "title": "Define user-authorized handling for Vince personally verified observations",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "c84e02c8-d776-4210-82c7-97d76fdb720b"
+  },
+  "implementation_branch": "work/5b096f69-fb33-4518-980b-77c25e3e2492",
+  "base_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
+  "component_id": "issue_21",
+  "repo_paths": [
+    "governance/user-observation-policy.json",
+    "scripts/evaluate_user_observation.py",
+    "tests/test_user_observation.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_21",
+      "lock_branch": "lock/3193a55f9456d3ece2a30033010c4f6116751aad61410c06945be459de3227eb",
+      "lease_id": "890e63dc-fb04-4aba-998a-cd5d1950545f",
+      "generation": 3
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
