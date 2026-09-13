@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000005-0e2570d3",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T21:53:20Z",
+  "source_main_sha": "d45b66906fb1503771eb1b3caa60614c0e6772e5",
+  "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+  "work_branch": "work/fae2f300-205f-4cb2-b7ff-17082065159b",
+  "work_head_sha": "cf8175e85bb09b3b6db0e2349ab6dcd0536ad7a1",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000004-bf5e1196.json",
+    "blob_sha": "7744fb83d49eb9430724304a92934300ddab6c73"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T21:51:42Z",
+    "evidence_ref": "Deterministic dispatch evaluation using scripts/select_work.py dispatch rules against verified live component:goal_lifecycle_identity and component:issue_57 locks returned NO_ELIGIBLE_WORK: the active root component is owned by work 3edfca10-ac11-4a79-bd31-72bd84165594 and the only ADMITTED item github-issue-57 is owned by work 4264779b-70c5-4381-b619-f2c3204dc4f3.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T21:53:20Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T21:53:20Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_18",
+      "lock_branch": "lock/5aac3f38d7e2bc396461d09e0bcd2e1cffb9262a0b451371174b8a304e7ee8f5",
+      "state": "ACTIVE",
+      "work_id": "fae2f300-205f-4cb2-b7ff-17082065159b",
+      "lease_id": "9f86b96f-c58d-4710-a077-0cdf96dc054e",
+      "generation": 1,
+      "expires_at": "2026-09-13T23:38:27Z",
+      "observed_at": "2026-09-13T21:53:20Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:43:20Z",
+      "observed_at": "2026-09-13T21:53:20Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "efaad927-c5ea-43dc-9154-53aa339c307a",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:05:56Z",
+      "observed_at": "2026-09-13T21:53:20Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:78",
+      "operation": "MERGE_QUEUE_PROTECTED_INTEGRATION_AND_MAIN_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR 78 merged through Merge Queue at merge commit d45b66906fb1503771eb1b3caa60614c0e6772e5",
+        "merge_group continuity run 34784299349 concluded success",
+        "main readback at 2026-09-13T21:51:42Z remained d45b66906fb1503771eb1b3caa60614c0e6772e5"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main:d45b66906fb1503771eb1b3caa60614c0e6772e5",
+      "operation": "POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "continuity run 34784412013 validate job 103797158231 concluded success",
+        "continuity, Reliability, source coordination, lock history, repository tests, local Supabase startup, and Supabase database tests all concluded success"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "issue:18",
+      "operation": "TERMINAL_ISSUE_BINDING_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Issue 18 state closed",
+        "Issue 18 state_reason completed",
+        "Issue 18 closed_at 2026-09-13T21:38:16Z"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [
+    "DR-0009",
+    "DR-0010"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:78",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:18",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_18",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:goal_lifecycle_identity",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_57",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RELEASE_COMPONENT_ISSUE_18_CLAIM_AFTER_CHECKPOINT_READBACK_THEN_REEVALUATE_THREAD_LIFECYCLE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/resume-reconciliation-policy.json",
+    "scripts/evaluate_resume_reconciliation.py",
+    "tests/test_resume_reconciliation.py",
+    "continuity/bootstrap.json",
+    "continuity/checkpoint-policy.json",
+    "governance/goal-registry.json",
+    "governance/thread-lifecycle-policy.json",
+    "governance/work-selection-policy.json",
+    "governance/work-admissions.json",
+    "coordination/work/fae2f300-205f-4cb2-b7ff-17082065159b.json",
+    "GITHUB_PR:78",
+    "GITHUB_ISSUE:18",
+    "GITHUB_ACTIONS_RUN:34784299349",
+    "GITHUB_ACTIONS_RUN:34784412013"
+  ]
+}
