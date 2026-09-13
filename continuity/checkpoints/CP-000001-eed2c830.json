@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-eed2c830",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T07:22:56Z",
+  "source_main_sha": "96d2552b2fc33758914ddaf217982dc72ddb9bfc",
+  "work_id": "3591eaf1-ec80-4cc5-91d6-2695aef5bfd1",
+  "work_branch": "work/3591eaf1-ec80-4cc5-91d6-2695aef5bfd1",
+  "work_head_sha": "4ab90055519eac48d5fe2a3cde56e5fee4cd9788",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 4,
+    "selected_work_id": "github-issue-17",
+    "evaluated_at": "2026-09-13T07:15:37Z",
+    "evidence_ref": "Fresh live snapshot: continuity sync active at that observation, current status COMPLETE, issue_15 and issue_16 actively claimed, issue_17 lock branch missing; selector result is historical evidence only and does not replace this thread's explicit in-flight work identity.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T07:18:27Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_49",
+      "lock_branch": "lock/982cc2746a3b0a0ea178aff66946b5634b379fc05845d177da9b68713b68b4a3",
+      "state": "ACTIVE",
+      "work_id": "3591eaf1-ec80-4cc5-91d6-2695aef5bfd1",
+      "lease_id": "9a7a5779-f0fa-4a91-84f9-72a815e1420c",
+      "generation": 1,
+      "expires_at": "2026-09-13T11:04:06Z",
+      "observed_at": "2026-09-13T07:04:06Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "3591eaf1-ec80-4cc5-91d6-2695aef5bfd1",
+      "lease_id": "931bf543-658e-4352-8445-ea446246691e",
+      "generation": 17,
+      "expires_at": "2026-09-13T11:19:10Z",
+      "observed_at": "2026-09-13T07:19:10Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:issue_17",
+      "lock_branch": "lock/5d5ae1fe9fc98097e0c98dddf51191909e219a76f31dcdd66d3202ff9395c85b",
+      "state": "MISSING",
+      "work_id": null,
+      "lease_id": null,
+      "generation": null,
+      "expires_at": null,
+      "observed_at": "2026-09-13T07:15:37Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "work/3591eaf1-ec80-4cc5-91d6-2695aef5bfd1",
+      "operation": "Create isolated work branch and version problem-intake, bootstrap, response-contract, schema, test, directive, and rationale changes",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_BRANCH_HEAD:4ab90055519eac48d5fe2a3cde56e5fee4cd9788",
+        "GITHUB_COMPARE:52ad688966cb9764cb4f384463d9fe11ded793cb...ee3f676cddc23a7021d33f2065de8351278b75d7"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "component:issue_49",
+      "operation": "Acquire component claim",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "LOCK_BLOB:bbd5127be004b3fb13e4ee4357b8dcfe3cd0e6d6"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity:sync",
+      "operation": "Reacquire released continuity claim at generation 17",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "LOCK_BLOB:bbd5127be004b3fb13e4ee4357b8dcfe3cd0e6d6",
+        "LOCK_COMMIT:83c97813615cb8858698e47878fcfe62c759c249"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "GITHUB_ISSUE:53",
+      "operation": "Accidental out-of-scope create Issue TEMP while intending a file operation",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_ISSUE:53"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0019",
+    "VD-0020"
+  ],
+  "decision_rationale_refs": [
+    "DR-0008"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering",
+      "url": "https://arxiv.org/abs/2602.23193",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Structured append-only event capture can be separated from deterministic orchestration and projected state."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Events that trigger workflows",
+      "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows",
+      "observed_date": "2026-09-13",
+      "supported_claim": "GitHub Issue activity can be observed by repository automation without making Issue prose control authority."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "continuity:sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:issue_49",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:issue=53",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "Reconcile this checkpoint path into the work record, open the protected pull request, repair any CI findings, integrate through Merge Queue, run post-merge verification and required continuity synchronization, then legally remediate accidental Issue #53.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:49",
+    "GITHUB_ISSUE:53",
+    "GITHUB_PR:52",
+    "governance/problem-intake-policy.json",
+    "continuity/response-contract.json",
+    "work/3591eaf1-ec80-4cc5-91d6-2695aef5bfd1"
+  ]
+}
