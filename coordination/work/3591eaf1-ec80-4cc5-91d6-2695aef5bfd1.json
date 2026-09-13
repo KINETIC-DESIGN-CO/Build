@@ -11,6 +11,7 @@
   "component_id": "issue_49",
   "repo_paths": [
     "continuity/bootstrap.json",
+    "continuity/checkpoints/CP-000001-eed2c830.json",
     "continuity/decision-rationale.jsonl",
     "continuity/directive-ledger.jsonl",
     "continuity/response-contract.json",
