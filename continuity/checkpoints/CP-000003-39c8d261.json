@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-39c8d261",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T08:44:31Z",
+  "source_main_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
+  "work_id": "6dbf3e44-a818-40f6-9b4d-7234d6a9624c",
+  "work_branch": "work/6dbf3e44-a818-40f6-9b4d-7234d6a9624c",
+  "work_head_sha": "c6524b34fd011702fd4f001fd53dddfeb2cca767",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-4e1bd9a2.json",
+    "blob_sha": "7f52a9f1d26b661ccd9a3c1dd713e2d8a16408a5"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T08:44:31Z",
+    "evidence_ref": "The first final-release mutation attempt returned an upstream 502. Fresh lock readback verified the claim remained ACTIVE, so no release or redispatch has occurred yet.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [],
+    "open_blocker_ids": ["B-0004"],
+    "observed_at": "2026-09-13T08:44:31Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:continuity_projection_concurrency",
+      "lock_branch": "lock/6b66f78e139c57cc38318062475d7fb18f1be3cc4cf8e3e62f2e8a257c483776",
+      "state": "ACTIVE",
+      "work_id": "6dbf3e44-a818-40f6-9b4d-7234d6a9624c",
+      "lease_id": "2106b57d-56cb-4425-b1fa-436c4aef7f37",
+      "generation": 2,
+      "expires_at": "2026-09-13T12:21:09Z",
+      "observed_at": "2026-09-13T08:44:31Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "lock:component:continuity_projection_concurrency",
+      "operation": "RELEASE_CLAIM_ATTEMPT",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GitHub connector returned upstream HTTP 502",
+        "fresh lock readback remained ACTIVE at blob a20dc953fe5af6b78f208b4ea52c752cd3f787ad",
+        "no ownership field changed"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": ["DR-0009"],
+  "research_refs": [],
+  "live_verify": [
+    {"evidence_class": "LIVE_GITHUB", "target": "repository:1366835183/main", "required": true},
+    {"evidence_class": "LIVE_GITHUB", "target": "lock:component:continuity_projection_concurrency", "required": true}
+  ],
+  "resume_candidate": {
+    "operation_state": "FAILURE",
+    "candidate_next_operation": "RETRY_FINAL_COMPONENT_CLAIM_RELEASE_FROM_FRESH_LOCK_SNAPSHOT_THEN_RERUN_DISPATCH",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_PR:66",
+    "GITHUB_MAIN:0b2611fba37f8b4cb44574264c1463e2d1366126",
+    "GITHUB_POST_MERGE_RUN:34748272359",
+    "continuity/checkpoints/CP-000002-4e1bd9a2.json"
+  ]
+}
