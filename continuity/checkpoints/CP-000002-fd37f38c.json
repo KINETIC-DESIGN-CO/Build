@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-fd37f38c",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T18:42:28Z",
+  "source_main_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
+  "work_id": "20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+  "work_branch": "work/20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+  "work_head_sha": "4990ee8b04e99852acc6474d3bf8e1e3b08760ed",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-93aa28e1.json",
+    "blob_sha": "fa7fcd11ef8bc32625344da99fe4fc119b27e62b"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-15",
+    "evaluated_at": "2026-09-13T18:42:28Z",
+    "evidence_ref": "Issue 15 remains the selected terminal-reconciliation work item under this work ID after the first PR-head validation exposed selector-test assumptions caused by its proposed COMPLETE transition.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T18:42:28Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_15",
+      "lock_branch": "lock/9d2d67391fdccea8d9371e7139cfced4484a6280e2d715393dc97ba5aa623ad0",
+      "state": "ACTIVE",
+      "work_id": "20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+      "lease_id": "90089f9b-a238-440f-b6d7-75ebd76873c1",
+      "generation": 4,
+      "expires_at": "2026-09-13T22:34:50Z",
+      "observed_at": "2026-09-13T18:42:28Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:72 head 3bbaf5304380d18c3727c336b587bba91c9585df",
+      "operation": "PR_HEAD_VALIDATE",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34775368760 job 103772393217 failed only at Run repository tests",
+        "continuity, source coordination, and relevant lock-history validation passed",
+        "four assertions and two indexing errors were confined to tests/test_work_selection.py assumptions about raw admitted ordering and the existence of two dependency-ready items"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "tests/test_work_selection.py",
+      "operation": "REPAIR_TERMINAL_TRANSITION_TEST_ORACLES",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "parallel defaults and expected selections now use dependency-ready admissions",
+        "multi-candidate tests explicitly make Issue 18 dependency-ready inside their isolated test fixture",
+        "production selector code unchanged"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:72",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:15",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_15",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "REQUIRE_REPAIRED_EXACT_PR_HEAD_VALIDATE_SUCCESS_THEN_CREATE_FINAL_PRE_QUEUE_CHECKPOINT_AND_ENTER_REQUIRED_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "tests/test_work_selection.py",
+    "coordination/work/20a51999-3d6e-4bcc-9b00-9ea42b7ecabf.json",
+    "GITHUB_PR:72",
+    "GITHUB_RUN:34775368760",
+    "GITHUB_ISSUE:15",
+    "GITHUB_MAIN:f5bc28938a6a1ca554def7887bd7f62d8ef004b6"
+  ]
+}

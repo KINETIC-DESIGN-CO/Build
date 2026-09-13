@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-b95d87e3",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T18:42:01Z",
+  "source_main_sha": "ba4254469e26e9ebefee4c3b14b84ca90001c040",
+  "work_id": "af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+  "work_branch": "work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+  "work_head_sha": "14a269305b68336a546c41c046844ec06eac49ab",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "LIVE_MAIN_SHA_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T18:42:01Z",
+    "evidence_ref": "Vince explicitly requested the Reliability and Recovery synthesis be durably saved; this checkpoint does not claim deterministic dispatcher selection for the new source-only architecture branch.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_F5BC289_STALE_VS_LIVE_MAIN_BA425446"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T18:42:01Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_architecture",
+      "lock_branch": "lock/a8d719815632c854da757419af97ff9e6bf9afb222a6edc79e2f2defa4c11619",
+      "state": "ACTIVE",
+      "work_id": "af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+      "lease_id": "5f40c44e-7a8a-4308-b5dc-f385bdd1da20",
+      "generation": 1,
+      "expires_at": "2026-09-13T22:33:40Z",
+      "observed_at": "2026-09-13T18:42:01Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+      "operation": "CREATE_ISOLATED_WORK_BRANCH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:branch:work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "component:reliability_recovery_architecture",
+      "operation": "ACQUIRE_COMPONENT_CLAIM_ATOMIC_GENERATION_ONE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:lock/a8d719815632c854da757419af97ff9e6bf9afb222a6edc79e2f2defa4c11619:coordination/lock.json"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "architecture/reliability-recovery-v1.md",
+      "operation": "CREATE_SOURCE_ONLY_ARCHITECTURE_SYNTHESIS",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:blob:05ff49c83f4736f337dc3ee7314ea6471b22dc61"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "architecture/reliability-recovery-implementation-v1.md",
+      "operation": "CREATE_SOURCE_ONLY_IMPLEMENTATION_PLAN",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:blob:86cc2c618285b6b4951dbeca18d646ae15160e52"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9.json",
+      "operation": "CREATE_WORK_RECORD",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:blob:5178f8fdb8fcff761a2d6f9680b62c9c2f7c41f9"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/directive-ledger.jsonl:VD-0021",
+      "operation": "PERSIST_VINCE_ARCHITECTURE_SYNTHESIS_DIRECTIVE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "VD-0021",
+        "github:blob:37c03af7a47ac744e3b055cf4c43f31a553467d2"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Free project limits and the current no-paid-cost implementation boundary were reevaluated before selecting the v1 data plane."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Queues",
+      "url": "https://supabase.com/docs/guides/queues",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Postgres-native queues are a later optional async layer; v1 does not require pgmq."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "GitHub Actions billing",
+      "url": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Standard GitHub-hosted Actions remain free for public repositories and fit the source/test plane."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Vercel Queues",
+      "url": "https://vercel.com/docs/queues",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Vercel Queues can provide later at-least-once delivery/idempotency primitives but is not selected as canonical reliability evidence authority."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ESAA: Event Sourcing for Autonomous Agents in LLM-Based Software Engineering",
+      "url": "https://arxiv.org/abs/2602.23193",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Append-only structured events plus deterministic projection support traceability and replayable autonomous-agent state."
+    },
+    {
+      "source_kind": "OTHER",
+      "title": "AgentRx: Diagnosing AI Agent Failures from Execution Trajectories",
+      "url": "https://www.microsoft.com/en-us/research/publication/agentrx-diagnosing-ai-agent-failures-from-execution-trajectories/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Execution-trajectory evidence, invariants, critical-step localization and auditable diagnosis are relevant to Life failure analysis."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "KINETIC-DESIGN-CO/Build:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/a8d719815632c854da757419af97ff9e6bf9afb222a6edc79e2f2defa4c11619",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Open a protected pull request for the Reliability and Recovery architecture/implementation-plan branch after reconciling the work record with the exact final changed-path set; treat the architecture as SOURCE_ONLY until protected integration and later implementation phases are separately completed.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "architecture/reliability-recovery-v1.md",
+    "architecture/reliability-recovery-implementation-v1.md",
+    "coordination/work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9.json",
+    "VD-0021",
+    "github:main:ba4254469e26e9ebefee4c3b14b84ca90001c040",
+    "github:issue:49",
+    "github:issue:55",
+    "github:issue:59",
+    "github:issue:61",
+    "github:issue:18",
+    "github:issue:21",
+    "github:issue:15"
+  ]
+}
