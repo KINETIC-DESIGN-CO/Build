@@ -70,7 +70,7 @@
       "source_issue_number": 30,
       "component_id": "issue_30",
       "dispatch_tier": 100,
-      "state": "ADMITTED",
+      "state": "REMOVED",
       "depends_on": []
     }
   ]
