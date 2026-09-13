@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000005-f19a620d",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T06:07:12Z",
+  "source_main_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
+  "work_id": "4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+  "work_branch": "work/4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+  "work_head_sha": "5c7ad1cc3f4cdc223bf4404a0a3d8bb1a09e3d98",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000004-e42d1c93.json",
+    "blob_sha": "e720b76de049a6b5240d65f74f82e6e8b81b2607"
+  },
+  "selected_work": {
+    "worker_lane": "FOREGROUND",
+    "selected_rank": 0,
+    "selected_work_id": "CONTINUITY_SYNC",
+    "evaluated_at": "2026-09-13T06:07:12Z",
+    "evidence_ref": "governance/work-selection-policy.json + continuity:sync generation 14 ACTIVE_UNEXPIRED is the final required active claim after component:continuity_sync generation 18 was released and read back",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0013",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T06:07:12Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "state": "RELEASED",
+      "work_id": "4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+      "lease_id": "91349b2e-6d50-43a4-b8d0-2d14361d8f7c",
+      "generation": 18,
+      "expires_at": "2026-09-13T09:31:41Z",
+      "observed_at": "2026-09-13T06:07:12Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1",
+      "lease_id": "6c7a9e31-8b54-4f20-91d3-5e8a74c6b2f0",
+      "generation": 14,
+      "expires_at": "2026-09-13T09:31:41Z",
+      "observed_at": "2026-09-13T06:07:12Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21/coordination/lock.json",
+      "operation": "RELEASE_COMPONENT_CONTINUITY_SYNC_GENERATION_18",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GitHub commit 012e7eb94a4cb865729d7d901e7f8d01a667882d",
+        "released lock blob 2dc2d3ade83eeacde634feb33ee8f2256570c6f6"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1.json",
+      "operation": "DECLARE_FINAL_CLAIM_RELEASE_CHECKPOINT_PATH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GitHub commit 5c7ad1cc3f4cdc223bf4404a0a3d8bb1a09e3d98",
+        "work-record blob afb6b3b72b1653f3044c62adf47ed93f9e6b9c39"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0013",
+    "VD-0014",
+    "VD-0015",
+    "VD-0016"
+  ],
+  "decision_rationale_refs": [
+    "DR-0003",
+    "DR-0005",
+    "DR-0006"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:continuity_sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RELEASE_CONTINUITY_SYNC_GENERATION_14_READ_BACK_THEN_REDISPATCH",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoint-policy.json",
+    "continuity/current.json",
+    "coordination/protocol.json",
+    "governance/work-selection-policy.json",
+    "coordination/work/4c75d5a2-3fa8-4b2c-9c67-61c82e7ec4d1.json",
+    "GITHUB_MAIN:285e0eb3e07e275a424c6e9ab90c7b40c44792fd"
+  ]
+}
