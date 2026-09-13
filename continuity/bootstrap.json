@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "bundle_version": 4,
+  "bundle_version": 3,
   "canonical_repository": {
     "repository_id": 1366835183,
     "full_name": "KINETIC-DESIGN-CO/Build",
