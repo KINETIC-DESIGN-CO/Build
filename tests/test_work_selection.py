@@ -45,12 +45,22 @@ class WorkSelectionTests(unittest.TestCase):
             "selected_work_terminal": True,
         }
 
-    def parallel_evidence(self, item="github-issue-12"):
+    def admitted_items(self):
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
+        return sorted(
+            [item for item in admissions["items"] if item["state"] == "ADMITTED"],
+            key=lambda item: (item["dispatch_tier"], item["source_issue_number"], item["work_item_id"]),
+        )
+
+    def admitted_item(self, index=0):
+        return self.admitted_items()[index]
+
+    def parallel_evidence(self, item=None):
         value = self.base_evidence()
         value.update({
             "worker_lane": "PARALLEL_ASSIGNED",
             "parallel_request_state": "REQUESTED",
-            "parallel_work_item_id": item,
+            "parallel_work_item_id": item or self.admitted_item()["work_item_id"],
             "parallel_resource_intersection": "INTERSECTION_EMPTY",
         })
         return value
@@ -135,43 +145,50 @@ class WorkSelectionTests(unittest.TestCase):
         current = json.loads(CURRENT_PATH.read_text())
         current["current_status"] = "COMPLETE"
         CURRENT_PATH.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
+        first = self.admitted_item()
         result = self.dispatch(self.snapshot())
         self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
-        self.assertEqual(result["work_item_id"], "github-issue-12")
-        self.assertEqual(result["claim_next_resource_key"], "component:issue_12")
+        self.assertEqual(result["work_item_id"], first["work_item_id"])
+        self.assertEqual(result["claim_next_resource_key"], f"component:{first['component_id']}")
 
     def test_fresh_thread_becomes_parallel_when_foreground_component_is_owned(self):
         key = "component:multi_thread_coordination_hardening"
+        first = self.admitted_item()
         result = self.dispatch(self.snapshot({key: self.lock(key)}))
         self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
-        self.assertEqual(result["work_item_id"], "github-issue-12")
-        self.assertEqual(result["claim_next_resource_key"], "component:issue_12")
+        self.assertEqual(result["work_item_id"], first["work_item_id"])
+        self.assertEqual(result["claim_next_resource_key"], f"component:{first['component_id']}")
 
     def test_active_continuity_claim_also_routes_fresh_thread_to_parallel(self):
         key = "continuity:sync"
+        first = self.admitted_item()
         result = self.dispatch(self.snapshot({key: self.lock(key)}))
         self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
-        self.assertEqual(result["work_item_id"], "github-issue-12")
+        self.assertEqual(result["work_item_id"], first["work_item_id"])
 
     def test_parallel_auto_selection_skips_owned_component(self):
         current_key = "component:multi_thread_coordination_hardening"
-        issue12 = "component:issue_12"
-        result = self.dispatch(self.snapshot({current_key: self.lock(current_key), issue12: self.lock(issue12)}))
-        self.assertEqual(result["work_item_id"], "github-issue-15")
-        self.assertEqual(result["claim_next_resource_key"], "component:issue_15")
+        first = self.admitted_item(0)
+        second = self.admitted_item(1)
+        first_key = f"component:{first['component_id']}"
+        result = self.dispatch(self.snapshot({current_key: self.lock(current_key), first_key: self.lock(first_key)}))
+        self.assertEqual(result["work_item_id"], second["work_item_id"])
+        self.assertEqual(result["claim_next_resource_key"], f"component:{second['component_id']}")
 
     def test_expired_component_claim_is_available(self):
         current_key = "component:multi_thread_coordination_hardening"
-        issue12 = "component:issue_12"
-        result = self.dispatch(self.snapshot({current_key: self.lock(current_key), issue12: self.lock(issue12, expires="2026-09-12T13:59:59Z")}))
-        self.assertEqual(result["work_item_id"], "github-issue-12")
+        first = self.admitted_item()
+        first_key = f"component:{first['component_id']}"
+        result = self.dispatch(self.snapshot({current_key: self.lock(current_key), first_key: self.lock(first_key, expires="2026-09-12T13:59:59Z")}))
+        self.assertEqual(result["work_item_id"], first["work_item_id"])
 
     def test_dependency_blocks_issue_18_when_issue_21_not_complete(self):
         current_key = "component:multi_thread_coordination_hardening"
         overrides = {current_key: self.lock(current_key)}
-        for n in (12, 15, 16, 17, 21, 30):
-            key = f"component:issue_{n}"
-            overrides[key] = self.lock(key)
+        for item in self.admitted_items():
+            if item["work_item_id"] != "github-issue-18":
+                key = f"component:{item['component_id']}"
+                overrides[key] = self.lock(key)
         result = self.dispatch(self.snapshot(overrides))
         self.assertEqual(result["decision"], "NO_ELIGIBLE_WORK")
         self.assertIsNone(result["work_item_id"])
@@ -184,15 +201,18 @@ class WorkSelectionTests(unittest.TestCase):
         ADMISSIONS_PATH.write_text(json.dumps(admissions, indent=2) + "\n")
         current_key = "component:multi_thread_coordination_hardening"
         overrides = {current_key: self.lock(current_key)}
-        for n in (12, 15, 16, 17):
-            key = f"component:issue_{n}"
+        for item in self.admitted_items():
+            if item["work_item_id"] == "github-issue-18":
+                break
+            key = f"component:{item['component_id']}"
             overrides[key] = self.lock(key)
         result = self.dispatch(self.snapshot(overrides))
         self.assertEqual(result["work_item_id"], "github-issue-18")
 
     def test_snapshot_must_cover_every_required_component_resource(self):
         snap = self.snapshot()
-        del snap["resources"]["component:issue_12"]
+        first = self.admitted_item()
+        del snap["resources"][f"component:{first['component_id']}"]
         with tempfile.TemporaryDirectory() as td:
             path = Path(td) / "snapshot.json"
             path.write_text(json.dumps(snap) + "\n")
@@ -216,12 +236,14 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(policy["fresh_thread_dispatch"]["race_rule"], "AFTER_PARALLEL_SELECTION_ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP;ON_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH")
 
     def test_manual_selector_tie_break_remains_deterministic(self):
+        first = self.admitted_item(0)
+        second = self.admitted_item(1)
         proc = self.run_selector(["--select-parallel"])
         self.assertEqual(proc.returncode, 0, proc.stderr)
-        self.assertEqual(json.loads(proc.stdout)["work_item_id"], "github-issue-12")
-        proc = self.run_selector(["--select-parallel", "--unavailable-work-item", "github-issue-12"])
+        self.assertEqual(json.loads(proc.stdout)["work_item_id"], first["work_item_id"])
+        proc = self.run_selector(["--select-parallel", "--unavailable-work-item", first["work_item_id"]])
         self.assertEqual(proc.returncode, 0, proc.stderr)
-        self.assertEqual(json.loads(proc.stdout)["work_item_id"], "github-issue-15")
+        self.assertEqual(json.loads(proc.stdout)["work_item_id"], second["work_item_id"])
 
     def test_nonterminal_higher_precedence_selection_is_not_replaced(self):
         evidence = self.base_evidence()
