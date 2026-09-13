@@ -3,9 +3,9 @@ import unittest
 from scripts.validate_ci_pins import validate_workflow_text
 
 
-CHECKOUT_SHA = "11d5960a326750d5838078e36cf38b85af677262"
-SETUP_PYTHON_SHA = "a26af69be951a213d495a4c3e4e4022e16d87065"
-SUPABASE_SETUP_SHA = "46f7f98c7f948ad727d22c1e67fab04c223a0520"
+CHECKOUT_SHA = "3d3c42e5aac5ba805825da76410c181273ba90b1"  # actions/checkout v7.0.1
+SETUP_PYTHON_SHA = "5fda3b95a4ea91299a34e894583c3862153e4b97"  # actions/setup-python v7.0.0
+SUPABASE_SETUP_SHA = "46f7f98c7f948ad727d22c1e67fab04c223a0520"  # supabase/setup-cli v3.0.0
 
 
 class CiPinValidationTests(unittest.TestCase):
@@ -19,9 +19,9 @@ jobs:
   validate:
     steps:
       - name: Checkout
-        uses: actions/checkout@{CHECKOUT_SHA} # v4.4.0
+        uses: actions/checkout@{CHECKOUT_SHA} # v7.0.1
       - name: Python
-        uses: actions/setup-python@{SETUP_PYTHON_SHA} # v5.6.0
+        uses: actions/setup-python@{SETUP_PYTHON_SHA} # v7.0.0
       - name: Supabase
         uses: supabase/setup-cli@{SUPABASE_SETUP_SHA} # v3.0.0
         with:
