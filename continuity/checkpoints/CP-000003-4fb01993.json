@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-4fb01993",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T09:06:40Z",
+  "source_main_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
+  "work_id": "99e1a6ff-f156-40bc-b5d5-dabf0f17ea55",
+  "work_branch": "work/99e1a6ff-f156-40bc-b5d5-dabf0f17ea55",
+  "work_head_sha": "9fc6ce8fc47f9ebde2c12802f455cc50a8eeddca",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-44e4d8a7.json",
+    "blob_sha": "637c8bebf0be6b0333c980a3824ea707e81b30ac"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T09:06:40Z",
+    "evidence_ref": "Issue 30 is no longer present in canonical admissions after Vince corrected it as accidental non-work; this checkpoint is only the protocol-required final cleanup of the temporary component claim.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_STALE_IN_CONTINUITY_CURRENT",
+      "WORK_ADMISSIONS_SOURCE_REPOSITORY_STALE",
+      "COORDINATION_README_REPO_FILE_CLAIMS_STALE"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T09:06:40Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_30",
+      "lock_branch": "lock/482ca0bdd9d258bb741d61093152448d9475c194da63701f3c0fa754e0b8ba28",
+      "state": "ACTIVE",
+      "work_id": "99e1a6ff-f156-40bc-b5d5-dabf0f17ea55",
+      "lease_id": "7adb933c-cd09-4980-8d2b-7864bb69a3fd",
+      "generation": 1,
+      "expires_at": "2026-09-13T12:01:52Z",
+      "observed_at": "2026-09-13T09:06:40Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "pull_request:64",
+      "operation": "MERGE_QUEUE_VALIDATE_AND_MAIN_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_MERGE_GROUP_RUN:34748074917",
+        "GITHUB_MERGE_COMMIT:ecb7f85b67b84accb2205f88e63b8c1487995c0a",
+        "GITHUB_MAIN:0b2611fba37f8b4cb44574264c1463e2d1366126"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/work-admissions.json",
+      "operation": "VERIFY_GITHUB_ISSUE_30_ABSENT_FROM_CANONICAL_ADMISSIONS",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_BLOB:618f1ee9e1b13f92f6c3a07ef619bd9ea13e56d9",
+        "CURRENT_THREAD:VINCE_CORRECTION_ISSUE_30_DISREGARD"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/99e1a6ff-f156-40bc-b5d5-dabf0f17ea55.json",
+      "operation": "DECLARE_FINAL_CHECKPOINT_FIRST_ATTEMPT",
+      "result": "TIMEOUT",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_READBACK_UNCHANGED_BLOB:43ff7048d91fda1c7d4cae7acb2a27f5d51a7718"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/99e1a6ff-f156-40bc-b5d5-dabf0f17ea55.json",
+      "operation": "DECLARE_FINAL_CHECKPOINT_RETRY_AFTER_UNCHANGED_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_COMMIT:9fc6ce8fc47f9ebde2c12802f455cc50a8eeddca",
+        "GITHUB_BLOB:800238c8f828e6903f9780e24771739c52a030b1"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:issue_30",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Release component:issue_30 generation 1 after one final live ownership readback, then rerun deterministic work selection from current main.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_PR:64",
+    "GITHUB_MERGE_GROUP_RUN:34748074917",
+    "GITHUB_MAIN:0b2611fba37f8b4cb44574264c1463e2d1366126",
+    "CURRENT_THREAD:VINCE_CORRECTION_ISSUE_30_DISREGARD"
+  ]
+}
