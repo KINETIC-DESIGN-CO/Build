@@ -12,6 +12,7 @@
   "repo_paths": [
     "continuity/checkpoints/CP-000007-cf4a6e91.json",
     "continuity/checkpoints/CP-000008-8d2c71a5.json",
+    "continuity/checkpoints/CP-000009-d7a52116.json",
     "continuity/current.json"
   ],
   "external_targets": [],
