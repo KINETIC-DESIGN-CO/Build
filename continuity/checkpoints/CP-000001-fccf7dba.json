@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000001-fccf7dba",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:43:11Z",
+  "source_main_sha": "78a6909eac444b42964716dd6d845b34af752192",
+  "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+  "work_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+  "work_head_sha": "10161dfff5f22585631ba1c28378b7ab8e61321e",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": null,
+    "blob_sha": null
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T19:43:11Z",
+    "evidence_ref": "THREAD_LIFECYCLE:CONTINUE_ACTIVE_GOAL;DOWNSTREAM_WORK_SELECTION_EFFECT:ZERO",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_GOAL_LIFECYCLE_NOT_INTEGRATED"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:43:11Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T19:43:11Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "cddbe36c-7023-44f8-a9a1-700fc9932972",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:43:20Z",
+      "observed_at": "2026-09-13T19:43:11Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:43:20Z",
+      "observed_at": "2026-09-13T19:43:11Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:multi_thread_coordination_hardening",
+      "lock_branch": "lock/59cb0115181bd2c23a385594018248f94c140e7c29c394c3def5d23c0dfa90d8",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "a6b70436-4fca-4dbc-8434-4e7a311e150c",
+      "generation": 4,
+      "expires_at": "2026-09-13T23:08:58Z",
+      "observed_at": "2026-09-13T19:43:11Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+      "operation": "VERSION_STABLE_GOAL_LIFECYCLE_RESPONSE_AND_GOAL_AWARE_CHECKPOINT_SOURCE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_BRANCH_HEAD_BEFORE_CHECKPOINT:10161dfff5f22585631ba1c28378b7ab8e61321e",
+        "GITHUB_MAIN:78a6909eac444b42964716dd6d845b34af752192"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0023",
+    "VD-0024",
+    "VD-0025",
+    "VD-0026",
+    "VD-0027",
+    "VD-0028",
+    "VD-0029"
+  ],
+  "decision_rationale_refs": [
+    "DR-0010"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Protected latest-base source integration remains GitHub Merge Queue plus required validation; semantic goal selection does not replace the integration gate."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Supabase Free remains the current authorized plan and does not include Branching, so this source-only lifecycle work does not introduce a new preview-database mechanism."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "KINETIC-DESIGN-CO/Build:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:auto_issue_dispatch",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:goal_lifecycle_identity",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:multi_thread_coordination_hardening",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "NONE",
+    "candidate_next_operation": "UPDATE_WORK_RECORD_TO_EXACT_CHANGED_PATHS_THEN_OPEN_REPLACEMENT_PR_AND_REQUIRE_VALIDATE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:59",
+    "GITHUB_PR:63",
+    "GITHUB_PR:73",
+    "GITHUB_PR:75",
+    "GOAL:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "WORK:3edfca10-ac11-4a79-bd31-72bd84165594",
+    "continuity/context.md",
+    "governance/goal-registry.json",
+    "governance/thread-lifecycle-policy.json"
+  ]
+}

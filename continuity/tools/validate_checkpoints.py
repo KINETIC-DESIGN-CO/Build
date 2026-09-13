@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -27,6 +28,17 @@ def load_schema(rel: str):
     return schema
 
 
+def parse_datetime(value, label: str):
+    if not isinstance(value, str):
+        fail("CP010_GOAL", f"{label} must be RFC3339 date-time")
+        return None
+    try:
+        return datetime.fromisoformat(value[:-1] + "+00:00" if value.endswith("Z") else value)
+    except ValueError:
+        fail("CP010_GOAL", f"{label} must be RFC3339 date-time")
+        return None
+
+
 def validate_jsonl_records(path: Path, schema, label: str) -> list[dict]:
     rows = vc.load_jsonl(path)
     if schema is not None:
@@ -40,6 +52,7 @@ def main() -> int:
 
     policy = vc.load_json(CONT / "checkpoint-policy.json")
     template = vc.load_json(CONT / "checkpoint-template.json")
+    goal_snapshot_enforcement = None
     if not isinstance(policy, dict) or not isinstance(template, dict):
         fail("CP001_LOAD", "checkpoint policy and template must be JSON objects")
     else:
@@ -55,6 +68,12 @@ def main() -> int:
             fail("CP003_AUTHORITY", "checkpoint policy/template authority must be EVIDENCE_ONLY")
         if policy.get("runtime_control_authority") != "NONE" or template.get("runtime_control_authority") != "NONE":
             fail("CP003_AUTHORITY", "checkpoint policy/template runtime authority must be NONE")
+        goal_snapshot_enforcement = parse_datetime(
+            policy.get("goal_snapshot_enforcement_utc"),
+            "checkpoint-policy.goal_snapshot_enforcement_utc",
+        )
+        if policy.get("goal_snapshot_rule") != "CHECKPOINT_CREATED_AT_UTC_GTE_GOAL_SNAPSHOT_ENFORCEMENT_UTC_MUST_INCLUDE_GOAL_SNAPSHOT_WITH_ROOT_ACTIVE_AND_EXACT_ACTIVE_PATH_AS_HISTORICAL_OBSERVATION_ONLY":
+            fail("CP002_POLICY", "goal_snapshot_rule mismatch")
 
     policy_schema = load_schema("continuity/schema/checkpoint-policy.schema.json")
     template_schema = load_schema("continuity/schema/checkpoint-template.schema.json")
@@ -129,6 +148,25 @@ def main() -> int:
             if isinstance(operation, dict) and operation.get("readback_state") == "VERIFIED" and operation.get("result") != "SUCCESS":
                 fail("CP007_READBACK", f"{path.name} VERIFIED readback requires SUCCESS result")
 
+        created_at = parse_datetime(record.get("created_at"), f"{path.name}.created_at")
+        if goal_snapshot_enforcement is not None and created_at is not None and created_at >= goal_snapshot_enforcement:
+            snapshot = record.get("goal_snapshot")
+            if not isinstance(snapshot, dict):
+                fail("CP010_GOAL", f"{path.name} requires goal_snapshot after enforcement")
+            else:
+                active_path = snapshot.get("active_path")
+                root_goal = snapshot.get("active_root_goal_id")
+                active_goal = snapshot.get("active_goal_id")
+                if not isinstance(active_path, list) or not active_path:
+                    fail("CP010_GOAL", f"{path.name} goal_snapshot.active_path must be nonempty")
+                else:
+                    if active_path[0] != root_goal:
+                        fail("CP010_GOAL", f"{path.name} goal_snapshot.active_path must start at active_root_goal_id")
+                    if active_path[-1] != active_goal:
+                        fail("CP010_GOAL", f"{path.name} goal_snapshot.active_path must end at active_goal_id")
+                if snapshot.get("authority") != "HISTORICAL_OBSERVATION_ONLY":
+                    fail("CP010_GOAL", f"{path.name} goal_snapshot authority mismatch")
+
     if not checkpoints:
         fail("CP008_REQUIRED", "at least one CP-* checkpoint must exist")
 
@@ -151,6 +189,7 @@ def main() -> int:
             "READ_LIVE_COORDINATION_FOR_CHECKPOINT_DISCOVERY",
             "READ_LATEST_WORK_CHECKPOINT",
             "READ_CHECKPOINT_PROVENANCE",
+            "EVALUATE_THREAD_LIFECYCLE_BOUNDARY",
         ):
             if step not in bootstrap.get("resume_algorithm", []):
                 fail("CP009_BOOTSTRAP", f"bootstrap resume_algorithm missing {step}")

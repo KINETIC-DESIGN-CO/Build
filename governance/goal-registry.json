@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "registry_id": "life-engineering-goal-registry-v1",
+  "runtime_control_authority": "NONE",
+  "engineering_goal_authority": "DETERMINISTIC_EVALUATION_ONLY",
+  "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+  "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+  "active_path": [
+    "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+  ],
+  "authorized_root_transition_id": null,
+  "goals": [
+    {
+      "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+      "parent_goal_id": null,
+      "return_to_goal_id": null,
+      "component_id": "goal_lifecycle_identity",
+      "goal_relation": "ROOT",
+      "goal_state": "ACTIVE",
+      "terminal_cleanup_state": "PENDING",
+      "title": "Unify stable goal identity with terminal thread handoff",
+      "description": "Keep one durable semantic goal across workers and threads; temporary child work returns to that goal, and a completed root hands off without silently starting unrelated work.",
+      "completion_condition_ids": [
+        "GOAL_REGISTRY_VERSIONED_AND_VALIDATED",
+        "PARENT_RETURN_SELECTION_VERSIONED_AND_FALSIFIED",
+        "TERMINAL_HANDOFF_ADVISORY_SELECTION_VERSIONED_AND_FALSIFIED",
+        "RESPONSE_CONTRACT_TWO_OPTION_HANDOFF_VERSIONED",
+        "VD_0017_SUPERSESSION_PERSISTED",
+        "STALE_WORKER_TAKEOVER_AND_REVISION_FENCING_VERSIONED_AND_FALSIFIED",
+        "PROTECTED_INTEGRATION_AND_POST_MERGE_READBACK_VERIFIED"
+      ],
+      "satisfied_condition_ids": [],
+      "child_goal_ids": [],
+      "execution_attempts": [
+        {
+          "work_id": "941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+          "attempt_state": "SUPERSEDED"
+        },
+        {
+          "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+          "attempt_state": "ACTIVE"
+        }
+      ],
+      "source_refs": [
+        "VINCE_DIRECTIVE:VD-0024",
+        "VINCE_CORRECTION:VD-0023",
+        "GITHUB_ISSUE:59",
+        "GITHUB_ISSUE:54",
+        "GITHUB_ISSUE:55",
+        "GITHUB_PR:63",
+        "GITHUB_PR:73"
+      ],
+      "runtime_control_authority": "NONE"
+    }
+  ]
+}

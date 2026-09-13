@@ -35,39 +35,56 @@ class ContinuityTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("VALID", result.stdout)
 
-    def test_bootstrap_loads_governance_before_current_state(self):
+    def test_bootstrap_loads_goal_lifecycle_before_work_selection(self):
         bootstrap = json.loads((ROOT / "continuity/bootstrap.json").read_text())
-        self.assertEqual(bootstrap["bundle_version"], 3)
+        self.assertEqual(bootstrap["bundle_version"], 4)
         self.assertEqual(
-            bootstrap["required_read_order"][:4],
+            bootstrap["required_read_order"][:8],
             [
                 "continuity/bootstrap.json",
                 "governance/placement-policy.json",
                 "continuity/response-contract.json",
                 "continuity/current.json",
+                "governance/goal-policy.json",
+                "governance/goal-registry.json",
+                "governance/thread-lifecycle-policy.json",
+                "governance/work-selection-policy.json",
             ],
         )
-        self.assertEqual(
-            bootstrap["required_read_order"][4],
-            "governance/work-selection-policy.json",
+        boundary_index = bootstrap["resume_algorithm"].index(
+            "EVALUATE_THREAD_LIFECYCLE_BOUNDARY"
         )
+        selection_index = bootstrap["resume_algorithm"].index("EVALUATE_WORK_SELECTION")
+        self.assertLess(boundary_index, selection_index)
         self.assertEqual(
             bootstrap["resume_algorithm"][-2:],
             ["EVALUATE_WORK_SELECTION", "CONTINUE_FROM_NEXT_ACTION"],
         )
-        self.assertIn(
+        for command in (
+            "python scripts/validate_goal_graph.py",
+            "python scripts/evaluate_thread_lifecycle.py --validate-policy",
             "python scripts/select_work.py --validate-policy",
-            bootstrap["validation_command"],
-        )
+            "python scripts/evaluate_user_observation.py",
+        ):
+            self.assertIn(command, bootstrap["validation_command"])
         for required in (
             "governance/placement-policy.json",
             "continuity/response-contract.json",
-            "governance/schema/placement-policy.schema.json",
+            "governance/goal-policy.json",
+            "governance/goal-registry.json",
+            "governance/thread-lifecycle-policy.json",
+            "governance/user-observation-policy.json",
+            "continuity/user-observations.jsonl",
+            "governance/schema/goal-policy.schema.json",
+            "governance/schema/goal-registry.schema.json",
+            "governance/schema/thread-lifecycle-policy.schema.json",
             "continuity/schema/response-contract.schema.json",
-            "governance/work-selection-policy.json",
-            "governance/schema/work-selection-policy.schema.json",
-            "scripts/select_work.py",
-            "tests/test_work_selection.py",
+            "scripts/validate_goal_graph.py",
+            "scripts/evaluate_thread_lifecycle.py",
+            "scripts/evaluate_user_observation.py",
+            "tests/test_goal_graph.py",
+            "tests/test_thread_lifecycle.py",
+            "tests/test_user_observation.py",
         ):
             self.assertIn(required, bootstrap["required_files"])
 
@@ -115,9 +132,11 @@ class ContinuityTests(unittest.TestCase):
             "EVIDENCE_ONLY_NEVER_AUTHORIZATION_LOCK_CLAIM_COMPLETION_RELEASE_OR_MERGE_GATE",
         )
 
-    def test_response_contract_is_plain_english_first_and_zero_authority(self):
+    def test_response_contract_v2_is_readable_first_and_zero_authority(self):
         contract = json.loads((ROOT / "continuity/response-contract.json").read_text())
-        self.assertEqual(contract["default_mode"], "PLAIN_ENGLISH_FIRST")
+        self.assertEqual(contract["schema_version"], 2)
+        self.assertEqual(contract["contract_id"], "life-response-contract-v2")
+        self.assertEqual(contract["default_mode"], "READABLE_FIRST")
         self.assertEqual(contract["runtime_control_authority"], "NONE")
         self.assertEqual(
             contract["technical_only_exception"],
@@ -136,6 +155,52 @@ class ContinuityTests(unittest.TestCase):
                 "CURRENT_PLAN_CHANGE",
             ],
         )
+        self.assertNotIn("plain_english_rule", contract)
+        self.assertNotIn("PLAIN_ENGLISH_MEANING", contract["required_sections"])
+
+    def test_response_contract_requires_architecture_orientation(self):
+        contract = json.loads((ROOT / "continuity/response-contract.json").read_text())
+        orientation = contract["architecture_thread_orientation"]
+        self.assertEqual(orientation["trigger"], "LIFE_ARCHITECTURE_RESPONSE")
+        self.assertEqual(
+            orientation["start_parent_rule"],
+            "FIRST_RENDERED_HEADING_EQUALS_ACTIVE_ROOT_GOAL_TITLE_FROM_GOAL_REGISTRY",
+        )
+        self.assertEqual(
+            orientation["start_description_rule"],
+            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_QUOTE_BLOCK_WITH_SENTENCE_COUNT_IN:1,2",
+        )
+        self.assertEqual(
+            orientation["end_rule"],
+            "IMMEDIATELY_BEFORE_NEXT_STEP_RENDER_ACTIVE_ROOT_GOAL_TITLE_ONLY_WITHOUT_DESCRIPTION",
+        )
+        self.assertIn("A_ID", orientation["action_reference_rule"])
+        self.assertIn("CURRENT_GITHUB_PR_TITLE", orientation["pr_reference_rule"])
+
+    def test_response_contract_requires_terminal_handoff_without_auto_execution(self):
+        contract = json.loads((ROOT / "continuity/response-contract.json").read_text())
+        handoff = contract["terminal_handoff"]
+        self.assertEqual(handoff["default_recommendation"], "CLOSE_THREAD")
+        self.assertEqual(handoff["no_candidate_options"], ["CLOSE_THREAD"])
+        self.assertEqual(
+            handoff["candidate_options"], ["CLOSE_THREAD", "CONTINUE_WITH_CANDIDATE"]
+        )
+        self.assertEqual(
+            handoff["candidate_effect"],
+            "ADVISORY_ONLY_ZERO_CLAIM_ACQUISITION_ZERO_EXECUTION",
+        )
+        self.assertEqual(
+            handoff["automatic_execution_rule"],
+            "FORBID_AUTOMATIC_UNRELATED_WORK_EXECUTION_AFTER_TERMINAL_ROOT",
+        )
+
+    def test_current_action_has_stable_human_readable_name(self):
+        current = json.loads((ROOT / "continuity/current.json").read_text())
+        action = current["next_action"]
+        self.assertEqual(action["id"], "A-0014")
+        self.assertEqual(action["name"], "Terminal Redispatch & Issue Lifecycle Closure")
+        self.assertNotIn("continue same-thread dispatch without a user prompt", action["description"])
+        self.assertIn("TERMINAL_HANDOFF", action["description"])
 
     def test_response_contract_schema_is_closed(self):
         schema = json.loads(
@@ -146,8 +211,10 @@ class ContinuityTests(unittest.TestCase):
             schema["properties"]["runtime_control_authority"]["const"], "NONE"
         )
         self.assertEqual(
-            schema["properties"]["default_mode"]["const"], "PLAIN_ENGLISH_FIRST"
+            schema["properties"]["default_mode"]["const"], "READABLE_FIRST"
         )
+        self.assertIn("architecture_thread_orientation", schema["required"])
+        self.assertIn("terminal_handoff", schema["required"])
 
     def test_continuity_sync_rule_is_recursion_safe(self):
         bootstrap = json.loads((ROOT / "continuity/bootstrap.json").read_text())

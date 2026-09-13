@@ -100,6 +100,10 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr)
         return json.loads(proc.stdout)
 
+    def current_component_key(self):
+        current = json.loads(CURRENT_PATH.read_text())
+        return f"component:{current['current_component']}"
+
     def required_dispatch_keys(self):
         current = json.loads(CURRENT_PATH.read_text())
         admissions = json.loads(ADMISSIONS_PATH.read_text())
@@ -173,7 +177,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["worker_lane"], "FOREGROUND")
         self.assertEqual(result["effective_rank"], 2)
         self.assertEqual(result["selected_work"], "CURRENT_NEXT_ACTION")
-        self.assertEqual(result["claim_next_resource_key"], "component:multi_thread_coordination_hardening")
+        self.assertEqual(result["claim_next_resource_key"], self.current_component_key())
 
     def test_dispatch_snapshot_does_not_require_continuity_sync_resource(self):
         self.assertNotIn("continuity:sync", self.required_dispatch_keys())
@@ -201,7 +205,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["claim_next_resource_key"], f"component:{first['component_id']}")
 
     def test_fresh_thread_becomes_parallel_when_foreground_component_is_owned(self):
-        key = "component:multi_thread_coordination_hardening"
+        key = self.current_component_key()
         first = self.dispatchable_admitted_items()[0]
         result = self.dispatch(self.snapshot({key: self.lock(key)}))
         self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
@@ -210,7 +214,7 @@ class WorkSelectionTests(unittest.TestCase):
     def test_parallel_auto_selection_skips_owned_component(self):
         self.make_issue_21_admitted()
         self.make_issue_18_dispatchable()
-        current_key = "component:multi_thread_coordination_hardening"
+        current_key = self.current_component_key()
         first = self.dispatchable_admitted_items()[0]
         second = self.dispatchable_admitted_items()[1]
         first_key = f"component:{first['component_id']}"
@@ -219,7 +223,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["claim_next_resource_key"], f"component:{second['component_id']}")
 
     def test_expired_component_claim_is_available(self):
-        current_key = "component:multi_thread_coordination_hardening"
+        current_key = self.current_component_key()
         first = self.dispatchable_admitted_items()[0]
         first_key = f"component:{first['component_id']}"
         result = self.dispatch(self.snapshot({current_key: self.lock(current_key), first_key: self.lock(first_key, expires="2026-09-12T13:59:59Z")}))
@@ -227,7 +231,7 @@ class WorkSelectionTests(unittest.TestCase):
 
     def test_dependency_blocks_issue_18_when_issue_21_not_complete(self):
         self.make_issue_21_admitted()
-        current_key = "component:multi_thread_coordination_hardening"
+        current_key = self.current_component_key()
         overrides = {current_key: self.lock(current_key)}
         for item in self.admitted_items():
             if item["work_item_id"] != "github-issue-18":
@@ -248,7 +252,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertIn("resource coverage mismatch", proc.stderr)
 
     def test_malformed_live_lock_fails_closed(self):
-        key = "component:multi_thread_coordination_hardening"
+        key = self.current_component_key()
         bad = self.lock(key)
         del bad["lease_id"]
         with tempfile.TemporaryDirectory() as td:
