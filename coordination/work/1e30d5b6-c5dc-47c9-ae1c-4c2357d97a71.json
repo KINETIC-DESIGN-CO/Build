@@ -11,7 +11,8 @@
   "component_id": "issue_12",
   "repo_paths": [
     "continuity/checkpoints/CP-000001-c4f1a8e2.json",
-    "governance/work-admissions.json"
+    "governance/work-admissions.json",
+    "tests/test_work_selection.py"
   ],
   "external_targets": [],
   "claims": [
