@@ -93,7 +93,7 @@ class WatchdogValidationTests(unittest.TestCase):
 
     def test_coordination_protocol_epoch_drift_fails(self):
         docs = copy.deepcopy(BASE_SOURCE_DOCS)
-        docs["coordination/protocol.json"]["protocol_id"] = "life-source-coordination-v4"
+        docs["coordination/protocol.json"]["protocol_id"] = "life-source-coordination-v3"
         with self.assertRaises(vw.ValidationError):
             vw.validate_source_contract_documents(docs)
 
