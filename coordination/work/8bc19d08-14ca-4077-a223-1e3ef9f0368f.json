@@ -1,1 +1,46 @@
-x
+{
+  "schema_version": 1,
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "title": "Phase 0 Reliability and Recovery Contracts",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "b9668a3e-eb54-4bbc-ac14-fda1324f259a"
+  },
+  "implementation_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "base_sha": "8327a520d48f8724f58a55ea1bd17817ead280d2",
+  "component_id": "reliability_recovery_contracts",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000005-83828cb5.json",
+    "continuity/checkpoints/CP-000006-1d2c2ee1.json",
+    "continuity/checkpoints/CP-000007-01392b07.json",
+    "continuity/checkpoints/CP-000008-62025211.json",
+    "continuity/checkpoints/CP-000009-75f2a392.json",
+    "continuity/checkpoints/CP-000010-f63c26bb.json",
+    "continuity/checkpoints/CP-000011-5d12caaa.json",
+    "coordination/README.md",
+    "governance/root-cause-repairs.json",
+    "reliability/compatibility-map.json",
+    "reliability/schema/compatibility-map.schema.json",
+    "reliability/spec.json",
+    "scripts/validate_lock_history.py",
+    "scripts/validate_reliability.py",
+    "tests/test_lock_history.py",
+    "tests/test_reliability.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:lock_history_validation",
+      "lock_branch": "lock/b01d7eb513474626f092988da6d4000ad6fe55e8c6e5162c4a6588636e9b4ade",
+      "lease_id": "9c04de07-afd5-4e4f-8079-7889215e590a",
+      "generation": 2
+    },
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "lease_id": "65d35d8e-1607-4a71-966f-30025c4319e9",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
