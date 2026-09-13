@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "work_id": "941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+  "title": "Persist stable parent goal and lifecycle identity",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "d21912db-c446-4fa0-a6f3-c3d32fb13c1a"
+  },
+  "implementation_branch": "work/941b4a91-994e-45c4-a49b-7e9c6fc2254b",
+  "base_sha": "4cdeceec9da3333404fbe0cda9f632a134a5f302",
+  "component_id": "goal_lifecycle_identity",
+  "repo_paths": [
+    "governance/goal-policy.json",
+    "governance/goal-registry.json",
+    "governance/schema/goal-policy.schema.json",
+    "governance/schema/goal-registry.schema.json",
+    "scripts/validate_goal_graph.py",
+    "tests/test_goal_graph.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "lease_id": "a3ee3caf-1b7d-429f-ab4b-c5539d8997a0",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
