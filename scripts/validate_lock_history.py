@@ -221,6 +221,14 @@ def validate_history(history: list[dict], protocol: dict) -> None:
             fail(f"transition[{index - 1}->{index}] generation {previous['generation']}->{current['generation']} {previous['state']}->{current['state']}: {exc}")
 
 
+def validate_empty_branch_tip(committed_at: datetime, protocol: dict) -> None:
+    if not isinstance(committed_at, datetime) or committed_at.tzinfo is None:
+        fail("empty lock branch tip timestamp must be timezone-aware datetime")
+    cutoff = parse_utc(protocol["lock_history_enforcement_start_utc"])
+    if committed_at >= cutoff:
+        fail("empty lock branch exists at or after lock transition enforcement epoch")
+
+
 def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
     if not entries:
         fail("lock history must contain at least one snapshot")
@@ -326,7 +334,13 @@ def main() -> int:
         protocol = load_protocol()
         for branch in remote_lock_branches():
             try:
-                validate_versioned_history(history_entries_for_branch(branch), protocol)
+                entries = history_entries_for_branch(branch)
+                if not entries:
+                    remote_ref = f"refs/remotes/origin/{branch}"
+                    tip_time = parse_git_time(run_git("show", "-s", "--format=%cI", remote_ref))
+                    validate_empty_branch_tip(tip_time, protocol)
+                    continue
+                validate_versioned_history(entries, protocol)
             except ValidationError as exc:
                 fail(f"{branch}: {exc}")
     except ValidationError as exc:
