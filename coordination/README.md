@@ -20,8 +20,9 @@ Required keys include:
 
 - `component:<component_id>` for the component being changed;
 - `repo-file:<exact_repo_path>` for every changed repository path except the work record itself;
-- `integration:main` before opening a PR to `main` and while integrating it;
 - `external:supabase:jnenguxodtgwbskhdsxt` before any write to the authorized Supabase production project.
+
+`integration:main` is no longer an integration gate. Pull-request creation and main integration do not require that claim. Main integration is delegated to GitHub's required Merge Queue and its `merge_group` validation.
 
 A resource's lock branch is deterministic:
 
@@ -31,7 +32,11 @@ The branch contains `coordination/lock.json`, validated by `coordination/schema/
 
 If a lock update fails because the live file changed, the worker must read the live lock again before any retry or new acquisition attempt for that resource. A stale compare-and-swap result is never retried from the stale snapshot.
 
-Claims last exactly 14,400 seconds. Renew a claim when it has 1,800 seconds or less remaining. A takeover is eligible only when current UTC is greater than or equal to `expires_at`; takeover increments `generation` by exactly one. Release sets `state` to `RELEASED` and preserves the last owner for audit. A later acquisition from `RELEASED` increments `generation` by exactly one and receives a new `work_id`, `lease_id`, base SHA, and lease timestamps.
+Claims last exactly 14,400 seconds from the current heartbeat. Renew a claim only when 1,800 seconds or less remain. Renewal preserves the ownership cycle and immutable lease fields, advances `heartbeat_at`, and sets `expires_at` exactly 14,400 seconds after the new heartbeat.
+
+A takeover is eligible only when the predecessor ACTIVE lease has expired; takeover increments `generation` by exactly one and creates a new work ID/lease ownership cycle. Release changes only `state` to `RELEASED` and preserves the prior owner fields for audit. A later acquisition from RELEASED increments `generation` by exactly one and receives a new `work_id`, `lease_id`, base SHA, and lease timestamps.
+
+Executable transition enforcement starts at the exact protocol field `lock_history_enforcement_start_utc = 2026-09-12T22:56:23Z`, the recorded D-0019 decision time. Earlier lock commits remain machine-readable legacy evidence and are not retroactively converted into compliant transitions. Every lock commit at or after the enforcement timestamp is validated against its immediate predecessor. This prevents legacy behavior—such as rewriting `base_sha` inside the same live lease—from being repeated after v2 activation without making historical defects impossible to migrate past. `scripts/validate_lock_history.py` performs that branch-history validation.
 
 ## Parallel work selection
 
@@ -41,19 +46,19 @@ For each proposed operation, determine the exact resource-key set required by th
 
 `continuity/current.json` fields `current_component`, `current_work`, and `next_action` describe canonical engineering progression. They are not resource claims and create no exclusive ownership.
 
-An existing `integration:main` claim does not block implementation mutations on another work branch when that implementation operation does not require `integration:main`. It does block another work item from opening or integrating a PR to `main` while the claim remains ACTIVE and unexpired.
-
 If one requested operation intersects another work item's ACTIVE unexpired claims and another requested operation does not, evaluate them separately. The non-intersecting operation may proceed with its own exact required claims. The intersecting operation remains unexecuted; it is not silently dropped.
 
-Resource acquisition ordering applies to each acquisition attempt, not to the entire lifetime history of a work item. Keys acquired in one attempt must be unique and sorted ascending by UTF-8 resource key. A later attempt may therefore acquire `integration:main` after implementation claims already exist, provided that later attempt is itself correctly ordered and the live `integration:main` claim has no blocking intersection.
+Resource acquisition ordering applies to each acquisition attempt, not to the entire lifetime history of a work item. Keys acquired in one attempt must be unique and sorted ascending by UTF-8 resource key.
 
-## Pull requests
+## Pull requests and Merge Queue
 
-Every post-bootstrap PR to `main` must add or modify exactly one `coordination/work/<work_id>.json` record. It declares the worker, branch, base SHA, exact changed repository paths, external targets, and the lease generation/ID for every claim.
+Every post-bootstrap PR to `main` must add or modify exactly one `coordination/work/<work_id>.json` record. It declares the worker, branch, acquisition base SHA, exact changed repository paths, external targets, and the lease generation/ID for every claim.
 
-The required GitHub Actions job remains named `validate`. It validates continuity and coordination, verifies that the PR branch contains the current `main` as an ancestor, fetches every live lock branch, verifies each lease against the work record, and rejects unclaimed changed paths.
+The work record's `base_sha` is acquisition provenance. It must be an ancestor of the PR head, but the PR branch does not have to contain today's `main` merely to obtain a valid pull-request check.
 
-The `Protect-main` ruleset must also use strict required checks: **Require branches to be up to date before merging** must be enabled. That GitHub-side setting invalidates a previously green PR when another PR changes `main`.
+The required GitHub Actions job remains named `validate`. On `pull_request`, it validates continuity and coordination, fetches every live lock branch, verifies each lease against the work record, and rejects unclaimed changed paths. It does not require `integration:main`.
+
+On `merge_group`, the same workflow validates the queue-generated latest-base combined commit and runs the repository and database tests. `Protect-main` must require GitHub Merge Queue, so a PR reaches `main` only through a successful merge group rather than through the removed custom integration lease.
 
 ## Continuity interaction
 
