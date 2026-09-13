@@ -11,8 +11,6 @@
   "component_id": "issue_49",
   "repo_paths": [
     "continuity/bootstrap.json",
-    "continuity/decision-rationale.jsonl",
-    "continuity/directive-ledger.jsonl",
     "continuity/response-contract.json",
     "continuity/schema/bootstrap.schema.json",
     "continuity/schema/response-contract.schema.json",
