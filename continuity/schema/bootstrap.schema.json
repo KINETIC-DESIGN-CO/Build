@@ -21,7 +21,7 @@
     },
     "required_files": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
     "required_read_order": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
-    "resume_algorithm": {"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["READ_REQUIRED_FILES","VALIDATE_BUNDLE","READ_CURRENT_THREAD","READ_LIVE_COORDINATION_FOR_CHECKPOINT_DISCOVERY","READ_LATEST_WORK_CHECKPOINT","READ_CHECKPOINT_PROVENANCE","RUN_REQUIRED_FRESH_RESEARCH","READ_AUTHORIZED_SYSTEMS","VERIFY_REFERENCED_LIVE_OBJECTS","MARK_STALE_OR_MISMATCHED_STATE_NOT_RUN","APPLY_LATER_VINCE_CORRECTIONS","EVALUATE_WORK_SELECTION","CONTINUE_FROM_NEXT_ACTION"]}},
+    "resume_algorithm": {"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["READ_REQUIRED_FILES","VALIDATE_BUNDLE","READ_CURRENT_THREAD","READ_LIVE_COORDINATION_FOR_CHECKPOINT_DISCOVERY","READ_LATEST_WORK_CHECKPOINT","READ_CHECKPOINT_PROVENANCE","RUN_REQUIRED_FRESH_RESEARCH","READ_AUTHORIZED_SYSTEMS","VERIFY_REFERENCED_LIVE_OBJECTS","MARK_STALE_OR_MISMATCHED_STATE_NOT_RUN","APPLY_LATER_VINCE_CORRECTIONS","EVALUATE_THREAD_LIFECYCLE_BOUNDARY","EVALUATE_WORK_SELECTION","CONTINUE_FROM_NEXT_ACTION"]}},
     "continuity_update_event_types": {"type":"array","minItems":10,"uniqueItems":true,"items":{"enum":["VINCE_DIRECTIVE","ARCHITECTURE_DECISION","GITHUB_MUTATION","SUPABASE_MUTATION","VERCEL_MUTATION","PROJECT_INSTRUCTION_CHANGE","VERIFICATION_TRANSITION","BLOCKER_TRANSITION","NEXT_ACTION_CHANGE","COMPONENT_TRANSITION"]}},
     "continuity_sync_paths": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
     "continuity_sync_rule": {"type":"string","minLength":1},

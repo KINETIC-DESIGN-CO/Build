@@ -3,39 +3,50 @@
   "title": "Life Response Contract",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version","contract_id","runtime_control_authority","default_mode","required_sections","state_terms","plain_english_rule","technical_only_exception","precision_rule","platform_feature_fields","copy_paste_rule","completion_rule","progression_rule","persistence_status_values","persistence_disclosure_rule","current_job_rule","no_duplicate_authority_rule"],
+  "required": ["schema_version","contract_id","runtime_control_authority","default_mode","required_sections","state_terms","readability_rule","technical_only_exception","precision_rule","platform_feature_fields","copy_paste_rule","completion_rule","progression_rule","persistence_status_values","persistence_disclosure_rule","architecture_thread_orientation","terminal_handoff","current_job_rule","no_duplicate_authority_rule"],
   "properties": {
-    "schema_version": {"const": 1},
-    "contract_id": {"const": "life-response-contract-v1"},
+    "schema_version": {"const": 2},
+    "contract_id": {"const": "life-response-contract-v2"},
     "runtime_control_authority": {"const": "NONE"},
-    "default_mode": {"const": "PLAIN_ENGLISH_FIRST"},
-    "required_sections": {
-      "const": [
-        "PLAIN_ENGLISH_MEANING",
-        "WHAT_IS_BEING_DONE",
-        "WHY_IT_MATTERS",
-        "WHAT_CHANGED_OR_DID_NOT_CHANGE",
-        "STATE_CLASSIFICATION",
-        "PROGRESSION",
-        "TECHNICAL_DETAIL",
-        "PERSISTENCE_STATUS",
-        "NEXT_STEP",
-        "RESPONSE_COUNTER"
-      ]
-    },
-    "state_terms": {"type":"array","minItems":8,"uniqueItems":true,"items":{"type":"string","minLength":1}},
-    "plain_english_rule": {"type":"string","minLength":1},
+    "default_mode": {"const": "READABLE_FIRST"},
+    "required_sections": {"const":["MEANING","WHAT_IS_BEING_DONE","WHY_IT_MATTERS","WHAT_CHANGED_OR_DID_NOT_CHANGE","STATE_CLASSIFICATION","PROGRESSION","TECHNICAL_DETAIL","PERSISTENCE_STATUS","NEXT_STEP","RESPONSE_COUNTER"]},
+    "state_terms": {"const":["VERIFIED","UNVERIFIED","INFERRED","UNKNOWN","NOT_RUN","SOURCE_ONLY","TESTED","LIVE"]},
+    "readability_rule": {"const":"LEAD_WITH_THE_CLEAREST_SUPPORTED_CONCLUSION_AND_DEFINE_TECHNICAL_IDENTIFIERS_WHEN_FIRST_USED_WITHOUT_REPEATING_A_MODE_LABEL"},
     "technical_only_exception": {"const":"USER_EXPLICITLY_REQUESTED_TECHNICAL_ONLY"},
-    "precision_rule": {"type":"string","minLength":1},
-    "platform_feature_fields": {"type":"array","minItems":4,"maxItems":4,"uniqueItems":true,"items":{"type":"string","minLength":1}},
-    "copy_paste_rule": {"type":"string","minLength":1},
-    "completion_rule": {"type":"string","minLength":1},
-    "progression_rule": {"type":"string","minLength":1},
-    "persistence_status_values": {
-      "const": ["THREAD_ONLY","DURABLE_INTAKE_RECORDED","QUEUED","IMPLEMENTING","LIVE","BLOCKED"]
+    "precision_rule": {"const":"READABILITY_LAYER_DOES_NOT_REPLACE_FACT_VERIFICATION_CONTROL_AUTHORITY_OR_TECHNICAL_AUDIT_DETAIL"},
+    "platform_feature_fields": {"const":["WHAT_IT_DOES","WHERE_IT_FITS_IN_LIFE","FREE_OR_HOBBY_VERIFICATION","CURRENT_PLAN_CHANGE"]},
+    "copy_paste_rule": {"const":"PLAIN_TEXT_CODE_BLOCKS_ONLY_FOR_TEXT_VINCE_SHOULD_COPY_OR_PASTE_NEVER_FOR_READING_ONLY_CONTENT"},
+    "completion_rule": {"const":"EVERY_LIFE_RESPONSE_ENDS_WITH_NEXT_STEP_AND_RESPONSE_COUNTER"},
+    "progression_rule": {"const":"STATE_WHETHER_WORK_IS_SOURCE_ONLY_TESTED_LIVE_NOT_RUN_OR_AN_EXACT_COMBINATION_OF_THOSE_TERMS"},
+    "persistence_status_values": {"const":["THREAD_ONLY","DURABLE_INTAKE_RECORDED","QUEUED","IMPLEMENTING","LIVE","BLOCKED"]},
+    "persistence_disclosure_rule": {"const":"WHEN_A_RESPONSE_CLAIMS_BEHAVIOR_PERSISTS_BEYOND_THIS_THREAD_STATE_ONE_PERSISTENCE_STATUS_VALUE_AND_IDENTIFY_ARTIFACT_OR_WORK_ID_OR_EXACT_BLOCKER;DO_NOT_USE_FUTURE_THREAD_PROMISE_LANGUAGE_WITHOUT_THIS_DISCLOSURE"},
+    "architecture_thread_orientation": {
+      "type":"object","additionalProperties":false,
+      "required":["trigger","start_parent_rule","start_description_rule","child_rule","action_reference_rule","pr_reference_rule","end_rule"],
+      "properties": {
+        "trigger":{"const":"LIFE_ARCHITECTURE_RESPONSE"},
+        "start_parent_rule":{"const":"FIRST_RENDERED_HEADING_EQUALS_ACTIVE_ROOT_GOAL_TITLE_FROM_GOAL_REGISTRY"},
+        "start_description_rule":{"const":"IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_QUOTE_BLOCK_WITH_SENTENCE_COUNT_IN:1,2"},
+        "child_rule":{"const":"IF_ACTIVE_PATH_LENGTH_GT_1_RENDER_ACTIVE_CHILD_TITLE_AND_DESCRIPTION_FROM_GOAL_REGISTRY_AFTER_PARENT_ORIENTATION"},
+        "action_reference_rule":{"const":"EVERY_RENDERED_A_ID_INCLUDES_CANONICAL_ACTION_NAME_FROM_CURRENT_NEXT_ACTION"},
+        "pr_reference_rule":{"const":"EVERY_RENDERED_CURRENT_PR_NUMBER_INCLUDES_CURRENT_GITHUB_PR_TITLE;IF_TITLE_READBACK_NOT_VERIFIED_RENDER_TITLE_STATE_AS_UNVERIFIED_AND_DO_NOT_GUESS"},
+        "end_rule":{"const":"IMMEDIATELY_BEFORE_NEXT_STEP_RENDER_ACTIVE_ROOT_GOAL_TITLE_ONLY_WITHOUT_DESCRIPTION"}
+      }
     },
-    "persistence_disclosure_rule": {"type":"string","minLength":1},
-    "current_job_rule": {"const":"NEXT_STEP_STATES_THE_EXACT_WORK_THIS_THREAD_OWNS_AND_WILL_EXECUTE;IF_THIS_THREAD_HAS_NO_WORK_TO_CONTINUE_OUTPUT_EXACTLY_THIS_THREAD_CAN_BE_CLOSED"},
-    "no_duplicate_authority_rule": {"type":"string","minLength":1}
+    "terminal_handoff": {
+      "type":"object","additionalProperties":false,
+      "required":["boundary_source","default_recommendation","no_candidate_options","candidate_options","candidate_effect","automatic_execution_rule","continue_rule"],
+      "properties": {
+        "boundary_source":{"const":"governance/thread-lifecycle-policy.json:TERMINAL_HANDOFF"},
+        "default_recommendation":{"const":"CLOSE_THREAD"},
+        "no_candidate_options":{"const":["CLOSE_THREAD"]},
+        "candidate_options":{"const":["CLOSE_THREAD","CONTINUE_WITH_CANDIDATE"]},
+        "candidate_effect":{"const":"ADVISORY_ONLY_ZERO_CLAIM_ACQUISITION_ZERO_EXECUTION"},
+        "automatic_execution_rule":{"const":"FORBID_AUTOMATIC_UNRELATED_WORK_EXECUTION_AFTER_TERMINAL_ROOT"},
+        "continue_rule":{"const":"CONTINUE_WITH_CANDIDATE_REQUIRES_EXACT_VINCE_CONTINUE_DIRECTIVE_OR_VERSIONED_AUTHORIZED_ROOT_TRANSITION"}
+      }
+    },
+    "current_job_rule": {"const":"NEXT_STEP_STATES_THE_EXACT_WORK_THIS_THREAD_OWNS_AND_WILL_EXECUTE;WHEN_THREAD_LIFECYCLE_BOUNDARY_IS_TERMINAL_HANDOFF_RENDER_TERMINAL_HANDOFF_OPTIONS_AND_DO_NOT_EXECUTE_AN_UNRELATED_CANDIDATE_WITHOUT_EXACT_CONTINUE_EVIDENCE"},
+    "no_duplicate_authority_rule": {"const":"THIS_CONTRACT_GOVERNS_PRESENTATION_ONLY_AND_HAS_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY"}
   }
 }

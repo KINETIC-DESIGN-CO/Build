@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "manifest_revision": 28,
+  "manifest_revision": 29,
   "project_id": "life",
   "runtime_control_authority": "NONE",
-  "updated_at": "2026-09-13T18:32:20Z",
+  "updated_at": "2026-09-13T19:28:05Z",
   "objective": "Build Life from first principles as a durable personal AI system whose context retrieval, runtime control, external effects, and engineering process are explicit, verifiable, recoverable across threads, and free of authority derived from prose or model judgment.",
   "phase": "IMPLEMENTATION",
-  "current_component": "multi_thread_coordination_hardening",
-  "current_status": "COMPLETE",
+  "current_component": "goal_lifecycle_identity",
+  "current_status": "ACTIVE",
   "authorized_targets": {
     "github": {
       "repository_id": 1366835183,
@@ -23,14 +23,15 @@
     "vercel": null
   },
   "current_work": {
-    "goal": "Make Life multi-thread development self-dispatching and collision-safe so a fresh thread deterministically joins foreground or parallel work from exact live state without Vince manually assigning a lane or issue.",
+    "goal": "Keep one durable semantic goal across workers and threads; temporary child work returns to that goal, and a completed root hands off without silently starting unrelated work.",
     "completion_conditions": [
-      "AUTOMATIC_FRESH_THREAD_LANE_SELECTION_VERSIONED_AND_TESTED",
-      "ADMITTED_READY_WORK_AUTO_SELECTION_VERSIONED_AND_TESTED",
-      "ACTIVE_CLAIM_INTERSECTION_AUTO_EVALUATION_VERSIONED_AND_TESTED",
-      "GITHUB_MERGE_QUEUE_RULE_ACTIVE_AND_MERGE_GROUP_VALIDATE_VERIFIED",
-      "LEASE_TRANSITION_INVARIANTS_EXECUTABLY_ENFORCED",
-      "MULTI_THREAD_HARDENING_MERGED_AND_POST_MERGE_VERIFIED"
+      "GOAL_REGISTRY_VERSIONED_AND_VALIDATED",
+      "PARENT_RETURN_SELECTION_VERSIONED_AND_FALSIFIED",
+      "TERMINAL_HANDOFF_ADVISORY_SELECTION_VERSIONED_AND_FALSIFIED",
+      "RESPONSE_CONTRACT_TWO_OPTION_HANDOFF_VERSIONED",
+      "VD_0017_SUPERSESSION_PERSISTED",
+      "STALE_WORKER_TAKEOVER_AND_REVISION_FENCING_VERSIONED_AND_FALSIFIED",
+      "PROTECTED_INTEGRATION_AND_POST_MERGE_READBACK_VERIFIED"
     ]
   },
   "active_decision_ids": [
@@ -103,23 +104,18 @@
   "last_observed": {
     "github": {
       "status": "VERIFIED",
-      "observed_at": "2026-09-13T18:32:20Z",
+      "observed_at": "2026-09-13T19:28:05Z",
       "repository_id": 1366835183,
       "full_name": "KINETIC-DESIGN-CO/Build",
       "visibility": "public",
       "default_branch": "main",
-      "head_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
+      "head_sha": "78a6909eac444b42964716dd6d845b34af752192",
       "ruleset_count": 1,
       "ruleset_id": 22998982,
       "ruleset_name": "Protect-main",
       "ruleset_enforcement": "active",
       "ruleset_strict_required_status_checks": false,
-      "ruleset_merge_queue_required": true,
-      "open_pull_request_count": 3,
-      "latest_continuity_workflow_run_id": 34750478878,
-      "latest_continuity_workflow_conclusion": "success",
-      "latest_merge_group_workflow_run_id": 34750382674,
-      "latest_merge_group_workflow_conclusion": "success"
+      "ruleset_merge_queue_required": true
     },
     "supabase": {
       "status": "VERIFIED",
@@ -181,9 +177,10 @@
   },
   "next_action": {
     "id": "A-0014",
-    "kind": "VERIFY",
+    "name": "Terminal Redispatch & Issue Lifecycle Closure",
+    "kind": "IMPLEMENT",
     "target": "TERMINAL_REDISPATCH_AND_ISSUE_LIFECYCLE_CLOSURE",
-    "description": "After this continuity reconciliation is merged through required validation and GitHub Merge Queue, merged main is read back, post-merge validate succeeds, and this work item's component claim is released and read back, rerun the live deterministic dispatcher. Before admitted GitHub Issue work is treated as terminal, reconcile the canonical admission state with the GitHub Issue state and require an exact closed-state readback when the admission is COMPLETE or REMOVED; then continue same-thread dispatch without a user prompt when eligible work exists.",
+    "description": "Version and verify the stable parent-goal and thread-lifecycle boundary, reconcile terminal admitted GitHub Issue state to exact closed-state readback, return a completed child to its nonterminal parent/root before unrelated work, and when the semantic root itself reaches exact terminal completion and terminal cleanup is VERIFIED, enter TERMINAL_HANDOFF. Terminal handoff may discover an eligible next-work candidate as advisory evidence only; it must not acquire that candidate's claim or execute unrelated work without an exact Vince continue directive or a versioned authorized root transition. The parent root remains nonterminal until stale-worker takeover and requirement-revision fencing are versioned and falsified and protected integration/post-merge readback are verified.",
     "authorization_effect": "NONE"
   }
 }
