@@ -136,8 +136,9 @@ def validate_protocol(protocol: dict) -> None:
         "schema_version", "protocol_id", "runtime_control_authority", "source_coordination_authority",
         "canonical_repository", "default_branch", "work_branch_prefix", "lock_branch_prefix",
         "lock_branch_derivation", "lease_duration_seconds", "renew_when_remaining_seconds_lte",
-        "expiration_rule", "resource_acquisition_order", "worker_kinds", "required_claims",
-        "parallel_work", "mutation_rules", "integration_rules", "coordination_surfaces"
+        "expiration_rule", "lock_history_enforcement_start_utc", "resource_acquisition_order",
+        "worker_kinds", "required_claims", "parallel_work", "mutation_rules", "integration_rules",
+        "coordination_surfaces"
     }
     if set(protocol) != required:
         fail(f"protocol keys mismatch: missing={sorted(required-set(protocol))} extra={sorted(set(protocol)-required)}")
@@ -154,6 +155,7 @@ def validate_protocol(protocol: dict) -> None:
         "lease_duration_seconds": 14400,
         "renew_when_remaining_seconds_lte": 1800,
         "expiration_rule": "EXPIRED_WHEN_UTC_NOW_GTE_EXPIRES_AT",
+        "lock_history_enforcement_start_utc": "2026-09-12T22:56:23Z",
         "resource_acquisition_order": "PER_ACQUISITION_ATTEMPT_RESOURCE_KEY_ASCENDING_UTF8",
     }
     for key, value in exact.items():
@@ -187,6 +189,7 @@ def validate_protocol(protocol: dict) -> None:
         "CURRENT_COMPONENT_CURRENT_WORK_AND_NEXT_ACTION_HAVE_ZERO_SOURCE_CLAIM_EFFECT",
         "PULL_REQUEST_CREATION_AND_MAIN_INTEGRATION_DO_NOT_REQUIRE_INTEGRATION_MAIN_CLAIM",
         "PARTIAL_REQUEST_EXECUTION_EVALUATES_EACH_OPERATION_EXACT_RESOURCE_SET_AND_DOES_NOT_DROP_INTERSECTING_OPERATIONS",
+        "LOCK_TRANSITION_ENFORCEMENT_APPLIES_FROM_PROTOCOL_LOCK_HISTORY_ENFORCEMENT_START_UTC",
         "LOCK_HISTORY_VALIDATION_MUST_PROVE_LEGAL_DURATION_RENEWAL_RELEASE_REACQUISITION_AND_TAKEOVER_TRANSITIONS",
         "MAIN_INTEGRATION_REQUIRES_GITHUB_MERGE_QUEUE",
         "MERGE_GROUP_VALIDATE_IS_LATEST_BASE_INTEGRATION_GATE",
