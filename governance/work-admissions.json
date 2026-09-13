@@ -4,7 +4,7 @@
   "runtime_control_authority": "NONE",
   "engineering_work_selection_authority": "DETERMINISTIC_EVALUATION_ONLY",
   "authorization_ref": "E-0093",
-  "source_repository": "Vinanonymous/Build",
+  "source_repository": "KINETIC-DESIGN-CO/Build",
   "tie_break_rule": "DISPATCH_TIER_ASC_SOURCE_ISSUE_ASC_WORK_ITEM_ID_ASC",
   "items": [
     {
@@ -70,7 +70,7 @@
       "source_issue_number": 30,
       "component_id": "issue_30",
       "dispatch_tier": 100,
-      "state": "ADMITTED",
+      "state": "REMOVED",
       "depends_on": []
     }
   ]
