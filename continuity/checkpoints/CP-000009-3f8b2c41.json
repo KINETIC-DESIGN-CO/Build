@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000009-3f8b2c41",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T06:39:58Z",
+  "source_main_sha": "ef08e38696715b9e7803db8589bbad23a98807e9",
+  "work_id": "b818fbcb-f95c-484a-91bb-66c2f9f16755",
+  "work_branch": "work/b818fbcb-f95c-484a-91bb-66c2f9f16755",
+  "work_head_sha": "56c60aaa5ef30161a0c0b96ce781214bd07c8ce6",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000008-8d2c71a5.json",
+    "blob_sha": "51a6521fb87a65fedd8c45e50d7c31980035df29"
+  },
+  "selected_work": {
+    "worker_lane": "FOREGROUND",
+    "selected_rank": 0,
+    "selected_work_id": "CONTINUITY_SYNC",
+    "evaluated_at": "2026-09-13T06:39:58Z",
+    "evidence_ref": "PR #47 merged through required Merge Queue at ef08e38696715b9e7803db8589bbad23a98807e9; merge_group run 34742990797 and post-merge push run 34743095404 succeeded; component:continuity_sync generation 19 is RELEASED and continuity:sync generation 15 remains ACTIVE_UNEXPIRED for this work item",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0013",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T06:39:58Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "state": "RELEASED",
+      "work_id": "b818fbcb-f95c-484a-91bb-66c2f9f16755",
+      "lease_id": "da5d4ae6-ddd0-4d54-8907-4263413d6557",
+      "generation": 19,
+      "expires_at": "2026-09-13T10:09:41Z",
+      "observed_at": "2026-09-13T06:39:58Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "state": "ACTIVE",
+      "work_id": "b818fbcb-f95c-484a-91bb-66c2f9f16755",
+      "lease_id": "49d96c8e-de5b-41f3-8a63-da3d92d95997",
+      "generation": 15,
+      "expires_at": "2026-09-13T10:09:41Z",
+      "observed_at": "2026-09-13T06:39:58Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "pull_request:47",
+      "operation": "MERGE_THROUGH_REQUIRED_MERGE_QUEUE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "main ef08e38696715b9e7803db8589bbad23a98807e9",
+        "merge_group run 34742990797 conclusion success"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main:ef08e38696715b9e7803db8589bbad23a98807e9",
+      "operation": "POST_MERGE_REQUIRED_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "push workflow run 34743095404 conclusion success"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "lock:component:continuity_sync",
+      "operation": "RELEASE_GENERATION_19",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GitHub commit 96685ef72ec49ce4b73c5fe06003fb96f89b26e8",
+        "released lock blob 00e4e761373a2a2be92c0ccde3c05c0a912b5548"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0013",
+    "VD-0014",
+    "VD-0015",
+    "VD-0016"
+  ],
+  "decision_rationale_refs": [
+    "DR-0003",
+    "DR-0005",
+    "DR-0006"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:continuity_sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:continuity:sync",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "governance/work-admissions.json",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RELEASE_CONTINUITY_SYNC_GENERATION_15_READ_BACK_THEN_REDISPATCH",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoint-policy.json",
+    "continuity/current.json",
+    "coordination/protocol.json",
+    "governance/work-selection-policy.json",
+    "coordination/work/b818fbcb-f95c-484a-91bb-66c2f9f16755.json",
+    "GITHUB_PR:47",
+    "GITHUB_RUN:34742990797",
+    "GITHUB_RUN:34743095404",
+    "GITHUB_MAIN:ef08e38696715b9e7803db8589bbad23a98807e9"
+  ]
+}
