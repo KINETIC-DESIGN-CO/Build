@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_id": "0f68d6ae-75a0-4616-9814-819554f5f643",
+  "title": "Semantic Firewall Phase A: import and verify exact legacy source corpus",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "8a245f96-a61b-4269-8abd-df583d4b0235"
+  },
+  "implementation_branch": "work/0f68d6ae-75a0-4616-9814-819554f5f643",
+  "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
+  "component_id": "semantic_firewall_source_intake",
+  "repo_paths": [
+    "architecture/reference/semantic-firewall-import-provenance.json",
+    "continuity/checkpoints/CP-000001-3f1f3e12.json",
+    "continuity/checkpoints/CP-000002-a61d9b73.json",
+    "continuity/checkpoints/CP-000003-f47c0e62.json",
+    "continuity/directive-ledger.jsonl",
+    "continuity/events.jsonl",
+    "contracts/semantic-firewall/artifact-byte-identity.acceptance.json",
+    "contracts/semantic-firewall/contract-reference.acceptance.json",
+    "contracts/semantic-firewall/control-input-binding.acceptance.json",
+    "contracts/semantic-firewall/control-request.acceptance.json",
+    "contracts/semantic-firewall/receipt-execution-binding.acceptance.json",
+    "contracts/semantic-firewall/receipt_execution_binding_inner.py",
+    "contracts/semantic-firewall/run_artifact_byte_identity_acceptance.py",
+    "contracts/semantic-firewall/run_contract_reference_acceptance.py",
+    "contracts/semantic-firewall/run_control_input_binding_acceptance.py",
+    "contracts/semantic-firewall/run_control_request_acceptance.py",
+    "contracts/semantic-firewall/run_receipt_execution_binding_acceptance.py",
+    "contracts/semantic-firewall/run_typed_contract_evaluation_acceptance.py",
+    "contracts/semantic-firewall/typed-contract-evaluation.acceptance.json",
+    "tests/test_semantic_firewall_import.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:semantic_firewall_source_intake",
+      "lock_branch": "lock/385ed47b5d7856779a9bc5c28f34b7cb80424b4b567bb054eb6ea16ecc909aab",
+      "lease_id": "d9c103b6-9c73-40fe-94a0-035a8a8ed6f6",
+      "generation": 2
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}

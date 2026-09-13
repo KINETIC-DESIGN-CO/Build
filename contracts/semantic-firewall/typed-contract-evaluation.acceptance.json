@@ -1,0 +1,262 @@
+{
+  "contract_id": "semantic_firewall.typed_contract_evaluation",
+  "purpose": "Prove the first executable typed Semantic Firewall contract slice: COMPLETION with an ALL_TRUE predicate over exact boolean fixture inputs. This boundary is test-fixture-only and has no runtime side effects.",
+  "fixture": {
+    "request": {
+      "decision_kind": "COMPLETION",
+      "contract_id": "00000000-0000-0000-0000-000000000101"
+    },
+    "contract_content": {
+      "contract_id": "00000000-0000-0000-0000-000000000101",
+      "contract_version": 1,
+      "decision_kind": "COMPLETION",
+      "source_requirement": "TEST_FIXTURE_ONLY",
+      "side_effects": "NONE",
+      "predicate": {
+        "op": "ALL_TRUE",
+        "input_ids": [
+          "verification_pass",
+          "owner_validation_pass"
+        ]
+      }
+    },
+    "inputs": {
+      "verification_pass": true,
+      "owner_validation_pass": true
+    }
+  },
+  "acceptance_cases": [
+    {
+      "case_id": "baseline_complete",
+      "mutations": [],
+      "expected": "COMPLETE"
+    },
+    {
+      "case_id": "one_false_is_incomplete",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/inputs/verification_pass",
+          "value": false
+        }
+      ],
+      "expected": "INCOMPLETE"
+    },
+    {
+      "case_id": "all_false_is_incomplete",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/inputs/verification_pass",
+          "value": false
+        },
+        {
+          "op": "REPLACE",
+          "path": "/inputs/owner_validation_pass",
+          "value": false
+        }
+      ],
+      "expected": "INCOMPLETE"
+    },
+    {
+      "case_id": "request_free_text_rejected",
+      "mutations": [
+        {
+          "op": "ADD",
+          "path": "/request/predicate_text",
+          "value": "sufficient"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "request_wrong_kind_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/request/decision_kind",
+          "value": "AUTHORIZATION"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "contract_wrong_kind_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/decision_kind",
+          "value": "AUTHORIZATION"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "contract_id_mismatch_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/contract_id",
+          "value": "00000000-0000-0000-0000-000000000102"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "unknown_operator_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/predicate/op",
+          "value": "MOSTLY_TRUE"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "predicate_free_text_rejected",
+      "mutations": [
+        {
+          "op": "ADD",
+          "path": "/contract_content/predicate/explanation",
+          "value": "enough checks passed"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "empty_input_ids_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/predicate/input_ids",
+          "value": []
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "duplicate_input_ids_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/predicate/input_ids",
+          "value": [
+            "verification_pass",
+            "verification_pass"
+          ]
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "missing_input_rejected",
+      "mutations": [
+        {
+          "op": "REMOVE",
+          "path": "/inputs/owner_validation_pass"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "extra_input_rejected",
+      "mutations": [
+        {
+          "op": "ADD",
+          "path": "/inputs/extra_pass",
+          "value": true
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "string_boolean_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/inputs/verification_pass",
+          "value": "true"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "integer_boolean_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/inputs/verification_pass",
+          "value": 1
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "boolean_version_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/contract_version",
+          "value": true
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "zero_version_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/contract_version",
+          "value": 0
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "unsupported_source_requirement_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/source_requirement",
+          "value": "RUNTIME"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "side_effect_claim_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/contract_content/side_effects",
+          "value": "MUTATES_STATE"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "extra_contract_field_rejected",
+      "mutations": [
+        {
+          "op": "ADD",
+          "path": "/contract_content/note",
+          "value": "approved"
+        }
+      ],
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "malformed_contract_id_rejected",
+      "mutations": [
+        {
+          "op": "REPLACE",
+          "path": "/request/contract_id",
+          "value": "contract-one"
+        }
+      ],
+      "expected": "REJECT"
+    }
+  ]
+}

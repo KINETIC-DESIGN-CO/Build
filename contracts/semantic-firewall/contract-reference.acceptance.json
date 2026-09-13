@@ -1,0 +1,75 @@
+{
+  "contract_id": "semantic_firewall.contract_reference_eligibility",
+  "purpose": "Permit control evaluation only when a request resolves to one explicitly enabled contract with validation and test receipts bound to the exact contract and evaluator.",
+  "fixture": {
+    "request": {
+      "decision_kind": "AUTHORIZATION",
+      "contract_id": "00000000-0000-0000-0000-000000000001"
+    },
+    "contract": {
+      "contract_id": "00000000-0000-0000-0000-000000000001",
+      "decision_kind": "AUTHORIZATION",
+      "enabled": true,
+      "content_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "validator": {"id": "semantic_firewall.contract_structure", "sha256": "2222222222222222222222222222222222222222222222222222222222222222"},
+      "evaluator": {"id": "semantic_firewall.boolean_gate", "sha256": "3333333333333333333333333333333333333333333333333333333333333333"},
+      "validation_receipt_id": "00000000-0000-0000-0000-000000000002",
+      "test_receipt_id": "00000000-0000-0000-0000-000000000003",
+      "test_suite_sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+    },
+    "validation_receipt": {
+      "receipt_id": "00000000-0000-0000-0000-000000000002",
+      "contract_id": "00000000-0000-0000-0000-000000000001",
+      "content_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "validator": {"id": "semantic_firewall.contract_structure", "sha256": "2222222222222222222222222222222222222222222222222222222222222222"},
+      "result": "PASS"
+    },
+    "test_receipt": {
+      "receipt_id": "00000000-0000-0000-0000-000000000003",
+      "contract_id": "00000000-0000-0000-0000-000000000001",
+      "content_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "evaluator": {"id": "semantic_firewall.boolean_gate", "sha256": "3333333333333333333333333333333333333333333333333333333333333333"},
+      "suite_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "result": "PASS"
+    }
+  },
+  "acceptance_cases": [
+    {"case_id": "authorization_eligible", "mutations": [], "expected": "ELIGIBLE"},
+    {"case_id": "routing_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "ROUTING"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "ROUTING"}], "expected": "ELIGIBLE"},
+    {"case_id": "priority_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "PRIORITY"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "PRIORITY"}], "expected": "ELIGIBLE"},
+    {"case_id": "state_transition_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "STATE_TRANSITION"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "STATE_TRANSITION"}], "expected": "ELIGIBLE"},
+    {"case_id": "completion_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "COMPLETION"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "COMPLETION"}], "expected": "ELIGIBLE"},
+    {"case_id": "verification_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "VERIFICATION"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "VERIFICATION"}], "expected": "ELIGIBLE"},
+    {"case_id": "escalation_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "ESCALATION"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "ESCALATION"}], "expected": "ELIGIBLE"},
+    {"case_id": "release_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "RELEASE"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "RELEASE"}], "expected": "ELIGIBLE"},
+    {"case_id": "mutation_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "MUTATION"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "MUTATION"}], "expected": "ELIGIBLE"},
+    {"case_id": "effect_execution_eligible", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "EFFECT_EXECUTION"}, {"op": "REPLACE", "path": "/contract/decision_kind", "value": "EFFECT_EXECUTION"}], "expected": "ELIGIBLE"},
+    {"case_id": "request_free_text_rejected", "mutations": [{"op": "ADD", "path": "/request/predicate_text", "value": "significant"}], "expected": "INELIGIBLE"},
+    {"case_id": "request_unrecognized_kind_rejected", "mutations": [{"op": "REPLACE", "path": "/request/decision_kind", "value": "IMPORTANT"}], "expected": "INELIGIBLE"},
+    {"case_id": "contract_missing_rejected", "mutations": [{"op": "REPLACE", "path": "/contract", "value": null}], "expected": "INELIGIBLE"},
+    {"case_id": "contract_id_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/contract/contract_id", "value": "00000000-0000-0000-0000-000000000099"}], "expected": "INELIGIBLE"},
+    {"case_id": "decision_kind_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/contract/decision_kind", "value": "ROUTING"}], "expected": "INELIGIBLE"},
+    {"case_id": "contract_decision_kind_wrong_type_rejected", "mutations": [{"op": "REPLACE", "path": "/contract/decision_kind", "value": {"kind": "AUTHORIZATION"}}], "expected": "INELIGIBLE"},
+    {"case_id": "disabled_contract_rejected", "mutations": [{"op": "REPLACE", "path": "/contract/enabled", "value": false}], "expected": "INELIGIBLE"},
+    {"case_id": "contract_content_hash_malformed_rejected", "mutations": [{"op": "REPLACE", "path": "/contract/content_sha256", "value": "bad-hash"}], "expected": "INELIGIBLE"},
+    {"case_id": "contract_extra_field_rejected", "mutations": [{"op": "ADD", "path": "/contract/note", "value": "approved"}], "expected": "INELIGIBLE"},
+    {"case_id": "validation_receipt_missing_rejected", "mutations": [{"op": "REPLACE", "path": "/validation_receipt", "value": null}], "expected": "INELIGIBLE"},
+    {"case_id": "validation_receipt_id_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/validation_receipt/receipt_id", "value": "00000000-0000-0000-0000-000000000099"}], "expected": "INELIGIBLE"},
+    {"case_id": "validation_contract_id_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/validation_receipt/contract_id", "value": "00000000-0000-0000-0000-000000000099"}], "expected": "INELIGIBLE"},
+    {"case_id": "validation_content_hash_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/validation_receipt/content_sha256", "value": "5555555555555555555555555555555555555555555555555555555555555555"}], "expected": "INELIGIBLE"},
+    {"case_id": "validation_validator_id_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/validation_receipt/validator/id", "value": "semantic_firewall.other_validator"}], "expected": "INELIGIBLE"},
+    {"case_id": "validation_validator_hash_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/validation_receipt/validator/sha256", "value": "5555555555555555555555555555555555555555555555555555555555555555"}], "expected": "INELIGIBLE"},
+    {"case_id": "validation_failure_rejected", "mutations": [{"op": "REPLACE", "path": "/validation_receipt/result", "value": "FAIL"}], "expected": "INELIGIBLE"},
+    {"case_id": "validation_result_wrong_type_rejected", "mutations": [{"op": "REPLACE", "path": "/validation_receipt/result", "value": {"result": "PASS"}}], "expected": "INELIGIBLE"},
+    {"case_id": "test_receipt_missing_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt", "value": null}], "expected": "INELIGIBLE"},
+    {"case_id": "test_receipt_id_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt/receipt_id", "value": "00000000-0000-0000-0000-000000000099"}], "expected": "INELIGIBLE"},
+    {"case_id": "test_contract_id_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt/contract_id", "value": "00000000-0000-0000-0000-000000000099"}], "expected": "INELIGIBLE"},
+    {"case_id": "test_content_hash_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt/content_sha256", "value": "5555555555555555555555555555555555555555555555555555555555555555"}], "expected": "INELIGIBLE"},
+    {"case_id": "test_evaluator_id_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt/evaluator/id", "value": "semantic_firewall.other_evaluator"}], "expected": "INELIGIBLE"},
+    {"case_id": "test_evaluator_hash_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt/evaluator/sha256", "value": "5555555555555555555555555555555555555555555555555555555555555555"}], "expected": "INELIGIBLE"},
+    {"case_id": "test_suite_hash_mismatch_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt/suite_sha256", "value": "5555555555555555555555555555555555555555555555555555555555555555"}], "expected": "INELIGIBLE"},
+    {"case_id": "test_failure_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt/result", "value": "FAIL"}], "expected": "INELIGIBLE"},
+    {"case_id": "test_result_wrong_type_rejected", "mutations": [{"op": "REPLACE", "path": "/test_receipt/result", "value": {"result": "PASS"}}], "expected": "INELIGIBLE"},
+    {"case_id": "test_receipt_extra_field_rejected", "mutations": [{"op": "ADD", "path": "/test_receipt/note", "value": "passed"}], "expected": "INELIGIBLE"}
+  ]
+}
