@@ -1,0 +1,43 @@
+name: fix-semantic-directive-refs
+
+on:
+  push:
+    branches:
+      - work/0f68d6ae-75a0-4616-9814-819554f5f643
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: work/0f68d6ae-75a0-4616-9814-819554f5f643
+          fetch-depth: 0
+      - name: Repair branch-local directive references and remove one-shot workflow
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          paths = [
+              Path('continuity/events.jsonl'),
+              Path('continuity/checkpoints/CP-000001-3f1f3e12.json'),
+              Path('continuity/checkpoints/CP-000002-a61d9b73.json'),
+          ]
+          for path in paths:
+              text = path.read_text()
+              old = text.count('VD-0021')
+              if old == 0:
+                  raise SystemExit(f'{path}: expected at least one VD-0021 reference')
+              path.write_text(text.replace('VD-0021', 'VD-0022'))
+          Path('.github/workflows/fix-semantic-directive-refs.yml').unlink()
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add continuity/events.jsonl continuity/checkpoints/CP-000001-3f1f3e12.json continuity/checkpoints/CP-000002-a61d9b73.json .github/workflows/fix-semantic-directive-refs.yml
+          git diff --cached --check
+          git commit -m 'Repair Semantic Firewall directive references'
+          git push origin HEAD:work/0f68d6ae-75a0-4616-9814-819554f5f643
