@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "work_id": "1ffbfe6c-b88a-4b17-9b76-d056f01a6dc6",
+  "title": "Simplify source coordination claims",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "d93260c7-4f0d-4501-8f0d-185312f4161a"
+  },
+  "implementation_branch": "work/1ffbfe6c-b88a-4b17-9b76-d056f01a6dc6",
+  "base_sha": "b55ee94b1102093a19eacc981695ea2e5bff1174",
+  "component_id": "issue_16",
+  "repo_paths": [
+    "coordination/protocol.json",
+    "scripts/validate_coordination.py",
+    "tests/test_coordination_claim_scope.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_16",
+      "lock_branch": "lock/e850da97747d9640bd6611ea81a9551cf69323068833fd4ad19da9ab45c7d74d",
+      "lease_id": "70caa948-a598-45b4-bc1b-98c7bfdb0829",
+      "generation": 1
+    },
+    {
+      "resource_key": "repo-file:coordination/protocol.json",
+      "lock_branch": "lock/9c6ddcd29016358f183405bba8ecbf3d19eb80c4e9344eddfc07287935e9e141",
+      "lease_id": "dcb02e84-b25b-468d-9182-46abbe61cc7c",
+      "generation": 9
+    },
+    {
+      "resource_key": "repo-file:scripts/validate_coordination.py",
+      "lock_branch": "lock/0d7cf6ac6a3f6ab9cca29d8e5e98cac953f7ec3f1a9acb5dcb4a065dc2f91146",
+      "lease_id": "bdf92c5a-37a9-48b4-bb21-435054c68d4d",
+      "generation": 7
+    },
+    {
+      "resource_key": "repo-file:tests/test_coordination_claim_scope.py",
+      "lock_branch": "lock/c648c85f9c95c64de74d3c89e515a592ba05b397491838e788ef3f0daf4dd78a",
+      "lease_id": "5d672cf1-3634-4ea4-8c0f-9ef7236d9eb8",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
