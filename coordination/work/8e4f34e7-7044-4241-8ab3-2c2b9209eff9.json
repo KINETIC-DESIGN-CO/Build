@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
-  "title": "Automatically redispatch terminal Life workers to admitted Issues",
+  "title": "Reconcile terminal Issue lifecycle and install durable root-cause repair",
   "worker": {
     "kind": "chatgpt",
     "session_id": "87284546-231b-477c-909a-951108f08878"
@@ -12,22 +12,20 @@
   "repo_paths": [
     ".github/workflows/issue-lifecycle.yml",
     "continuity/bootstrap.json",
+    "continuity/checkpoints/CP-000001-c4a1d8e7.json",
+    "coordination/work/8e4f34e7-7044-4241-8ab3-2c2b9209eff9.json",
     "governance/issue-lifecycle-policy.json",
     "governance/root-cause-repair-policy.json",
     "governance/root-cause-repairs.json",
     "governance/schema/issue-lifecycle-policy.schema.json",
     "governance/schema/root-cause-repair-policy.schema.json",
     "governance/schema/root-cause-repairs.schema.json",
-    "governance/schema/work-selection-policy.schema.json",
-    "governance/work-selection-policy.json",
-    "scripts/select_work.py",
     "scripts/validate_issue_lifecycle.py",
     "scripts/validate_root_cause_repair.py",
     "scripts/validate_watchdog.py",
     "tests/test_issue_lifecycle.py",
     "tests/test_root_cause_repair.py",
     "tests/test_watchdog.py",
-    "tests/test_work_selection.py",
     "watchdog/spec.json"
   ],
   "external_targets": [],
