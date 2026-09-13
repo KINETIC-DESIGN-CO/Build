@@ -133,7 +133,8 @@
       "root_goal_ref": "continuity/current.json:A-0014",
       "state": "REPAIRING",
       "failure_refs": [
-        "github-actions:34783372915:tests.test_continuity.ContinuityTests.test_bootstrap_loads_goal_lifecycle_before_work_selection"
+        "github-actions:34783372915:tests.test_continuity.ContinuityTests.test_bootstrap_loads_goal_lifecycle_before_work_selection",
+        "github-actions:34784818909:test_root_cause_repair.RootCauseRepairTests.test_canonical_package_validates:RCA-0003-disposition-invalid"
       ],
       "violated_invariant_ids": [
         "MUTABLE_CANONICAL_STATE_NOT_LITERAL_TEST_EXPECTATION"
@@ -150,21 +151,24 @@
       "affected_surfaces": [
         "continuity/bootstrap.json",
         "continuity/schema/bootstrap.schema.json",
+        "governance/root-cause-repairs.json",
         "tests/test_continuity.py"
       ],
       "dependent_validator_surfaces": [
+        ".github/workflows/continuity.yml",
         "scripts/validate_continuity.py",
-        ".github/workflows/continuity.yml"
+        "scripts/validate_root_cause_repair.py",
+        "tests/test_root_cause_repair.py"
       ],
       "selected_dispositions": [
         "REPLACE_LITERAL_PRODUCTION_EXPECTATION_WITH_SCHEMA_DERIVED_ASSERTION",
-        "ADD_VERSION_INCREMENT_FALSIFICATION_WITHOUT_WEAKENING_SCHEMA_VALIDATION"
+        "COMBINE_VERSION_INCREMENT_FALSIFICATION_WITH_SCHEMA_VALIDATION"
       ],
       "recurrence_test_ids": [
         "BOOTSTRAP_BUNDLE_VERSION_SCHEMA_DERIVED",
         "BOOTSTRAP_BUNDLE_VERSION_INCREMENT_ACCEPTED"
       ],
-      "verification_state": "SOURCE_REPAIR_IN_PROGRESS_REQUIRED_CI_AND_PROTECTED_INTEGRATION_PENDING"
+      "verification_state": "SOURCE_REPAIR_UPDATED_AFTER_ROOT_CAUSE_REGISTRY_VALIDATION_FAILURE_REQUIRED_CI_AND_PROTECTED_INTEGRATION_PENDING"
     }
   ]
 }
