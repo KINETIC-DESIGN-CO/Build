@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_id": "b818fbcb-f95c-484a-91bb-66c2f9f16755",
+  "title": "Synchronize PR 46 completion and post-merge state",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "c2b95af8-4a72-4d90-a1c5-86f7b3e2d641"
+  },
+  "implementation_branch": "work/b818fbcb-f95c-484a-91bb-66c2f9f16755",
+  "base_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
+  "component_id": "continuity_sync",
+  "repo_paths": [
+    "continuity/current.json",
+    "continuity/events.jsonl"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:continuity_sync",
+      "lock_branch": "lock/949b8665eef56e8814ad1f115aa6610416968997ad8b7c7682d526fb3f473d21",
+      "lease_id": "da5d4ae6-ddd0-4d54-8907-4263413d6557",
+      "generation": 19
+    },
+    {
+      "resource_key": "continuity:sync",
+      "lock_branch": "lock/9bcc12aa7cb57d043c2a2487f9deb0e76c03fcb845a39662a5b8b6e046aa504a",
+      "lease_id": "49d96c8e-de5b-41f3-8a63-da3d92d95997",
+      "generation": 15
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
