@@ -85,6 +85,19 @@ jobs:
         self.assertEqual(1, len(errors))
         self.assertIn("exactly one with.version", errors[0])
 
+    def test_rejects_same_step_env_version_instead_of_with_version(self):
+        workflow = f"""
+jobs:
+  x:
+    steps:
+      - uses: supabase/setup-cli@{SUPABASE_SETUP_SHA}
+        env:
+          version: 2.117.0
+"""
+        errors = self.errors(workflow)
+        self.assertEqual(1, len(errors))
+        self.assertIn("exactly one with.version", errors[0])
+
     def test_direct_uses_step_does_not_consume_next_steps_version(self):
         workflow = f"""
 jobs:
