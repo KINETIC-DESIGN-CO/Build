@@ -100,14 +100,42 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr)
         return json.loads(proc.stdout)
 
-    def test_policy_validates_as_v3(self):
+    def test_policy_validates_as_v4(self):
         proc = self.run_selector(["--validate-policy"])
         self.assertEqual(proc.returncode, 0, proc.stderr)
         policy = json.loads(POLICY_PATH.read_text())
-        self.assertEqual(policy["schema_version"], 3)
-        self.assertEqual(policy["policy_id"], "life-engineering-work-selection-v3")
+        self.assertEqual(policy["schema_version"], 4)
+        self.assertEqual(policy["policy_id"], "life-engineering-work-selection-v4")
         self.assertEqual(policy["fresh_thread_dispatch"]["mode"], "LIVE_LOCK_DERIVED")
         self.assertEqual(policy["fresh_thread_dispatch"]["worker_lane_input_rule"], "FRESH_THREAD_WORKER_LANE_MUST_BE_DERIVED_NOT_CALLER_ASSIGNED")
+
+    def test_terminal_redispatch_is_exact_same_thread_loop(self):
+        policy = json.loads(POLICY_PATH.read_text())
+        terminal = policy["terminal_redispatch"]
+        self.assertEqual(
+            terminal["trigger"],
+            "SELECTED_WORK_TERMINAL_AND_REQUIRED_COMPLETION_CLEANUP_VERIFIED",
+        )
+        self.assertEqual(
+            terminal["same_thread_action"],
+            "RERUN_LIVE_FRESH_THREAD_DISPATCH_WITHOUT_USER_PROMPT",
+        )
+        self.assertEqual(
+            terminal["issue_review_rule"],
+            "RUN_PLACEMENT_POLICY_OPEN_ISSUE_REVIEW_BEFORE_EACH_NEW_MUTABLE_WORK_ITEM",
+        )
+        self.assertEqual(
+            terminal["repeat_rule"],
+            "AFTER_EACH_TERMINAL_WORK_ITEM_REPEAT_TERMINAL_REDISPATCH",
+        )
+        self.assertEqual(
+            terminal["stop_states"],
+            [
+                "NO_ELIGIBLE_WORK",
+                "REQUIRED_LIVE_READ_NOT_RUN",
+                "UNSUPPORTED_OR_UNAUTHORIZED_OPERATION",
+            ],
+        )
 
     def test_legacy_rank_zero_foreground_continuity_still_works(self):
         evidence = self.base_evidence()
@@ -139,6 +167,16 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
         self.assertEqual(result["work_item_id"], "github-issue-12")
         self.assertEqual(result["claim_next_resource_key"], "component:issue_12")
+
+    def test_terminal_redispatch_skips_busy_issue_and_selects_next_admitted_issue(self):
+        current = json.loads(CURRENT_PATH.read_text())
+        current["current_status"] = "COMPLETE"
+        CURRENT_PATH.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
+        issue12 = "component:issue_12"
+        result = self.dispatch(self.snapshot({issue12: self.lock(issue12)}))
+        self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
+        self.assertEqual(result["work_item_id"], "github-issue-15")
+        self.assertEqual(result["claim_next_resource_key"], "component:issue_15")
 
     def test_fresh_thread_becomes_parallel_when_foreground_component_is_owned(self):
         key = "component:multi_thread_coordination_hardening"
@@ -214,6 +252,13 @@ class WorkSelectionTests(unittest.TestCase):
     def test_parallel_race_rule_requires_cas_and_redispatch(self):
         policy = json.loads(POLICY_PATH.read_text())
         self.assertEqual(policy["fresh_thread_dispatch"]["race_rule"], "AFTER_PARALLEL_SELECTION_ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP;ON_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH")
+
+    def test_terminal_race_rule_requires_cas_reread_and_redispatch_without_prompt(self):
+        policy = json.loads(POLICY_PATH.read_text())
+        self.assertEqual(
+            policy["terminal_redispatch"]["race_rule"],
+            "ON_CLAIM_COMPARE_AND_SWAP_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH_WITHOUT_USER_PROMPT",
+        )
 
     def test_manual_selector_tie_break_remains_deterministic(self):
         proc = self.run_selector(["--select-parallel"])
