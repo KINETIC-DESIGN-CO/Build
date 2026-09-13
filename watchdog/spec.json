@@ -112,15 +112,15 @@
     "source_contract_fingerprints": [
       {
         "path": "continuity/bootstrap.json",
-        "git_blob_sha": "fc2133570a34f4332791af3d9856376e0d08e81e"
+        "git_blob_sha": "b029fa1c5225f4f1b247e6a53ab757c4d9d34be4"
       },
       {
         "path": "continuity/response-contract.json",
-        "git_blob_sha": "16a898981cdb116f0ebd81a1376ea9e8d8d3addd"
+        "git_blob_sha": "46d3b707e4d17d2e9e4caddc30b60c4a38012f99"
       },
       {
         "path": "coordination/protocol.json",
-        "git_blob_sha": "37086dc524587498d79d618b18da0983f44e4cab"
+        "git_blob_sha": "5d4bf15f9f44e8f6499b2337a731e46f9e521533"
       },
       {
         "path": "governance/placement-policy.json",
