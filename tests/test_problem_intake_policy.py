@@ -33,6 +33,12 @@ class ProblemIntakePolicyTests(unittest.TestCase):
             intake["create_exemption_effect"],
             "CONTINUITY_SYNC_PREARM_NOT_REQUIRED_FOR_THIS_CREATE_ONLY_OPERATION",
         )
+        self.assertEqual(
+            intake["problem_identity_rule"],
+            "PROBLEM_ID_IS_LOWERCASE_SHA256_OF_UTF8_PROBLEM_CLASS_LF_MECHANISM_ID_LF_DETECTOR_OR_INVARIANT_ID",
+        )
+        self.assertIn("IF_EXACTLY_ONE_EXISTS_REUSE_IT", intake["dedupe_rule"])
+        self.assertIn("IF_MORE_THAN_ONE_EXIST_CLASSIFY_SCHEMA_OR_INVARIANT_VIOLATION", intake["dedupe_rule"])
 
     def test_problem_evaluation_has_no_acknowledge_only_terminal_state(self):
         policy = json.loads((ROOT / "governance/problem-intake-policy.json").read_text())
@@ -43,6 +49,27 @@ class ProblemIntakePolicyTests(unittest.TestCase):
         self.assertIn("REMOVE_REQUIRED", evaluation["states"])
         self.assertIn("BLOCKED_EVIDENCE", evaluation["states"])
         self.assertIn("READ_BACK_AND_VERIFY_RESULT", evaluation["required_steps"])
+        self.assertIn("EXACTLY_ONE_NONTERMINAL_REPAIR_WORK_ITEM_ID", evaluation["repair_item_rule"])
+
+    def test_repair_or_remove_precedes_ordinary_work_selection(self):
+        policy = json.loads((ROOT / "governance/problem-intake-policy.json").read_text())
+        effect = policy["problem_evaluation"]["bootstrap_effect"]
+        self.assertEqual(
+            effect["execute_before_work_selection_states"],
+            ["REPAIR_REQUIRED", "REMOVE_REQUIRED"],
+        )
+        self.assertEqual(
+            effect["execute_before_work_selection_effect"],
+            "EXECUTE_OR_ENTER_ONE_EXACT_BLOCKED_STATE_BEFORE_EVALUATE_WORK_SELECTION",
+        )
+        self.assertEqual(
+            effect["continue_to_work_selection_states"],
+            ["KEEP_REQUIRED", "VERIFIED_FIXED", "VERIFIED_REMOVED", "REJECTED_NOT_PROBLEM"],
+        )
+        self.assertEqual(
+            effect["preserve_without_drop_effect"],
+            "PRESERVE_STATE_AND_DO_NOT_DROP_THE_PROBLEM",
+        )
 
     def test_remove_requires_full_verified_invariant_coverage(self):
         policy = json.loads((ROOT / "governance/problem-intake-policy.json").read_text())
@@ -58,6 +85,9 @@ class ProblemIntakePolicyTests(unittest.TestCase):
         self.assertEqual(schema["properties"]["runtime_control_authority"]["const"], "NONE")
         self.assertFalse(schema["properties"]["intake"]["additionalProperties"])
         self.assertFalse(schema["properties"]["problem_evaluation"]["additionalProperties"])
+        self.assertFalse(
+            schema["properties"]["problem_evaluation"]["properties"]["bootstrap_effect"]["additionalProperties"]
+        )
 
     def test_bootstrap_requires_policy_and_evaluation_step(self):
         bootstrap = json.loads((ROOT / "continuity/bootstrap.json").read_text())
