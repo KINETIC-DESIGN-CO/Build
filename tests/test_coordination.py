@@ -182,7 +182,7 @@ class CoordinationTests(unittest.TestCase):
                 "b" * 40,
             )
 
-    def test_live_lock_allows_independent_acquisition_base_when_it_is_ancestor_of_pr_head(self):
+    def test_live_lock_allows_independent_acquisition_base(self):
         record = {
             "work_id": WORK_A,
             "worker": {"kind": "chatgpt", "session_id": "00000000-0000-4000-8000-000000000003"},
@@ -210,11 +210,9 @@ class CoordinationTests(unittest.TestCase):
             "expires_at": "2026-09-12T11:00:00Z",
             "runtime_control_authority": "NONE",
         }
-        completed = type("P", (), {"returncode": 0})()
-        with patch.object(mod.subprocess, "run", return_value=completed):
-            mod.validate_live_lock(lock, claim, record, NOW, self.protocol(), "3" * 40)
+        mod.validate_live_lock(lock, claim, record, NOW, self.protocol())
 
-    def test_live_lock_rejects_acquisition_base_outside_pr_history(self):
+    def test_live_lock_rejects_malformed_acquisition_base(self):
         record = {
             "work_id": WORK_A,
             "worker": {"kind": "chatgpt", "session_id": "00000000-0000-4000-8000-000000000003"},
@@ -236,16 +234,14 @@ class CoordinationTests(unittest.TestCase):
             "worker": record["worker"],
             "implementation_branch": record["implementation_branch"],
             "lease_id": claim["lease_id"],
-            "base_sha": "2" * 40,
+            "base_sha": "not-a-sha",
             "acquired_at": "2026-09-12T07:00:00Z",
             "heartbeat_at": "2026-09-12T07:00:00Z",
             "expires_at": "2026-09-12T11:00:00Z",
             "runtime_control_authority": "NONE",
         }
-        completed = type("P", (), {"returncode": 1})()
-        with patch.object(mod.subprocess, "run", return_value=completed):
-            with self.assertRaises(mod.ValidationError):
-                mod.validate_live_lock(lock, claim, record, NOW, self.protocol(), "3" * 40)
+        with self.assertRaises(mod.ValidationError):
+            mod.validate_live_lock(lock, claim, record, NOW, self.protocol())
 
     def test_work_record_base_is_provenance_not_current_main(self):
         record = {
