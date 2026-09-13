@@ -20,6 +20,7 @@
       "goal_state": "ACTIVE",
       "terminal_cleanup_state": "PENDING",
       "title": "Unify stable goal identity with terminal thread handoff",
+      "description": "Keep one durable semantic goal across workers and threads; temporary child work returns to that goal, and a completed root hands off without silently starting unrelated work.",
       "completion_condition_ids": [
         "GOAL_REGISTRY_VERSIONED_AND_VALIDATED",
         "PARENT_RETURN_SELECTION_VERSIONED_AND_FALSIFIED",
@@ -41,12 +42,13 @@
         }
       ],
       "source_refs": [
-        "VINCE_DIRECTIVE:VD-0021",
+        "VINCE_DIRECTIVE:VD-0023",
         "VINCE_CORRECTION:VD-0022",
         "GITHUB_ISSUE:59",
         "GITHUB_ISSUE:54",
         "GITHUB_ISSUE:55",
-        "GITHUB_PR:63"
+        "GITHUB_PR:63",
+        "GITHUB_PR:73"
       ],
       "runtime_control_authority": "NONE"
     }
