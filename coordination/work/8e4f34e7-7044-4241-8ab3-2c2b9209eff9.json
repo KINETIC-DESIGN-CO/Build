@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+  "title": "Automatically redispatch terminal Life workers to admitted Issues",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "87284546-231b-477c-909a-951108f08878"
+  },
+  "implementation_branch": "work/8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+  "base_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
+  "component_id": "auto_issue_dispatch",
+  "repo_paths": [
+    "governance/work-selection-policy.json",
+    "governance/schema/work-selection-policy.schema.json",
+    "scripts/select_work.py",
+    "tests/test_work_selection.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "lease_id": "0ca72a15-ce6b-4098-b484-3dcc20fa961d",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
