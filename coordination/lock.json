@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "resource_key": "component:semantic_firewall_source_intake",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "1762b5f1-6b0d-4e45-9670-770b5409181c",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "8d44ae11-1c0c-42e4-840b-202c3bdcf1d9"
+  },
+  "implementation_branch": "work/1762b5f1-6b0d-4e45-9670-770b5409181c",
+  "lease_id": "51698c23-a656-41ce-b255-c4417137fbd3",
+  "base_sha": "0b2611fba37f8b4cb44574264c1463e2d1366126",
+  "acquired_at": "2026-09-13T09:13:06Z",
+  "heartbeat_at": "2026-09-13T09:13:06Z",
+  "expires_at": "2026-09-13T13:13:06Z",
+  "runtime_control_authority": "NONE"
+}
