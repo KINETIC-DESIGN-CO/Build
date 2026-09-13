@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "policy_id": "life-reliability-recovery-policy-v1",
+  "runtime_control_authority": "NONE",
+  "evaluation_mode": "FIRST_MATCH_PRIORITY_ASC",
+  "input_domains": {
+    "attempt_result_state": ["PENDING","SUCCESS","FAILURE","NO_RESULT","TIMEOUT","UNKNOWN"],
+    "effect_state": ["NOT_EVALUATED","NO_EFFECT_VERIFIED","EFFECT_VERIFIED","PARTIAL_EFFECT_VERIFIED","EFFECT_UNKNOWN"],
+    "readback_mode": ["AUTHORITATIVE_READBACK","READBACK_UNAVAILABLE"],
+    "idempotency_mode": ["EXACT_KEY","NATURAL_UNIQUE_CONSTRAINT","NONE"],
+    "duplicate_effect_risk": ["YES","NO"],
+    "retry_budget_state": ["AVAILABLE","EXHAUSTED","UNDEFINED"],
+    "required_postconditions_state": ["PASS","FAIL","UNKNOWN","NOT_RUN","NOT_APPLICABLE"],
+    "compensation_contract_state": ["PRESENT","ABSENT"],
+    "parent_restoration_state": ["ELIGIBLE","NOT_ELIGIBLE"]
+  },
+  "rules": [
+    {"rule_id":"RREC-0001","priority":10,"match":{"attempt_result_state":["SUCCESS"],"effect_state":["EFFECT_VERIFIED"],"readback_mode":["*"],"idempotency_mode":["*"],"duplicate_effect_risk":["*"],"retry_budget_state":["*"],"required_postconditions_state":["PASS"],"compensation_contract_state":["*"],"parent_restoration_state":["ELIGIBLE"]},"disposition":"RESUME_PARENT"},
+    {"rule_id":"RREC-0002","priority":20,"match":{"attempt_result_state":["SUCCESS"],"effect_state":["EFFECT_VERIFIED"],"readback_mode":["*"],"idempotency_mode":["*"],"duplicate_effect_risk":["*"],"retry_budget_state":["*"],"required_postconditions_state":["PASS"],"compensation_contract_state":["*"],"parent_restoration_state":["NOT_ELIGIBLE"]},"disposition":"ACCEPT_EFFECT"},
+    {"rule_id":"RREC-0003","priority":30,"match":{"attempt_result_state":["PENDING","NO_RESULT","TIMEOUT","UNKNOWN","FAILURE"],"effect_state":["NOT_EVALUATED","EFFECT_UNKNOWN"],"readback_mode":["AUTHORITATIVE_READBACK"],"idempotency_mode":["*"],"duplicate_effect_risk":["*"],"retry_budget_state":["*"],"required_postconditions_state":["*"],"compensation_contract_state":["*"],"parent_restoration_state":["*"]},"disposition":"VERIFY_EFFECT"},
+    {"rule_id":"RREC-0004","priority":40,"match":{"attempt_result_state":["*"],"effect_state":["EFFECT_UNKNOWN"],"readback_mode":["READBACK_UNAVAILABLE"],"idempotency_mode":["NONE"],"duplicate_effect_risk":["YES"],"retry_budget_state":["*"],"required_postconditions_state":["*"],"compensation_contract_state":["*"],"parent_restoration_state":["*"]},"disposition":"QUARANTINE"},
+    {"rule_id":"RREC-0005","priority":50,"match":{"attempt_result_state":["*"],"effect_state":["PARTIAL_EFFECT_VERIFIED"],"readback_mode":["*"],"idempotency_mode":["*"],"duplicate_effect_risk":["*"],"retry_budget_state":["*"],"required_postconditions_state":["*"],"compensation_contract_state":["PRESENT"],"parent_restoration_state":["*"]},"disposition":"COMPENSATE"},
+    {"rule_id":"RREC-0006","priority":60,"match":{"attempt_result_state":["*"],"effect_state":["PARTIAL_EFFECT_VERIFIED"],"readback_mode":["*"],"idempotency_mode":["*"],"duplicate_effect_risk":["*"],"retry_budget_state":["*"],"required_postconditions_state":["*"],"compensation_contract_state":["ABSENT"],"parent_restoration_state":["*"]},"disposition":"QUARANTINE"},
+    {"rule_id":"RREC-0007","priority":70,"match":{"attempt_result_state":["FAILURE","NO_RESULT","TIMEOUT","UNKNOWN"],"effect_state":["NO_EFFECT_VERIFIED"],"readback_mode":["*"],"idempotency_mode":["EXACT_KEY","NATURAL_UNIQUE_CONSTRAINT","NONE"],"duplicate_effect_risk":["*"],"retry_budget_state":["AVAILABLE"],"required_postconditions_state":["*"],"compensation_contract_state":["*"],"parent_restoration_state":["*"]},"disposition":"RETRY"},
+    {"rule_id":"RREC-0008","priority":80,"match":{"attempt_result_state":["*"],"effect_state":["EFFECT_VERIFIED"],"readback_mode":["*"],"idempotency_mode":["*"],"duplicate_effect_risk":["*"],"retry_budget_state":["*"],"required_postconditions_state":["FAIL","UNKNOWN","NOT_RUN"],"compensation_contract_state":["*"],"parent_restoration_state":["*"]},"disposition":"QUARANTINE"},
+    {"rule_id":"RREC-9999","priority":9999,"match":{"attempt_result_state":["*"],"effect_state":["*"],"readback_mode":["*"],"idempotency_mode":["*"],"duplicate_effect_risk":["*"],"retry_budget_state":["*"],"required_postconditions_state":["*"],"compensation_contract_state":["*"],"parent_restoration_state":["*"]},"disposition":"ABORT"}
+  ]
+}
