@@ -11,6 +11,7 @@
   "component_id": "continuity_sync",
   "repo_paths": [
     "continuity/current.json",
+    "continuity/decisions.jsonl",
     "continuity/events.jsonl"
   ],
   "external_targets": [],
@@ -32,6 +33,12 @@
       "lock_branch": "lock/52945384f2001cd57402862c092775086d07016c9991f7dd61a67d7bb7d4a794",
       "lease_id": "71380c9b-b564-471f-8abc-4321da2402f6",
       "generation": 23
+    },
+    {
+      "resource_key": "repo-file:continuity/decisions.jsonl",
+      "lock_branch": "lock/d30d28c553abd7534a546bbe863cd3c12d5bd14f2b57a5844ddb3501a6a075c8",
+      "lease_id": "d7c7c91e-b1c5-49de-85b1-9d634720a414",
+      "generation": 14
     },
     {
       "resource_key": "repo-file:continuity/events.jsonl",
