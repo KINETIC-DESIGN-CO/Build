@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-6b14c2fa",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T18:44:30Z",
+  "source_main_sha": "ba4254469e26e9ebefee4c3b14b84ca90001c040",
+  "work_id": "af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+  "work_branch": "work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+  "work_head_sha": "b8279c190bebde6bd48ad38daf1581ad678cfbe0",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-b95d87e3.json",
+    "blob_sha": "1615844d5cba1f8f6f3a04f083fb7bc0ff79422f"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T18:44:30Z",
+    "evidence_ref": "Source-only architecture persistence remains the Vince-requested task; deterministic canonical dispatcher selection is not asserted by this checkpoint.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_F5BC289_STALE_VS_LIVE_MAIN_BA425446"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T18:44:30Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_architecture",
+      "lock_branch": "lock/a8d719815632c854da757419af97ff9e6bf9afb222a6edc79e2f2defa4c11619",
+      "state": "ACTIVE",
+      "work_id": "af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
+      "lease_id": "5f40c44e-7a8a-4308-b5dc-f385bdd1da20",
+      "generation": 1,
+      "expires_at": "2026-09-13T22:33:40Z",
+      "observed_at": "2026-09-13T18:44:30Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9.json",
+      "operation": "RECONCILE_FINAL_CHANGED_PATH_SET_AND_RESERVE_FINAL_CHECKPOINT",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:blob:f27420e90191a89f76985570ec0be2c4a7b391f0"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "github:pr=73",
+      "operation": "OPEN_SOURCE_ONLY_RELIABILITY_ARCHITECTURE_PULL_REQUEST",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:pr=73",
+        "github:pr=73:head=b8279c190bebde6bd48ad38daf1581ad678cfbe0",
+        "github:pr=73:base=ba4254469e26e9ebefee4c3b14b84ca90001c040"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-13",
+      "supported_claim": "No paid Supabase development branch is required for the source-only architecture persistence work."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Protected main integration remains delegated to the repository's required Merge Queue and required checks."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:pr=73",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "KINETIC-DESIGN-CO/Build:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/a8d719815632c854da757419af97ff9e6bf9afb222a6edc79e2f2defa4c11619",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "Read PR #73 required validation on its checkpoint-updated head; if validation passes, preserve the PR as the durable source-only architecture handoff and integrate only through the repository's required Merge Queue when current source-coordination conditions permit.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "architecture/reliability-recovery-v1.md",
+    "architecture/reliability-recovery-implementation-v1.md",
+    "coordination/work/af78d5e4-31d0-4a0b-962d-f4d3c08707a9.json",
+    "continuity/checkpoints/CP-000001-b95d87e3.json",
+    "VD-0021",
+    "github:pr=73",
+    "github:main:ba4254469e26e9ebefee4c3b14b84ca90001c040"
+  ]
+}
