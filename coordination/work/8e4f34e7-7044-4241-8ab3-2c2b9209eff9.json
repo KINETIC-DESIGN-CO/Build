@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
-  "title": "Reconcile terminal Issue lifecycle and install durable root-cause repair",
+  "title": "Finalize RCA-0001 verification evidence",
   "worker": {
     "kind": "chatgpt",
     "session_id": "87284546-231b-477c-909a-951108f08878"
