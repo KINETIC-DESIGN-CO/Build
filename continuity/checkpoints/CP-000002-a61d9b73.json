@@ -96,7 +96,7 @@
     }
   ],
   "directive_refs": [
-    "VD-0021"
+    "VD-0022"
   ],
   "decision_rationale_refs": [
     "DR-0001",
@@ -141,7 +141,7 @@
     "GITHUB_RUN:34776710784",
     "GITHUB_RUN:34776742377",
     "WORK_ID:0f68d6ae-75a0-4616-9814-819554f5f643",
-    "VD-0021",
+    "VD-0022",
     "DR-0001",
     "DR-0002",
     "GITHUB_MAIN:8a11d81b3f8f2752a8f93e42f582b877e2ca3963"

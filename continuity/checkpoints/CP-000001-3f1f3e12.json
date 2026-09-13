@@ -95,7 +95,7 @@
       "result": "SUCCESS",
       "readback_state": "VERIFIED",
       "evidence_refs": [
-        "VD-0021 exact quote: This is priority #1 so please continue",
+        "VD-0022 exact quote: This is priority #1 so please continue",
         "E-0119 VINCE_DIRECTIVE",
         "E-0120 GITHUB_MUTATION"
       ]
@@ -115,7 +115,7 @@
     }
   ],
   "directive_refs": [
-    "VD-0021"
+    "VD-0022"
   ],
   "decision_rationale_refs": [
     "DR-0001",
@@ -168,7 +168,7 @@
   "context_refs": [
     "GITHUB_ISSUE:57",
     "WORK_ID:0f68d6ae-75a0-4616-9814-819554f5f643",
-    "VD-0021",
+    "VD-0022",
     "DR-0001",
     "DR-0002",
     "legacy:Vinanonymous/life@6cc602f2ac18599aa67c0352ce81fbd404dcb40f",
