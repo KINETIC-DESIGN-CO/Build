@@ -19,6 +19,9 @@
     "continuity/schema/response-contract.schema.json",
     "governance/problem-intake-policy.json",
     "governance/schema/problem-intake-policy.schema.json",
+    "governance/schema/work-admissions.schema.json",
+    "governance/work-admissions.json",
+    "scripts/select_work.py",
     "tests/test_continuity.py",
     "tests/test_problem_intake_policy.py"
   ],
