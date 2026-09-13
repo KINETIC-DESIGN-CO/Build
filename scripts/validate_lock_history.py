@@ -66,6 +66,39 @@ def validate_worker(worker: object) -> None:
         fail("worker.kind invalid")
 
 
+def validate_legacy_snapshot(lock: dict) -> None:
+    if not isinstance(lock, dict) or set(lock) != LOCK_KEYS:
+        fail("legacy lock snapshot keys mismatch")
+    if lock["schema_version"] != 1 or lock["runtime_control_authority"] != "NONE":
+        fail("legacy lock snapshot schema/authority mismatch")
+    if lock["state"] not in {"ACTIVE", "RELEASED"}:
+        fail("legacy lock state invalid")
+    if not isinstance(lock["resource_key"], str) or not lock["resource_key"]:
+        fail("legacy resource_key must be nonempty")
+    if not isinstance(lock["generation"], int) or lock["generation"] < 1:
+        fail("legacy generation must be integer >= 1")
+    if not isinstance(lock["work_id"], str) or not lock["work_id"]:
+        fail("legacy work_id must be nonempty string")
+    if not isinstance(lock["lease_id"], str) or not lock["lease_id"]:
+        fail("legacy lease_id must be nonempty string")
+    worker = lock["worker"]
+    if not isinstance(worker, dict) or set(worker) != {"kind", "session_id"}:
+        fail("legacy worker must contain exactly kind and session_id")
+    if not isinstance(worker["kind"], str) or not worker["kind"]:
+        fail("legacy worker.kind must be nonempty string")
+    if not isinstance(worker["session_id"], str) or not worker["session_id"]:
+        fail("legacy worker.session_id must be nonempty string")
+    if not isinstance(lock["implementation_branch"], str) or not lock["implementation_branch"]:
+        fail("legacy implementation_branch must be nonempty string")
+    if not SHA_RE.fullmatch(str(lock["base_sha"])):
+        fail("legacy base_sha invalid")
+    acquired = parse_utc(lock["acquired_at"])
+    heartbeat = parse_utc(lock["heartbeat_at"])
+    expires = parse_utc(lock["expires_at"])
+    if not (acquired <= heartbeat < expires):
+        fail("legacy lock timestamp ordering invalid")
+
+
 def validate_snapshot_shape(lock: dict) -> None:
     if not isinstance(lock, dict) or set(lock) != LOCK_KEYS:
         fail("lock snapshot keys mismatch")
@@ -202,7 +235,12 @@ def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
         if not isinstance(committed_at, datetime) or committed_at.tzinfo is None:
             fail("history entry committed_at must be timezone-aware datetime")
         lock = entry["lock"]
-        validate_snapshot_shape(lock)
+
+        if committed_at < cutoff:
+            validate_legacy_snapshot(lock)
+        else:
+            validate_snapshot(lock, protocol)
+
         if resource_key is None:
             resource_key = lock["resource_key"]
         elif lock["resource_key"] != resource_key:
@@ -211,7 +249,6 @@ def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
         if committed_at < cutoff:
             continue
 
-        validate_snapshot(lock, protocol)
         if index == 0:
             if lock["state"] != "ACTIVE" or lock["generation"] != 1:
                 fail("enforced initial lock snapshot must be ACTIVE generation 1")
@@ -221,8 +258,9 @@ def validate_versioned_history(entries: list[dict], protocol: dict) -> None:
 
         previous_entry = entries[index - 1]
         previous = previous_entry["lock"]
-        validate_snapshot_shape(previous)
-        if previous_entry["committed_at"] >= cutoff:
+        if previous_entry["committed_at"] < cutoff:
+            validate_legacy_snapshot(previous)
+        else:
             validate_snapshot(previous, protocol)
         try:
             validate_transition_semantics(previous, lock, protocol)
