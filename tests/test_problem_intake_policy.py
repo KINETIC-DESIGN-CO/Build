@@ -6,14 +6,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ProblemIntakePolicyTests(unittest.TestCase):
-    def test_policy_is_zero_authority_and_split_is_exact(self):
+    def test_policy_is_zero_authority_and_uses_work_branch_continuity(self):
         policy = json.loads((ROOT / "governance/problem-intake-policy.json").read_text())
         self.assertEqual(policy["runtime_control_authority"], "NONE")
         self.assertEqual(policy["assistant_procedure_authority"], "ASSISTANT_PROCEDURE_ONLY")
-        self.assertEqual(policy["current_continuity_split"]["canonical_projection_resource"], "continuity:sync")
+        continuity = policy["continuity_integration"]
+        self.assertEqual(continuity["mode"], "WORK_BRANCH_CAPTURE_PLUS_PROTECTED_MERGE")
+        self.assertIsNone(continuity["global_claim_resource_key"])
+        self.assertEqual(continuity["global_claim_effect"], "NONE")
         self.assertEqual(
-            policy["current_continuity_split"]["intake_rule"],
-            "DO_NOT_REQUIRE_CANONICAL_PROJECTION_RESOURCE_FOR_ZERO_AUTHORITY_INTAKE_ISSUE_CREATE_WHEN_ALL_CREATE_EXEMPTION_CONDITIONS_PASS",
+            continuity["legacy_claim_rule"],
+            "LEGACY_CONTINUITY_SYNC_LOCKS_HAVE_ZERO_WORK_SELECTION_LANE_OR_PREEMPTION_EFFECT",
         )
 
     def test_intake_exemption_is_create_only_and_closed(self):
@@ -31,7 +34,7 @@ class ProblemIntakePolicyTests(unittest.TestCase):
         )
         self.assertEqual(
             intake["create_exemption_effect"],
-            "CONTINUITY_SYNC_PREARM_NOT_REQUIRED_FOR_THIS_CREATE_ONLY_OPERATION",
+            "INTAKE_ISSUE_IS_DURABLE_ZERO_AUTHORITY_EVIDENCE_AND_DOES_NOT_REQUIRE_IMMEDIATE_CANONICAL_CONTINUITY_PROJECTION",
         )
         self.assertEqual(
             intake["problem_identity_rule"],
@@ -88,6 +91,7 @@ class ProblemIntakePolicyTests(unittest.TestCase):
         self.assertFalse(
             schema["properties"]["problem_evaluation"]["properties"]["bootstrap_effect"]["additionalProperties"]
         )
+        self.assertFalse(schema["properties"]["continuity_integration"]["additionalProperties"])
 
     def test_bootstrap_requires_policy_and_evaluation_step(self):
         bootstrap = json.loads((ROOT / "continuity/bootstrap.json").read_text())
