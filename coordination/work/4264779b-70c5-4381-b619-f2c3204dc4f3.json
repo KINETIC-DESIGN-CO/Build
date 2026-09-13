@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "title": "Semantic Firewall Phase B: canonical admission and Build-native control activation",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "8a245f96-a61b-4269-8abd-df583d4b0235"
+  },
+  "implementation_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "base_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
+  "component_id": "issue_57",
+  "repo_paths": [
+    "continuity/checkpoints/CP-000001-31ed3239.json",
+    "governance/work-admissions.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "lease_id": "efaad927-c5ea-43dc-9154-53aa339c307a",
+      "generation": 1
+    }
+  ],
+  "runtime_control_authority": "NONE"
+}
