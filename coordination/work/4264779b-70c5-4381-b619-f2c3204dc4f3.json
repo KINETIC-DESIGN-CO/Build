@@ -12,7 +12,6 @@
   "repo_paths": [
     "architecture/semantic-firewall-v1.md",
     "continuity/checkpoints/CP-000005-6c5f0a21.json",
-    "continuity/events.jsonl",
     "contracts/semantic-firewall-v1/spec.json",
     "governance/root-cause-repairs.json",
     "scripts/evaluate_semantic_firewall.py",
