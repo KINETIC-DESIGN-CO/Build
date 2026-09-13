@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "subsystem_id": "life-semantic-firewall-v1",
+  "runtime_control_authority": "NONE",
+  "activation_state": "SOURCE_ONLY_NOT_RUNTIME_AUTHORITY",
+  "control_decision_kinds": [
+    "AUTHORIZATION",
+    "ROUTING",
+    "PRIORITY",
+    "STATE_TRANSITION",
+    "COMPLETION",
+    "VERIFICATION",
+    "ESCALATION",
+    "RELEASE",
+    "MUTATION",
+    "EFFECT_EXECUTION"
+  ],
+  "decision_states": [
+    "PASS",
+    "FAIL",
+    "NOT_RUN"
+  ],
+  "evidence_states": [
+    "KNOWN",
+    "UNKNOWN",
+    "UNVERIFIED",
+    "NOT_RUN"
+  ],
+  "receipt_persistence_states": [
+    "CANDIDATE",
+    "PERSISTED_TRUSTED",
+    "REVOKED"
+  ],
+  "imported_legacy_path": "contracts/semantic-firewall",
+  "build_native_path": "contracts/semantic-firewall-v1",
+  "schema_paths": [
+    "contracts/semantic-firewall-v1/control-contract.schema.json",
+    "contracts/semantic-firewall-v1/control-request.schema.json",
+    "contracts/semantic-firewall-v1/input-snapshot.schema.json",
+    "contracts/semantic-firewall-v1/control-receipt.schema.json",
+    "contracts/semantic-firewall-v1/effect-request.schema.json",
+    "contracts/semantic-firewall-v1/reliability-verification.schema.json"
+  ],
+  "evaluator_path": "scripts/evaluate_semantic_firewall.py",
+  "validator_path": "scripts/validate_semantic_firewall.py",
+  "test_path": "tests/test_semantic_firewall_v1.py",
+  "reliability_binding": {
+    "compatibility_path": "reliability/compatibility-map.json",
+    "operation_catalog_path": "reliability/operation-catalog.json",
+    "postconditions_path": "reliability/postconditions.json",
+    "recovery_policy_path": "reliability/recovery-policy.json",
+    "write_ahead_rule": "EFFECT_EXECUTION_REQUIRES_PREPARED_ATTEMPT_REF_AND_EXACT_RELIABILITY_OPERATION_CONTRACT",
+    "post_effect_rule": "PASS_REQUIRES_AUTHORITATIVE_READBACK_EFFECT_VERIFIED_AND_REQUIRED_POSTCONDITIONS_PASS"
+  },
+  "invariants": [
+    "CONTROL_REQUEST_BINDS_EXACT_DECISION_KIND_CONTRACT_SUBJECT_ACTION_SCOPE_OPERATION_AND_INPUT_SNAPSHOT",
+    "REQUIRED_INPUT_UNKNOWN_UNVERIFIED_NOT_RUN_MISSING_OR_STALE_CANNOT_PASS",
+    "WRONG_SOURCE_TYPE_FUTURE_OBSERVATION_HASH_MISMATCH_TYPE_MISMATCH_OR_IDENTITY_MISMATCH_FAILS",
+    "SOURCE_EVALUATOR_RECEIPT_CANDIDATE_HAS_ZERO_EFFECT_AUTHORITY",
+    "SOURCE_EVALUATOR_CONTROL_AND_EFFECT_ELIGIBILITY_RESULTS_HAVE_ZERO_RUNTIME_CONTROL_AUTHORITY",
+    "TRUSTED_RECEIPT_FIELDS_AND_SELF_HASH_ALONE_DO_NOT_ESTABLISH_TRUSTED_ISSUANCE_WITHOUT_AUTHORITATIVE_PERSISTENCE_READBACK",
+    "EFFECT_EXECUTION_REQUIRES_PASS_RECEIPT_FROM_TRUSTED_CONTROL_SERVICE_WITH_PERSISTED_TRUSTED_STATE",
+    "EFFECT_EXECUTION_RECEIPT_MUST_BIND_EXACT_RECEIPT_SUBJECT_ACTION_SCOPE_AND_OPERATION_HASH",
+    "PROTECTED_EFFECT_REQUIRES_RELIABILITY_WRITE_AHEAD_PREPARATION_REFERENCE",
+    "POST_EFFECT_PASS_REQUIRES_AUTHORITATIVE_READBACK_EFFECT_VERIFIED_AND_REQUIRED_POSTCONDITIONS_PASS",
+    "SOURCE_TEST_OR_CI_SUCCESS_DOES_NOT_CREATE_LIFE_RUNTIME_CONTROL_AUTHORITY"
+  ]
+}

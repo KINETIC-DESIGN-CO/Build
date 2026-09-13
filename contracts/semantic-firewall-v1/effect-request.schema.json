@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Semantic Firewall v1 Effect Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "effect_request_id", "receipt_id", "receipt_sha256", "subject_type", "subject_id", "action", "scope_type", "scope_id", "operation_sha256", "reliability_operation_contract_id", "prepared_attempt_ref", "requested_at"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "effect_request_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "receipt_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "subject_type": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "subject_id": {"type": "string", "minLength": 1},
+    "action": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "scope_type": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "scope_id": {"type": "string", "minLength": 1},
+    "operation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reliability_operation_contract_id": {"type": "string", "pattern": "^ROP-[0-9]{4}$"},
+    "prepared_attempt_ref": {"type": "string", "minLength": 1},
+    "requested_at": {"type": "string", "format": "date-time"}
+  }
+}

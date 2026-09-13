@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000010-f63c26bb",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T22:02:56Z",
+  "source_main_sha": "d45b66906fb1503771eb1b3caa60614c0e6772e5",
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_head_sha": "f63c26bbc18f21e159538483226acc5ea0879885",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000009-75f2a392.json",
+    "blob_sha": "a7f702e3d6ee3363d801117a7119f1bed9f898c8"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T22:02:56Z",
+    "evidence_ref": "The Reliability continuation remains under its exact ACTIVE generation-2 component claim. This checkpoint records the lock-history repair, exact-head CI failure, documentation reconciliation, and root-cause evidence only; it has zero work-selection or mutation authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_78A6909_STALE_VS_LIVE_MAIN_D45B669"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T22:02:56Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T22:02:56Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "65d35d8e-1607-4a71-966f-30025c4319e9",
+      "generation": 2,
+      "expires_at": "2026-09-14T00:48:33Z",
+      "observed_at": "2026-09-13T22:02:56Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:84:head:403b3a0edd0935f2ada089221a0801c35f44ea0b",
+      "operation": "PR_HEAD_REQUIRED_VALIDATE",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34784868142",
+        "github:check_run=103798379403:validate:FAILURE",
+        "github:step=Validate source coordination:FAILURE",
+        "github:earlier_steps=Reliability contracts PASS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "scripts/validate_lock_history.py",
+      "operation": "ALLOW_SAME_DURABLE_WORK_ID_ACROSS_NEW_LEASE_CYCLES",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=cf9ea647919f13eeac673a6cf97838f54702f228",
+        "github:blob=308df2102baba7aa2a4dc984da1fd29963bec1a0",
+        "github:rule=GENERATION_PLUS_ONE_AND_FRESH_LEASE_ID_REQUIRED"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "tests/test_lock_history.py",
+      "operation": "ADD_SAME_WORK_REACQUISITION_AND_TAKEOVER_FALSIFICATION_CASES",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=403b3a0edd0935f2ada089221a0801c35f44ea0b",
+        "github:blob=35067bb0d7230ac7401fdac328019afc51b75159",
+        "github:test=test_valid_same_work_reacquisition_after_release",
+        "github:test=test_valid_same_work_takeover_after_expiry"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/README.md",
+      "operation": "ALIGN_EXPLANATORY_LEASE_SEMANTICS_WITH_EXECUTABLE_VALIDATOR",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=fdb57087e69b5f49fa370d0d90bf1a13b5d904dd",
+        "github:blob=2db5d942c5c84665347749afa60677bd4f34e85b"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/root-cause-repairs.json:RCA-0002",
+      "operation": "EXTEND_ROOT_CAUSE_AND_RECURRENCE_EVIDENCE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=f63c26bbc18f21e159538483226acc5ea0879885",
+        "github:blob=920291e40d5946a159eb59ef8d09ef31fd360fbc"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021",
+    "VD-0024"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [
+    "web:github-merge-queue-current",
+    "web:consul-session-lock-sequencer-current",
+    "web:kubernetes-lease-current",
+    "web:llm-verified-tool-calls-2608.02645"
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:84",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:reliability_recovery_contracts",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "UPDATE_WORK_RECORD_TO_EXACT_FINAL_CHANGED_PATH_SET_THEN_REQUIRE_PR_84_EXACT_HEAD_VALIDATE_BEFORE_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoints/CP-000009-75f2a392.json",
+    "coordination/work/8bc19d08-14ca-4077-a223-1e3ef9f0368f.json",
+    "coordination/README.md",
+    "governance/root-cause-repairs.json",
+    "scripts/validate_lock_history.py",
+    "tests/test_lock_history.py",
+    "reliability/spec.json",
+    "reliability/compatibility-map.json",
+    "GITHUB_PR:84:Bind Reliability to canonical goal identity",
+    "github:workflow_run=34784868142"
+  ]
+}

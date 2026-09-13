@@ -152,8 +152,8 @@
     "user_observation_ledger": "continuity/user-observations.jsonl",
     "semantic_firewall_contract_path": "contracts/semantic-firewall",
     "semantic_firewall_link_state": "SOURCE_IMPORTED_ACTIVATION_PENDING",
-    "goal_root_identity_owner_path": null,
-    "goal_root_identity_link_state": "PENDING_IMPLEMENTATION"
+    "goal_root_identity_owner_path": "governance/goal-registry.json",
+    "goal_root_identity_link_state": "ACTIVE"
   },
   "source_artifacts": {
     "invariants": "reliability/invariants.json",

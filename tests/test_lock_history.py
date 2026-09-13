@@ -153,6 +153,19 @@ class LockHistoryTests(unittest.TestCase):
         )
         mod.validate_transition(previous, current, PROTOCOL)
 
+    def test_valid_same_work_reacquisition_after_release(self):
+        previous = lock(state="RELEASED")
+        acquired = datetime(2026, 9, 12, 9, 0, tzinfo=timezone.utc)
+        current = lock(
+            generation=2,
+            work_id=WORK_A,
+            lease_id=LEASE_B,
+            session_id=SESSION_B,
+            acquired=acquired,
+            base_sha="2" * 40,
+        )
+        mod.validate_transition(previous, current, PROTOCOL)
+
     def test_reacquisition_skipped_generation_fails(self):
         previous = lock(state="RELEASED")
         current = lock(
@@ -216,6 +229,19 @@ class LockHistoryTests(unittest.TestCase):
         current = lock(
             generation=2,
             work_id=WORK_B,
+            lease_id=LEASE_B,
+            session_id=SESSION_B,
+            acquired=acquired,
+            base_sha="2" * 40,
+        )
+        mod.validate_transition(previous, current, PROTOCOL)
+
+    def test_valid_same_work_takeover_after_expiry(self):
+        previous = lock()
+        acquired = datetime(2026, 9, 12, 12, 0, tzinfo=timezone.utc)
+        current = lock(
+            generation=2,
+            work_id=WORK_A,
             lease_id=LEASE_B,
             session_id=SESSION_B,
             acquired=acquired,
