@@ -2,7 +2,7 @@
   "schema_version": 1,
   "resource_key": "component:reliability_recovery_architecture",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "af78d5e4-31d0-4a0b-962d-f4d3c08707a9",
   "worker": {
     "kind": "chatgpt",
