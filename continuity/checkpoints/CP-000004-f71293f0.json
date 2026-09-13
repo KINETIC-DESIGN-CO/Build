@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000004-f71293f0",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T19:00:46Z",
+  "source_main_sha": "8a11d81b3f8f2752a8f93e42f582b877e2ca3963",
+  "work_id": "20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+  "work_branch": "work/20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+  "work_head_sha": "11b406dfc08e6d0a40cea32af4ece5307a2b95b3",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000003-16149154.json",
+    "blob_sha": "bd070ed60c8140a91937ac98d50114d609e6e478"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T19:00:46Z",
+    "evidence_ref": "A-0014 requires final component-claim release and authoritative release readback before this thread reruns deterministic redispatch; selection is therefore deliberately not evaluated at this pre-release checkpoint.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T19:00:46Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_15",
+      "lock_branch": "lock/9d2d67391fdccea8d9371e7139cfced4484a6280e2d715393dc97ba5aa623ad0",
+      "state": "ACTIVE",
+      "work_id": "20a51999-3d6e-4bcc-9b00-9ea42b7ecabf",
+      "lease_id": "90089f9b-a238-440f-b6d7-75ebd76873c1",
+      "generation": 4,
+      "expires_at": "2026-09-13T22:34:50Z",
+      "observed_at": "2026-09-13T19:00:46Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:72 merge_group 8a11d81b3f8f2752a8f93e42f582b877e2ca3963",
+      "operation": "MERGE_GROUP_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34775797788 job 103773551449 concluded success",
+        "continuity, coordination, relevant lock history, repository tests, local Supabase startup, and Supabase database tests passed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:72",
+      "operation": "MERGE_QUEUE_INTEGRATION_AND_MAIN_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR 72 merged at 2026-09-13T18:51:25Z",
+        "main head 8a11d81b3f8f2752a8f93e42f582b877e2ca3963 matches PR 72 merge commit"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "issue:15",
+      "operation": "TERMINAL_ISSUE_LIFECYCLE_RECONCILIATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Issue 15 state closed",
+        "Issue 15 state_reason completed",
+        "issue-lifecycle run 34775912461 concluded success"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main:8a11d81b3f8f2752a8f93e42f582b877e2ca3963",
+      "operation": "POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "Actions run 34775912426 job 103773859001 concluded success",
+        "all required repository and local Supabase database validation steps passed"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/20a51999-3d6e-4bcc-9b00-9ea42b7ecabf.json",
+      "operation": "REGISTER_FINAL_RELEASE_CHECKPOINT_PATH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "work branch commit 11b406dfc08e6d0a40cea32af4ece5307a2b95b3",
+        "work record readback includes continuity/checkpoints/CP-000004-f71293f0.json"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0017",
+    "VD-0018"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:72",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "issue:15",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock:component:issue_15",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "RELEASE_COMPONENT_ISSUE_15_CLAIM_READ_BACK_RELEASE_THEN_RERUN_DETERMINISTIC_DISPATCH",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "governance/work-admissions.json",
+    "governance/issue-lifecycle-policy.json",
+    "governance/work-selection-policy.json",
+    "coordination/work/20a51999-3d6e-4bcc-9b00-9ea42b7ecabf.json",
+    "GITHUB_PR:72",
+    "GITHUB_RUN:34775797788",
+    "GITHUB_RUN:34775912426",
+    "GITHUB_RUN:34775912461",
+    "GITHUB_ISSUE:15",
+    "GITHUB_MAIN:8a11d81b3f8f2752a8f93e42f582b877e2ca3963"
+  ]
+}
