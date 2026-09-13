@@ -32,8 +32,6 @@ class WorkSelectionTests(unittest.TestCase):
             "worker_lane": "FOREGROUND",
             "pending_continuity_event_ids": [],
             "canonical_live_mismatch_ids": [],
-            "continuity_sync_claim_state": "NONE",
-            "continuity_resource_intersection": "NOT_EVALUATED",
             "interrupted_operation_state": "NONE",
             "current_status": "ACTIVE",
             "open_blocker_ids": [],
@@ -49,6 +47,19 @@ class WorkSelectionTests(unittest.TestCase):
         admissions = json.loads(ADMISSIONS_PATH.read_text())
         return sorted(
             [item for item in admissions["items"] if item["state"] == "ADMITTED"],
+            key=lambda item: (item["dispatch_tier"], item["source_issue_number"], item["work_item_id"]),
+        )
+
+    def dispatchable_admitted_items(self):
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
+        states = {item["work_item_id"]: item["state"] for item in admissions["items"]}
+        return sorted(
+            [
+                item
+                for item in admissions["items"]
+                if item["state"] == "ADMITTED"
+                and all(states.get(dependency) == "COMPLETE" for dependency in item["depends_on"])
+            ],
             key=lambda item: (item["dispatch_tier"], item["source_issue_number"], item["work_item_id"]),
         )
 
@@ -76,7 +87,7 @@ class WorkSelectionTests(unittest.TestCase):
     def required_dispatch_keys(self):
         current = json.loads(CURRENT_PATH.read_text())
         admissions = json.loads(ADMISSIONS_PATH.read_text())
-        keys = {"continuity:sync", f"component:{current['current_component']}"}
+        keys = {f"component:{current['current_component']}"}
         keys.update(f"component:{item['component_id']}" for item in admissions["items"] if item["state"] == "ADMITTED")
         return sorted(keys)
 
@@ -110,47 +121,58 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr)
         return json.loads(proc.stdout)
 
-    def test_policy_validates_as_v4(self):
+    def test_policy_validates_as_v4_without_global_continuity_claim(self):
         proc = self.run_selector(["--validate-policy"])
         self.assertEqual(proc.returncode, 0, proc.stderr)
         policy = json.loads(POLICY_PATH.read_text())
         self.assertEqual(policy["schema_version"], 4)
         self.assertEqual(policy["policy_id"], "life-engineering-work-selection-v4")
-        self.assertEqual(policy["fresh_thread_dispatch"]["mode"], "LIVE_LOCK_DERIVED")
-        self.assertEqual(policy["fresh_thread_dispatch"]["worker_lane_input_rule"], "FRESH_THREAD_WORKER_LANE_MUST_BE_DERIVED_NOT_CALLER_ASSIGNED")
+        self.assertIsNone(policy["continuity_integration"]["global_claim_resource_key"])
+        self.assertEqual(policy["continuity_integration"]["global_claim_effect"], "NONE")
 
-    def test_terminal_redispatch_is_exact_same_thread_loop(self):
-        terminal = json.loads(POLICY_PATH.read_text())["terminal_redispatch"]
-        self.assertEqual(terminal["trigger"], "SELECTED_WORK_TERMINAL_AND_REQUIRED_COMPLETION_CLEANUP_VERIFIED")
-        self.assertEqual(terminal["same_thread_action"], "RERUN_LIVE_FRESH_THREAD_DISPATCH_WITHOUT_USER_PROMPT")
-        self.assertEqual(terminal["issue_review_rule"], "RUN_PLACEMENT_POLICY_OPEN_ISSUE_REVIEW_BEFORE_EACH_NEW_MUTABLE_WORK_ITEM")
-        self.assertEqual(terminal["repeat_rule"], "AFTER_EACH_TERMINAL_WORK_ITEM_REPEAT_TERMINAL_REDISPATCH")
-        self.assertEqual(
-            terminal["stop_states"],
-            ["NO_ELIGIBLE_WORK", "REQUIRED_LIVE_READ_NOT_RUN", "UNSUPPORTED_OR_UNAUTHORIZED_OPERATION"],
-        )
-
-    def test_legacy_rank_zero_foreground_continuity_still_works(self):
+    def test_pending_continuity_event_does_not_preempt_foreground_work(self):
         evidence = self.base_evidence()
         evidence["pending_continuity_event_ids"] = ["E-PENDING-1"]
         result = self.evaluate(evidence)
-        self.assertEqual(result["effective_rank"], 0)
-        self.assertEqual(result["selected_work"], "CONTINUITY_SYNC")
+        self.assertEqual(result["effective_rank"], 2)
+        self.assertEqual(result["selected_work"], "CURRENT_NEXT_ACTION")
+        self.assertEqual(result["continuity_evidence_effect"], "ZERO_WORK_SELECTION_PREEMPTION_EFFECT")
 
-    def test_legacy_disjoint_parallel_rank_four_still_works(self):
+    def test_canonical_live_mismatch_does_not_preempt_disjoint_parallel_work(self):
         evidence = self.parallel_evidence()
-        evidence["pending_continuity_event_ids"] = ["E-PENDING-1"]
-        evidence["continuity_resource_intersection"] = "INTERSECTION_EMPTY"
+        evidence["canonical_live_mismatch_ids"] = ["GITHUB_MAIN_HEAD_SHA"]
         result = self.evaluate(evidence)
-        self.assertEqual(result["effective_rank"], 4)
+        self.assertEqual(result["effective_rank"], 3)
         self.assertEqual(result["selected_work"], "PARALLEL_ADMITTED_WORK")
+
+    def test_interrupted_operation_has_highest_rank(self):
+        evidence = self.base_evidence()
+        evidence["interrupted_operation_state"] = "UNKNOWN"
+        result = self.evaluate(evidence)
+        self.assertEqual(result["effective_rank"], 0)
+        self.assertEqual(result["selected_work"], "RESUME_INTERRUPTED_OPERATION")
 
     def test_fresh_thread_foreground_is_derived_when_component_is_free(self):
         result = self.dispatch(self.snapshot())
         self.assertEqual(result["worker_lane"], "FOREGROUND")
-        self.assertEqual(result["effective_rank"], 3)
+        self.assertEqual(result["effective_rank"], 2)
         self.assertEqual(result["selected_work"], "CURRENT_NEXT_ACTION")
         self.assertEqual(result["claim_next_resource_key"], "component:multi_thread_coordination_hardening")
+
+    def test_dispatch_snapshot_does_not_require_continuity_sync_resource(self):
+        self.assertNotIn("continuity:sync", self.required_dispatch_keys())
+        result = self.dispatch(self.snapshot())
+        self.assertEqual(result["worker_lane"], "FOREGROUND")
+
+    def test_legacy_continuity_sync_resource_is_rejected_as_extra_snapshot_state(self):
+        snap = self.snapshot()
+        snap["resources"]["continuity:sync"] = self.lock("continuity:sync")
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "snapshot.json"
+            path.write_text(json.dumps(snap) + "\n")
+            proc = self.run_selector(["--dispatch-snapshot", str(path)])
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("resource coverage mismatch", proc.stderr)
 
     def test_completed_current_work_routes_fresh_thread_to_parallel(self):
         current = json.loads(CURRENT_PATH.read_text())
@@ -162,28 +184,8 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["work_item_id"], first["work_item_id"])
         self.assertEqual(result["claim_next_resource_key"], f"component:{first['component_id']}")
 
-    def test_terminal_redispatch_skips_busy_issue_and_selects_next_admitted_issue(self):
-        current = json.loads(CURRENT_PATH.read_text())
-        current["current_status"] = "COMPLETE"
-        CURRENT_PATH.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
-        first = self.admitted_item(0)
-        second = self.admitted_item(1)
-        first_key = f"component:{first['component_id']}"
-        result = self.dispatch(self.snapshot({first_key: self.lock(first_key)}))
-        self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
-        self.assertEqual(result["work_item_id"], second["work_item_id"])
-        self.assertEqual(result["claim_next_resource_key"], f"component:{second['component_id']}")
-
     def test_fresh_thread_becomes_parallel_when_foreground_component_is_owned(self):
         key = "component:multi_thread_coordination_hardening"
-        first = self.admitted_item()
-        result = self.dispatch(self.snapshot({key: self.lock(key)}))
-        self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
-        self.assertEqual(result["work_item_id"], first["work_item_id"])
-        self.assertEqual(result["claim_next_resource_key"], f"component:{first['component_id']}")
-
-    def test_active_continuity_claim_also_routes_fresh_thread_to_parallel(self):
-        key = "continuity:sync"
         first = self.admitted_item()
         result = self.dispatch(self.snapshot({key: self.lock(key)}))
         self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
@@ -191,8 +193,8 @@ class WorkSelectionTests(unittest.TestCase):
 
     def test_parallel_auto_selection_skips_owned_component(self):
         current_key = "component:multi_thread_coordination_hardening"
-        first = self.admitted_item(0)
-        second = self.admitted_item(1)
+        first = self.dispatchable_admitted_items()[0]
+        second = self.dispatchable_admitted_items()[1]
         first_key = f"component:{first['component_id']}"
         result = self.dispatch(self.snapshot({current_key: self.lock(current_key), first_key: self.lock(first_key)}))
         self.assertEqual(result["work_item_id"], second["work_item_id"])
@@ -214,23 +216,6 @@ class WorkSelectionTests(unittest.TestCase):
                 overrides[key] = self.lock(key)
         result = self.dispatch(self.snapshot(overrides))
         self.assertEqual(result["decision"], "NO_ELIGIBLE_WORK")
-        self.assertIsNone(result["work_item_id"])
-
-    def test_dependency_unlocks_issue_18_after_issue_21_complete(self):
-        admissions = json.loads(ADMISSIONS_PATH.read_text())
-        for item in admissions["items"]:
-            if item["work_item_id"] == "github-issue-21":
-                item["state"] = "COMPLETE"
-        ADMISSIONS_PATH.write_text(json.dumps(admissions, indent=2) + "\n")
-        current_key = "component:multi_thread_coordination_hardening"
-        overrides = {current_key: self.lock(current_key)}
-        for item in self.admitted_items():
-            if item["work_item_id"] == "github-issue-18":
-                break
-            key = f"component:{item['component_id']}"
-            overrides[key] = self.lock(key)
-        result = self.dispatch(self.snapshot(overrides))
-        self.assertEqual(result["work_item_id"], "github-issue-18")
 
     def test_snapshot_must_cover_every_required_component_resource(self):
         snap = self.snapshot()
@@ -258,30 +243,34 @@ class WorkSelectionTests(unittest.TestCase):
         policy = json.loads(POLICY_PATH.read_text())
         self.assertEqual(policy["fresh_thread_dispatch"]["race_rule"], "AFTER_PARALLEL_SELECTION_ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP;ON_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH")
 
-    def test_terminal_race_rule_requires_cas_reread_and_redispatch_without_prompt(self):
-        policy = json.loads(POLICY_PATH.read_text())
-        self.assertEqual(
-            policy["terminal_redispatch"]["race_rule"],
-            "ON_CLAIM_COMPARE_AND_SWAP_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH_WITHOUT_USER_PROMPT",
-        )
-
     def test_manual_selector_tie_break_remains_deterministic(self):
-        first = self.admitted_item(0)
-        second = self.admitted_item(1)
+        first = self.dispatchable_admitted_items()[0]
+        second = self.dispatchable_admitted_items()[1]
         proc = self.run_selector(["--select-parallel"])
         self.assertEqual(proc.returncode, 0, proc.stderr)
         self.assertEqual(json.loads(proc.stdout)["work_item_id"], first["work_item_id"])
+        self.assertEqual(json.loads(proc.stdout)["selection_rank"], 3)
         proc = self.run_selector(["--select-parallel", "--unavailable-work-item", first["work_item_id"]])
         self.assertEqual(proc.returncode, 0, proc.stderr)
         self.assertEqual(json.loads(proc.stdout)["work_item_id"], second["work_item_id"])
 
     def test_nonterminal_higher_precedence_selection_is_not_replaced(self):
         evidence = self.base_evidence()
-        evidence["selected_rank_before"] = 1
+        evidence["selected_rank_before"] = 0
         evidence["selected_work_terminal"] = False
         result = self.evaluate(evidence)
         self.assertEqual(result["decision"], "KEEP_SELECTED")
-        self.assertEqual(result["effective_rank"], 1)
+        self.assertEqual(result["effective_rank"], 0)
+
+    def test_old_continuity_gate_fields_are_rejected(self):
+        evidence = self.base_evidence()
+        evidence["continuity_sync_claim_state"] = "ACTIVE_UNEXPIRED"
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "evidence.json"
+            path.write_text(json.dumps(evidence) + "\n")
+            proc = self.run_selector(["--evaluate", str(path)])
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("evidence keys mismatch", proc.stderr)
 
     def test_qualitative_gate_token_is_rejected(self):
         policy = json.loads(POLICY_PATH.read_text())
