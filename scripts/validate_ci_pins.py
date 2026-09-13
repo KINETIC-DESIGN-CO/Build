@@ -33,11 +33,16 @@ def _action_id(reference: str) -> str:
     return "/".join(parts[:2]) if len(parts) >= 2 else source
 
 
-def _step_end(lines: list[str], uses_index: int, uses_indent: int) -> int:
+def _step_indent(line: str, uses_indent: int) -> int:
+    """Return indentation of the list item containing a uses: entry."""
+    return uses_indent if line.lstrip().startswith("- uses:") else max(0, uses_indent - 2)
+
+
+def _step_end(lines: list[str], uses_index: int, step_indent: int) -> int:
     """Return the first line index after the step containing a uses: entry."""
     for index in range(uses_index + 1, len(lines)):
         match = STEP_START.match(lines[index])
-        if match and len(match.group("indent")) < uses_indent:
+        if match and len(match.group("indent")) <= step_indent:
             return index
     return len(lines)
 
@@ -77,7 +82,8 @@ def validate_workflow_text(text: str, source: str = "<workflow>") -> list[str]:
         if _action_id(reference) != "supabase/setup-cli":
             continue
 
-        end = _step_end(lines, index, len(match.group("indent")))
+        uses_indent = len(match.group("indent"))
+        end = _step_end(lines, index, _step_indent(line, uses_indent))
         versions: list[tuple[int, str]] = []
         for child_index in range(index + 1, end):
             version_match = VERSION_LINE.match(lines[child_index])
