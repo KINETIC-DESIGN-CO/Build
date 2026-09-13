@@ -15,6 +15,7 @@ PROTOCOL = {
     "protocol_id": "life-source-coordination-v2",
     "lease_duration_seconds": 14400,
     "renew_when_remaining_seconds_lte": 1800,
+    "lock_history_enforcement_start_utc": "2026-09-12T22:56:23Z",
 }
 WORK_A = "00000000-0000-4000-8000-000000000001"
 WORK_B = "00000000-0000-4000-8000-000000000002"
@@ -56,6 +57,14 @@ def lock(
         "heartbeat_at": z(heartbeat),
         "expires_at": z(expires),
         "runtime_control_authority": "NONE",
+    }
+
+
+def entry(lock_value: dict, committed_at: datetime, sha_char: str) -> dict:
+    return {
+        "commit_sha": sha_char * 40,
+        "committed_at": committed_at,
+        "lock": lock_value,
     }
 
 
@@ -195,6 +204,43 @@ class LockHistoryTests(unittest.TestCase):
         current = dict(previous)
         with self.assertRaises(mod.ValidationError):
             mod.validate_transition(previous, current, PROTOCOL)
+
+    def test_pre_epoch_legacy_base_rewrite_is_retained_as_evidence(self):
+        first = lock(base_sha="1" * 40)
+        second = dict(first)
+        second["base_sha"] = "2" * 40
+        mod.validate_versioned_history(
+            [
+                entry(first, datetime(2026, 9, 12, 8, 0, tzinfo=timezone.utc), "a"),
+                entry(second, datetime(2026, 9, 12, 9, 0, tzinfo=timezone.utc), "b"),
+            ],
+            PROTOCOL,
+        )
+
+    def test_post_epoch_same_lease_base_rewrite_is_rejected(self):
+        first = lock(base_sha="1" * 40)
+        second = dict(first)
+        second["base_sha"] = "2" * 40
+        with self.assertRaises(mod.ValidationError):
+            mod.validate_versioned_history(
+                [
+                    entry(first, datetime(2026, 9, 12, 22, 55, tzinfo=timezone.utc), "a"),
+                    entry(second, datetime(2026, 9, 12, 22, 57, tzinfo=timezone.utc), "b"),
+                ],
+                PROTOCOL,
+            )
+
+    def test_post_epoch_release_from_pre_epoch_baseline_is_enforced(self):
+        first = lock()
+        second = dict(first)
+        second["state"] = "RELEASED"
+        mod.validate_versioned_history(
+            [
+                entry(first, datetime(2026, 9, 12, 22, 55, tzinfo=timezone.utc), "a"),
+                entry(second, datetime(2026, 9, 12, 22, 57, tzinfo=timezone.utc), "b"),
+            ],
+            PROTOCOL,
+        )
 
 
 if __name__ == "__main__":
