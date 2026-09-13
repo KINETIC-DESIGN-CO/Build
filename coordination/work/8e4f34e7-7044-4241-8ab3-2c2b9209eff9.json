@@ -10,23 +10,8 @@
   "base_sha": "285e0eb3e07e275a424c6e9ab90c7b40c44792fd",
   "component_id": "auto_issue_dispatch",
   "repo_paths": [
-    ".github/workflows/issue-lifecycle.yml",
-    "continuity/bootstrap.json",
-    "continuity/checkpoints/CP-000001-c4a1d8e7.json",
     "continuity/checkpoints/CP-000002-6e4d12a9.json",
-    "governance/issue-lifecycle-policy.json",
-    "governance/root-cause-repair-policy.json",
-    "governance/root-cause-repairs.json",
-    "governance/schema/issue-lifecycle-policy.schema.json",
-    "governance/schema/root-cause-repair-policy.schema.json",
-    "governance/schema/root-cause-repairs.schema.json",
-    "scripts/validate_issue_lifecycle.py",
-    "scripts/validate_root_cause_repair.py",
-    "scripts/validate_watchdog.py",
-    "tests/test_issue_lifecycle.py",
-    "tests/test_root_cause_repair.py",
-    "tests/test_watchdog.py",
-    "watchdog/spec.json"
+    "governance/root-cause-repairs.json"
   ],
   "external_targets": [],
   "claims": [
