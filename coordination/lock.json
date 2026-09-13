@@ -12,7 +12,7 @@
   "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
   "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
   "acquired_at": "2026-09-13T18:43:20Z",
-  "heartbeat_at": "2026-09-13T18:43:20Z",
-  "expires_at": "2026-09-13T22:43:20Z",
+  "heartbeat_at": "2026-09-13T22:13:20Z",
+  "expires_at": "2026-09-14T02:13:20Z",
   "runtime_control_authority": "NONE"
 }
