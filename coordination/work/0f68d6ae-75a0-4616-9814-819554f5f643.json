@@ -11,6 +11,9 @@
   "component_id": "semantic_firewall_source_intake",
   "repo_paths": [
     "architecture/reference/semantic-firewall-import-provenance.json",
+    "continuity/checkpoints/CP-000001-3f1f3e12.json",
+    "continuity/directive-ledger.jsonl",
+    "continuity/events.jsonl",
     "contracts/semantic-firewall/artifact-byte-identity.acceptance.json",
     "contracts/semantic-firewall/contract-reference.acceptance.json",
     "contracts/semantic-firewall/control-input-binding.acceptance.json",
@@ -24,9 +27,6 @@
     "contracts/semantic-firewall/run_receipt_execution_binding_acceptance.py",
     "contracts/semantic-firewall/run_typed_contract_evaluation_acceptance.py",
     "contracts/semantic-firewall/typed-contract-evaluation.acceptance.json",
-    "continuity/checkpoints/CP-000001-3f1f3e12.json",
-    "continuity/directive-ledger.jsonl",
-    "continuity/events.jsonl",
     "tests/test_semantic_firewall_import.py"
   ],
   "external_targets": [],
