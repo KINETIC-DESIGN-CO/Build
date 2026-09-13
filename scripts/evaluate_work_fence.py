@@ -8,7 +8,7 @@ import os
 import re
 import subprocess
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,9 +37,9 @@ EXPECTED_POLICY = {
     "runtime_control_authority": "NONE",
     "engineering_fence_authority": "DETERMINISTIC_EVALUATION_ONLY",
     "canonical_evaluator": "scripts/evaluate_work_fence.py",
-    "canonical_selector_entrypoint": "scripts/select_work_v5.py",
+    "canonical_selector_entrypoint": "scripts/select_work.py",
     "component_stale_after_seconds": 1800,
-    "legacy_v1_component_effective_expiry_rule": "MIN_STORED_EXPIRES_AT_ACQUIRED_AT_PLUS_COMPONENT_STALE_AFTER_SECONDS",
+    "legacy_v1_component_effective_expiry_rule": "USE_STORED_EXPIRES_AT_UNTIL_NEXT_SCHEMA_V2_TRANSITION",
     "goal_revision_fence_rule": "WHEN_GOAL_ID_IS_NON_NULL_PLANNED_GOAL_REVISION_MUST_EQUAL_CANONICAL_GOAL_REVISION",
     "goal_revision_mismatch_result": "REPLAN_REQUIRED",
     "generation_fence_rule": "WORK_RECORD_CLAIM_GENERATION_MUST_EQUAL_LIVE_CLAIM_GENERATION_AND_LIVE_CLAIM_WORK_ID_MUST_EQUAL_WORK_RECORD_WORK_ID",
@@ -145,7 +145,7 @@ def validate_lock_snapshot(lock: dict, resource_key: str | None = None) -> dict:
             fail("schema v2 component lease_contract mismatch")
         if lock.get("lease_event_type") not in {
             "ACQUIRE", "TAKEOVER", "REACQUIRE", "RENEW_PROTECTED_MUTATION",
-            "RENEW_REQUIRED_CHECKPOINT", "REASSIGNMENT_TAKEOVER",
+            "RENEW_REQUIRED_CHECKPOINT",
         }:
             fail("schema v2 component lease_event_type invalid")
         if int((expires - heartbeat).total_seconds()) != EXPECTED_POLICY["component_stale_after_seconds"]:
@@ -159,10 +159,10 @@ def effective_component_expiry(lock: dict, policy: dict | None = None) -> dateti
     if not str(lock["resource_key"]).startswith("component:"):
         return parse_utc(lock["expires_at"])
     if lock["schema_version"] == 2:
-        return parse_utc(lock["expires_at"])
-    stored = parse_utc(lock["expires_at"])
-    hard = parse_utc(lock["acquired_at"]) + timedelta(seconds=policy["component_stale_after_seconds"])
-    return min(stored, hard)
+        duration = int((parse_utc(lock["expires_at"]) - parse_utc(lock["heartbeat_at"])).total_seconds())
+        if duration != policy["component_stale_after_seconds"]:
+            fail("schema v2 component duration must equal component_stale_after_seconds")
+    return parse_utc(lock["expires_at"])
 
 
 def goal_by_id(registry: dict, goal_id: str) -> dict:
