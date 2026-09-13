@@ -20,6 +20,7 @@ OTHER_LEASE_ID = "44444444-4444-4444-8444-444444444444"
 THREAD_SESSION = "55555555-5555-4555-8555-555555555555"
 LIVE_SESSION = "66666666-6666-4666-8666-666666666666"
 RESOURCE = "component:issue_18"
+_DEFAULT = object()
 
 
 def thread_claim(*, work_id=WORK_ID, lease_id=LEASE_ID, generation=1, resource=RESOURCE):
@@ -66,14 +67,14 @@ def evidence(
     cue="CONTINUE",
     live_read="VERIFIED",
     operation="TIMEOUT",
-    thread=None,
-    live=None,
+    thread=_DEFAULT,
+    live=_DEFAULT,
     observed_at="2026-09-13T20:00:00Z",
 ):
-    if thread is None:
+    if thread is _DEFAULT:
         thread = work()
-    if live is None and live_read == "VERIFIED":
-        live = work(live=True, session=LIVE_SESSION)
+    if live is _DEFAULT:
+        live = work(live=True, session=LIVE_SESSION) if live_read == "VERIFIED" else None
     return {
         "schema_version": 1,
         "resume_cue": cue,
@@ -138,6 +139,12 @@ class ResumeReconciliationTests(unittest.TestCase):
 
     def test_missing_live_work_after_verified_read_is_unknown_not_guessed(self):
         result = mod.evaluate(evidence(live=None, thread=work(), live_read="VERIFIED"), POLICY)
+        self.assertEqual(result["work_relation_state"], "UNKNOWN")
+        self.assertEqual(result["resume_action"], "STOP_UNKNOWN")
+        self.assertEqual(result["classification"], "UNKNOWN")
+
+    def test_missing_thread_work_after_verified_read_is_unknown_not_guessed(self):
+        result = mod.evaluate(evidence(thread=None, live=work(live=True), live_read="VERIFIED"), POLICY)
         self.assertEqual(result["work_relation_state"], "UNKNOWN")
         self.assertEqual(result["resume_action"], "STOP_UNKNOWN")
         self.assertEqual(result["classification"], "UNKNOWN")
