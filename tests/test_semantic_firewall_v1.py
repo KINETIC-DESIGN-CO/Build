@@ -110,6 +110,7 @@ class SemanticFirewallV1Tests(unittest.TestCase):
         request = self.request(contract, snapshot)
         result = sf.evaluate_control(contract, request, snapshot, evaluated_at=NOW)
         self.assertEqual("PASS", result["decision"])
+        self.assertEqual("NONE", result["runtime_control_authority"])
         receipt = sf.make_receipt_candidate(
             contract, request, snapshot, result,
             evaluated_at=NOW,
@@ -124,7 +125,14 @@ class SemanticFirewallV1Tests(unittest.TestCase):
         contract = self.contract()
         snapshot = self.snapshot()
         result = sf.evaluate_control(contract, self.request(contract, snapshot), snapshot, evaluated_at=NOW)
-        self.assertEqual({"decision": "PASS", "reason_codes": ["ALL_REQUIRED_EVIDENCE_BOUND"]}, result)
+        self.assertEqual(
+            {
+                "decision": "PASS",
+                "reason_codes": ["ALL_REQUIRED_EVIDENCE_BOUND"],
+                "runtime_control_authority": "NONE",
+            },
+            result,
+        )
 
     def test_unknown_required_input_is_not_run(self):
         contract = self.contract()
@@ -132,6 +140,7 @@ class SemanticFirewallV1Tests(unittest.TestCase):
         result = sf.evaluate_control(contract, self.request(contract, snapshot), snapshot, evaluated_at=NOW)
         self.assertEqual("NOT_RUN", result["decision"])
         self.assertIn("INPUT_UNKNOWN", result["reason_codes"])
+        self.assertEqual("NONE", result["runtime_control_authority"])
 
     def test_stale_required_input_is_not_run(self):
         contract = self.contract()
@@ -139,6 +148,7 @@ class SemanticFirewallV1Tests(unittest.TestCase):
         result = sf.evaluate_control(contract, self.request(contract, snapshot), snapshot, evaluated_at=NOW)
         self.assertEqual("NOT_RUN", result["decision"])
         self.assertIn("INPUT_STALE", result["reason_codes"])
+        self.assertEqual("NONE", result["runtime_control_authority"])
 
     def test_wrong_source_type_fails(self):
         contract = self.contract()
@@ -146,6 +156,15 @@ class SemanticFirewallV1Tests(unittest.TestCase):
         result = sf.evaluate_control(contract, self.request(contract, snapshot), snapshot, evaluated_at=NOW)
         self.assertEqual("FAIL", result["decision"])
         self.assertIn("INPUT_SOURCE_TYPE_FORBIDDEN", result["reason_codes"])
+        self.assertEqual("NONE", result["runtime_control_authority"])
+
+    def test_contract_source_whitelist_cannot_create_runtime_authority(self):
+        contract = self.contract()
+        contract["required_inputs"][0]["accepted_source_types"] = ["MODEL_RESPONSE"]
+        snapshot = self.snapshot(source_type="MODEL_RESPONSE")
+        result = sf.evaluate_control(contract, self.request(contract, snapshot), snapshot, evaluated_at=NOW)
+        self.assertEqual("PASS", result["decision"])
+        self.assertEqual("NONE", result["runtime_control_authority"])
 
     def test_future_observation_fails(self):
         contract = self.contract()
@@ -178,11 +197,19 @@ class SemanticFirewallV1Tests(unittest.TestCase):
         self.assertEqual("FAIL", eligibility["decision"])
         self.assertIn("RECEIPT_ISSUER_NOT_TRUSTED", eligibility["reason_codes"])
         self.assertIn("RECEIPT_NOT_PERSISTED_TRUSTED", eligibility["reason_codes"])
+        self.assertEqual("NONE", eligibility["runtime_control_authority"])
 
     def test_trusted_persisted_receipt_with_write_ahead_binding_passes(self):
         receipt = self.trusted_receipt()
         result = sf.evaluate_effect_eligibility(receipt, self.effect_request(receipt), evaluated_at=NOW)
-        self.assertEqual({"decision": "PASS", "reason_codes": ["TRUSTED_EFFECT_RECEIPT_BOUND"]}, result)
+        self.assertEqual(
+            {
+                "decision": "PASS",
+                "reason_codes": ["TRUSTED_EFFECT_RECEIPT_BOUND"],
+                "runtime_control_authority": "NONE",
+            },
+            result,
+        )
 
     def test_operation_digest_mismatch_fails_effect_eligibility(self):
         receipt = self.trusted_receipt()
@@ -218,7 +245,11 @@ class SemanticFirewallV1Tests(unittest.TestCase):
         }
         result = sf.evaluate_post_effect(effect, verification, evaluated_at=NOW)
         self.assertEqual(
-            {"decision": "PASS", "reason_codes": ["AUTHORITATIVE_EFFECT_AND_POSTCONDITIONS_VERIFIED"]},
+            {
+                "decision": "PASS",
+                "reason_codes": ["AUTHORITATIVE_EFFECT_AND_POSTCONDITIONS_VERIFIED"],
+                "runtime_control_authority": "NONE",
+            },
             result,
         )
 
@@ -288,6 +319,21 @@ class SemanticFirewallV1Tests(unittest.TestCase):
         result = sf.evaluate_post_effect(effect, verification, evaluated_at=NOW)
         self.assertEqual("FAIL", result["decision"])
         self.assertIn("READBACK_OBSERVED_IN_FUTURE", result["reason_codes"])
+
+    def test_spec_blocks_activation_without_trusted_evidence_adapter(self):
+        spec = json.loads((ROOT / "contracts/semantic-firewall-v1/spec.json").read_text())
+        trust = spec["evidence_trust_boundary"]
+        self.assertEqual("NOT_IMPLEMENTED", trust["trusted_evidence_adapter_state"])
+        self.assertEqual(
+            "VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION_REQUIRED",
+            trust["runtime_activation_dependency"],
+        )
+        self.assertEqual(
+            "STRUCTURAL_LABELS_ONLY_ZERO_RUNTIME_CONTROL_AUTHORITY",
+            trust["source_metadata_authority"],
+        )
+        self.assertEqual("NONE", trust["model_prose_review_issue_metadata_runtime_control_authority"])
+        self.assertEqual("SOURCE_ONLY_NOT_RUNTIME_AUTHORITY", spec["activation_state"])
 
 
 if __name__ == "__main__":
