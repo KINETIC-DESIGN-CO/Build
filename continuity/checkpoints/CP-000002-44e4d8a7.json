@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-44e4d8a7",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T08:31:19Z",
+  "source_main_sha": "4cdeceec9da3333404fbe0cda9f632a134a5f302",
+  "work_id": "99e1a6ff-f156-40bc-b5d5-dabf0f17ea55",
+  "work_branch": "work/99e1a6ff-f156-40bc-b5d5-dabf0f17ea55",
+  "work_head_sha": "528df24bf9490e6fded3c38a42c607504f9fc49c",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "TRACKED_PR_STATE_CHANGED"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-8d6b0c24.json",
+    "blob_sha": "378cf1211f25ab1b556dd42b32f1931181b515b9"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-30",
+    "evaluated_at": "2026-09-13T08:31:19Z",
+    "evidence_ref": "PR 64 exact-head validation succeeded and Vince corrected Issue 30 to accidental non-work; cleanup remains owned by component:issue_30 generation 1 until integration and release.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "ACCIDENTAL_GITHUB_ISSUE_30_ADMISSION_ON_MAIN",
+      "GITHUB_MAIN_HEAD_STALE_IN_CONTINUITY_CURRENT",
+      "WORK_ADMISSIONS_SOURCE_REPOSITORY_STALE"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T08:31:19Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_30",
+      "lock_branch": "lock/482ca0bdd9d258bb741d61093152448d9475c194da63701f3c0fa754e0b8ba28",
+      "state": "ACTIVE",
+      "work_id": "99e1a6ff-f156-40bc-b5d5-dabf0f17ea55",
+      "lease_id": "7adb933c-cd09-4980-8d2b-7864bb69a3fd",
+      "generation": 1,
+      "expires_at": "2026-09-13T12:01:52Z",
+      "observed_at": "2026-09-13T08:25:09Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "pull_request:64@11f6c6f701e560d6a301ab3f952dc1444a73c4ca",
+      "operation": "PULL_REQUEST_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_WORKFLOW_RUN:34747781026",
+        "GITHUB_JOB:103698771951"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "pull_request:64",
+      "operation": "PULL_REQUEST_OPEN_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_PR:64"
+      ]
+    }
+  ],
+  "directive_refs": [],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:pull_request=64",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:issue_30",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "Validate the final checkpointed PR 64 head; if green and ownership remains active/unexpired, enter required GitHub Merge Queue and verify latest-base merge_group integration.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_PR:64",
+    "GITHUB_WORKFLOW_RUN:34747781026",
+    "CURRENT_THREAD:VINCE_CORRECTION_ISSUE_30_DISREGARD"
+  ]
+}
