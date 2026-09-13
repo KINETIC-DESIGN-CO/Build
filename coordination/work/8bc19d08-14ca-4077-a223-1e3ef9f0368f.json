@@ -11,6 +11,7 @@
   "component_id": "reliability_recovery_contracts",
   "repo_paths": [
     "continuity/checkpoints/CP-000005-83828cb5.json",
+    "continuity/checkpoints/CP-000006-1d2c2ee1.json",
     "reliability/compatibility-map.json",
     "reliability/spec.json"
   ],
