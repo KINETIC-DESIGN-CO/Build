@@ -96,13 +96,13 @@
     }
   ],
   "directive_refs": [
-    "VD-0022",
     "VD-0023",
     "VD-0024",
     "VD-0025",
     "VD-0026",
     "VD-0027",
-    "VD-0028"
+    "VD-0028",
+    "VD-0029"
   ],
   "decision_rationale_refs": [
     "DR-0010"
