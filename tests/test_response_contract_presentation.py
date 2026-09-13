@@ -12,13 +12,13 @@ class ResponseContractPresentationTests(unittest.TestCase):
         self.contract = json.loads((ROOT / "continuity/response-contract.json").read_text())
         self.orientation = self.contract["architecture_thread_orientation"]
 
-    def test_goal_description_uses_separately_bounded_quote_blocks(self):
+    def test_goal_description_is_standalone_and_never_blockquoted(self):
         self.assertEqual(
             self.orientation["start_description_rule"],
-            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_QUOTE_BLOCK_WITH_SENTENCE_COUNT_IN:1,2",
+            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_STANDALONE_TEXT_PARAGRAPH_WITHOUT_MARKDOWN_BLOCKQUOTE_WITH_SENTENCE_COUNT_IN:1,2",
         )
-        self.assertIn("SEPARATELY_BOUNDED_QUOTE_BLOCK", self.orientation["child_rule"])
-        self.assertIn("QUOTE_BLOCK_CONTAINS_ONLY_GOAL_DESCRIPTION", self.orientation["description_boundary_rule"])
+        self.assertIn("WITHOUT_MARKDOWN_BLOCKQUOTE", self.orientation["child_rule"])
+        self.assertNotIn("QUOTE_BLOCK", self.orientation["start_description_rule"])
 
     def test_required_regions_are_closed_and_compositional(self):
         self.assertEqual(
@@ -89,7 +89,7 @@ class ResponseContractPresentationTests(unittest.TestCase):
             "SOURCE_OWNERSHIP_ALONE_CANNOT_ASSERT_CONTINUOUS_BACKGROUND_EXECUTION",
             self.orientation["execution_state_rule"],
         )
-        self.assertTrue(self.contract["current_job_rule"].startswith("NEXT_STEP_STATES_THE_EXACT_WORK_THIS_THREAD_OWNS_AND_WILL_EXECUTE"))
+        self.assertIn("THIS_THREAD_OWNS_SELECTED_EXECUTABLE_WORK", self.contract["current_job_rule"])
 
     def test_pre_close_review_and_suggestion_are_exact(self):
         self.assertEqual(
@@ -116,7 +116,7 @@ class ResponseContractPresentationTests(unittest.TestCase):
     def test_ending_stays_compact(self):
         self.assertEqual(
             self.orientation["end_rule"],
-            "IMMEDIATELY_BEFORE_NEXT_STEP_RENDER_ACTIVE_ROOT_GOAL_TITLE_ONLY_WITHOUT_DESCRIPTION",
+            "IMMEDIATELY_BEFORE_ENDING_ACTION_CARD_RENDER_ACTIVE_ROOT_GOAL_TITLE_ONLY_WITHOUT_DESCRIPTION_OR_REPEATED_TRACKED_WORK_TABLE_UNLESS_USER_EXPLICITLY_REQUESTS_FINAL_AUDIT",
         )
 
 
