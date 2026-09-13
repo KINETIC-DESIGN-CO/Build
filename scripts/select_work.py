@@ -13,7 +13,7 @@ ADMISSIONS_SCHEMA_PATH = ROOT / "governance/schema/work-admissions.schema.json"
 EVENTS_PATH = ROOT / "continuity/events.jsonl"
 CURRENT_PATH = ROOT / "continuity/current.json"
 
-POLICY_KEYS = {"schema_version","policy_id","runtime_control_authority","engineering_work_selection_authority","continuity_barrier_resource_key","worker_lanes","rank_semantics","priority_order","preemption_rule","same_or_lower_priority_rule","novelty_rule","continuity_sync","interruption","foreground_blocker_rule","parallel_admission","parallel_rule","fresh_thread_dispatch","evidence_contract"}
+POLICY_KEYS = {"schema_version","policy_id","runtime_control_authority","engineering_work_selection_authority","continuity_barrier_resource_key","worker_lanes","rank_semantics","priority_order","preemption_rule","same_or_lower_priority_rule","novelty_rule","continuity_sync","interruption","foreground_blocker_rule","parallel_admission","parallel_rule","fresh_thread_dispatch","terminal_redispatch","evidence_contract"}
 PRIORITY = [
     {"rank":0,"condition_id":"CONTINUITY_SYNC_BLOCKS_OPERATION","selected_work":"CONTINUITY_SYNC"},
     {"rank":1,"condition_id":"INTERRUPTED_OPERATION_UNRESOLVED","selected_work":"RESUME_INTERRUPTED_OPERATION"},
@@ -39,6 +39,16 @@ PARALLEL_ADMISSION = {
 }
 FRESH = {
     "mode":"LIVE_LOCK_DERIVED","worker_lane_input_rule":"FRESH_THREAD_WORKER_LANE_MUST_BE_DERIVED_NOT_CALLER_ASSIGNED","snapshot_required_resource_rule":"REQUIRE_CONTINUITY_SYNC_CURRENT_COMPONENT_AND_EVERY_ADMITTED_COMPONENT_RESOURCE_KEY","lane_rule":"IF_CURRENT_STATUS_IN:ACTIVE,BLOCKED_AND_CONTINUITY_SYNC_AND_CURRENT_COMPONENT_CLAIMS_ARE_NOT_ACTIVE_UNEXPIRED_SELECT_FOREGROUND_ELSE_SELECT_PARALLEL_ASSIGNED","foreground_selection_rule":"BLOCKED_WITH_OPEN_BLOCKER_IDS_SELECT_RANK_2_ELSE_CURRENT_NEXT_ACTION_PRESENT_SELECT_RANK_3_ELSE_NO_ELIGIBLE_WORK","parallel_selection_rule":"SELECT_FIRST_DISPATCHABLE_ADMITTED_ITEM_BY_TIE_BREAK_WHOSE_COMPONENT_CLAIM_IS_NOT_ACTIVE_UNEXPIRED","race_rule":"AFTER_PARALLEL_SELECTION_ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP;ON_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH","resource_rule":"SELECTED_WORK_MAY_MUTATE_ONLY_AFTER_EVERY_EXACT_REQUIRED_RESOURCE_CLAIM_IS_ACTIVE_UNEXPIRED_FOR_ITS_WORK_ID","continuity_rule":"ACTIVE_UNEXPIRED_CONTINUITY_SYNC_MAKES_A_FRESH_THREAD_PARALLEL_ASSIGNED_AND_DOES_NOT_BLOCK_DISJOINT_COMPONENT_SELECTION","missing_lock_rule":"DETERMINISTIC_LOCK_BRANCH_ABSENCE_MEANS_RESOURCE_UNCLAIMED_FOR_DISPATCH_ONLY"
+}
+TERMINAL_REDISPATCH = {
+    "trigger":"SELECTED_WORK_TERMINAL_AND_REQUIRED_COMPLETION_CLEANUP_VERIFIED",
+    "same_thread_action":"RERUN_LIVE_FRESH_THREAD_DISPATCH_WITHOUT_USER_PROMPT",
+    "issue_review_rule":"RUN_PLACEMENT_POLICY_OPEN_ISSUE_REVIEW_BEFORE_EACH_NEW_MUTABLE_WORK_ITEM",
+    "selection_rule":"WHEN_RANK_0_TO_3_INACTIVE_SELECT_FIRST_DISPATCHABLE_ADMITTED_ITEM_BY_TIE_BREAK_WHOSE_COMPONENT_CLAIM_IS_NOT_ACTIVE_UNEXPIRED",
+    "claim_rule":"ACQUIRE_SELECTED_COMPONENT_CLAIM_BY_COMPARE_AND_SWAP_BEFORE_MUTATION",
+    "race_rule":"ON_CLAIM_COMPARE_AND_SWAP_CONFLICT_REREAD_LIVE_LOCK_AND_REDISPATCH_WITHOUT_USER_PROMPT",
+    "repeat_rule":"AFTER_EACH_TERMINAL_WORK_ITEM_REPEAT_TERMINAL_REDISPATCH",
+    "stop_states":["NO_ELIGIBLE_WORK","REQUIRED_LIVE_READ_NOT_RUN","UNSUPPORTED_OR_UNAUTHORIZED_OPERATION"],
 }
 EVIDENCE_FIELDS = ["worker_lane","pending_continuity_event_ids","canonical_live_mismatch_ids","continuity_sync_claim_state","continuity_resource_intersection","interrupted_operation_state","current_status","open_blocker_ids","current_next_action_id","parallel_request_state","parallel_work_item_id","parallel_resource_intersection","selected_rank_before","selected_work_terminal"]
 ENUMS = {
@@ -127,7 +137,7 @@ def validate_policy(p,schema,a,aschema):
         low=text.lower().replace("_"," ")
         for token in PROHIBITED:
             if (token in low if token=="as needed" else re.search(rf"\b{re.escape(token)}\b",low)): fail(f"qualitative gate token forbidden in policy: {token!r}")
-    exact={"schema_version":3,"policy_id":"life-engineering-work-selection-v3","runtime_control_authority":"NONE","engineering_work_selection_authority":"DETERMINISTIC_EVALUATION_ONLY","continuity_barrier_resource_key":"continuity:sync","worker_lanes":["FOREGROUND","PARALLEL_ASSIGNED"],"rank_semantics":"LOWER_NUMERIC_RANK_HAS_HIGHER_PRECEDENCE","priority_order":PRIORITY,"preemption_rule":"ONLY_STRICTLY_LOWER_NUMERIC_RANK_MAY_PREEMPT_A_NONTERMINAL_SELECTED_WORK","same_or_lower_priority_rule":"KEEP_NONTERMINAL_SELECTED_WORK_AND_RECORD_OR_QUEUE_NEW_EVIDENCE","novelty_rule":"NEWLY_OBSERVED_WORK_OR_EVENT_HAS_ZERO_PREEMPTION_EFFECT_UNLESS_EXACT_EVIDENCE_ACTIVATES_A_STRICTLY_LOWER_NUMERIC_RANK","interruption":INTERRUPTION,"foreground_blocker_rule":FOREGROUND_BLOCKER_RULE,"parallel_admission":PARALLEL_ADMISSION,"parallel_rule":PARALLEL_RULE,"fresh_thread_dispatch":FRESH}
+    exact={"schema_version":4,"policy_id":"life-engineering-work-selection-v4","runtime_control_authority":"NONE","engineering_work_selection_authority":"DETERMINISTIC_EVALUATION_ONLY","continuity_barrier_resource_key":"continuity:sync","worker_lanes":["FOREGROUND","PARALLEL_ASSIGNED"],"rank_semantics":"LOWER_NUMERIC_RANK_HAS_HIGHER_PRECEDENCE","priority_order":PRIORITY,"preemption_rule":"ONLY_STRICTLY_LOWER_NUMERIC_RANK_MAY_PREEMPT_A_NONTERMINAL_SELECTED_WORK","same_or_lower_priority_rule":"KEEP_NONTERMINAL_SELECTED_WORK_AND_RECORD_OR_QUEUE_NEW_EVIDENCE","novelty_rule":"NEWLY_OBSERVED_WORK_OR_EVENT_HAS_ZERO_PREEMPTION_EFFECT_UNLESS_EXACT_EVIDENCE_ACTIVATES_A_STRICTLY_LOWER_NUMERIC_RANK","interruption":INTERRUPTION,"foreground_blocker_rule":FOREGROUND_BLOCKER_RULE,"parallel_admission":PARALLEL_ADMISSION,"parallel_rule":PARALLEL_RULE,"fresh_thread_dispatch":FRESH,"terminal_redispatch":TERMINAL_REDISPATCH}
     for k,v in exact.items():
         if p.get(k)!=v: fail(f"policy.{k} mismatch")
     sync=p["continuity_sync"]
