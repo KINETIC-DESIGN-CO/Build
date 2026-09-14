@@ -18,6 +18,7 @@
     "contracts/semantic-firewall-v1/control-contract.schema.json",
     "contracts/semantic-firewall-v1/control-receipt.schema.json",
     "contracts/semantic-firewall-v1/control-request.schema.json",
+    "contracts/semantic-firewall-v1/input-snapshot.schema.json",
     "contracts/semantic-firewall-v1/predicate-registry.json",
     "contracts/semantic-firewall-v1/predicate-registry.schema.json",
     "contracts/semantic-firewall-v1/spec.json",
