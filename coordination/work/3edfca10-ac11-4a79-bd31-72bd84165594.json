@@ -10,6 +10,7 @@
   "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
   "component_id": "goal_lifecycle_identity",
   "repo_paths": [
+    "continuity/checkpoints/CP-000004-9a2d60d0.json",
     "tests/test_thread_lifecycle.py",
     "tests/test_work_selection.py"
   ],
