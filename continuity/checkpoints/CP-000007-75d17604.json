@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000007-75d17604",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-14T09:04:07Z",
+  "source_main_sha": "47cb69f9032a5ca02ebabe5934bc0d672090d0f1",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "fd4d8b5e0e50421f917ce08aab0ae8f4eaceda0e",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000006-4c95292a.json",
+    "blob_sha": "e8c4b25f5cc9ddacdabe789abcc02790d5fcb136"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-14T09:04:07Z",
+    "evidence_ref": "governance/work-admissions.json:github-issue-57=ADMITTED; dependency github-issue-15=COMPLETE; live component:issue_57 generation 4 ACTIVE under this exact durable work_id with schema-v2 COMPONENT_1800 lease; root goal remains separately owned and parallel work has zero effect on root identity.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_STALE_VS_LIVE_MAIN_47CB69F",
+      "CURRENT_JSON_ROOT_COMPLETION_SNAPSHOT_STALE_AFTER_PR_89"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-14T09:04:07Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-14T09:04:07Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "decde849-aebc-4557-8b3b-daa811a6c580",
+      "generation": 4,
+      "expires_at": "2026-09-14T09:32:45Z",
+      "observed_at": "2026-09-14T09:04:07Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:85:Harden Semantic Firewall trusted evidence provenance boundary",
+      "operation": "VERIFY_PROTECTED_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:PR85:merged=true",
+        "github:main:f5403136ab8e9cb95bda0b60a7b88fff37fe0a3d"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "operation": "TAKEOVER_EXPIRED_LEGACY_COMPONENT_LEASE_TO_V4_SCHEMA",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "generation=4",
+        "lease_id=decde849-aebc-4557-8b3b-daa811a6c580",
+        "lease_contract=COMPONENT_1800",
+        "lease_event_type=TAKEOVER"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/4264779b-70c5-4381-b619-f2c3204dc4f3.json",
+      "operation": "MIGRATE_WORK_RECORD_TO_SCHEMA_V2",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "schema_version=2",
+        "claim_generation=4",
+        "pending_external_effect_state=NONE"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "operation": "RECONCILE_BRANCH_WITH_MAIN_AFTER_PR_89",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:merge_commit=fd4d8b5e0e50421f917ce08aab0ae8f4eaceda0e",
+        "github:compare:behind_by=0",
+        "github:compare:base=47cb69f9032a5ca02ebabe5934bc0d672090d0f1"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "READ_CANONICAL_INVOCATION_RUNTIME_SURFACE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "project_status=ACTIVE_HEALTHY",
+        "edge_function_count=0",
+        "database_function_life.invoke=absent",
+        "database_function_life.record_invocation_v1=present",
+        "canonical_invocation=NOT_RUN"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0002",
+    "VD-0011"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "ACADEMIC",
+      "title": "Stored Is Not Supported: Typed Provenance and Assertion Guardrails for Persistent AI Agents",
+      "url": "https://arxiv.org/abs/2609.02127",
+      "observed_date": "2026-09-14",
+      "supported_claim": "Typed storage or retrieval does not upgrade evidentiary standing; provenance and accepted-evidence rules must remain explicit, supporting the prohibition on typed provenance laundering in control predicates."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "Safety Testing LLM Agents at Scale: From Risk Discovery to Evidence-Grounded Verification",
+      "url": "https://arxiv.org/abs/2607.01793",
+      "observed_date": "2026-09-14",
+      "supported_claim": "Agent safety cases can use programmatically constructed state and deterministic verification predicates grounded in observable artifacts rather than model self-report."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "From Agent Traces to Trust: Evidence Tracing and Execution Provenance in LLM Agents",
+      "url": "https://arxiv.org/abs/2606.04990",
+      "observed_date": "2026-09-14",
+      "supported_claim": "Execution provenance and evidence lineage are necessary to audit how tool actions are justified, supporting explicit provenance binding for predicate inputs."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Introducing the Agents API",
+      "url": "https://openai.com/index/introducing-the-agents-api/",
+      "observed_date": "2026-09-14",
+      "supported_claim": "OpenAI now provides a managed agent harness with long sessions, tools, and subagents, but that execution harness does not replace Life's deterministic control predicate and evidence boundaries."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=47cb69f9032a5ca02ebabe5934bc0d672090d0f1",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "IMPLEMENT ISSUE #57 PREDICATE-LEVEL DETERMINISM ON THE EXISTING WORK BRANCH: ADD A CANONICAL CLOSED PREDICATE-DEFINITION SURFACE, BIND CONTROL CONTRACTS TO IT, EVALUATE IT FAIL-CLOSED WITH PREDICATE_DEFINITION_MISSING FOR UNDEFINED CONTROL PREDICATES, ENFORCE INPUT PROVENANCE NON-LAUNDERING, AND ADD ADVERSARIAL/POSITIVE FALSIFICATION BEFORE OPENING THE NEXT SEMANTIC FIREWALL PR.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoints/CP-000006-4c95292a.json",
+    "GITHUB_ISSUE:57:Migrate legacy Semantic Firewall and make the work deterministically dispatchable",
+    "GITHUB_PR:85:Harden Semantic Firewall trusted evidence provenance boundary",
+    "GITHUB_PR:89:Finalize stale-worker fencing and terminal handoff presentation",
+    "GITHUB_MAIN:47cb69f9032a5ca02ebabe5934bc0d672090d0f1",
+    "governance/goal-registry.json:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "continuity/current.json:A-0014:Terminal Redispatch & Issue Lifecycle Closure",
+    "contracts/semantic-firewall-v1/conformance-profile.json",
+    "contracts/semantic-firewall-v1/rule-registry.json",
+    "governance/work-fence-policy.json"
+  ]
+}
