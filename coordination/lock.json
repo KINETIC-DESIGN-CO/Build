@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "component:issue_57",
-  "generation": 2,
+  "generation": 3,
   "state": "ACTIVE",
   "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "e9361d13-3396-4b8e-b3d4-4a1cfbd38975"
+    "session_id": "edfc29a8-6113-4f2e-a4c0-fe37751e4ab5"
   },
   "implementation_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
-  "lease_id": "9dc6091c-ef67-4eac-b391-129db073735c",
-  "base_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
-  "acquired_at": "2026-09-14T00:22:52Z",
-  "heartbeat_at": "2026-09-14T00:22:52Z",
-  "expires_at": "2026-09-14T04:22:52Z",
+  "lease_id": "d76ac25a-570b-4103-8cf2-498ba2b4e7ce",
+  "base_sha": "dd9ad05a536b2a114556ece2c8af2cfe5c4a993f",
+  "acquired_at": "2026-09-14T08:18:10Z",
+  "heartbeat_at": "2026-09-14T08:18:10Z",
+  "expires_at": "2026-09-14T12:18:10Z",
   "runtime_control_authority": "NONE"
 }
