@@ -14,7 +14,7 @@
     "continuity/response-contract.json",
     "continuity/schema/response-contract.schema.json",
     "governance/live-audit-policy.json",
-    "governance/policies/research-policy.json",
+    "governance/research-policy.json",
     "governance/schema/live-audit-policy.schema.json",
     "governance/schema/research-policy.schema.json",
     "scripts/evaluate_live_audit.py",
