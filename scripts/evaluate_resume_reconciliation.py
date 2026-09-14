@@ -5,7 +5,7 @@ import argparse
 import json
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,6 +42,10 @@ WORK_KEYS = {
     "work_id", "implementation_branch", "worker_session_id", "goal_id",
     "planned_goal_revision", "pending_external_effect_state", "claims",
 }
+V4_LEGACY_COMPONENT_EXPIRY_RULE = (
+    "AFTER_V4_MAIN_INTEGRATION_LEGACY_V1_COMPONENT_EFFECTIVE_EXPIRY_IS_MIN_STORED_EXPIRES_AT_"
+    "AND_HEARTBEAT_PLUS_WORK_FENCE_COMPONENT_STALE_AFTER_SECONDS"
+)
 
 
 class ResumeError(RuntimeError):
@@ -145,11 +149,15 @@ def validate_policy(policy: object, fence_policy: dict | None = None) -> None:
         fail("policy.procedure_steps must contain exactly nine unique steps")
     if not isinstance(policy["rules"], list) or len(policy["rules"]) < 15 or len(policy["rules"]) != len(set(policy["rules"])):
         fail("policy.rules invalid")
+    if V4_LEGACY_COMPONENT_EXPIRY_RULE not in policy["rules"]:
+        fail("resume policy missing v4 legacy component effective-expiry rule")
     if set(policy["control_decision_kinds"]) != CONTROL_DECISION_KINDS:
         fail("policy.control_decision_kinds mismatch")
     fence_policy = fence_policy or load_json(FENCE_POLICY_PATH)
     if fence_policy.get("canonical_selector_entrypoint") != "scripts/select_work.py":
         fail("work fence canonical selector mismatch")
+    if fence_policy.get("component_stale_after_seconds") != 1800:
+        fail("resume/fence component stale duration mismatch")
     if set(fence_policy.get("external_effect_unresolved_states", [])) != UNRESOLVED_EFFECT_STATES:
         fail("resume/fence unresolved external effect states mismatch")
     if fence_policy.get("goal_revision_mismatch_result") != "REPLAN_REQUIRED":
@@ -200,9 +208,11 @@ def validate_thread_claim(claim: object) -> dict:
 
 
 def validate_live_claim(claim: object) -> dict:
-    required = {"resource_key", "state", "work_id", "lease_id", "generation", "expires_at"}
+    required = {"schema_version", "resource_key", "state", "work_id", "lease_id", "generation", "heartbeat_at", "expires_at"}
     if not isinstance(claim, dict) or set(claim) != required:
         fail("live claim keys mismatch")
+    if claim["schema_version"] not in {1, 2}:
+        fail("live claim schema_version invalid")
     if not isinstance(claim["resource_key"], str) or RESOURCE_RE.fullmatch(claim["resource_key"]) is None:
         fail("live claim resource_key invalid")
     if claim["state"] not in {"ACTIVE", "RELEASED"}:
@@ -211,8 +221,28 @@ def validate_live_claim(claim: object) -> dict:
     validate_uuid(claim["lease_id"], "live claim lease_id")
     if not isinstance(claim["generation"], int) or isinstance(claim["generation"], bool) or claim["generation"] < 1:
         fail("live claim generation invalid")
-    parse_utc(claim["expires_at"])
+    heartbeat = parse_utc(claim["heartbeat_at"])
+    expires = parse_utc(claim["expires_at"])
+    if heartbeat >= expires:
+        fail("live claim heartbeat must precede expires_at")
     return claim
+
+
+def effective_live_claim_expiry(claim: dict, fence_policy: dict | None = None) -> datetime:
+    validate_live_claim(claim)
+    stored = parse_utc(claim["expires_at"])
+    if not claim["resource_key"].startswith("component:"):
+        return stored
+    fence_policy = fence_policy or load_json(FENCE_POLICY_PATH)
+    stale_seconds = fence_policy.get("component_stale_after_seconds")
+    if not isinstance(stale_seconds, int) or isinstance(stale_seconds, bool) or stale_seconds <= 0:
+        fail("work fence component_stale_after_seconds invalid")
+    heartbeat = parse_utc(claim["heartbeat_at"])
+    if claim["schema_version"] == 1:
+        return min(stored, heartbeat + timedelta(seconds=stale_seconds))
+    if int((stored - heartbeat).total_seconds()) != stale_seconds:
+        fail("schema v2 component claim duration mismatch")
+    return stored
 
 
 def validate_work(value: object, *, live: bool) -> dict | None:
@@ -336,7 +366,7 @@ def work_relation(evidence: dict) -> str:
         live_claim = live_by_resource[resource_key]
         if claim_identity(thread_claim) != claim_identity(live_claim):
             return "DIFFERENT_WORK_STATE"
-        if live_claim["state"] != "ACTIVE" or observed_at >= parse_utc(live_claim["expires_at"]):
+        if live_claim["state"] != "ACTIVE" or observed_at >= effective_live_claim_expiry(live_claim):
             inactive = True
     return "SAME_WORK_CLAIMS_INACTIVE" if inactive else "SAME_WORK_ACTIVE"
 
