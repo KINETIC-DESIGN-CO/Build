@@ -10,67 +10,33 @@
   "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
   "component_id": "goal_lifecycle_identity",
   "repo_paths": [
-    ".github/workflows/continuity.yml",
-    "continuity/bootstrap.json",
-    "continuity/checkpoints/CP-000002-a0a938d8.json",
-    "continuity/checkpoints/CP-000003-6f4c2a91.json",
-    "continuity/response-contract.json",
-    "continuity/schema/bootstrap.schema.json",
-    "continuity/schema/response-contract.schema.json",
-    "contracts/semantic-firewall-v1/rule-registry.json",
-    "coordination/protocol.json",
-    "coordination/schema/lock.schema.json",
-    "coordination/schema/work-record.schema.json",
-    "governance/goal-registry.json",
-    "governance/resume-reconciliation-policy.json",
-    "governance/schema/goal-registry.schema.json",
-    "governance/schema/work-fence-policy.schema.json",
-    "governance/work-fence-policy.json",
-    "scripts/evaluate_resume_reconciliation.py",
-    "scripts/evaluate_selected_operation_execution.py",
-    "scripts/evaluate_work_fence.py",
-    "scripts/select_work.py",
-    "scripts/select_work_legacy.py",
-    "scripts/validate_coordination.py",
-    "scripts/validate_goal_graph.py",
-    "scripts/validate_lock_history.py",
-    "scripts/validate_watchdog.py",
-    "tests/test_continuity.py",
-    "tests/test_goal_revision.py",
-    "tests/test_problem_intake_policy.py",
-    "tests/test_response_contract_presentation.py",
-    "tests/test_resume_reconciliation.py",
-    "tests/test_selected_operation_execution.py",
-    "tests/test_thread_lifecycle.py",
-    "tests/test_watchdog.py",
-    "tests/test_work_fence.py",
-    "tests/test_work_fence_lock_migration.py"
+    "tests/test_work_selection.py"
   ],
   "external_targets": [],
   "claims": [
     {
       "resource_key": "component:auto_issue_dispatch",
       "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
-      "lease_id": "f22d842b-056d-4d63-8a47-fe569719fd04",
-      "generation": 3
+      "lease_id": "bf5c121f-5265-4d9a-8790-2870b658b787",
+      "generation": 4
     },
     {
       "resource_key": "component:goal_lifecycle_identity",
       "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
-      "lease_id": "f0d73907-af83-412b-842e-6340254c38e2",
-      "generation": 3
+      "lease_id": "70eccc39-af95-4bd6-8edd-adef1e67a2de",
+      "generation": 4
     },
     {
       "resource_key": "component:multi_thread_coordination_hardening",
       "lock_branch": "lock/59cb0115181bd2c23a385594018248f94c140e7c29c394c3def5d23c0dfa90d8",
-      "lease_id": "81e1588f-58ec-40cf-b7d8-27249cbf74ab",
-      "generation": 5
+      "lease_id": "022cc061-7a8e-40eb-819e-2df512861050",
+      "generation": 6
     },
     {
       "resource_key": "component:watchdog",
       "lock_branch": "lock/26555f0ea7b1ec2ba6331615932a7abdf07f13a82a2418eb25b5194e83e4ca83",
-      "lease_id": "cf3d504f-1a5c-41f3-abf6-5d23f5bdd333",
-      "generation": 2
+      "lease_id": "f240fd4c-ae50-48ed-aa66-66b33f194040",
+      "generation": 3
     }
   ],
   "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
