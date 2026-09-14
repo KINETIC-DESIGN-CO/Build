@@ -3,7 +3,7 @@
   "title": "Life Semantic Firewall v1 Control Contract",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "contract_id", "decision_kind", "subject_type", "subject_id", "action", "scope_type", "scope_id", "required_inputs"],
+  "required": ["schema_version", "contract_id", "decision_kind", "subject_type", "subject_id", "action", "scope_type", "scope_id", "predicate_id", "required_inputs"],
   "properties": {
     "schema_version": {"type": "integer", "const": 1},
     "contract_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
@@ -13,6 +13,7 @@
     "action": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
     "scope_type": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
     "scope_id": {"type": "string", "minLength": 1},
+    "predicate_id": {"type": "string", "pattern": "^SF-PRED-[A-Z0-9][A-Z0-9_-]*$"},
     "required_inputs": {
       "type": "array", "minItems": 1, "uniqueItems": true,
       "items": {
