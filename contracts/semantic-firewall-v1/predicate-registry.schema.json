@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Semantic Firewall v1 Predicate Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registry_id", "runtime_control_authority", "registry_authority", "unsafe_input_source_classes", "runtime_predicates", "surface_predicate_bindings"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "registry_id": {"type": "string", "const": "life-semantic-firewall-predicate-registry-v1"},
+    "runtime_control_authority": {"type": "string", "const": "NONE"},
+    "registry_authority": {"type": "string", "const": "SOURCE_VALIDATION_ONLY"},
+    "unsafe_input_source_classes": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+    },
+    "runtime_predicates": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["predicate_id", "definition_kind", "decision_kinds", "required_inputs", "expression", "evaluator_ref", "evaluator_config_json", "runtime_control_authority"],
+        "properties": {
+          "predicate_id": {"type": "string", "pattern": "^SF-PRED-[A-Z0-9][A-Z0-9_-]*$"},
+          "definition_kind": {"type": "string", "enum": ["EXPRESSION", "EVALUATOR_REF"]},
+          "decision_kinds": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"type": "string", "enum": ["AUTHORIZATION", "ROUTING", "PRIORITY", "STATE_TRANSITION", "COMPLETION", "VERIFICATION", "ESCALATION", "RELEASE", "MUTATION", "EFFECT_EXECUTION"]}
+          },
+          "required_inputs": {
+            "type": "array", "minItems": 1,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["name", "value_type", "semantic_type", "source_classes", "unit", "allowed_values", "derivation_predicate_id"],
+              "properties": {
+                "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+                "value_type": {"type": "string", "enum": ["STRING", "INTEGER", "BOOLEAN", "STRING_SET", "SHA256", "OBJECT"]},
+                "semantic_type": {"type": "string", "enum": ["CLOSED_ENUM", "EXACT_ID", "INTEGER_WITH_UNIT", "TIMESTAMP_RFC3339", "STRING_SET", "SHA256", "VERSION_STRING", "DETERMINISTIC_DERIVATION"]},
+                "source_classes": {
+                  "type": "array", "minItems": 1, "uniqueItems": true,
+                  "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+                },
+                "unit": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]*$"},
+                "allowed_values": {
+                  "type": ["array", "null"], "uniqueItems": true,
+                  "items": {"type": ["string", "integer"]}
+                },
+                "derivation_predicate_id": {"type": ["string", "null"], "pattern": "^SF-PRED-[A-Z0-9][A-Z0-9_-]*$"}
+              }
+            }
+          },
+          "expression": {
+            "type": ["object", "null"], "additionalProperties": false,
+            "required": ["operator", "left_input", "right_value_type", "right_value_json", "unit"],
+            "properties": {
+              "operator": {"type": "string", "enum": ["EQ", "INTEGER_GTE", "TIMESTAMP_GTE", "SET_CONTAINS_ALL"]},
+              "left_input": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+              "right_value_type": {"type": "string", "enum": ["STRING", "INTEGER", "STRING_SET", "SHA256"]},
+              "right_value_json": {"type": "string", "minLength": 1},
+              "unit": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]*$"}
+            }
+          },
+          "evaluator_ref": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]*_V[0-9]+$"},
+          "evaluator_config_json": {"type": ["string", "null"]},
+          "runtime_control_authority": {"type": "string", "const": "NONE"}
+        }
+      }
+    },
+    "surface_predicate_bindings": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "affected_control_decision_kinds", "closure_mode", "evaluator_paths", "permitted_input_source_classes", "undefined_predicate_result", "runtime_control_authority"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "affected_control_decision_kinds": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"type": "string", "enum": ["AUTHORIZATION", "ROUTING", "PRIORITY", "STATE_TRANSITION", "COMPLETION", "VERIFICATION", "ESCALATION", "RELEASE", "MUTATION", "EFFECT_EXECUTION"]}
+          },
+          "closure_mode": {"type": "string", "enum": ["CANONICAL_EVALUATOR_REF", "SOURCE_ONLY_INACTIVE"]},
+          "evaluator_paths": {
+            "type": "array", "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "permitted_input_source_classes": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+          },
+          "undefined_predicate_result": {"type": "string", "const": "PREDICATE_DEFINITION_MISSING"},
+          "runtime_control_authority": {"type": "string", "const": "NONE"}
+        }
+      }
+    }
+  }
+}

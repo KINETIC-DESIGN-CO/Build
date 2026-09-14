@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "registry_id": "life-semantic-firewall-predicate-registry-v1",
+  "runtime_control_authority": "NONE",
+  "registry_authority": "SOURCE_VALIDATION_ONLY",
+  "unsafe_input_source_classes": [
+    "MODEL_RESPONSE",
+    "PROSE",
+    "GITHUB_ISSUE",
+    "GITHUB_PR",
+    "REVIEW",
+    "LABEL",
+    "SEMANTIC_SIMILARITY",
+    "DERIVED_SUMMARY",
+    "INFERRED"
+  ],
+  "runtime_predicates": [
+    {
+      "predicate_id": "SF-PRED-EFFECT-AUTHORIZATION-STATE-AUTHORIZED-V1",
+      "definition_kind": "EXPRESSION",
+      "decision_kinds": ["EFFECT_EXECUTION"],
+      "required_inputs": [
+        {
+          "name": "authorization_state",
+          "value_type": "STRING",
+          "semantic_type": "CLOSED_ENUM",
+          "source_classes": ["LIVE_GITHUB"],
+          "unit": null,
+          "allowed_values": ["AUTHORIZED"],
+          "derivation_predicate_id": null
+        }
+      ],
+      "expression": {
+        "operator": "EQ",
+        "left_input": "authorization_state",
+        "right_value_type": "STRING",
+        "right_value_json": "\"AUTHORIZED\"",
+        "unit": null
+      },
+      "evaluator_ref": null,
+      "evaluator_config_json": null,
+      "runtime_control_authority": "NONE"
+    }
+  ],
+  "surface_predicate_bindings": [
+    {
+      "path": "continuity/bootstrap.json",
+      "affected_control_decision_kinds": ["ROUTING", "PRIORITY", "MUTATION", "VERIFICATION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_continuity.py", ".github/workflows/continuity.yml"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "LIVE_SUPABASE", "LIVE_VERCEL", "VINCE_DIRECTIVE"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "continuity/checkpoint-policy.json",
+      "affected_control_decision_kinds": ["RELEASE"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["continuity/tools/validate_checkpoints.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "LIVE_SUPABASE", "LIVE_VERCEL", "VINCE_DIRECTIVE", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/placement-policy.json",
+      "affected_control_decision_kinds": ["ROUTING", "MUTATION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_continuity.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "VINCE_DIRECTIVE", "LIVE_GITHUB"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/goal-policy.json",
+      "affected_control_decision_kinds": ["ROUTING", "PRIORITY", "STATE_TRANSITION", "COMPLETION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_goal_graph.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "VINCE_DIRECTIVE"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/thread-lifecycle-policy.json",
+      "affected_control_decision_kinds": ["ROUTING", "PRIORITY", "COMPLETION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/evaluate_thread_lifecycle.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/work-selection-policy.json",
+      "affected_control_decision_kinds": ["ROUTING", "PRIORITY", "MUTATION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/select_work.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "VINCE_DIRECTIVE"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/work-fence-policy.json",
+      "affected_control_decision_kinds": ["AUTHORIZATION", "ROUTING", "PRIORITY", "MUTATION", "EFFECT_EXECUTION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/evaluate_work_fence.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/issue-lifecycle-policy.json",
+      "affected_control_decision_kinds": ["STATE_TRANSITION", "COMPLETION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_issue_lifecycle.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/root-cause-repair-policy.json",
+      "affected_control_decision_kinds": ["STATE_TRANSITION", "COMPLETION", "VERIFICATION", "MUTATION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_root_cause_repair.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "LIVE_SUPABASE", "LIVE_VERCEL", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/problem-intake-policy.json",
+      "affected_control_decision_kinds": ["ROUTING", "PRIORITY", "STATE_TRANSITION", "COMPLETION"],
+      "closure_mode": "SOURCE_ONLY_INACTIVE",
+      "evaluator_paths": [],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "LIVE_SUPABASE", "LIVE_VERCEL", "VINCE_DIRECTIVE", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "governance/issue-consolidation-policy.json",
+      "affected_control_decision_kinds": ["ROUTING", "PRIORITY"],
+      "closure_mode": "SOURCE_ONLY_INACTIVE",
+      "evaluator_paths": ["scripts/validate_issue_consolidation.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "reliability/spec.json",
+      "affected_control_decision_kinds": ["VERIFICATION", "ESCALATION", "MUTATION", "EFFECT_EXECUTION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_reliability.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "LIVE_SUPABASE", "LIVE_VERCEL", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "reliability/invariants.json",
+      "affected_control_decision_kinds": ["VERIFICATION", "EFFECT_EXECUTION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_reliability.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "reliability/operation-catalog.json",
+      "affected_control_decision_kinds": ["MUTATION", "EFFECT_EXECUTION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_reliability.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "reliability/postconditions.json",
+      "affected_control_decision_kinds": ["VERIFICATION", "COMPLETION", "EFFECT_EXECUTION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_reliability.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "reliability/recovery-policy.json",
+      "affected_control_decision_kinds": ["ESCALATION", "MUTATION", "EFFECT_EXECUTION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_reliability.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "coordination/protocol.json",
+      "affected_control_decision_kinds": ["AUTHORIZATION", "MUTATION", "RELEASE"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_coordination.py", "scripts/validate_relevant_lock_history.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "watchdog/spec.json",
+      "affected_control_decision_kinds": ["VERIFICATION", "ESCALATION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/validate_watchdog.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "LIVE_SUPABASE", "LIVE_VERCEL", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "contracts/life.invoke.contract.json",
+      "affected_control_decision_kinds": ["AUTHORIZATION", "EFFECT_EXECUTION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["tests/test_life_invoke_contract.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    },
+    {
+      "path": "contracts/semantic-firewall-v1/spec.json",
+      "affected_control_decision_kinds": ["AUTHORIZATION", "ROUTING", "PRIORITY", "STATE_TRANSITION", "COMPLETION", "VERIFICATION", "ESCALATION", "RELEASE", "MUTATION", "EFFECT_EXECUTION"],
+      "closure_mode": "CANONICAL_EVALUATOR_REF",
+      "evaluator_paths": ["scripts/evaluate_semantic_firewall.py", "scripts/validate_semantic_firewall.py"],
+      "permitted_input_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "LIVE_SUPABASE", "LIVE_VERCEL", "AUTHORITATIVE_READBACK"],
+      "undefined_predicate_result": "PREDICATE_DEFINITION_MISSING",
+      "runtime_control_authority": "NONE"
+    }
+  ]
+}
