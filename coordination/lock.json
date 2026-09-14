@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "component:goal_lifecycle_identity",
-  "generation": 2,
+  "generation": 3,
   "state": "ACTIVE",
   "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "50b09f9b-6e7c-40ad-a3cd-6ef15e4528f5"
+    "session_id": "60801ef0-6ee1-4cd4-9803-3a594bddfe99"
   },
   "implementation_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
-  "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
-  "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
-  "acquired_at": "2026-09-13T18:43:20Z",
-  "heartbeat_at": "2026-09-13T22:13:20Z",
-  "expires_at": "2026-09-14T02:13:20Z",
+  "lease_id": "f0d73907-af83-412b-842e-6340254c38e2",
+  "base_sha": "cfed55b6725a68b47a43b5aee8e906dc2e27bf09",
+  "acquired_at": "2026-09-14T07:08:52Z",
+  "heartbeat_at": "2026-09-14T07:08:52Z",
+  "expires_at": "2026-09-14T11:08:52Z",
   "runtime_control_authority": "NONE"
 }
