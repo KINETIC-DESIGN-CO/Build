@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "policy_id": "life-live-audit-repair-first-v1",
+  "runtime_control_authority": "NONE",
+  "assistant_procedure_authority": "BOOTSTRAP_REQUIRED_GOVERNANCE",
+  "mode": "IN_RUN_EVENT_DRIVEN",
+  "loop": [
+    "AUDIT",
+    "CLASSIFY",
+    "FIX_OR_REPLAN",
+    "VERIFY",
+    "RESUME_PARENT_GOAL"
+  ],
+  "trigger_ids": [
+    "RUN_START",
+    "BEFORE_SELECTED_WORK_START",
+    "BEFORE_PROTECTED_MUTATION",
+    "AFTER_RESEARCH_RESULT",
+    "AFTER_TOOL_OR_CONNECTED_SYSTEM_RESULT",
+    "AFTER_REQUIRED_CHECK_RESULT",
+    "AFTER_LIVE_STATE_CHANGE",
+    "AFTER_MUTATION_READBACK",
+    "BEFORE_COMPLETION",
+    "BEFORE_RELEASE"
+  ],
+  "finding_states": [
+    "NONE",
+    "CANDIDATE",
+    "VERIFIED_REPAIR",
+    "RESEARCH_DESIGN_CHANGE"
+  ],
+  "verified_repair_evidence_classes": [
+    "REQUIRED_CHECK_FAILURE",
+    "SCHEMA_OR_INVARIANT_VIOLATION",
+    "AUTHORITATIVE_LIVE_MISMATCH",
+    "VERSIONED_FALSIFICATION_FAILURE",
+    "VERIFIED_PLATFORM_INCOMPATIBILITY"
+  ],
+  "dispositions": [
+    "NO_CHANGE",
+    "CANDIDATE_ONLY",
+    "IMMEDIATE_REPAIR",
+    "IMMEDIATE_REPLAN",
+    "BLOCKED_RESOURCE",
+    "BLOCKED_AUTHORIZATION",
+    "BLOCKED_COST",
+    "BLOCKED_PLATFORM",
+    "BLOCKED_VERIFICATION_TRUST"
+  ],
+  "blocker_states": {
+    "resource_state": ["AVAILABLE", "BLOCKED"],
+    "authorization_state": ["AUTHORIZED", "BLOCKED"],
+    "cost_state": ["NO_NEW_COMMITMENT", "AUTHORIZED_COMMITMENT", "BLOCKED"],
+    "platform_state": ["AVAILABLE", "BLOCKED"],
+    "verification_trust_state": ["PASS", "BLOCKED", "NOT_APPLICABLE"]
+  },
+  "repair_rule": "VERIFIED_REPAIR_WITH_ZERO_EXACT_BLOCKERS_RETURNS_IMMEDIATE_REPAIR_IN_THE_CURRENT_RUN",
+  "replan_rule": "RESEARCH_DESIGN_CHANGE_RETURNS_IMMEDIATE_REPLAN_BEFORE_THE_NEXT_PROTECTED_MUTATION",
+  "candidate_rule": "CANDIDATE_HAS_ZERO_PREEMPTION_MUTATION_COMPLETION_OR_VERIFICATION_EFFECT",
+  "queue_rule": "QUEUE_IS_NOT_A_HANDLED_STATE;ONLY_AN_EXACT_BLOCKER_DISPOSITION_MAY_DEFER_THE_BLOCKED_OPERATION",
+  "blocker_clear_rule": "WHEN_THE_EXACT_BLOCKER_IS_ABSENT_AT_THE_NEXT_TRIGGER_REEVALUATE_AND_RETURN_IMMEDIATE_REPAIR_IF_VERIFIED_REPAIR_STILL_HOLDS",
+  "resource_scope_rule": "BLOCKED_RESOURCE_BLOCKS_ONLY_OPERATIONS_WHOSE_EXACT_REQUIRED_RESOURCE_SET_INTERSECTS_THE_ACTIVE_UNEXPIRED_BLOCKING_CLAIM;DISJOINT_OPERATIONS_REMAIN_EXECUTABLE",
+  "parent_goal_rule": "IMMEDIATE_REPAIR_IS_A_DEFECT_REPAIR_CHILD_OF_THE_CURRENT_SEMANTIC_ROOT_AND_RETURNS_TO_THE_PARENT_AFTER_VERIFIED_REPAIR_COMPLETION",
+  "verification_rule": "REPAIR_COMPLETION_REQUIRES_ORIGINAL_DETECTOR_OR_INVARIANT_RERUN_REQUIRED_TESTS_PROTECTED_INTEGRATION_WHEN_SOURCE_CHANGED_AND_AUTHORITATIVE_READBACK_FOR_CONNECTED_SYSTEM_MUTATIONS",
+  "trust_root_rule": "A_REPAIR_THAT_CHANGES_ITS_OWN_VERIFIER_OR_ACCEPTANCE_TRUST_ROOT_RETURNS_BLOCKED_VERIFICATION_TRUST_UNLESS_VERIFICATION_TRUST_STATE_IS_PASS",
+  "passive_terminal_states_forbidden": [
+    "DOCUMENTED",
+    "ACKNOWLEDGED",
+    "DEFERRED",
+    "WONTFIX",
+    "LOW_PRIORITY",
+    "QUEUED_ONLY"
+  ],
+  "canonical_owner_bindings": {
+    "repair_design_and_verification": "governance/root-cause-repair-policy.json",
+    "work_selection": "governance/work-selection-policy.json",
+    "goal_identity": "governance/goal-policy.json",
+    "source_coordination": "coordination/protocol.json",
+    "research_depth": "governance/policies/research-policy.json",
+    "effect_execution": "scripts/evaluate_selected_operation_execution.py"
+  }
+}
