@@ -14,6 +14,7 @@
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000010-1d18d9e3.json",
     "continuity/checkpoints/CP-000011-05d67e48.json",
+    "continuity/checkpoints/CP-000012-19e5c808.json",
     "contracts/semantic-firewall-v1/control-path-registry.json",
     "contracts/semantic-firewall-v1/control-path-registry.schema.json",
     "contracts/semantic-firewall-v1/spec.json",
