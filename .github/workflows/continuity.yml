@@ -29,10 +29,14 @@ jobs:
         run: python scripts/validate_reliability.py
       - name: Validate Semantic Firewall v1
         run: python scripts/validate_semantic_firewall.py
+      - name: Validate work-fence policy
+        run: python scripts/evaluate_work_fence.py --validate-policy
       - name: Validate source coordination
         run: python scripts/validate_coordination.py
       - name: Validate relevant lock history
         run: python scripts/validate_relevant_lock_history.py
+      - name: Validate work-fence event
+        run: python scripts/evaluate_work_fence.py --validate-current-event
       - name: Run repository tests
         run: python -m unittest discover -s tests -p 'test_*.py'
       - name: Set up Supabase CLI

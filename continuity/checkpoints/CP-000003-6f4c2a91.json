@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000003-6f4c2a91",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T22:46:31Z",
+  "source_main_sha": "c2f3ad1838a5ed42bc91cbc767554c60071a4138",
+  "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+  "work_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+  "work_head_sha": "c7cf6e3f712d2228b2fc38bbe60e660ea58d22ec",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000002-a0a938d8.json",
+    "blob_sha": "2f424daf0945b007d35ba39e3afc94f2820fc91a"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T22:46:31Z",
+    "evidence_ref": "THREAD_LIFECYCLE:CONTINUE_ACTIVE_GOAL;ROOT_NONTERMINAL:A-0014_TERMINAL_REDISPATCH_AND_ISSUE_LIFECYCLE_CLOSURE;DOWNSTREAM_UNRELATED_WORK_EFFECT:ZERO",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_GITHUB_HEAD_STALE",
+      "MAIN_GOAL_REGISTRY_V1_BRANCH_GOAL_REGISTRY_V2_PENDING_INTEGRATION",
+      "SOURCE_COORDINATION_V4_PENDING_PROTECTED_INTEGRATION",
+      "FINAL_ARCHITECTURE_PRESENTATION_PENDING_PROTECTED_INTEGRATION"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T22:46:31Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T22:46:31Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "cddbe36c-7023-44f8-a9a1-700fc9932972",
+      "generation": 2,
+      "expires_at": "2026-09-14T02:13:20Z",
+      "observed_at": "2026-09-13T22:46:31Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
+      "generation": 2,
+      "expires_at": "2026-09-14T02:13:20Z",
+      "observed_at": "2026-09-13T22:46:31Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:multi_thread_coordination_hardening",
+      "lock_branch": "lock/59cb0115181bd2c23a385594018248f94c140e7c29c394c3def5d23c0dfa90d8",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "a6b70436-4fca-4dbc-8434-4e7a311e150c",
+      "generation": 4,
+      "expires_at": "2026-09-14T02:43:22Z",
+      "observed_at": "2026-09-13T22:46:31Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:watchdog",
+      "lock_branch": "lock/26555f0ea7b1ec2ba6331615932a7abdf07f13a82a2418eb25b5194e83e4ca83",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "c867da58-1c37-40dc-8af7-6405533c0384",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:31:32Z",
+      "observed_at": "2026-09-13T22:46:31Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "component:reliability",
+      "operation": "REMOVE_DUPLICATE_RELIABILITY_IMPLEMENTATION_AND_RELEASE_REDUNDANT_CLAIM",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_PR:84",
+        "GITHUB_PR:86",
+        "LOCK:component:reliability:RELEASED"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+      "operation": "RECONCILE_WORK_BRANCH_TO_CURRENT_MAIN_AND_PRESERVE_ONLY_CHILD2_DELTA",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_MAIN:c2f3ad1838a5ed42bc91cbc767554c60071a4138",
+        "MERGE_COMMIT:1b030f6bdf3e44dc74b9a8f2ad532c1a2da5e3bf",
+        "COMPARE:BEHIND_BY_0"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+      "operation": "VERSION_GOAL_REVISION_AND_STALE_WORKER_FENCING_WITH_BOOTSTRAP_AND_PROTECTED_CI",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "governance/goal-registry.json:v2",
+        "governance/work-fence-policy.json:life-work-fence-v1",
+        "coordination/protocol.json:life-source-coordination-v4",
+        "scripts/evaluate_work_fence.py",
+        "scripts/validate_lock_history.py",
+        ".github/workflows/continuity.yml"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0023",
+    "VD-0024",
+    "VD-0029"
+  ],
+  "decision_rationale_refs": [
+    "DR-0010"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Kubernetes Leases",
+      "url": "https://kubernetes.io/docs/concepts/architecture/leases/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Lease authority is evaluated from lease duration and latest renewal state; lease transitions and optimistic concurrency are distinct from semantic work identity."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Consul sessions",
+      "url": "https://developer.hashicorp.com/consul/docs/automate/session",
+      "observed_date": "2026-09-13",
+      "supported_claim": "TTL is a failure detector rather than proof of worker death, and sequencing is required to reject stale owners."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "Ledger: Stateful Execution for Long-Horizon Coding Agents",
+      "url": "https://arxiv.org/abs/2608.23282",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Explicit external execution state is preferable to reconstructing current execution truth from interaction history."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "KINETIC-DESIGN-CO/Build:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:auto_issue_dispatch",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:goal_lifecycle_identity",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:multi_thread_coordination_hardening",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:watchdog",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "NONE",
+    "candidate_next_operation": "OPEN_CHILD2_PR_RUN_EXACT_HEAD_VALIDATE_REPAIR_ANY_FAILING_INVARIANT_THEN_USE_GITHUB_MERGE_QUEUE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:59",
+    "GITHUB_PR:77",
+    "GITHUB_PR:78",
+    "GITHUB_PR:84",
+    "GITHUB_PR:86",
+    "GOAL:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "WORK:3edfca10-ac11-4a79-bd31-72bd84165594",
+    "continuity/current.json:A-0014",
+    "governance/goal-registry.json",
+    "governance/work-fence-policy.json",
+    "coordination/protocol.json"
+  ]
+}

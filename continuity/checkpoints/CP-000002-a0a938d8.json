@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-a0a938d8",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T21:29:23Z",
+  "source_main_sha": "07c506acad2bd6a7bfc883ca9b26c337eff5b1d9",
+  "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+  "work_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+  "work_head_sha": "852fd381f706a106fb752a6f35e178e8813a2106",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-fccf7dba.json",
+    "blob_sha": "9c6e5aa45fce6b8d2d9bd1837e06e0e9f99c0fc1"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T21:29:23Z",
+    "evidence_ref": "THREAD_LIFECYCLE:CONTINUE_ACTIVE_GOAL;ROOT_NONTERMINAL:A-0014;DOWNSTREAM_WORK_SELECTION_EFFECT:ZERO",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_GITHUB_HEAD_STALE",
+      "WORK_BRANCH_GOAL_REGISTRY_SCHEMA_MIGRATION_INCOMPLETE",
+      "RELIABILITY_GOAL_IDENTITY_LINK_STALE_ON_MAIN"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T21:29:23Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T21:29:23Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "cddbe36c-7023-44f8-a9a1-700fc9932972",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:43:20Z",
+      "observed_at": "2026-09-13T21:29:23Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
+      "generation": 2,
+      "expires_at": "2026-09-13T22:43:20Z",
+      "observed_at": "2026-09-13T21:29:23Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:multi_thread_coordination_hardening",
+      "lock_branch": "lock/59cb0115181bd2c23a385594018248f94c140e7c29c394c3def5d23c0dfa90d8",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "a6b70436-4fca-4dbc-8434-4e7a311e150c",
+      "generation": 4,
+      "expires_at": "2026-09-13T23:08:58Z",
+      "observed_at": "2026-09-13T21:29:23Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:reliability",
+      "lock_branch": "lock/e50879c3404c8841b6f39af55e4b3f2106e97ad87489c9add062f292a559221b",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "448f81d6-1603-4f88-96c5-16e467cd73ee",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:57:54Z",
+      "observed_at": "2026-09-13T21:29:23Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:watchdog",
+      "lock_branch": "lock/26555f0ea7b1ec2ba6331615932a7abdf07f13a82a2418eb25b5194e83e4ca83",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "c867da58-1c37-40dc-8af7-6405533c0384",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:31:32Z",
+      "observed_at": "2026-09-13T21:29:23Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "KINETIC-DESIGN-CO/Build:main",
+      "operation": "VERIFY_CHILD_ONE_PROTECTED_INTEGRATION_AND_POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_MAIN:07c506acad2bd6a7bfc883ca9b26c337eff5b1d9",
+        "GITHUB_PR:77",
+        "GITHUB_POST_MERGE_VALIDATE_RUN:34781673944"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+      "operation": "VERSION_WORK_FENCE_AND_COORDINATION_V4_SOURCE_PARTIAL",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "WORK_HEAD:852fd381f706a106fb752a6f35e178e8813a2106",
+        "governance/work-fence-policy.json",
+        "scripts/evaluate_work_fence.py",
+        "scripts/select_work_v5.py",
+        "coordination/protocol.json"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0023",
+    "VD-0024",
+    "VD-0029"
+  ],
+  "decision_rationale_refs": [
+    "DR-0010"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Kubernetes Lease API / coordinated leader election",
+      "url": "https://kubernetes.io/docs/concepts/cluster-administration/coordinated-leader-election/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Lease duration, renewal/transition state, optimistic concurrency, and cooperative handoff are separate coordination concerns rather than one liveness judgment."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Consul sessions",
+      "url": "https://developer.hashicorp.com/consul/docs/automate/session",
+      "observed_date": "2026-09-13",
+      "supported_claim": "TTL is a failure detector and stale-owner safety requires sequencing/fencing rather than treating timeout as proof of worker death."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "Ledger: Stateful Execution for Long-Horizon Coding Agents",
+      "url": "https://arxiv.org/abs/2608.23282",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Explicit external execution state is preferable to reconstructing current execution truth from interaction history."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "KINETIC-DESIGN-CO/Build:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:auto_issue_dispatch",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:goal_lifecycle_identity",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:multi_thread_coordination_hardening",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:reliability",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:watchdog",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "NONE",
+    "candidate_next_operation": "FINISH_GOAL_REGISTRY_V2_AND_COORDINATION_V4_MIGRATION_THEN_REPAIR_RELIABILITY_GOAL_LINK_AND_RUN_PROTECTED_VALIDATION",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:59",
+    "GITHUB_PR:77",
+    "GITHUB_PR:78",
+    "GITHUB_PR:83",
+    "GOAL:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "WORK:3edfca10-ac11-4a79-bd31-72bd84165594",
+    "continuity/current.json:A-0014",
+    "governance/goal-registry.json",
+    "governance/work-fence-policy.json",
+    "coordination/protocol.json"
+  ]
+}

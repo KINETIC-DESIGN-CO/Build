@@ -138,6 +138,25 @@
       "enforcement_state": "BOOTSTRAP_REQUIRED"
     },
     {
+      "path": "governance/work-fence-policy.json",
+      "authority_class": "SOURCE_COORDINATION",
+      "affected_control_decision_kinds": ["AUTHORIZATION", "ROUTING", "PRIORITY", "MUTATION", "EFFECT_EXECUTION"],
+      "canonical_owner": "governance/work-fence-policy.json",
+      "identity_fields": ["policy_id", "goal_id", "work_id", "lease_id", "generation"],
+      "permitted_evidence_source_classes": ["IMMUTABLE_REPOSITORY", "LIVE_GITHUB", "AUTHORITATIVE_READBACK"],
+      "evidence_states": ["KNOWN", "UNKNOWN", "UNVERIFIED", "NOT_RUN", "MISSING", "STALE"],
+      "fail_closed_states": ["UNKNOWN", "UNVERIFIED", "NOT_RUN", "MISSING", "STALE"],
+      "freshness_mode": "LIVE_READ_REQUIRED_WHEN_VOLATILE",
+      "deterministic_consumer_paths": ["scripts/evaluate_work_fence.py"],
+      "output_states": ["PASS", "REPLAN_REQUIRED", "REASSIGNMENT_REQUIRED", "STALE_GENERATION", "STALE_OWNER", "CLAIM_NOT_ACTIVE", "COMPONENT_LEASE_EXPIRED", "EXTERNAL_EFFECT_RECONCILIATION_REQUIRED", "WORK_FENCE_MIGRATION_COMPATIBILITY_PASS"],
+      "output_authority": "NONE",
+      "state_change_effect_mode": "NONE",
+      "authoritative_readback_requirements": [],
+      "fencing_requirements": ["GOAL_REVISION_MATCH", "RESOURCE_KEY_WORK_ID_LEASE_ID_GENERATION_MATCH", "ACTIVE_COMPONENT_LEASE_FRESHNESS", "UNRESOLVED_EXTERNAL_EFFECT_PRECEDENCE"],
+      "test_refs": ["tests/test_work_fence.py", "tests/test_work_fence_lock_migration.py", "tests/test_goal_revision.py"],
+      "enforcement_state": "BOOTSTRAP_REQUIRED"
+    },
+    {
       "path": "governance/issue-lifecycle-policy.json",
       "authority_class": "ASSISTANT_PROCEDURE",
       "affected_control_decision_kinds": ["STATE_TRANSITION", "COMPLETION"],
