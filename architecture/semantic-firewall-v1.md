@@ -12,15 +12,27 @@ The Semantic Firewall sits between context/intention formation and any Life cont
 
 `AUTHORIZATION`, `ROUTING`, `PRIORITY`, `STATE_TRANSITION`, `COMPLETION`, `VERIFICATION`, `ESCALATION`, `RELEASE`, `MUTATION`, `EFFECT_EXECUTION`.
 
-It accepts only closed typed requests bound to exact contract, subject, action, scope, operation digest, and input-snapshot digest. It does not grant runtime control authority from prose, labels, reviews, model confidence, apparent completeness, semantic similarity, or a caller-authored source label.
+It accepts only closed typed requests bound to exact contract, predicate definition, subject, action, scope, operation digest, and input-snapshot digest. It does not grant runtime control authority from prose, labels, reviews, model confidence, apparent completeness, semantic similarity, or a caller-authored source label.
+
+## Predicate-level determinism
+
+A deterministic consumer is insufficient when the value it consumes came from an undefined qualitative predicate or uncontrolled model judgment. Semantic Firewall v1 therefore requires every control contract to bind an exact `predicate_id`, and every control request/receipt binds both that ID and the canonical predicate-definition digest.
+
+The canonical predicate registry is `contracts/semantic-firewall-v1/predicate-registry.json`. A control predicate is source-conformant only when it reduces to closed machine-evaluable semantics such as closed enums, exact IDs, numeric thresholds with units, RFC3339 timestamp comparisons, exact set operations, hashes, deterministic derivation references, or a versioned canonical evaluator reference.
+
+If a required predicate definition is absent, evaluation fails closed as `PREDICATE_DEFINITION_MISSING`; a typed boolean, enum, score, or other field does not become trusted merely because its final representation is typed. Inputs derived from another predicate must bind that exact canonical derivation identity. Model/prose-derived values remain unsafe provenance even when wrapped by executable code.
+
+Conformance enforcement is semantic rather than a blacklist of words. Explanatory prose may use qualitative language freely because prose has zero control authority. What is forbidden is a control path whose truth value depends on undefined natural-language meaning. The conformance validator therefore also rejects direct caller-field truth passthroughs such as an executable function that simply returns a supplied `change_is_material` field without an exact canonical predicate definition.
+
+The governing source invariant is `NO_CONTROL_TRANSITION_FROM_OPEN_ENDED_NATURAL_LANGUAGE_PREDICATE`.
 
 ## Evidence states
 
 Required evidence may be `KNOWN`, `UNKNOWN`, `UNVERIFIED`, or `NOT_RUN`.
 
 - Missing, `UNKNOWN`, `UNVERIFIED`, `NOT_RUN`, or stale required evidence produces `NOT_RUN`.
-- Identity, source-type, type, future-time, or digest mismatch produces `FAIL`.
-- Source-level `PASS` occurs only when every required input is exact, fresh where bounded, type-correct, source-label-compatible with the selected contract, and digest-bound.
+- Identity, source-type, type, future-time, digest, predicate-definition, or derivation mismatch produces `FAIL`.
+- Source-level `PASS` occurs only when every required input is exact, fresh where bounded, type-correct, source-compatible with the selected canonical predicate definition, digest-bound, and the exact predicate evaluates true.
 
 `FAIL` takes precedence over `NOT_RUN` when both are observed in one evaluation so detected tampering or contradiction cannot be hidden by a simultaneous missing-input condition.
 
@@ -54,7 +66,7 @@ An effect is eligible only when a separate trusted persistence/issuance mechanis
 - `issuer_type = TRUSTED_CONTROL_SERVICE`;
 - `persistence_state = PERSISTED_TRUSTED`;
 - a self-consistent receipt digest;
-- exact subject/action/scope/operation binding;
+- exact predicate-definition, subject/action/scope/operation binding;
 - an unexpired evaluation window.
 
 Those JSON fields and a self-hash do **not** establish trusted issuance by themselves. Any PASS produced by the source evaluator, including source-level effect-eligibility evaluation, has zero Life runtime control authority until the future trusted control service verifies trusted evidence-adapter issuance, authoritative receipt persistence/readback, and the non-bypassable effect router consumes that authoritative evidence.
@@ -78,7 +90,7 @@ Retry, compensation, quarantine, and parent restoration remain owned by `reliabi
 
 ## Bootstrap and CI enforcement
 
-`contracts/semantic-firewall-v1/spec.json` is bootstrap-required reading so future Life workers receive the source-level fail-closed semantics before making architecture or implementation decisions. The schemas, evaluator, validator, and falsification tests are bootstrap-required files and the repository `validate` workflow runs the Semantic Firewall validator. This is engineering/source enforcement only; it does not create Life runtime control authority.
+`contracts/semantic-firewall-v1/spec.json`, the conformance profile/rule registry, and the canonical predicate registry are bootstrap-required reading so future Life workers receive the source-level fail-closed semantics before making architecture or implementation decisions. The schemas, evaluator, validator, and falsification tests are bootstrap-required files and the repository `validate` workflow runs the Semantic Firewall validator. This is engineering/source enforcement only; it does not create Life runtime control authority.
 
 ## Relationship to canonical invocation
 
@@ -88,6 +100,7 @@ Retry, compensation, quarantine, and parent restoration remain owned by `reliabi
 
 - Closed ten decision kinds: **KEEP**.
 - Exact control request/input binding: **KEEP / COMBINE**.
+- Legacy prohibition on free-text/inline predicates: **KEEP / STRENGTHEN** with canonical predicate definitions and provenance closure.
 - Caller-described provenance fields as proof of trustworthy evidence issuance: **REMOVE_AS_AUTHORITY**.
 - Trusted evidence-adapter issuance requirement from the legacy audit: **KEEP / STRENGTHEN**.
 - Legacy falsification corpus: **KEEP** as immutable reference evidence.
