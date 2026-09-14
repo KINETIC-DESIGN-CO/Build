@@ -12,6 +12,7 @@
   "repo_paths": [
     "continuity/response-contract.json",
     "continuity/schema/response-contract.schema.json",
+    "tests/test_continuity.py",
     "tests/test_response_contract_presentation.py"
   ],
   "external_targets": [],
