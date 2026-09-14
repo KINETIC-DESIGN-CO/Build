@@ -3,6 +3,11 @@
   "subsystem_id": "life-semantic-firewall-v1",
   "runtime_control_authority": "NONE",
   "activation_state": "SOURCE_ONLY_NOT_RUNTIME_AUTHORITY",
+  "conformance_profile_path": "contracts/semantic-firewall-v1/conformance-profile.json",
+  "rule_registry_path": "contracts/semantic-firewall-v1/rule-registry.json",
+  "conformance_validator_path": "scripts/validate_semantic_firewall_conformance.py",
+  "conformance_test_path": "tests/test_semantic_firewall_conformance.py",
+  "conformance_enforcement_state": "CI_ENFORCED_BOOTSTRAP_REQUIRED",
   "control_decision_kinds": [
     "AUTHORIZATION",
     "ROUTING",
@@ -31,14 +36,22 @@
     "PERSISTED_TRUSTED",
     "REVOKED"
   ],
+  "evidence_trust_boundary": {
+    "source_metadata_authority": "STRUCTURAL_LABELS_ONLY_ZERO_RUNTIME_CONTROL_AUTHORITY",
+    "trusted_evidence_adapter_state": "NOT_IMPLEMENTED",
+    "runtime_activation_dependency": "VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION_REQUIRED",
+    "contract_source_whitelist_effect": "SOURCE_LEVEL_COMPATIBILITY_ONLY_ZERO_PROVENANCE_AUTHORITY",
+    "caller_supplied_source_metadata_effect": "CANNOT_ESTABLISH_TRUSTED_PROVENANCE",
+    "model_prose_review_issue_metadata_runtime_control_authority": "NONE"
+  },
   "imported_legacy_path": "contracts/semantic-firewall",
   "build_native_path": "contracts/semantic-firewall-v1",
   "schema_paths": [
     "contracts/semantic-firewall-v1/control-contract.schema.json",
-    "contracts/semantic-firewall-v1/control-request.schema.json",
-    "contracts/semantic-firewall-v1/input-snapshot.schema.json",
     "contracts/semantic-firewall-v1/control-receipt.schema.json",
+    "contracts/semantic-firewall-v1/control-request.schema.json",
     "contracts/semantic-firewall-v1/effect-request.schema.json",
+    "contracts/semantic-firewall-v1/input-snapshot.schema.json",
     "contracts/semantic-firewall-v1/reliability-verification.schema.json"
   ],
   "evaluator_path": "scripts/evaluate_semantic_firewall.py",
@@ -56,6 +69,9 @@
     "CONTROL_REQUEST_BINDS_EXACT_DECISION_KIND_CONTRACT_SUBJECT_ACTION_SCOPE_OPERATION_AND_INPUT_SNAPSHOT",
     "REQUIRED_INPUT_UNKNOWN_UNVERIFIED_NOT_RUN_MISSING_OR_STALE_CANNOT_PASS",
     "WRONG_SOURCE_TYPE_FUTURE_OBSERVATION_HASH_MISMATCH_TYPE_MISMATCH_OR_IDENTITY_MISMATCH_FAILS",
+    "SOURCE_TYPE_SOURCE_REF_AND_SOURCE_VERSION_FIELDS_ARE_STRUCTURAL_LABELS_ONLY_AND_CANNOT_PROVE_TRUSTED_EVIDENCE_ISSUANCE",
+    "RUNTIME_ACTIVATION_REQUIRES_VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION",
+    "CONTRACT_SOURCE_WHITELIST_CANNOT_ELEVATE_MODEL_PROSE_ISSUE_REVIEW_LABEL_OR_SEMANTIC_SIMILARITY_TO_AUTHORITATIVE_EVIDENCE",
     "SOURCE_EVALUATOR_RECEIPT_CANDIDATE_HAS_ZERO_EFFECT_AUTHORITY",
     "SOURCE_EVALUATOR_CONTROL_AND_EFFECT_ELIGIBILITY_RESULTS_HAVE_ZERO_RUNTIME_CONTROL_AUTHORITY",
     "TRUSTED_RECEIPT_FIELDS_AND_SELF_HASH_ALONE_DO_NOT_ESTABLISH_TRUSTED_ISSUANCE_WITHOUT_AUTHORITATIVE_PERSISTENCE_READBACK",
@@ -63,6 +79,8 @@
     "EFFECT_EXECUTION_RECEIPT_MUST_BIND_EXACT_RECEIPT_SUBJECT_ACTION_SCOPE_AND_OPERATION_HASH",
     "PROTECTED_EFFECT_REQUIRES_RELIABILITY_WRITE_AHEAD_PREPARATION_REFERENCE",
     "POST_EFFECT_PASS_REQUIRES_AUTHORITATIVE_READBACK_EFFECT_VERIFIED_AND_REQUIRED_POSTCONDITIONS_PASS",
-    "SOURCE_TEST_OR_CI_SUCCESS_DOES_NOT_CREATE_LIFE_RUNTIME_CONTROL_AUTHORITY"
+    "SOURCE_TEST_OR_CI_SUCCESS_DOES_NOT_CREATE_LIFE_RUNTIME_CONTROL_AUTHORITY",
+    "BUILD_TIME_CONFORMANCE_PROFILE_AND_RULE_REGISTRY_HAVE_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY",
+    "EVERY_DISCOVERED_GOVERNED_RULE_SURFACE_MUST_BE_REGISTERED_OR_REQUIRED_CI_FAILS"
   ]
 }

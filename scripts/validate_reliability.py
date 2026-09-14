@@ -102,10 +102,10 @@ def validate_source_links(spec):
 
     if links["semantic_firewall_link_state"] == "SOURCE_IMPORTED_ACTIVATION_PENDING":
         rel = links["semantic_firewall_contract_path"]
-        if rel != "contracts/semantic-firewall" or not (ROOT / rel).is_dir():
-            fail("R004_SOURCE_LINK", "imported Semantic Firewall state requires contracts/semantic-firewall directory")
+        if rel != "contracts/semantic-firewall-v1" or not (ROOT / rel).is_dir():
+            fail("R004_SOURCE_LINK", "pending Semantic Firewall activation requires contracts/semantic-firewall-v1 directory")
     if links["semantic_firewall_link_state"] == "ACTIVE":
-        fail("R004_SOURCE_LINK", "Phase 0 cannot declare Build-native Semantic Firewall ACTIVE")
+        fail("R004_SOURCE_LINK", "source-only Reliability cannot declare Semantic Firewall runtime ACTIVE")
 
     goal_state = links["goal_root_identity_link_state"]
     goal_owner = links["goal_root_identity_owner_path"]
