@@ -20,7 +20,10 @@
   ],
   "properties": {
     "schema_version": {
-      "const": 1
+      "enum": [
+        1,
+        2
+      ]
     },
     "resource_key": {
       "type": "string",
@@ -87,6 +90,20 @@
     "expires_at": {
       "type": "string",
       "format": "date-time"
+    },
+    "lease_contract": {
+      "enum": [
+        "COMPONENT_1800"
+      ]
+    },
+    "lease_event_type": {
+      "enum": [
+        "ACQUIRE",
+        "TAKEOVER",
+        "REACQUIRE",
+        "RENEW_PROTECTED_MUTATION",
+        "RENEW_REQUIRED_CHECKPOINT"
+      ]
     },
     "runtime_control_authority": {
       "const": "NONE"

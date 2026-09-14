@@ -155,7 +155,7 @@ def validate_source_contract_documents(documents):
 
     protocol = documents["coordination/protocol.json"]
     expect(protocol.get("schema_version") == 1, "source-contract:coordination-schema")
-    expect(protocol.get("protocol_id") == "life-source-coordination-v3", "source-contract:coordination-id")
+    expect(protocol.get("protocol_id") == "life-source-coordination-v4", "source-contract:coordination-id")
     expect(protocol.get("runtime_control_authority") == "NONE", "source-contract:coordination-runtime-authority")
     expect(protocol.get("source_coordination_authority") == "GITHUB_MACHINE_STATE", "source-contract:coordination-authority")
     expect(protocol.get("canonical_repository") == "KINETIC-DESIGN-CO/Build", "source-contract:coordination-repository")

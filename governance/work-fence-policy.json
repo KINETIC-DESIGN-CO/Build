@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "policy_id": "life-work-fence-v1",
+  "runtime_control_authority": "NONE",
+  "engineering_fence_authority": "DETERMINISTIC_EVALUATION_ONLY",
+  "canonical_evaluator": "scripts/evaluate_work_fence.py",
+  "canonical_selector_entrypoint": "scripts/select_work.py",
+  "component_stale_after_seconds": 1800,
+  "legacy_v1_component_effective_expiry_rule": "AFTER_V4_MAIN_INTEGRATION_EFFECTIVE_EXPIRY_IS_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_COMPONENT_STALE_AFTER_SECONDS",
+  "goal_revision_fence_rule": "WHEN_GOAL_ID_IS_NON_NULL_PLANNED_GOAL_REVISION_MUST_EQUAL_CANONICAL_GOAL_REVISION",
+  "goal_revision_mismatch_result": "REPLAN_REQUIRED",
+  "generation_fence_rule": "WORK_RECORD_CLAIM_GENERATION_MUST_EQUAL_LIVE_CLAIM_GENERATION_AND_LIVE_CLAIM_WORK_ID_MUST_EQUAL_WORK_RECORD_WORK_ID",
+  "generation_mismatch_result": "STALE_GENERATION",
+  "control_signal_states": [
+    "NONE",
+    "YIELD_OR_REPLAN_REQUESTED",
+    "REASSIGNMENT_REQUESTED"
+  ],
+  "control_signal_rule": "NON_NONE_SIGNAL_APPLIES_ONLY_WHEN_TARGET_WORK_ID_EQUALS_EVALUATED_WORK_ID",
+  "external_effect_states": [
+    "NONE",
+    "PENDING",
+    "NO_RESULT",
+    "TIMEOUT",
+    "UNKNOWN",
+    "SUCCESS",
+    "FAILURE"
+  ],
+  "external_effect_unresolved_states": [
+    "PENDING",
+    "NO_RESULT",
+    "TIMEOUT",
+    "UNKNOWN"
+  ],
+  "external_effect_unresolved_result": "EXTERNAL_EFFECT_RECONCILIATION_REQUIRED",
+  "evaluation_precedence": [
+    "EXTERNAL_EFFECT_UNRESOLVED",
+    "GOAL_REVISION_MISMATCH",
+    "CONTROL_SIGNAL_ACTIVE",
+    "CLAIM_GENERATION_MISMATCH",
+    "CLAIM_OWNER_MISMATCH",
+    "COMPONENT_LEASE_EXPIRED",
+    "PASS"
+  ],
+  "protected_boundaries": [
+    "SOURCE_WORKSPACE_MUTATION",
+    "CONNECTED_APP_MUTATION",
+    "CLAIM_RENEWAL",
+    "WORK_SELECTION_DISPATCH",
+    "PULL_REQUEST_VALIDATION",
+    "MERGE_GROUP_VALIDATION"
+  ],
+  "thread_wakeup_dependency": "FORBIDDEN",
+  "takeover_rule": "COMPONENT_OWNERSHIP_TRANSFER_REQUIRES_PREDECESSOR_RELEASED_OR_EFFECTIVELY_EXPIRED_AND_GENERATION_PLUS_ONE_WITH_NEW_LEASE_ID;WORK_ID_MAY_REMAIN_SAME_FOR_DURABLE_WORK_RECOVERY",
+  "renewal_event_types": [
+    "PROTECTED_MUTATION_COMMITTED",
+    "REQUIRED_CHECKPOINT_WRITTEN"
+  ],
+  "background_heartbeat_requirement": "NONE",
+  "scheduled_sweep_authority": "ADVISORY_ONLY"
+}
