@@ -16,72 +16,104 @@ spec.loader.exec_module(live_audit)
 class LiveAuditTests(unittest.TestCase):
     def evidence(self, **overrides):
         value = {
+            "trigger_id": "BEFORE_PROTECTED_BOUNDARY",
+            "dimension_states": {name: "PASS" for name in live_audit.DIMENSIONS},
             "finding_state": "NONE",
             "verified_repair_evidence_class": None,
+            "root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+            "detector_or_invariant_id": "DETECTOR-1",
+            "subject_id": "subject-1",
+            "component_id": "goal_lifecycle_identity",
             "resource_state": "AVAILABLE",
             "authorization_state": "AUTHORIZED",
             "cost_state": "NO_NEW_COMMITMENT",
             "platform_state": "AVAILABLE",
-            "touches_verification_trust_root": False,
-            "verification_trust_state": "NOT_APPLICABLE",
         }
         value.update(overrides)
         return value
 
-    def test_policy_validates(self):
-        live_audit.validate_policy(live_audit.load(live_audit.POLICY_PATH))
+    def test_policy_validates_and_uses_exact_triggers(self):
+        policy = live_audit.load(live_audit.POLICY_PATH)
+        live_audit.validate_policy(policy)
+        self.assertEqual(policy["trigger_ids"], live_audit.TRIGGERS)
+        self.assertIn("BEFORE_FINAL_REQUIRED_CLAIM_RELEASE", policy["trigger_ids"])
+        self.assertIn("TRACKED_PR_HEAD_OR_STATE_CHANGED", policy["trigger_ids"])
 
-    def test_verified_failure_repairs_immediately(self):
+    def test_no_change_continues_selected_work(self):
+        result = live_audit.evaluate(self.evidence())
+        self.assertEqual(result["audit_result_state"], "NO_COURSE_CHANGE_EVIDENCE")
+        self.assertEqual(result["execution_disposition"], "CONTINUE_SELECTED_WORK")
+
+    def test_verified_failure_becomes_immediate_defect_repair_child(self):
         result = live_audit.evaluate(self.evidence(
             finding_state="VERIFIED_REPAIR",
             verified_repair_evidence_class="REQUIRED_CHECK_FAILURE",
         ))
-        self.assertEqual(result["disposition"], "IMMEDIATE_REPAIR")
-        self.assertTrue(result["repair_now"])
+        self.assertEqual(result["repair_lifecycle_transition"], "REPAIR_REQUIRED")
+        self.assertEqual(result["execution_disposition"], "EXECUTE_VERIFIED_REPAIR_CHILD")
+        self.assertEqual(result["goal_relation"], "DEFECT_REPAIR")
+        self.assertTrue(result["repair_identity"].startswith("repair-"))
 
-    def test_candidate_cannot_preempt(self):
+    def test_repair_identity_is_stable_for_same_exact_inputs(self):
+        evidence = self.evidence(
+            finding_state="VERIFIED_REPAIR",
+            verified_repair_evidence_class="SCHEMA_OR_INVARIANT_VIOLATION",
+        )
+        self.assertEqual(live_audit.evaluate(evidence)["repair_identity"], live_audit.evaluate(evidence)["repair_identity"])
+
+    def test_candidate_cannot_preempt_or_mutate(self):
         result = live_audit.evaluate(self.evidence(finding_state="CANDIDATE"))
-        self.assertEqual(result["disposition"], "CANDIDATE_ONLY")
-        self.assertEqual(result["candidate_preemption_effect"], "ZERO")
+        self.assertEqual(result["audit_result_state"], "DEFECT_CANDIDATE")
+        self.assertEqual(result["execution_disposition"], "RECORD_DEFECT_CANDIDATE")
+        self.assertEqual(result["candidate_control_effect"], "ZERO")
 
     def test_research_design_change_replans_before_mutation(self):
         result = live_audit.evaluate(self.evidence(finding_state="RESEARCH_DESIGN_CHANGE"))
-        self.assertEqual(result["disposition"], "IMMEDIATE_REPLAN")
-        self.assertTrue(result["replan_now"])
+        self.assertEqual(result["audit_result_state"], "REPLAN_CANDIDATE")
+        self.assertEqual(result["execution_disposition"], "REPLAN_BEFORE_PROTECTED_MUTATION")
 
-    def test_exact_resource_collision_is_the_only_resource_deferral(self):
+    def test_research_horizon_issue_expands_research(self):
+        dimensions = {name: "PASS" for name in live_audit.DIMENSIONS}
+        dimensions["RESEARCH_EVIDENCE_HORIZON"] = "ISSUE"
+        result = live_audit.evaluate(self.evidence(dimension_states=dimensions))
+        self.assertEqual(result["audit_result_state"], "RESEARCH_EXPANSION_REQUIRED")
+        self.assertEqual(result["execution_disposition"], "EXPAND_RESEARCH")
+
+    def test_not_run_dimension_fails_closed(self):
+        dimensions = {name: "PASS" for name in live_audit.DIMENSIONS}
+        dimensions["OWNERSHIP_AND_FENCE"] = "NOT_RUN"
+        result = live_audit.evaluate(self.evidence(dimension_states=dimensions))
+        self.assertEqual(result["audit_result_state"], "NOT_RUN")
+        self.assertEqual(result["execution_disposition"], "NOT_RUN")
+
+    def test_unresolved_external_effect_precedes_repair(self):
+        result = live_audit.evaluate(self.evidence(finding_state="UNRESOLVED_EXTERNAL_EFFECT"))
+        self.assertEqual(result["audit_result_state"], "EFFECT_RECONCILIATION_REQUIRED")
+        self.assertEqual(result["execution_disposition"], "RECONCILE_EFFECT_BEFORE_CONTINUE")
+
+    def test_exact_resource_collision_blocks_only_repair_execution(self):
         result = live_audit.evaluate(self.evidence(
             finding_state="VERIFIED_REPAIR",
             verified_repair_evidence_class="SCHEMA_OR_INVARIANT_VIOLATION",
             resource_state="BLOCKED",
         ))
-        self.assertEqual(result["disposition"], "BLOCKED_RESOURCE")
-        self.assertTrue(result["deferred_only_by_exact_blocker"])
+        self.assertEqual(result["audit_result_state"], "BLOCKED_RESOURCE")
+        self.assertEqual(result["execution_disposition"], "BLOCKED_RESOURCE")
+        self.assertEqual(result["repair_lifecycle_transition"], "REPAIR_REQUIRED")
 
-    def test_trust_root_repair_requires_independent_verification(self):
-        result = live_audit.evaluate(self.evidence(
-            finding_state="VERIFIED_REPAIR",
-            verified_repair_evidence_class="VERSIONED_FALSIFICATION_FAILURE",
-            touches_verification_trust_root=True,
-            verification_trust_state="BLOCKED",
-        ))
-        self.assertEqual(result["disposition"], "BLOCKED_VERIFICATION_TRUST")
+    def test_verification_gap_forces_retest(self):
+        result = live_audit.evaluate(self.evidence(finding_state="VERIFICATION_GAP"))
+        self.assertEqual(result["audit_result_state"], "VERIFICATION_REQUIRED")
+        self.assertEqual(result["execution_disposition"], "VERIFY_BEFORE_CONTINUE")
 
     def test_verified_repair_requires_exact_evidence_class(self):
         with self.assertRaises(live_audit.LiveAuditError):
             live_audit.evaluate(self.evidence(finding_state="VERIFIED_REPAIR"))
 
-    def test_passive_terminal_states_are_forbidden(self):
+    def test_passive_queue_is_not_a_handled_terminal_state(self):
         policy = live_audit.load(live_audit.POLICY_PATH)
-        for state in ("DOCUMENTED", "DEFERRED", "QUEUED_ONLY"):
-            self.assertIn(state, policy["passive_terminal_states_forbidden"])
-
-    def test_live_audit_is_pre_selector_gate(self):
-        policy = live_audit.load(live_audit.POLICY_PATH)
-        rule = policy["selection_binding_rule"]
-        self.assertIn("LIVE_AUDIT_RUNS_BEFORE_NORMAL_WORK_SELECTION", rule)
-        self.assertIn("IMMEDIATE_REPAIR_OR_IMMEDIATE_REPLAN_MUST_RESOLVE_BEFORE_NORMAL_SELECTOR_EXECUTION", rule)
-        self.assertIn("CANDIDATE_ONLY_OR_NO_CHANGE_FALLS_THROUGH_TO_NORMAL_WORK_SELECTION", rule)
+        self.assertIn("QUEUED_ONLY", policy["passive_terminal_states_forbidden"])
+        self.assertIn("QUEUED_ONLY_IS_NOT_A_HANDLED_VERIFIED_REPAIR_STATE", policy["queue_rule"])
 
 
 if __name__ == "__main__":
