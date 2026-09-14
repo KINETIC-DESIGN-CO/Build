@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://life.local/governance/schema/research-policy.schema.json",
+  "title": "Life research evidence horizon policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy_id", "runtime_control_authority", "assistant_procedure_authority", "research_authority", "trigger", "required_lane_ids", "lane_result_states", "source_system_required_categories", "closure_rule", "narrow_corroboration_rule", "whole_source_rule", "source_system_rule", "same_source_parallel_rule", "independent_parallel_rule", "competing_mechanism_rule", "failure_rule", "disconfirmation_rule", "comparison_dispositions", "life_reevaluation_rule", "design_change_rule", "non_authority_rule", "persistence_rule"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "policy_id": {"const": "life-research-evidence-horizon-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "assistant_procedure_authority": {"const": "BOOTSTRAP_REQUIRED_GOVERNANCE"},
+    "research_authority": {"const": "EVIDENCE_ONLY"},
+    "trigger": {"const": "ARCHITECTURE_OR_IMPLEMENTATION_DECISION_USES_EXTERNAL_PLATFORM_MECHANISM_RESEARCH_OR_CURRENT_ENGINEERING_EVIDENCE"},
+    "required_lane_ids": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "lane_result_states": {"type": "array", "minItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "source_system_required_categories": {"type": "array", "minItems": 7, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "closure_rule": {"type": "string", "minLength": 1},
+    "narrow_corroboration_rule": {"type": "string", "minLength": 1},
+    "whole_source_rule": {"type": "string", "minLength": 1},
+    "source_system_rule": {"type": "string", "minLength": 1},
+    "same_source_parallel_rule": {"type": "string", "minLength": 1},
+    "independent_parallel_rule": {"type": "string", "minLength": 1},
+    "competing_mechanism_rule": {"type": "string", "minLength": 1},
+    "failure_rule": {"type": "string", "minLength": 1},
+    "disconfirmation_rule": {"type": "string", "minLength": 1},
+    "comparison_dispositions": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "life_reevaluation_rule": {"type": "string", "minLength": 1},
+    "design_change_rule": {"type": "string", "minLength": 1},
+    "non_authority_rule": {"type": "string", "minLength": 1},
+    "persistence_rule": {"type": "string", "minLength": 1}
+  }
+}

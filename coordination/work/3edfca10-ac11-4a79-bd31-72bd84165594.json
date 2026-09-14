@@ -4,48 +4,35 @@
   "title": "Unify stable goal identity with terminal thread handoff",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "60801ef0-6ee1-4cd4-9803-3a594bddfe99"
+    "session_id": "64a815a5-d3fe-4570-abf7-63cd7c643c1d"
   },
   "implementation_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
   "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
   "component_id": "goal_lifecycle_identity",
   "repo_paths": [
-    "continuity/checkpoints/CP-000004-9a2d60d0.json",
-    "governance/resume-reconciliation-policy.json",
-    "governance/schema/work-fence-policy.schema.json",
-    "governance/work-fence-policy.json",
-    "scripts/evaluate_resume_reconciliation.py",
-    "scripts/evaluate_work_fence.py",
-    "tests/test_resume_reconciliation.py",
-    "tests/test_thread_lifecycle.py",
-    "tests/test_work_fence.py",
-    "tests/test_work_selection.py"
+    "continuity/bootstrap.json",
+    "continuity/response-contract.json",
+    "continuity/schema/response-contract.schema.json",
+    "contracts/semantic-firewall-v1/predicate-registry.json",
+    "contracts/semantic-firewall-v1/rule-registry.json",
+    "governance/live-audit-policy.json",
+    "governance/research-policy.json",
+    "governance/schema/live-audit-policy.schema.json",
+    "governance/schema/research-policy.schema.json",
+    "scripts/evaluate_live_audit.py",
+    "scripts/validate_research_policy.py",
+    "tests/test_continuity.py",
+    "tests/test_live_audit.py",
+    "tests/test_research_policy.py",
+    "tests/test_response_contract_presentation.py"
   ],
   "external_targets": [],
   "claims": [
     {
-      "resource_key": "component:auto_issue_dispatch",
-      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
-      "lease_id": "bf5c121f-5265-4d9a-8790-2870b658b787",
-      "generation": 4
-    },
-    {
       "resource_key": "component:goal_lifecycle_identity",
       "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
-      "lease_id": "70eccc39-af95-4bd6-8edd-adef1e67a2de",
-      "generation": 4
-    },
-    {
-      "resource_key": "component:multi_thread_coordination_hardening",
-      "lock_branch": "lock/59cb0115181bd2c23a385594018248f94c140e7c29c394c3def5d23c0dfa90d8",
-      "lease_id": "022cc061-7a8e-40eb-819e-2df512861050",
+      "lease_id": "3757175a-5721-43d9-b35e-6ff85b30c91d",
       "generation": 6
-    },
-    {
-      "resource_key": "component:watchdog",
-      "lock_branch": "lock/26555f0ea7b1ec2ba6331615932a7abdf07f13a82a2418eb25b5194e83e4ca83",
-      "lease_id": "f240fd4c-ae50-48ed-aa66-66b33f194040",
-      "generation": 3
     }
   ],
   "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",

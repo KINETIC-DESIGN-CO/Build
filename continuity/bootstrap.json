@@ -17,6 +17,8 @@
     "governance/goal-registry.json",
     "governance/thread-lifecycle-policy.json",
     "governance/work-selection-policy.json",
+    "governance/research-policy.json",
+    "governance/live-audit-policy.json",
     "governance/issue-lifecycle-policy.json",
     "governance/root-cause-repair-policy.json",
     "governance/root-cause-repairs.json",
@@ -69,6 +71,8 @@
     "continuity/directive-record.schema.json",
     "continuity/decision-rationale.schema.json",
     "governance/schema/placement-policy.schema.json",
+    "governance/schema/research-policy.schema.json",
+    "governance/schema/live-audit-policy.schema.json",
     "governance/schema/goal-policy.schema.json",
     "governance/schema/goal-registry.schema.json",
     "governance/schema/thread-lifecycle-policy.schema.json",
@@ -99,6 +103,8 @@
     "scripts/select_work.py",
     "scripts/select_work_legacy.py",
     "scripts/evaluate_selected_operation_execution.py",
+    "scripts/evaluate_live_audit.py",
+    "scripts/validate_research_policy.py",
     "scripts/validate_issue_lifecycle.py",
     "scripts/evaluate_user_observation.py",
     "scripts/validate_root_cause_repair.py",
@@ -122,6 +128,8 @@
     "continuity/tests/test_checkpoints.py",
     "tests/test_work_selection.py",
     "tests/test_selected_operation_execution.py",
+    "tests/test_live_audit.py",
+    "tests/test_research_policy.py",
     "tests/test_issue_lifecycle.py",
     "tests/test_user_observation.py",
     "tests/test_root_cause_repair.py",
@@ -143,7 +151,10 @@
     "governance/goal-registry.json",
     "governance/thread-lifecycle-policy.json",
     "governance/work-selection-policy.json",
+    "governance/research-policy.json",
+    "governance/live-audit-policy.json",
     "scripts/evaluate_selected_operation_execution.py",
+    "scripts/evaluate_live_audit.py",
     "governance/issue-lifecycle-policy.json",
     "governance/root-cause-repair-policy.json",
     "governance/root-cause-repairs.json",
@@ -211,5 +222,5 @@
     ".github/workflows/continuity.yml"
   ],
   "continuity_sync_rule": "A repository mutation whose changed paths are a nonempty subset of continuity_sync_paths is CONTINUITY_SYNC and does not require a second continuity update solely because that continuity mutation occurred, including a pull-request merge to main. A GitHub mutation whose target branch matches work/<lowercase-UUIDv4> or lock/<64-lowercase-hex> and does not update main is SOURCE_WORKSPACE_MUTATION and does not require continuity synchronization solely because it occurred; that branch's Git history and live machine state are its exact evidence. Creation of the work branch from current main is included. Any update to main whose changed paths are not a nonempty subset of continuity_sync_paths is never exempt. Git history remains the exact byte-history for every exempt mutation.",
-  "validation_command": "python scripts/validate_continuity.py && python scripts/validate_coordination.py && python scripts/validate_lock_history.py && python scripts/validate_goal_graph.py && python scripts/evaluate_resume_reconciliation.py && python scripts/evaluate_work_fence.py --validate-policy && python scripts/evaluate_thread_lifecycle.py --validate-policy && python continuity/tools/validate_checkpoints.py && python continuity/tests/test_checkpoints.py && python scripts/select_work.py --validate-policy && python scripts/evaluate_selected_operation_execution.py --validate-contract && python scripts/validate_issue_lifecycle.py --validate-policy && python scripts/evaluate_user_observation.py && python scripts/validate_root_cause_repair.py && python scripts/validate_watchdog.py && python scripts/validate_reliability.py && python scripts/validate_semantic_firewall.py && python scripts/validate_semantic_firewall_control_paths.py && python -m unittest discover -s tests -p 'test_*.py'"
+  "validation_command": "python scripts/validate_continuity.py && python scripts/validate_coordination.py && python scripts/validate_lock_history.py && python scripts/validate_goal_graph.py && python scripts/evaluate_resume_reconciliation.py && python scripts/evaluate_work_fence.py --validate-policy && python scripts/evaluate_thread_lifecycle.py --validate-policy && python continuity/tools/validate_checkpoints.py && python continuity/tests/test_checkpoints.py && python scripts/select_work.py --validate-policy && python scripts/evaluate_selected_operation_execution.py --validate-contract && python scripts/evaluate_live_audit.py --validate-policy && python scripts/validate_research_policy.py && python scripts/validate_issue_lifecycle.py --validate-policy && python scripts/evaluate_user_observation.py && python scripts/validate_root_cause_repair.py && python scripts/validate_watchdog.py && python scripts/validate_reliability.py && python scripts/validate_semantic_firewall.py && python scripts/validate_semantic_firewall_control_paths.py && python -m unittest discover -s tests -p 'test_*.py'"
 }

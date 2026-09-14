@@ -186,7 +186,7 @@ class ContinuityTests(unittest.TestCase):
         )
         self.assertEqual(
             orientation["start_description_rule"],
-            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_STANDALONE_TEXT_PARAGRAPH_WITHOUT_MARKDOWN_BLOCKQUOTE_WITH_SENTENCE_COUNT_IN:1,2",
+            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_ITS_OWN_BOUNDED_MARKDOWN_BLOCKQUOTE_WITH_SENTENCE_COUNT_IN:1,2",
         )
         self.assertEqual(
             orientation["end_rule"],
