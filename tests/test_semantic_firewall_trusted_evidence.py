@@ -109,6 +109,13 @@ class SemanticFirewallTrustedEvidenceTests(unittest.TestCase):
             "requested_at": NOW,
         }
 
+    def validate_bindings(self, snapshot: dict, receipts):
+        return trusted.validate_trusted_evidence_bindings(
+            snapshot,
+            receipts,
+            evaluated_at=NOW,
+        )
+
     def evaluate(self, snapshot: dict, receipts):
         contract = self.contract()
         return trusted.evaluate_trusted_control(
@@ -119,77 +126,61 @@ class SemanticFirewallTrustedEvidenceTests(unittest.TestCase):
             evaluated_at=NOW,
         )
 
-    def test_missing_adapter_fails_closed_as_not_run(self):
+    def test_missing_binding_candidates_fails_closed_as_not_run(self):
         snapshot, _ = self.snapshot_and_receipt()
         result = self.evaluate(snapshot, None)
         self.assertEqual("NOT_RUN", result["decision"])
-        self.assertIn("TRUSTED_EVIDENCE_ADAPTER_NOT_BOUND", result["reason_codes"])
+        self.assertIn("TRUSTED_EVIDENCE_BINDING_CANDIDATES_NOT_BOUND", result["reason_codes"])
 
-    def test_missing_persisted_receipt_fails_closed_as_not_run(self):
+    def test_missing_candidate_receipt_fails_closed_as_not_run(self):
         snapshot, _ = self.snapshot_and_receipt()
         result = self.evaluate(snapshot, {})
         self.assertEqual("NOT_RUN", result["decision"])
         self.assertIn("TRUSTED_EVIDENCE_RECEIPT_NOT_FOUND", result["reason_codes"])
 
-    def test_persisted_trusted_binding_passes_source_evaluation(self):
+    def test_source_binding_candidate_can_pass_structural_validation(self):
         snapshot, receipt = self.snapshot_and_receipt()
-        result = self.evaluate(snapshot, {RECEIPT_ID: receipt})
+        result = self.validate_bindings(snapshot, {RECEIPT_ID: receipt})
         self.assertEqual("PASS", result["decision"])
-        self.assertIn("ALL_KNOWN_INPUTS_BOUND_TO_PERSISTED_TRUSTED_EVIDENCE", result["reason_codes"])
+        self.assertIn("ALL_KNOWN_INPUTS_MATCH_EVIDENCE_RECEIPT_BINDING_CANDIDATES", result["reason_codes"])
         self.assertEqual("NONE", result["runtime_control_authority"])
 
-    def test_self_hash_cannot_hide_untrusted_issuer(self):
+    def test_source_only_receipt_cannot_create_trusted_control_pass(self):
+        snapshot, receipt = self.snapshot_and_receipt()
+        result = self.evaluate(snapshot, {RECEIPT_ID: receipt})
+        self.assertEqual("NOT_RUN", result["decision"])
+        self.assertIn("TRUSTED_EVIDENCE_ADAPTER_NOT_IMPLEMENTED", result["reason_codes"])
+        self.assertIn("AUTHORITATIVE_PERSISTENCE_READBACK_NOT_IMPLEMENTED", result["reason_codes"])
+        self.assertEqual("NONE", result["runtime_control_authority"])
+
+    def test_self_hash_cannot_establish_trusted_issuer_label(self):
         snapshot, receipt = self.snapshot_and_receipt()
         receipt["issuer_type"] = "SOURCE_EVIDENCE_ADAPTER"
         receipt["evidence_receipt_sha256"] = trusted.recompute_evidence_receipt_sha(receipt)
         snapshot["inputs"][0]["evidence_receipt_sha256"] = receipt["evidence_receipt_sha256"]
-        contract = self.contract()
-        request = self.request(contract, snapshot)
-        result = trusted.evaluate_trusted_control(
-            contract,
-            request,
-            snapshot,
-            trusted_evidence_receipts={RECEIPT_ID: receipt},
-            evaluated_at=NOW,
-        )
+        result = self.validate_bindings(snapshot, {RECEIPT_ID: receipt})
         self.assertEqual("FAIL", result["decision"])
-        self.assertIn("TRUSTED_EVIDENCE_ISSUER_NOT_TRUSTED", result["reason_codes"])
+        self.assertIn("TRUSTED_EVIDENCE_ISSUER_LABEL_MISMATCH", result["reason_codes"])
 
     def test_receipt_must_bind_exact_source_identity(self):
         snapshot, receipt = self.snapshot_and_receipt()
         receipt["source_ref"] = "github:other-resource"
         receipt["evidence_receipt_sha256"] = trusted.recompute_evidence_receipt_sha(receipt)
         snapshot["inputs"][0]["evidence_receipt_sha256"] = receipt["evidence_receipt_sha256"]
-        contract = self.contract()
-        request = self.request(contract, snapshot)
-        result = trusted.evaluate_trusted_control(
-            contract,
-            request,
-            snapshot,
-            trusted_evidence_receipts={RECEIPT_ID: receipt},
-            evaluated_at=NOW,
-        )
+        result = self.validate_bindings(snapshot, {RECEIPT_ID: receipt})
         self.assertEqual("FAIL", result["decision"])
         self.assertIn("TRUSTED_EVIDENCE_SOURCE_REF_MISMATCH", result["reason_codes"])
 
-    def test_expired_trusted_evidence_cannot_pass(self):
+    def test_expired_binding_candidate_cannot_pass(self):
         snapshot, receipt = self.snapshot_and_receipt(expires_at="2026-09-13T19:59:45Z")
-        result = self.evaluate(snapshot, {RECEIPT_ID: receipt})
+        result = self.validate_bindings(snapshot, {RECEIPT_ID: receipt})
         self.assertEqual("NOT_RUN", result["decision"])
         self.assertIn("TRUSTED_EVIDENCE_RECEIPT_EXPIRED", result["reason_codes"])
 
     def test_receipt_digest_mismatch_fails(self):
         snapshot, receipt = self.snapshot_and_receipt()
         snapshot["inputs"][0]["evidence_receipt_sha256"] = "0" * 64
-        contract = self.contract()
-        request = self.request(contract, snapshot)
-        result = trusted.evaluate_trusted_control(
-            contract,
-            request,
-            snapshot,
-            trusted_evidence_receipts={RECEIPT_ID: receipt},
-            evaluated_at=NOW,
-        )
+        result = self.validate_bindings(snapshot, {RECEIPT_ID: receipt})
         self.assertEqual("FAIL", result["decision"])
         self.assertIn("TRUSTED_EVIDENCE_RECEIPT_DIGEST_MISMATCH", result["reason_codes"])
 
