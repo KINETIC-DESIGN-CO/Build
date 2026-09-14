@@ -123,7 +123,7 @@ class WorkSelectionTests(unittest.TestCase):
             "lease_id": "33333333-3333-4333-8333-333333333333",
             "base_sha": "0" * 40,
             "acquired_at": "2026-09-12T13:00:00Z",
-            "heartbeat_at": "2026-09-12T13:00:00Z",
+            "heartbeat_at": "2026-09-12T13:45:00Z",
             "expires_at": expires,
             "runtime_control_authority": "NONE",
         }
