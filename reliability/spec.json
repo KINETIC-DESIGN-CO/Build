@@ -150,7 +150,7 @@
     "issue_consolidation_policy": "governance/issue-consolidation-policy.json",
     "user_observation_policy": "governance/user-observation-policy.json",
     "user_observation_ledger": "continuity/user-observations.jsonl",
-    "semantic_firewall_contract_path": "contracts/semantic-firewall",
+    "semantic_firewall_contract_path": "contracts/semantic-firewall-v1",
     "semantic_firewall_link_state": "SOURCE_IMPORTED_ACTIVATION_PENDING",
     "goal_root_identity_owner_path": "governance/goal-registry.json",
     "goal_root_identity_link_state": "ACTIVE"

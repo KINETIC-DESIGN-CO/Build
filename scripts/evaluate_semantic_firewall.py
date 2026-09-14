@@ -51,7 +51,11 @@ def _type_matches(value: Any, value_type: str) -> bool:
 
 
 def _result(decision: str, reasons: list[str]) -> dict:
-    return {"decision": decision, "reason_codes": sorted(set(reasons))}
+    return {
+        "decision": decision,
+        "reason_codes": sorted(set(reasons)),
+        "runtime_control_authority": "NONE",
+    }
 
 
 def evaluate_control(contract: dict, request: dict, snapshot: dict, *, evaluated_at: str) -> dict:

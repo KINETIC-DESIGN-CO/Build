@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000006-4c95292a",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-14T01:18:23Z",
+  "source_main_sha": "65f8c6ff26789ef56cbfc55bdb8796164fb79757",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "69ebe72892d521f1a5c3d8e8c62abcab99d15f13",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000005-6c5f0a21.json",
+    "blob_sha": "b3bf2c0cadfa65d1d54b7797687bfcdc6cee938e"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-14T01:18:23Z",
+    "evidence_ref": "governance/work-selection-policy.json:v4 + governance/work-admissions.json:github-issue-57 ADMITTED with dependency github-issue-15 COMPLETE + live component:issue_57 generation 2 ACTIVE and unexpired through 2026-09-14T04:22:52Z; active root component:goal_lifecycle_identity is independently held by work 3edfca10-ac11-4a79-bd31-72bd84165594 generation 2 through 2026-09-14T02:13:20Z, so the exact component resource sets are disjoint at evaluation time.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_78A6909_STALE_VS_LIVE_MAIN_65F8C6F"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-14T01:18:23Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-14T01:18:23Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "9dc6091c-ef67-4eac-b391-129db073735c",
+      "generation": 2,
+      "expires_at": "2026-09-14T04:22:52Z",
+      "observed_at": "2026-09-14T01:18:23Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
+      "generation": 2,
+      "expires_at": "2026-09-14T02:13:20Z",
+      "observed_at": "2026-09-14T01:18:23Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:85:Harden Semantic Firewall trusted evidence provenance boundary:head:69ebe72892d521f1a5c3d8e8c62abcab99d15f13",
+      "operation": "PR_HEAD_REQUIRED_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34794403720:success",
+        "github:job=103824620402:validate:success",
+        "github:validate_semantic_firewall_v1:success",
+        "github:validate_reliability_contracts:success",
+        "github:run_supabase_database_tests:success"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:85:review-thread:PRRT_kwDOUXg_786h8jWZ",
+      "operation": "VERIFY_RCA_0003_P1_REVIEW_THREAD_RESOLVED",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:review-thread:is_resolved=true",
+        "github:review-thread:is_outdated=true"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main:65f8c6ff26789ef56cbfc55bdb8796164fb79757..head:69ebe72892d521f1a5c3d8e8c62abcab99d15f13",
+      "operation": "VERIFY_RECONCILED_BRANCH_CONTAINS_CURRENT_MAIN",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:compare:status=ahead",
+        "github:compare:ahead_by=33",
+        "github:compare:behind_by=0"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "READ_CANONICAL_INVOCATION_RUNTIME_SURFACE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "project_status=ACTIVE_HEALTHY",
+        "organization_plan=free",
+        "edge_function_count=0",
+        "database_function_life.invoke=absent",
+        "database_function_life.record_invocation_v1=present",
+        "canonical_invocation=NOT_RUN"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:85:required-merge-queue-integration-action",
+      "operation": "DISCOVER_NONMETERED_ENQUEUE_PULL_REQUEST_ACTION",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github-connector:enqueuePullRequest-action=absent",
+        "github-connector:merge_pull_request=immediate-merge-not-queue",
+        "github-connector:enable_auto_merge=distinct-from-enqueuePullRequest",
+        "opera-browser-connector=read-and-navigation-only-no-click-action",
+        "tinyfish-browser-automation=metered-and-not-authorized-by-cost-policy"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0002",
+    "VD-0003",
+    "VD-0004",
+    "VD-0006",
+    "VD-0009",
+    "VD-0011"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0003",
+    "DR-0004",
+    "DR-0009"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Pull requests - GitHub GraphQL reference",
+      "url": "https://docs.github.com/en/graphql/reference/pulls",
+      "observed_date": "2026-09-13",
+      "supported_claim": "GitHub exposes enqueuePullRequest and enablePullRequestAutoMerge as separate GraphQL mutations; the required queue operation should not be replaced by auto-merge inference."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Merging a pull request with a merge queue",
+      "url": "https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/merging-a-pull-request-with-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "For a branch requiring Merge Queue, GitHub adds a ready pull request to the queue through Merge when ready or an equivalent queue-aware command and then validates a latest-base merge_group before integration."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "ToolGuardian: Declarative Security for AI Agent-Tool Interactions",
+      "url": "https://arxiv.org/abs/2607.21835",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Current agent-security research supports deterministic declarative policy enforcement outside model judgment for protected tool actions."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=65f8c6ff26789ef56cbfc55bdb8796164fb79757",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "PR:85:Harden Semantic Firewall trusted evidence provenance boundary:head=69ebe72892d521f1a5c3d8e8c62abcab99d15f13",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "ENQUEUE PR #85 — Harden Semantic Firewall trusted evidence provenance boundary AT ITS CURRENT VALIDATED HEAD INTO THE REQUIRED GITHUB MERGE QUEUE USING A NONMETERED AUTHORIZED enqueuePullRequest EQUIVALENT; DO NOT SUBSTITUTE DIRECT REST MERGE OR enablePullRequestAutoMerge; IF ONLY METERED BROWSER AUTOMATION IS AVAILABLE, REQUIRE VINCE COST AUTHORIZATION BEFORE USING IT. AFTER QUEUE ENTRY, VERIFY merge_group validate SUCCESS, merged main READBACK, AND post-merge validate BEFORE ANY COMPLETION CLAIM.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoints/CP-000005-6c5f0a21.json",
+    "GITHUB_ISSUE:57:Migrate legacy Semantic Firewall and make the work deterministically dispatchable",
+    "GITHUB_PR:85:Harden Semantic Firewall trusted evidence provenance boundary",
+    "GITHUB_ACTIONS_RUN:34794403720",
+    "GITHUB_RULESET:22998982:Protect-main",
+    "GITHUB_MAIN:65f8c6ff26789ef56cbfc55bdb8796164fb79757",
+    "governance/goal-registry.json:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "continuity/current.json:A-0014:Terminal Redispatch & Issue Lifecycle Closure",
+    "contracts/semantic-firewall-v1/conformance-profile.json",
+    "contracts/semantic-firewall-v1/rule-registry.json"
+  ]
+}

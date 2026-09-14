@@ -25,7 +25,7 @@
     },
     "semantic_firewall": {
       "type":"object","additionalProperties":false,"required":["current_contract_path","relationship","rule","state"],
-      "properties":{"relationship":{"type":"string","const":"COMBINE_IMPORTED_SOURCE_PENDING_BUILD_NATIVE_ACTIVATION"},"current_contract_path":{"type":"string","const":"contracts/semantic-firewall"},"state":{"type":"string","enum":["SOURCE_IMPORTED_ACTIVATION_PENDING","ACTIVE"]},"rule":{"type":"string","minLength":1}}
+      "properties":{"relationship":{"type":"string","const":"COMBINE_BUILD_NATIVE_SOURCE_PENDING_RUNTIME_ACTIVATION"},"current_contract_path":{"type":"string","const":"contracts/semantic-firewall-v1"},"state":{"type":"string","enum":["SOURCE_IMPORTED_ACTIVATION_PENDING","ACTIVE"]},"rule":{"type":"string","minLength":1}}
     },
     "goal_identity": {
       "type":"object","additionalProperties":false,"required":["current_owner_path","relationship","rule","state"],

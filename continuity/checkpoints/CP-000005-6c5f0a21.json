@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000005-6c5f0a21",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T22:23:03Z",
+  "source_main_sha": "3f0298c84670c9b0f67ac2c5c1ae4fc637c795ad",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "9bc8a1d386dabd06593fa320a78ec4075ebb1cd9",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000004-38c1639d.json",
+    "blob_sha": "338d16811d3b54802788c10e1a80726065fb443c"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-13T22:23:03Z",
+    "evidence_ref": "governance/work-selection-policy.json:v4 + governance/work-admissions.json:github-issue-57 ADMITTED with dependency github-issue-15 COMPLETE + live component:issue_57 generation 1 ACTIVE and unexpired through 2026-09-14T00:05:56Z; active root component:goal_lifecycle_identity is independently held by work 3edfca10-ac11-4a79-bd31-72bd84165594 generation 2 through 2026-09-14T02:13:20Z, so the exact component resource sets remain disjoint.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_78A6909_STALE_VS_LIVE_MAIN_3F0298C"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T22:23:03Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T22:23:03Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "efaad927-c5ea-43dc-9154-53aa339c307a",
+      "generation": 1,
+      "expires_at": "2026-09-14T00:05:56Z",
+      "observed_at": "2026-09-13T22:23:03Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
+      "generation": 2,
+      "expires_at": "2026-09-14T02:13:20Z",
+      "observed_at": "2026-09-13T22:23:03Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:83 Add Build-native Semantic Firewall v1 source boundary",
+      "operation": "PROTECTED_MERGE_QUEUE_INTEGRATION_AND_POST_MERGE_VALIDATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:main=3f0298c84670c9b0f67ac2c5c1ae4fc637c795ad",
+        "github:merge-group-run=34785822630:success",
+        "github:post-merge-run=34785929800:success"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "operation": "VERSION_TRUSTED_EVIDENCE_PROVENANCE_BOUNDARY_WITH_SOURCE_LEVEL_FALSIFICATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:branch-head=9bc8a1d386dabd06593fa320a78ec4075ebb1cd9",
+        "contracts/semantic-firewall-v1/spec.json:evidence_trust_boundary",
+        "architecture/semantic-firewall-v1.md:Evidence provenance boundary"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/root-cause-repairs.json:RCA-0003",
+      "operation": "RECORD_VERIFIED_FIXED_FROM_PROTECTED_INTEGRATION_AND_POST_MERGE_EVIDENCE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:branch-readback:RCA-0003=VERIFIED_FIXED",
+        "github:head-ci=34785725263",
+        "github:merge-group=34785822630",
+        "github:main=3f0298c84670c9b0f67ac2c5c1ae4fc637c795ad",
+        "github:post-merge=34785929800"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "READ_CANONICAL_INVOCATION_RUNTIME_SURFACE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "project_status=ACTIVE_HEALTHY",
+        "edge_function_count=0",
+        "database_function_life.invoke=absent",
+        "database_function_life.record_invocation_v1=present",
+        "canonical_invocation=NOT_RUN"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0002",
+    "VD-0009",
+    "VD-0011"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0004"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Managing a merge queue",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-13",
+      "supported_claim": "GitHub Merge Queue remains the protected latest-base source integration mechanism for this public organization repository and does not create Life runtime control authority."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Supabase Free includes the existing Postgres database and does not include Branching; the current provenance source slice requires no paid capability."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Vercel Hobby Plan",
+      "url": "https://vercel.com/docs/plans/hobby",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Vercel Hobby remains a free personal-project tier, but no exact Life Vercel target is authorized so deployment remains NOT_RUN."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "Before the Tool Call: Deterministic Pre-Action Authorization for Autonomous AI Agents",
+      "url": "https://arxiv.org/abs/2603.20953",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Deterministic pre-action interception outside the model loop supports retaining a separate enforcement boundary before protected effects."
+    },
+    {
+      "source_kind": "REDDIT",
+      "title": "What guardrails are you using around agent tool calls?",
+      "url": "https://www.reddit.com/r/aiagents/comments/1u7lgfo/what_guardrails_are_you_using_around_agent_tool/",
+      "observed_date": "2026-09-13",
+      "supported_claim": "A current practitioner discussion independently describes a stateful gate outside the agent loop for policy and job-state checks before side effects; this is experience evidence only."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=3f0298c84670c9b0f67ac2c5c1ae4fc637c795ad",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "CREATE_AND_VALIDATE_PULL_REQUEST_FOR_TRUSTED_EVIDENCE_PROVENANCE_SLICE; ENTER_REQUIRED_GITHUB_MERGE_QUEUE_ONLY_AFTER_FINAL_HEAD_VALIDATE_PASS; AFTER_PROTECTED_INTEGRATION_CONTINUE_PHASE_B_WITH_VERSIONED_TRUSTED_EVIDENCE_ADAPTER_AND_AUTHORITATIVE_RECEIPT_PERSISTENCE_SOURCE_WITHOUT_CLAIMING_RUNTIME_ACTIVATION.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoints/CP-000004-38c1639d.json",
+    "GITHUB_ISSUE:57",
+    "GITHUB_PR:83:Add Build-native Semantic Firewall v1 source boundary",
+    "GITHUB_ACTIONS_RUN:34785822630",
+    "GITHUB_ACTIONS_RUN:34785929800",
+    "GITHUB_MAIN:3f0298c84670c9b0f67ac2c5c1ae4fc637c795ad",
+    "governance/root-cause-repairs.json:RCA-0003",
+    "governance/goal-registry.json:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "continuity/current.json:A-0014:Terminal Redispatch & Issue Lifecycle Closure",
+    "contracts/semantic-firewall-v1/spec.json",
+    "architecture/semantic-firewall-v1.md",
+    "GITHUB_RULESET:22998982:Protect-main"
+  ]
+}
