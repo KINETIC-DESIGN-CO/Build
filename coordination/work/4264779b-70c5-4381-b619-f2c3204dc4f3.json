@@ -13,6 +13,7 @@
     "architecture/semantic-firewall-v1.md",
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000005-6c5f0a21.json",
+    "continuity/checkpoints/CP-000006-4c95292a.json",
     "contracts/semantic-firewall-v1/conformance-profile.json",
     "contracts/semantic-firewall-v1/rule-registry.json",
     "contracts/semantic-firewall-v1/spec.json",
