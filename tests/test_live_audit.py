@@ -76,6 +76,13 @@ class LiveAuditTests(unittest.TestCase):
         for state in ("DOCUMENTED", "DEFERRED", "QUEUED_ONLY"):
             self.assertIn(state, policy["passive_terminal_states_forbidden"])
 
+    def test_live_audit_is_pre_selector_gate(self):
+        policy = live_audit.load(live_audit.POLICY_PATH)
+        rule = policy["selection_binding_rule"]
+        self.assertIn("LIVE_AUDIT_RUNS_BEFORE_NORMAL_WORK_SELECTION", rule)
+        self.assertIn("IMMEDIATE_REPAIR_OR_IMMEDIATE_REPLAN_MUST_RESOLVE_BEFORE_NORMAL_SELECTOR_EXECUTION", rule)
+        self.assertIn("CANDIDATE_ONLY_OR_NO_CHANGE_FALLS_THROUGH_TO_NORMAL_WORK_SELECTION", rule)
+
 
 if __name__ == "__main__":
     unittest.main()
