@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "profile_id": "life-semantic-firewall-conformance-v1",
+  "runtime_control_authority": "NONE",
+  "profile_authority": "SOURCE_VALIDATION_ONLY",
+  "authority_classes": [
+    "RUNTIME_CONTROL",
+    "ASSISTANT_PROCEDURE",
+    "SOURCE_COORDINATION",
+    "PRESENTATION_ONLY",
+    "EVIDENCE_ONLY"
+  ],
+  "control_decision_kinds": [
+    "AUTHORIZATION",
+    "ROUTING",
+    "PRIORITY",
+    "STATE_TRANSITION",
+    "COMPLETION",
+    "VERIFICATION",
+    "ESCALATION",
+    "RELEASE",
+    "MUTATION",
+    "EFFECT_EXECUTION"
+  ],
+  "evidence_states": [
+    "KNOWN",
+    "UNKNOWN",
+    "UNVERIFIED",
+    "NOT_RUN",
+    "MISSING",
+    "STALE"
+  ],
+  "fail_closed_states": [
+    "UNKNOWN",
+    "UNVERIFIED",
+    "NOT_RUN",
+    "MISSING",
+    "STALE"
+  ],
+  "enforcement_states": [
+    "SOURCE_ONLY",
+    "CI_ENFORCED",
+    "BOOTSTRAP_REQUIRED",
+    "RUNTIME_ACTIVE"
+  ],
+  "unsafe_direct_pass_source_classes": [
+    "MODEL_RESPONSE",
+    "PROSE",
+    "GITHUB_ISSUE",
+    "GITHUB_PR",
+    "REVIEW",
+    "LABEL",
+    "SEMANTIC_SIMILARITY"
+  ],
+  "governed_surface_discovery": {
+    "glob_patterns": [
+      "governance/*-policy.json",
+      "reliability/*.json",
+      "continuity/*-policy.json",
+      "continuity/response-contract.json",
+      "continuity/bootstrap.json",
+      "coordination/protocol.json",
+      "watchdog/spec.json",
+      "contracts/*.contract.json",
+      "contracts/*/spec.json"
+    ],
+    "excluded_paths": []
+  },
+  "required_registry_entry_fields": [
+    "path",
+    "authority_class",
+    "affected_control_decision_kinds",
+    "canonical_owner",
+    "identity_fields",
+    "permitted_evidence_source_classes",
+    "evidence_states",
+    "fail_closed_states",
+    "freshness_mode",
+    "deterministic_consumer_paths",
+    "output_states",
+    "output_authority",
+    "state_change_effect_mode",
+    "authoritative_readback_requirements",
+    "fencing_requirements",
+    "test_refs",
+    "enforcement_state"
+  ],
+  "rules": [
+    "DISCOVERED_GOVERNED_SURFACE_SET_EQUALS_REGISTERED_SURFACE_SET",
+    "EVERY_REGISTERED_SURFACE_PATH_AND_CANONICAL_OWNER_EXISTS",
+    "EVERY_GATING_SURFACE_HAS_ONE_OR_MORE_DETERMINISTIC_CONSUMER_PATHS",
+    "UNKNOWN_UNVERIFIED_NOT_RUN_MISSING_OR_STALE_CANNOT_CREATE_PASS_ELIGIBILITY_COMPLETION_OR_EFFECT_EXECUTION",
+    "UNSAFE_DIRECT_PASS_SOURCE_CLASSES_CANNOT_BE_PERMITTED_FOR_CONTROL_GATES",
+    "SOURCE_ONLY_SURFACE_CANNOT_BE_REPRESENTED_AS_BOOTSTRAP_REQUIRED_CI_ENFORCED_OR_RUNTIME_ACTIVE_WITHOUT_DECLARED_EXECUTABLE_CONSUMER",
+    "STATE_CHANGING_EFFECT_RULES_REQUIRE_TRUSTED_PRECONDITION_WRITE_AHEAD_AUTHORITATIVE_READBACK_AND_REQUIRED_POSTCONDITION_LINKAGE",
+    "STALE_WORK_CAPABLE_RULES_REQUIRE_EXACT_REVISION_GENERATION_OR_FENCING_REQUIREMENTS",
+    "NON_RUNTIME_AUTHORITY_CLASSES_ALWAYS_HAVE_OUTPUT_AUTHORITY_NONE",
+    "RUNTIME_ACTIVE_REQUIRES_RUNTIME_CONTROL_AUTHORITY_OUTSIDE_THIS_BUILD_TIME_PROFILE",
+    "CANONICAL_OWNER_PATH_IS_UNIQUE_PER_REGISTERED_RULE_SURFACE",
+    "PROFILE_AND_REGISTRY_HAVE_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY"
+  ]
+}
