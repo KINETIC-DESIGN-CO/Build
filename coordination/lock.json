@@ -12,9 +12,9 @@
   "lease_id": "ef2a5979-aaf3-410d-a331-58aaacac1027",
   "base_sha": "886143446a560366c5f8d66c9699c196a9914ac6",
   "acquired_at": "2026-09-14T11:04:08Z",
-  "heartbeat_at": "2026-09-14T11:04:08Z",
-  "expires_at": "2026-09-14T11:34:08Z",
+  "heartbeat_at": "2026-09-14T11:29:05Z",
+  "expires_at": "2026-09-14T11:59:05Z",
   "lease_contract": "COMPONENT_1800",
-  "lease_event_type": "TAKEOVER",
+  "lease_event_type": "RENEW_PROTECTED_MUTATION",
   "runtime_control_authority": "NONE"
 }
