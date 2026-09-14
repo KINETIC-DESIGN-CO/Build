@@ -128,16 +128,16 @@
       "class_id": "RUNTIME_EFFECT",
       "source_class": "TOOL_REQUEST",
       "direct_control_effect": "FORBIDDEN_UNTIL_RUNTIME_ACTIVE",
-      "canonical_bridge_paths": ["contracts/semantic-firewall-v1/spec.json", "scripts/evaluate_semantic_firewall.py"],
+      "canonical_bridge_paths": ["contracts/semantic-firewall-v1/spec.json", "scripts/evaluate_semantic_firewall_trusted_evidence.py"],
       "instance_globs": [],
       "schema_path": "contracts/semantic-firewall-v1/effect-request.schema.json",
-      "deterministic_consumer_paths": ["scripts/evaluate_semantic_firewall.py"],
+      "deterministic_consumer_paths": ["scripts/evaluate_semantic_firewall_trusted_evidence.py"],
       "fence_paths": [],
-      "authoritative_readback_requirements": ["PERSISTED_TRUSTED_PASS_RECEIPT", "AUTHORITATIVE_POST_EFFECT_READBACK"],
+      "authoritative_readback_requirements": ["PERSISTED_TRUSTED_EVIDENCE_RECEIPTS", "PERSISTED_TRUSTED_PASS_RECEIPT", "AUTHORITATIVE_POST_EFFECT_READBACK"],
       "decision_kinds": ["AUTHORIZATION", "VERIFICATION", "MUTATION", "EFFECT_EXECUTION"],
       "protected_boundaries": [],
       "enforcement_state": "SOURCE_ONLY_INACTIVE",
-      "activation_dependencies": ["TRUSTED_EVIDENCE_ADAPTER_IMPLEMENTED", "PERSISTED_TRUSTED_PASS_RECEIPT", "NON_BYPASS_EFFECT_ROUTING", "AUTHORITATIVE_POST_EFFECT_READBACK", "EXACT_LIFE_INVOKE_DEPLOYED_AND_VERIFIED"]
+      "activation_dependencies": ["TRUSTED_EVIDENCE_BINDING_CONTRACT_IMPLEMENTED", "TRUSTED_EVIDENCE_ADAPTER_IMPLEMENTED", "PERSISTED_TRUSTED_EVIDENCE_RECEIPTS", "PERSISTED_TRUSTED_PASS_RECEIPT", "NON_BYPASS_EFFECT_ROUTING", "AUTHORITATIVE_POST_EFFECT_READBACK", "EXACT_LIFE_INVOKE_DEPLOYED_AND_VERIFIED"]
     },
     {
       "class_id": "CI_TRUST_ROOT",
