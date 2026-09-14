@@ -101,12 +101,16 @@ def validate_source_links(spec):
 
     if links["semantic_firewall_link_state"] == "SOURCE_IMPORTED_ACTIVATION_PENDING":
         rel = links["semantic_firewall_contract_path"]
-        if rel != "contracts/semantic-firewall" or not (ROOT / rel).is_dir():
-            fail("R004_SOURCE_LINK", "imported Semantic Firewall state requires contracts/semantic-firewall directory")
+        if rel != "contracts/semantic-firewall-v1" or not (ROOT / rel).is_dir():
+            fail("R004_SOURCE_LINK", "pending Semantic Firewall activation requires contracts/semantic-firewall-v1 directory")
     if links["semantic_firewall_link_state"] == "ACTIVE":
-        fail("R004_SOURCE_LINK", "Phase 0 cannot declare Build-native Semantic Firewall ACTIVE")
-    if links["goal_root_identity_link_state"] == "PENDING_IMPLEMENTATION" and links["goal_root_identity_owner_path"] is not None:
-        fail("R004_SOURCE_LINK", "pending goal identity must not claim an active owner path")
+        fail("R004_SOURCE_LINK", "source-only Reliability cannot declare Semantic Firewall runtime ACTIVE")
+    if links["goal_root_identity_link_state"] != "ACTIVE":
+        fail("R004_SOURCE_LINK", "Reliability must bind the active canonical goal owner")
+    if links["goal_root_identity_owner_path"] != "governance/goal-registry.json":
+        fail("R004_SOURCE_LINK", "active goal identity must bind governance/goal-registry.json")
+    if not (ROOT / "governance/goal-registry.json").is_file():
+        fail("R004_SOURCE_LINK", "canonical goal registry is missing")
 
 
 def validate_postconditions(spec, catalog):
@@ -223,6 +227,11 @@ def validate_compatibility(spec, compatibility):
         fail("R009_COMPATIBILITY", "Semantic Firewall states must match across Reliability artifacts")
     if firewall["current_contract_path"] != spec["cross_links"]["semantic_firewall_contract_path"]:
         fail("R009_COMPATIBILITY", "Semantic Firewall paths must match across Reliability artifacts")
+    goal = compatibility["goal_identity"]
+    if goal["state"] != spec["cross_links"]["goal_root_identity_link_state"]:
+        fail("R009_COMPATIBILITY", "goal identity states must match across Reliability artifacts")
+    if goal["current_owner_path"] != spec["cross_links"]["goal_root_identity_owner_path"]:
+        fail("R009_COMPATIBILITY", "goal identity owner paths must match across Reliability artifacts")
 
 
 def validate_invariants(spec, catalog):
