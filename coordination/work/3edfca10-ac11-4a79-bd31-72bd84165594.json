@@ -21,7 +21,6 @@
     "governance/schema/research-policy.schema.json",
     "scripts/evaluate_live_audit.py",
     "scripts/validate_research_policy.py",
-    "tests/test_continuity.py",
     "tests/test_live_audit.py",
     "tests/test_research_policy.py",
     "tests/test_response_contract_presentation.py"
