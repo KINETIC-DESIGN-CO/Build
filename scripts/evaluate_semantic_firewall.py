@@ -75,6 +75,10 @@ def _predicate_index(registry: dict) -> dict[str, dict]:
     }
 
 
+def predicate_definition_sha256(predicate: dict) -> str:
+    return sha256_json(predicate)
+
+
 def _semantic_input_valid(definition: dict, value: Any, predicates: dict[str, dict], input_record: dict) -> tuple[bool, str | None]:
     semantic_type = definition.get("semantic_type")
     if semantic_type == "CLOSED_ENUM":
@@ -84,7 +88,10 @@ def _semantic_input_valid(definition: dict, value: Any, predicates: dict[str, di
         return (isinstance(value, str) and bool(value), "PREDICATE_INPUT_EXACT_ID_INVALID")
     if semantic_type == "INTEGER_WITH_UNIT":
         return (
-            isinstance(value, int) and not isinstance(value, bool) and isinstance(definition.get("unit"), str),
+            isinstance(value, int)
+            and not isinstance(value, bool)
+            and isinstance(definition.get("unit"), str)
+            and bool(definition.get("unit")),
             "PREDICATE_INPUT_UNIT_INVALID",
         )
     if semantic_type == "TIMESTAMP_RFC3339":
@@ -111,7 +118,7 @@ def _semantic_input_valid(definition: dict, value: Any, predicates: dict[str, di
     return False, "PREDICATE_INPUT_SEMANTIC_TYPE_INVALID"
 
 
-def _evaluate_expression(expression: dict, values: dict[str, Any]) -> bool:
+def _evaluate_expression(expression: dict, values: dict[str, Any], definitions: dict[str, dict]) -> bool:
     left_name = expression.get("left_input")
     if left_name not in values:
         raise ValueError("left input missing")
@@ -121,12 +128,46 @@ def _evaluate_expression(expression: dict, values: dict[str, Any]) -> bool:
     if operator == "EQ":
         return left == right
     if operator == "INTEGER_GTE":
+        definition_unit = definitions.get(left_name, {}).get("unit")
+        if not isinstance(definition_unit, str) or expression.get("unit") != definition_unit:
+            raise ValueError("integer unit mismatch")
         return isinstance(left, int) and not isinstance(left, bool) and isinstance(right, int) and not isinstance(right, bool) and left >= right
     if operator == "TIMESTAMP_GTE":
         return _parse_time(left) >= _parse_time(right)
     if operator == "SET_CONTAINS_ALL":
-        return isinstance(left, list) and isinstance(right, list) and set(right).issubset(set(left))
+        return (
+            isinstance(left, list)
+            and all(isinstance(v, str) for v in left)
+            and len(left) == len(set(left))
+            and isinstance(right, list)
+            and all(isinstance(v, str) for v in right)
+            and len(right) == len(set(right))
+            and set(right).issubset(set(left))
+        )
     raise ValueError("unsupported predicate operator")
+
+
+def _resolve_predicate(contract: dict, request: dict, predicate_registry: dict | None) -> tuple[dict | None, dict | None, list[str], list[str]]:
+    fail: list[str] = []
+    not_run: list[str] = []
+    try:
+        registry = predicate_registry if predicate_registry is not None else _load_predicate_registry()
+    except (OSError, json.JSONDecodeError):
+        return None, None, fail, ["PREDICATE_REGISTRY_NOT_RUN"]
+
+    predicates = _predicate_index(registry)
+    predicate_id = contract.get("predicate_id")
+    if request.get("predicate_id") != predicate_id:
+        fail.append("PREDICATE_ID_MISMATCH")
+    predicate = predicates.get(predicate_id)
+    if predicate is None:
+        not_run.append("PREDICATE_DEFINITION_MISSING")
+        return registry, None, fail, not_run
+    if request.get("predicate_definition_sha256") != predicate_definition_sha256(predicate):
+        fail.append("PREDICATE_DEFINITION_HASH_MISMATCH")
+    if contract.get("decision_kind") not in predicate.get("decision_kinds", []):
+        fail.append("PREDICATE_DECISION_KIND_MISMATCH")
+    return registry, predicate, fail, not_run
 
 
 def _evaluate_registered_predicate(
@@ -134,21 +175,10 @@ def _evaluate_registered_predicate(
     provided: dict[str, dict],
     parsed_values: dict[str, Any],
     *,
-    predicate_registry: dict | None,
+    registry: dict,
+    predicate: dict,
 ) -> dict:
-    try:
-        registry = predicate_registry if predicate_registry is not None else _load_predicate_registry()
-    except (OSError, json.JSONDecodeError):
-        return _result("NOT_RUN", ["PREDICATE_REGISTRY_NOT_RUN"])
-
     predicates = _predicate_index(registry)
-    predicate_id = contract.get("predicate_id")
-    predicate = predicates.get(predicate_id)
-    if predicate is None:
-        return _result("NOT_RUN", ["PREDICATE_DEFINITION_MISSING"])
-    if contract.get("decision_kind") not in predicate.get("decision_kinds", []):
-        return _result("FAIL", ["PREDICATE_DECISION_KIND_MISMATCH"])
-
     definitions = predicate.get("required_inputs", [])
     defined = {
         row.get("name"): row
@@ -170,8 +200,12 @@ def _evaluate_registered_predicate(
         inp = provided[name]
         if req.get("value_type") != definition.get("value_type"):
             reasons.append("PREDICATE_INPUT_TYPE_MISMATCH")
+        if set(req.get("accepted_source_types", [])) != set(definition.get("source_classes", [])):
+            reasons.append("PREDICATE_INPUT_SOURCE_BINDING_MISMATCH")
         source_type = inp.get("source_type")
-        if source_type in unsafe_sources or source_type not in definition.get("source_classes", []):
+        if source_type in unsafe_sources:
+            reasons.append("PREDICATE_INPUT_PROVENANCE_UNSAFE")
+        if source_type not in definition.get("source_classes", []):
             reasons.append("PREDICATE_INPUT_SOURCE_FORBIDDEN")
         ok, code = _semantic_input_valid(definition, parsed_values[name], predicates, inp)
         if not ok and code:
@@ -185,7 +219,7 @@ def _evaluate_registered_predicate(
         if not isinstance(expression, dict):
             return _result("NOT_RUN", ["PREDICATE_DEFINITION_MISSING"])
         try:
-            predicate_pass = _evaluate_expression(expression, parsed_values)
+            predicate_pass = _evaluate_expression(expression, parsed_values, defined)
         except Exception:
             return _result("FAIL", ["PREDICATE_DEFINITION_INVALID"])
         if predicate_pass:
@@ -224,6 +258,10 @@ def evaluate_control(
         fail.append("SNAPSHOT_ID_MISMATCH")
     if request.get("input_snapshot_sha256") != sha256_json(snapshot):
         fail.append("SNAPSHOT_HASH_MISMATCH")
+
+    registry, predicate, predicate_fail, predicate_not_run = _resolve_predicate(contract, request, predicate_registry)
+    fail.extend(predicate_fail)
+    not_run.extend(predicate_not_run)
 
     try:
         now = _parse_time(evaluated_at)
@@ -311,11 +349,14 @@ def evaluate_control(
         return _result("NOT_RUN", not_run)
     if set(parsed_values) != set(required):
         return _result("NOT_RUN", ["PREDICATE_INPUT_NOT_AVAILABLE"])
+    if registry is None or predicate is None:
+        return _result("NOT_RUN", ["PREDICATE_DEFINITION_MISSING"])
     return _evaluate_registered_predicate(
         contract,
         provided,
         parsed_values,
-        predicate_registry=predicate_registry,
+        registry=registry,
+        predicate=predicate,
     )
 
 
@@ -339,6 +380,8 @@ def make_receipt_candidate(
         "contract_id": request["contract_id"],
         "request_id": request["request_id"],
         "contract_sha256": request["contract_sha256"],
+        "predicate_id": request["predicate_id"],
+        "predicate_definition_sha256": request["predicate_definition_sha256"],
         "input_snapshot_sha256": request["input_snapshot_sha256"],
         "subject_type": request["subject_type"],
         "subject_id": request["subject_id"],
