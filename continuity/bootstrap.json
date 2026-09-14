@@ -11,7 +11,7 @@
   "required_files": [
     "continuity/bootstrap.json",
     "governance/placement-policy.json",
-    "governance/policies/research-policy.json",
+    "governance/research-policy.json",
     "governance/live-audit-policy.json",
     "continuity/response-contract.json",
     "continuity/current.json",
@@ -138,7 +138,7 @@
   "required_read_order": [
     "continuity/bootstrap.json",
     "governance/placement-policy.json",
-    "governance/policies/research-policy.json",
+    "governance/research-policy.json",
     "governance/live-audit-policy.json",
     "continuity/response-contract.json",
     "continuity/current.json",
