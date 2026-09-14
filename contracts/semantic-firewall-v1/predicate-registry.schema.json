@@ -41,7 +41,7 @@
                 "unit": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]*$"},
                 "allowed_values": {
                   "type": ["array", "null"], "uniqueItems": true,
-                  "items": {"type": ["string", "integer", "boolean"]}
+                  "items": {"type": ["string", "integer"]}
                 },
                 "derivation_predicate_id": {"type": ["string", "null"], "pattern": "^SF-PRED-[A-Z0-9][A-Z0-9_-]*$"}
               }
