@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "resource_key": "component:multi_thread_coordination_hardening",
-  "generation": 4,
+  "generation": 5,
   "state": "ACTIVE",
   "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "50b09f9b-6e7c-40ad-a3cd-6ef15e4528f5"
+    "session_id": "60801ef0-6ee1-4cd4-9803-3a594bddfe99"
   },
   "implementation_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
-  "lease_id": "a6b70436-4fca-4dbc-8434-4e7a311e150c",
-  "base_sha": "8a11d81b3f8f2752a8f93e42f582b877e2ca3963",
-  "acquired_at": "2026-09-13T19:08:58Z",
-  "heartbeat_at": "2026-09-13T22:43:22Z",
-  "expires_at": "2026-09-14T02:43:22Z",
+  "lease_id": "81e1588f-58ec-40cf-b7d8-27249cbf74ab",
+  "base_sha": "cfed55b6725a68b47a43b5aee8e906dc2e27bf09",
+  "acquired_at": "2026-09-14T07:08:52Z",
+  "heartbeat_at": "2026-09-14T07:08:52Z",
+  "expires_at": "2026-09-14T11:08:52Z",
   "runtime_control_authority": "NONE"
 }
