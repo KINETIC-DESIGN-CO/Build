@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000013-c2f3ad18",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T22:38:14Z",
+  "source_main_sha": "c2f3ad1838a5ed42bc91cbc767554c60071a4138",
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_head_sha": "fc846c517d8a6dd554469a635d8dcc971ea7a6c4",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "BEFORE_FINAL_REQUIRED_CLAIM_RELEASE"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000012-ef5f7857.json",
+    "blob_sha": "3cc113f8d74eeb05ccb88dda24afb532f1cfac74"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T22:38:14Z",
+    "evidence_ref": "This continuity-only checkpoint records protected terminal synchronization for the rank-0 interrupted Reliability continuation. It has zero selection, completion, release, or mutation authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_STALE_VS_LIVE_MAIN_C2F3AD1"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T22:38:14Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T22:38:14Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:lock_history_validation",
+      "lock_branch": "lock/b01d7eb513474626f092988da6d4000ad6fe55e8c6e5162c4a6588636e9b4ade",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "9c04de07-afd5-4e4f-8079-7889215e590a",
+      "generation": 2,
+      "expires_at": "2026-09-14T02:02:34Z",
+      "observed_at": "2026-09-13T22:38:14Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "65d35d8e-1607-4a71-966f-30025c4319e9",
+      "generation": 2,
+      "expires_at": "2026-09-14T00:48:33Z",
+      "observed_at": "2026-09-13T22:38:14Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:86:Finalize Reliability recovery verification:head:fc846c517d8a6dd554469a635d8dcc971ea7a6c4",
+      "operation": "PR_HEAD_REQUIRED_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34787075629",
+        "github:job=103804370457:validate:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:86:Finalize Reliability recovery verification:merge_group:c2f3ad1838a5ed42bc91cbc767554c60071a4138",
+      "operation": "MERGE_GROUP_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34787181396",
+        "github:job=103804656707:validate:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "PR:86:Finalize Reliability recovery verification",
+      "operation": "PROTECTED_MAIN_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:pr=86:merged=true",
+        "github:merge_commit=c2f3ad1838a5ed42bc91cbc767554c60071a4138",
+        "github:main=c2f3ad1838a5ed42bc91cbc767554c60071a4138"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main:c2f3ad1838a5ed42bc91cbc767554c60071a4138",
+      "operation": "POST_MERGE_MAIN_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:workflow_run=34787287777",
+        "github:job=103804947363:validate:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/root-cause-repairs.json:RCA-0002",
+      "operation": "TERMINAL_REPAIR_STATE_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:main:c2f3ad1838a5ed42bc91cbc767554c60071a4138:RCA-0002:VERIFIED_FIXED",
+        "github:verification_state=VERIFIED_REQUIRED_CI_PROTECTED_INTEGRATION_AND_LIVE_READBACK"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/checkpoints/CP-000012-ef5f7857.json",
+      "operation": "MERGED_TERMINAL_CHECKPOINT_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:main:checkpoint_blob=3cc113f8d74eeb05ccb88dda24afb532f1cfac74"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021",
+    "VD-0024"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [
+    "web:github-merge-queue-current",
+    "web:consul-session-lock-sequencer-current",
+    "web:kubernetes-lease-current",
+    "web:llm-verified-tool-calls-2608.02645"
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:reliability_recovery_contracts",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:lock_history_validation",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt:canonical_invocation_readiness",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "UPDATE_WORK_RECORD_TO_CP_000013_ONLY_OPEN_CONTINUITY_ONLY_SYNC_PR_PROTECT_AND_VERIFY_THEN_RELEASE_BOTH_COMPONENT_CLAIMS_AND_REEVALUATE_A_0014",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoints/CP-000012-ef5f7857.json",
+    "coordination/work/8bc19d08-14ca-4077-a223-1e3ef9f0368f.json",
+    "governance/root-cause-repairs.json",
+    "GITHUB_PR:86:Finalize Reliability recovery verification",
+    "github:workflow_run=34787075629",
+    "github:workflow_run=34787181396",
+    "github:workflow_run=34787287777",
+    "github:main=c2f3ad1838a5ed42bc91cbc767554c60071a4138"
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000007-01392b07",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T21:34:27Z",
+  "source_main_sha": "07c506acad2bd6a7bfc883ca9b26c337eff5b1d9",
+  "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_branch": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+  "work_head_sha": "c02f8c5a317740c52cdd65f27457d5f16ac46713",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000006-1d2c2ee1.json",
+    "blob_sha": "20ee59c6d903656a5c79a2ae6da069df07898278"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": null,
+    "evaluated_at": "2026-09-13T21:34:27Z",
+    "evidence_ref": "This checkpoint records a second tool-selection error and its verified correction. It has zero work-selection or mutation authority; the Reliability generation-2 component claim remains the exact ownership evidence.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_78A6909_STALE_VS_LIVE_MAIN_07C506A"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T21:34:27Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-13T21:34:27Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:reliability_recovery_contracts",
+      "lock_branch": "lock/6d6f0a3e40bde1757d0b6c33866289b2c2e2507d9566d32b18ec527323e6b0fa",
+      "state": "ACTIVE",
+      "work_id": "8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "lease_id": "65d35d8e-1607-4a71-966f-30025c4319e9",
+      "generation": 2,
+      "expires_at": "2026-09-14T00:48:33Z",
+      "observed_at": "2026-09-13T21:34:27Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f:_should_not_exist_2",
+      "operation": "SECOND_ACCIDENTAL_OUT_OF_SCOPE_FILE_CREATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=19f2a04f7a5b8939d10ae2b14c87560f58f6f86e",
+        "github:blob=e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f:_should_not_exist_2",
+      "operation": "CORRECTIVE_DELETE_SECOND_OUT_OF_SCOPE_FILE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github:commit=c02f8c5a317740c52cdd65f27457d5f16ac46713",
+        "github:readback=404_NOT_FOUND"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0021"
+  ],
+  "decision_rationale_refs": [],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/8bc19d08-14ca-4077-a223-1e3ef9f0368f",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:reliability_recovery_contracts",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "SUCCESS",
+    "candidate_next_operation": "OPEN_RELIABILITY_GOAL_IDENTITY_COMPATIBILITY_PR_THEN_REQUIRE_EXACT_HEAD_VALIDATE_MERGE_QUEUE_POST_MERGE_READBACK_FINAL_CHECKPOINT_AND_GENERATION_2_CLAIM_RELEASE",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "continuity/checkpoints/CP-000006-1d2c2ee1.json",
+    "coordination/work/8bc19d08-14ca-4077-a223-1e3ef9f0368f.json",
+    "reliability/spec.json",
+    "reliability/compatibility-map.json",
+    "governance/goal-registry.json",
+    "github:commit=19f2a04f7a5b8939d10ae2b14c87560f58f6f86e",
+    "github:commit=c02f8c5a317740c52cdd65f27457d5f16ac46713"
+  ]
+}
