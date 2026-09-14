@@ -11,7 +11,11 @@
   "component_id": "goal_lifecycle_identity",
   "repo_paths": [
     "continuity/checkpoints/CP-000004-9a2d60d0.json",
+    "governance/schema/work-fence-policy.schema.json",
+    "governance/work-fence-policy.json",
+    "scripts/evaluate_work_fence.py",
     "tests/test_thread_lifecycle.py",
+    "tests/test_work_fence.py",
     "tests/test_work_selection.py"
   ],
   "external_targets": [],
