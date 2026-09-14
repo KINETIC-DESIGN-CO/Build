@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000015-6c7e05bd",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-14T13:03:07Z",
+  "source_main_sha": "6c7e05bd9c0bb1533809a612e10c529fe31bfae9",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "152ea8fd42d548bc2adb2e3ebf0c557bf3c4ffb8",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000014-6f3b4334.json",
+    "blob_sha": "62c889970eac2812757f75d518e0f688bc05a169"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-14T13:03:07Z",
+    "evidence_ref": "The active root goal component is held by work 3edfca10-ac11-4a79-bd31-72bd84165594 under an ACTIVE unexpired generation-6 component claim, while github-issue-57 remains ADMITTED and this durable Issue #57 work owns the ACTIVE unexpired generation-5 component:issue_57 claim. Issue and PR prose have zero selection authority.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_STALE_VS_LIVE_MAIN_6C7E05BD"
+    ],
+    "open_blocker_ids": [
+      "B-0004",
+      "SEMANTIC_FIREWALL_RUNTIME_TRUSTED_EVIDENCE_ADAPTER_NOT_IMPLEMENTED",
+      "SEMANTIC_FIREWALL_EXACT_LIFE_INVOKE_NOT_DEPLOYED",
+      "SEMANTIC_FIREWALL_CI_TRUST_ROOT_NOT_INDEPENDENT"
+    ],
+    "observed_at": "2026-09-14T13:03:07Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-14T13:03:07Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "ef2a5979-aaf3-410d-a331-58aaacac1027",
+      "generation": 5,
+      "expires_at": "2026-09-14T13:15:40Z",
+      "observed_at": "2026-09-14T13:03:07Z",
+      "live_verify_required": true
+    },
+    {
+      "resource_key": "component:goal_lifecycle_identity",
+      "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "state": "ACTIVE",
+      "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
+      "lease_id": "3757175a-5721-43d9-b35e-6ff85b30c91d",
+      "generation": 6,
+      "expires_at": "2026-09-14T13:28:56Z",
+      "observed_at": "2026-09-14T13:03:07Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "GITHUB_PR:97:HEAD_3cdb196220afe80a70a8831be9b406008a4bc4a2",
+      "operation": "REQUIRED_PR_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_ACTION_RUN:34844540251:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "GITHUB_PR:97:Fail closed trusted evidence until authoritative runtime binding",
+      "operation": "REQUIRED_MERGE_QUEUE_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_ACTION_RUN:34844780904:MERGE_GROUP:SUCCESS",
+        "MERGE_COMMIT:6c7e05bd9c0bb1533809a612e10c529fe31bfae9"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "repository:1366835183:main",
+      "operation": "MERGED_MAIN_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "MAIN_SHA:6c7e05bd9c0bb1533809a612e10c529fe31bfae9"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "repository:1366835183:main@6c7e05bd9c0bb1533809a612e10c529fe31bfae9",
+      "operation": "POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_ACTION_RUN:34844993843:PUSH:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "contracts/semantic-firewall-v1/spec.json@main",
+      "operation": "POST_MERGE_SEMANTIC_FIREWALL_STATE_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "activation_state=SOURCE_ONLY_NOT_RUNTIME_AUTHORITY",
+        "runtime_control_authority=NONE",
+        "trusted_evidence_adapter_state=NOT_IMPLEMENTED"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/work-admissions.json:github-issue-57",
+      "operation": "POST_MERGE_ADMISSION_READBACK",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "github-issue-57=ADMITTED"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/directive-ledger.jsonl",
+      "operation": "READ_DURABLE_UNIVERSAL_FIREWALL_DIRECTIVE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "VD-0030"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "continuity/decision-rationale.jsonl",
+      "operation": "READ_DURABLE_UNIVERSAL_FIREWALL_RATIONALE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "DR-0011"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "component:issue_57",
+      "operation": "RENEW_GENERATION_5_CLAIM_AFTER_PROTECTED_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "LOCK_COMMIT:02cc82fe70c75e4875b4b97bef1e90c940209fa2",
+        "LEASE_ID:ef2a5979-aaf3-410d-a331-58aaacac1027",
+        "EXPIRES_AT:2026-09-14T13:15:40Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/4264779b-70c5-4381-b619-f2c3204dc4f3.json",
+      "operation": "FENCE_POST_MERGE_CHECKPOINT_PATH",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "COMMIT:152ea8fd42d548bc2adb2e3ebf0c557bf3c4ffb8",
+        "PATH:continuity/checkpoints/CP-000015-6c7e05bd.json"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "READ_CANONICAL_INVOCATION_RUNTIME_SURFACE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "project_status=ACTIVE_HEALTHY",
+        "edge_function_count=0",
+        "database_function_life.invoke=absent",
+        "database_function_life.record_invocation_v1=present",
+        "canonical_invocation=NOT_RUN"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0011",
+    "VD-0022",
+    "VD-0030"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002",
+    "DR-0011"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "OFFICIAL",
+      "title": "GitHub Merge Queue documentation",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "observed_date": "2026-09-14",
+      "supported_claim": "Required Merge Queue and merge_group validation remain the current no-bypass latest-base source integration mechanism; they do not establish Life runtime authority."
+    },
+    {
+      "source_kind": "OFFICIAL",
+      "title": "Supabase Pricing and Usage",
+      "url": "https://supabase.com/pricing",
+      "observed_date": "2026-09-14",
+      "supported_claim": "The authorized project can remain on the no-paid Free path; no paid branch, backup, or runtime commitment was introduced by this slice."
+    },
+    {
+      "source_kind": "ACADEMIC",
+      "title": "AgentFlow: A Framework for Securing AI Agent Workflows",
+      "url": "https://arxiv.org/abs/2608.22868",
+      "observed_date": "2026-09-14",
+      "supported_claim": "Runtime reference-monitor interposition and explicit flow boundaries support non-bypass control enforcement instead of prompt-only compliance."
+    },
+    {
+      "source_kind": "COMMUNITY",
+      "title": "Practitioner reports on verifier gaming and hidden verification",
+      "url": "https://www.reddit.com/",
+      "observed_date": "2026-09-14",
+      "supported_claim": "Community reports reinforce keeping authoring and verification boundaries separate; this evidence is advisory only."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=6c7e05bd9c0bb1533809a612e10c529fe31bfae9",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:97",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_RULESET:22998982",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt:canonical_invocation_readiness",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "FRESH_VERIFY MAIN, CLAIMS, OPEN PRS, RULESET, SUPABASE, AND REQUIRED RESEARCH; REEVALUATE ISSUE #57 REMAINING RUNTIME_EFFECT DEPENDENCIES AND CI_TRUST_ROOT. KEEP THE MERGED SOURCE FIREWALL AND TRUSTED-EVIDENCE BINDING; DO NOT ACTIVATE RUNTIME AUTHORITY UNTIL TRUSTED EVIDENCE ISSUANCE/PERSISTENCE/READBACK, NON_BYPASS_EFFECT_ROUTING, AUTHORITATIVE_POST_EFFECT_READBACK, EXACT life.invoke DEPLOYMENT, AND INDEPENDENT CI TRUST ARE LIVE AND VERIFIED. VERSION ANY SUPABASE CHANGE AND TESTS IN GITHUB BEFORE REMOTE APPLICATION AND ACQUIRE external:supabase:jnenguxodtgwbskhdsxt BEFORE PRODUCTION MUTATION.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57:Migrate legacy Semantic Firewall and make the work deterministically dispatchable",
+    "GITHUB_PR:97:Fail closed trusted evidence until authoritative runtime binding",
+    "GITHUB_ACTION_RUN:34844540251:SUCCESS",
+    "GITHUB_ACTION_RUN:34844780904:MERGE_GROUP:SUCCESS",
+    "GITHUB_ACTION_RUN:34844993843:PUSH:SUCCESS",
+    "GITHUB_RULESET:22998982",
+    "GITHUB_ISSUE:96:Make CI verification independent of candidate-controlled verifier changes",
+    "VD-0030",
+    "DR-0011",
+    "contracts/semantic-firewall-v1/control-path-registry.json",
+    "governance/work-admissions.json:github-issue-57=ADMITTED",
+    "continuity/current.json:A-0014:Terminal Redispatch & Issue Lifecycle Closure"
+  ]
+}
