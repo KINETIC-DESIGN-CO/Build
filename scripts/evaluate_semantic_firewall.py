@@ -5,6 +5,7 @@ import hashlib
 import json
 import uuid
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 DECISION_KINDS = (
@@ -20,6 +21,8 @@ DECISION_KINDS = (
     "EFFECT_EXECUTION",
 )
 INCOMPLETE_STATES = {"UNKNOWN", "UNVERIFIED", "NOT_RUN"}
+ROOT = Path(__file__).resolve().parents[1]
+PREDICATE_REGISTRY_PATH = ROOT / "contracts" / "semantic-firewall-v1" / "predicate-registry.json"
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -58,7 +61,149 @@ def _result(decision: str, reasons: list[str]) -> dict:
     }
 
 
-def evaluate_control(contract: dict, request: dict, snapshot: dict, *, evaluated_at: str) -> dict:
+def _load_predicate_registry() -> dict:
+    with PREDICATE_REGISTRY_PATH.open(encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def _predicate_index(registry: dict) -> dict[str, dict]:
+    rows = registry.get("runtime_predicates", [])
+    return {
+        row["predicate_id"]: row
+        for row in rows
+        if isinstance(row, dict) and isinstance(row.get("predicate_id"), str)
+    }
+
+
+def _semantic_input_valid(definition: dict, value: Any, predicates: dict[str, dict], input_record: dict) -> tuple[bool, str | None]:
+    semantic_type = definition.get("semantic_type")
+    if semantic_type == "CLOSED_ENUM":
+        allowed = definition.get("allowed_values")
+        return (isinstance(allowed, list) and value in allowed, "PREDICATE_INPUT_OUTSIDE_CLOSED_DOMAIN")
+    if semantic_type == "EXACT_ID":
+        return (isinstance(value, str) and bool(value), "PREDICATE_INPUT_EXACT_ID_INVALID")
+    if semantic_type == "INTEGER_WITH_UNIT":
+        return (
+            isinstance(value, int) and not isinstance(value, bool) and isinstance(definition.get("unit"), str),
+            "PREDICATE_INPUT_UNIT_INVALID",
+        )
+    if semantic_type == "TIMESTAMP_RFC3339":
+        try:
+            _parse_time(value)
+            return True, None
+        except Exception:
+            return False, "PREDICATE_INPUT_TIMESTAMP_INVALID"
+    if semantic_type == "STRING_SET":
+        return (_type_matches(value, "STRING_SET"), "PREDICATE_INPUT_SET_INVALID")
+    if semantic_type == "SHA256":
+        return (_type_matches(value, "SHA256"), "PREDICATE_INPUT_SHA256_INVALID")
+    if semantic_type == "VERSION_STRING":
+        return (isinstance(value, str) and bool(value), "PREDICATE_INPUT_VERSION_INVALID")
+    if semantic_type == "DETERMINISTIC_DERIVATION":
+        derivation = definition.get("derivation_predicate_id")
+        observed_derivation = input_record.get("derivation_predicate_id")
+        return (
+            isinstance(derivation, str)
+            and derivation in predicates
+            and observed_derivation == derivation,
+            "PREDICATE_DERIVATION_BINDING_MISSING",
+        )
+    return False, "PREDICATE_INPUT_SEMANTIC_TYPE_INVALID"
+
+
+def _evaluate_expression(expression: dict, values: dict[str, Any]) -> bool:
+    left_name = expression.get("left_input")
+    if left_name not in values:
+        raise ValueError("left input missing")
+    left = values[left_name]
+    right = json.loads(expression["right_value_json"])
+    operator = expression.get("operator")
+    if operator == "EQ":
+        return left == right
+    if operator == "INTEGER_GTE":
+        return isinstance(left, int) and not isinstance(left, bool) and isinstance(right, int) and not isinstance(right, bool) and left >= right
+    if operator == "TIMESTAMP_GTE":
+        return _parse_time(left) >= _parse_time(right)
+    if operator == "SET_CONTAINS_ALL":
+        return isinstance(left, list) and isinstance(right, list) and set(right).issubset(set(left))
+    raise ValueError("unsupported predicate operator")
+
+
+def _evaluate_registered_predicate(
+    contract: dict,
+    provided: dict[str, dict],
+    parsed_values: dict[str, Any],
+    *,
+    predicate_registry: dict | None,
+) -> dict:
+    try:
+        registry = predicate_registry if predicate_registry is not None else _load_predicate_registry()
+    except (OSError, json.JSONDecodeError):
+        return _result("NOT_RUN", ["PREDICATE_REGISTRY_NOT_RUN"])
+
+    predicates = _predicate_index(registry)
+    predicate_id = contract.get("predicate_id")
+    predicate = predicates.get(predicate_id)
+    if predicate is None:
+        return _result("NOT_RUN", ["PREDICATE_DEFINITION_MISSING"])
+    if contract.get("decision_kind") not in predicate.get("decision_kinds", []):
+        return _result("FAIL", ["PREDICATE_DECISION_KIND_MISMATCH"])
+
+    definitions = predicate.get("required_inputs", [])
+    defined = {
+        row.get("name"): row
+        for row in definitions
+        if isinstance(row, dict) and isinstance(row.get("name"), str)
+    }
+    contract_inputs = {
+        row.get("name"): row
+        for row in contract.get("required_inputs", [])
+        if isinstance(row, dict) and isinstance(row.get("name"), str)
+    }
+    if len(defined) != len(definitions) or set(defined) != set(contract_inputs):
+        return _result("FAIL", ["PREDICATE_INPUT_CONTRACT_MISMATCH"])
+
+    unsafe_sources = set(registry.get("unsafe_input_source_classes", []))
+    reasons: list[str] = []
+    for name, definition in defined.items():
+        req = contract_inputs[name]
+        inp = provided[name]
+        if req.get("value_type") != definition.get("value_type"):
+            reasons.append("PREDICATE_INPUT_TYPE_MISMATCH")
+        source_type = inp.get("source_type")
+        if source_type in unsafe_sources or source_type not in definition.get("source_classes", []):
+            reasons.append("PREDICATE_INPUT_SOURCE_FORBIDDEN")
+        ok, code = _semantic_input_valid(definition, parsed_values[name], predicates, inp)
+        if not ok and code:
+            reasons.append(code)
+    if reasons:
+        return _result("FAIL", reasons)
+
+    kind = predicate.get("definition_kind")
+    if kind == "EXPRESSION":
+        expression = predicate.get("expression")
+        if not isinstance(expression, dict):
+            return _result("NOT_RUN", ["PREDICATE_DEFINITION_MISSING"])
+        try:
+            predicate_pass = _evaluate_expression(expression, parsed_values)
+        except Exception:
+            return _result("FAIL", ["PREDICATE_DEFINITION_INVALID"])
+        if predicate_pass:
+            return _result("PASS", ["ALL_REQUIRED_EVIDENCE_BOUND", "PREDICATE_TRUE"])
+        return _result("FAIL", ["PREDICATE_FALSE"])
+    if kind == "EVALUATOR_REF":
+        return _result("NOT_RUN", ["PREDICATE_EVALUATOR_NOT_RUNTIME_BOUND"])
+    return _result("NOT_RUN", ["PREDICATE_DEFINITION_MISSING"])
+
+
+def evaluate_control(
+    contract: dict,
+    request: dict,
+    snapshot: dict,
+    *,
+    evaluated_at: str,
+    predicate_registry: dict | None = None,
+) -> dict:
     fail: list[str] = []
     not_run: list[str] = []
     exact = (
@@ -119,6 +264,7 @@ def evaluate_control(contract: dict, request: dict, snapshot: dict, *, evaluated
     if extra:
         fail.append("UNDECLARED_INPUT_PRESENT")
 
+    parsed_values: dict[str, Any] = {}
     for name in sorted(set(required) & set(provided)):
         req, inp = required[name], provided[name]
         state = inp.get("state")
@@ -143,6 +289,8 @@ def evaluate_control(contract: dict, request: dict, snapshot: dict, *, evaluated
             continue
         if not _type_matches(value, req.get("value_type")):
             fail.append("INPUT_VALUE_SHAPE_MISMATCH")
+        else:
+            parsed_values[name] = value
         if inp.get("value_json_sha256") != hashlib.sha256(value_text.encode("utf-8")).hexdigest():
             fail.append("INPUT_VALUE_HASH_MISMATCH")
         try:
@@ -161,7 +309,14 @@ def evaluate_control(contract: dict, request: dict, snapshot: dict, *, evaluated
         return _result("FAIL", fail)
     if not_run:
         return _result("NOT_RUN", not_run)
-    return _result("PASS", ["ALL_REQUIRED_EVIDENCE_BOUND"])
+    if set(parsed_values) != set(required):
+        return _result("NOT_RUN", ["PREDICATE_INPUT_NOT_AVAILABLE"])
+    return _evaluate_registered_predicate(
+        contract,
+        provided,
+        parsed_values,
+        predicate_registry=predicate_registry,
+    )
 
 
 def make_receipt_candidate(
