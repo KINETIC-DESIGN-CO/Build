@@ -12,7 +12,6 @@
   "repo_paths": [
     "continuity/response-contract.json",
     "continuity/schema/response-contract.schema.json",
-    "coordination/work/3edfca10-ac11-4a79-bd31-72bd84165594.json",
     "tests/test_response_contract_presentation.py"
   ],
   "external_targets": [],
