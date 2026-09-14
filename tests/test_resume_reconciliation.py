@@ -28,13 +28,25 @@ def thread_claim(*, work_id=WORK_ID, lease_id=LEASE_ID, generation=1, resource=R
     return {"resource_key": resource, "work_id": work_id, "lease_id": lease_id, "generation": generation}
 
 
-def live_claim(*, work_id=WORK_ID, lease_id=LEASE_ID, generation=1, resource=RESOURCE, state="ACTIVE", expires_at="2026-09-13T23:00:00Z"):
+def live_claim(
+    *,
+    work_id=WORK_ID,
+    lease_id=LEASE_ID,
+    generation=1,
+    resource=RESOURCE,
+    state="ACTIVE",
+    schema_version=2,
+    heartbeat_at="2026-09-13T19:45:00Z",
+    expires_at="2026-09-13T20:15:00Z",
+):
     return {
+        "schema_version": schema_version,
         "resource_key": resource,
         "state": state,
         "work_id": work_id,
         "lease_id": lease_id,
         "generation": generation,
+        "heartbeat_at": heartbeat_at,
         "expires_at": expires_at,
     }
 
@@ -87,6 +99,7 @@ class ResumeReconciliationTests(unittest.TestCase):
         self.assertEqual(POLICY["runtime_control_authority"], "NONE")
         self.assertEqual(POLICY["control_authority_effect"], "ZERO")
         self.assertEqual(POLICY["work_fence_policy_path"], "governance/work-fence-policy.json")
+        self.assertIn(mod.V4_LEGACY_COMPONENT_EXPIRY_RULE, POLICY["rules"])
 
     def test_observation_reference_remains_user_authorized_not_runtime_authority(self):
         mod.validate_observation_reference(POLICY)
@@ -148,9 +161,57 @@ class ResumeReconciliationTests(unittest.TestCase):
         self.assertEqual(result["resume_action"], "REACQUIRE_REQUIRED_CLAIMS_BEFORE_MUTATION")
 
     def test_expired_matching_claim_requires_reacquisition(self):
-        changed = work(live=True, session=LIVE_SESSION, claims=[live_claim(expires_at="2026-09-13T20:00:00Z")])
+        changed = work(
+            live=True,
+            session=LIVE_SESSION,
+            claims=[live_claim(heartbeat_at="2026-09-13T19:30:00Z", expires_at="2026-09-13T20:00:00Z")],
+        )
         result = mod.evaluate(evidence(live=changed), POLICY)
         self.assertEqual(result["resume_action"], "REACQUIRE_REQUIRED_CLAIMS_BEFORE_MUTATION")
+
+    def test_legacy_v1_component_uses_effective_expiry_not_stored_four_hour_expiry(self):
+        changed = work(
+            live=True,
+            session=LIVE_SESSION,
+            claims=[
+                live_claim(
+                    schema_version=1,
+                    heartbeat_at="2026-09-13T19:29:00Z",
+                    expires_at="2026-09-13T23:29:00Z",
+                )
+            ],
+        )
+        result = mod.evaluate(evidence(live=changed), POLICY)
+        self.assertEqual(result["work_relation_state"], "SAME_WORK_CLAIMS_INACTIVE")
+        self.assertEqual(result["resume_action"], "REACQUIRE_REQUIRED_CLAIMS_BEFORE_MUTATION")
+
+    def test_legacy_v1_external_claim_uses_stored_expiry(self):
+        resource = "external:test:shared"
+        thread = work(claims=[thread_claim(resource=resource)])
+        live = work(
+            live=True,
+            session=LIVE_SESSION,
+            claims=[
+                live_claim(
+                    resource=resource,
+                    schema_version=1,
+                    heartbeat_at="2026-09-13T19:00:00Z",
+                    expires_at="2026-09-13T23:00:00Z",
+                )
+            ],
+        )
+        result = mod.evaluate(evidence(thread=thread, live=live), POLICY)
+        self.assertEqual(result["work_relation_state"], "SAME_WORK_ACTIVE")
+        self.assertEqual(result["resume_action"], "RESUME_SAME_WORK_CONTINUE")
+
+    def test_v2_component_duration_must_match_fence_duration(self):
+        changed = work(
+            live=True,
+            session=LIVE_SESSION,
+            claims=[live_claim(heartbeat_at="2026-09-13T19:45:00Z", expires_at="2026-09-13T20:16:00Z")],
+        )
+        with self.assertRaises(mod.ResumeError):
+            mod.evaluate(evidence(live=changed), POLICY)
 
     def test_not_run_stops_and_cannot_carry_claimed_live_state(self):
         result = mod.evaluate(evidence(live_read="NOT_RUN", live=None, goal=None), POLICY)

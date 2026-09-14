@@ -38,6 +38,8 @@ EXPECTED_POLICY = {
     "canonical_selector_entrypoint": "scripts/select_work.py",
     "component_stale_after_seconds": 1800,
     "legacy_v1_component_effective_expiry_rule": "AFTER_V4_MAIN_INTEGRATION_EFFECTIVE_EXPIRY_IS_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_COMPONENT_STALE_AFTER_SECONDS",
+    "goal_execution_attempt_binding_rule": "WHEN_WORK_ID_IS_REGISTERED_IN_GOAL_EXECUTION_ATTEMPTS_RECORD_GOAL_ID_MUST_EQUAL_THE_UNIQUE_OWNER_GOAL_ID_RECORD_PLANNED_GOAL_REVISION_MUST_EQUAL_THE_ATTEMPT_PLANNED_GOAL_REVISION_AND_ATTEMPT_STATE_MUST_BE_ACTIVE;WHEN_WORK_ID_IS_NOT_REGISTERED_RECORD_GOAL_ID_AND_PLANNED_GOAL_REVISION_MUST_BOTH_BE_NULL",
+    "goal_execution_attempt_mismatch_result": "REPLAN_REQUIRED",
     "goal_revision_fence_rule": "WHEN_GOAL_ID_IS_NON_NULL_PLANNED_GOAL_REVISION_MUST_EQUAL_CANONICAL_GOAL_REVISION",
     "goal_revision_mismatch_result": "REPLAN_REQUIRED",
     "generation_fence_rule": "WORK_RECORD_CLAIM_GENERATION_MUST_EQUAL_LIVE_CLAIM_GENERATION_AND_LIVE_CLAIM_WORK_ID_MUST_EQUAL_WORK_RECORD_WORK_ID",
@@ -48,8 +50,9 @@ EXPECTED_POLICY = {
     "external_effect_unresolved_states": ["PENDING", "NO_RESULT", "TIMEOUT", "UNKNOWN"],
     "external_effect_unresolved_result": "EXTERNAL_EFFECT_RECONCILIATION_REQUIRED",
     "evaluation_precedence": [
-        "EXTERNAL_EFFECT_UNRESOLVED", "GOAL_REVISION_MISMATCH", "CONTROL_SIGNAL_ACTIVE",
-        "CLAIM_GENERATION_MISMATCH", "CLAIM_OWNER_MISMATCH", "COMPONENT_LEASE_EXPIRED", "PASS",
+        "EXTERNAL_EFFECT_UNRESOLVED", "GOAL_EXECUTION_ATTEMPT_MISMATCH", "GOAL_REVISION_MISMATCH",
+        "CONTROL_SIGNAL_ACTIVE", "CLAIM_GENERATION_MISMATCH", "CLAIM_OWNER_MISMATCH",
+        "COMPONENT_LEASE_EXPIRED", "PASS",
     ],
     "protected_boundaries": [
         "SOURCE_WORKSPACE_MUTATION", "CONNECTED_APP_MUTATION", "CLAIM_RENEWAL",
@@ -164,6 +167,27 @@ def goal_by_id(registry: dict, goal_id: str) -> dict:
     return matches[0]
 
 
+def execution_attempt_owner(registry: dict, work_id: str) -> tuple[dict, dict] | None:
+    goals = registry.get("goals") if isinstance(registry, dict) else None
+    if not isinstance(goals, list):
+        fail("goal registry goals missing")
+    matches: list[tuple[dict, dict]] = []
+    for goal in goals:
+        if not isinstance(goal, dict):
+            fail("goal registry goal must be object")
+        attempts = goal.get("execution_attempts")
+        if not isinstance(attempts, list):
+            fail("goal execution_attempts missing")
+        for attempt in attempts:
+            if not isinstance(attempt, dict):
+                fail("goal execution attempt must be object")
+            if attempt.get("work_id") == work_id:
+                matches.append((goal, attempt))
+    if len(matches) > 1:
+        fail("work_id resolves to multiple goal execution attempts")
+    return matches[0] if matches else None
+
+
 def evaluate_record_claim(record: dict, claim: dict, live_lock: dict, registry: dict, observed_at: datetime, policy: dict | None = None) -> dict:
     policy = policy or EXPECTED_POLICY
     effect_state = record.get("pending_external_effect_state")
@@ -171,11 +195,30 @@ def evaluate_record_claim(record: dict, claim: dict, live_lock: dict, registry: 
         return {"result": policy["external_effect_unresolved_result"], "reason": "EXTERNAL_EFFECT_UNRESOLVED"}
     if effect_state not in policy["external_effect_states"]:
         fail("pending_external_effect_state invalid")
+    work_id = record.get("work_id")
+    if not isinstance(work_id, str) or UUID4_RE.fullmatch(work_id) is None:
+        fail("work record work_id invalid")
     goal_id, planned_revision = record.get("goal_id"), record.get("planned_goal_revision")
-    if goal_id is not None:
-        if not isinstance(goal_id, str) or UUID4_RE.fullmatch(goal_id) is None:
-            fail("work record goal_id invalid")
-        goal = goal_by_id(registry, goal_id)
+    if goal_id is not None and (not isinstance(goal_id, str) or UUID4_RE.fullmatch(goal_id) is None):
+        fail("work record goal_id invalid")
+    owner = execution_attempt_owner(registry, work_id)
+    if owner is None:
+        if goal_id is not None or planned_revision is not None:
+            return {"result": policy["goal_execution_attempt_mismatch_result"], "reason": "GOAL_EXECUTION_ATTEMPT_MISMATCH"}
+        goal = None
+    else:
+        goal, attempt = owner
+        attempt_revision = attempt.get("planned_goal_revision")
+        if (
+            goal_id != goal.get("goal_id")
+            or attempt.get("attempt_state") != "ACTIVE"
+            or not isinstance(attempt_revision, int)
+            or isinstance(attempt_revision, bool)
+            or attempt_revision < 1
+            or planned_revision != attempt_revision
+        ):
+            return {"result": policy["goal_execution_attempt_mismatch_result"], "reason": "GOAL_EXECUTION_ATTEMPT_MISMATCH"}
+    if goal is not None:
         canonical_revision = goal.get("revision")
         if not isinstance(canonical_revision, int) or isinstance(canonical_revision, bool) or canonical_revision < 1:
             fail("canonical goal revision invalid")
@@ -186,8 +229,6 @@ def evaluate_record_claim(record: dict, claim: dict, live_lock: dict, registry: 
             fail("canonical goal control signal invalid")
         if signal["state"] != "NONE" and signal.get("target_work_id") == record.get("work_id"):
             return {"result": "REASSIGNMENT_REQUIRED" if signal["state"] == "REASSIGNMENT_REQUESTED" else "REPLAN_REQUIRED", "reason": "CONTROL_SIGNAL_ACTIVE"}
-    elif planned_revision is not None:
-        fail("planned_goal_revision must be null when goal_id is null")
     resource_key = claim.get("resource_key")
     if not isinstance(resource_key, str) or not resource_key.startswith("component:"):
         fail("evaluate_record_claim requires a component claim")

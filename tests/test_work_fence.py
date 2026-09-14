@@ -17,6 +17,7 @@ WORK_B = "00000000-0000-4000-8000-000000000002"
 LEASE_A = "00000000-0000-4000-8000-000000000003"
 GOAL_A = "00000000-0000-4000-8000-000000000004"
 SESSION_A = "00000000-0000-4000-8000-000000000005"
+GOAL_B = "00000000-0000-4000-8000-000000000006"
 NOW = datetime(2026, 9, 13, 21, 0, tzinfo=timezone.utc)
 
 
@@ -24,29 +25,48 @@ def z(value: datetime) -> str:
     return value.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def registry(revision=3, signal_state="NONE", signal_target=None):
+def goal(goal_id, work_id, revision=3, signal_state="NONE", signal_target=None, attempt_state="ACTIVE", attempt_revision=None):
+    return {
+        "goal_id": goal_id,
+        "revision": revision,
+        "control_signal": {
+            "state": signal_state,
+            "signal_id": None if signal_state == "NONE" else "GS-0001",
+            "target_work_id": signal_target,
+            "issued_for_revision": revision,
+        },
+        "execution_attempts": [
+            {
+                "work_id": work_id,
+                "attempt_state": attempt_state,
+                "planned_goal_revision": revision if attempt_revision is None else attempt_revision,
+            }
+        ],
+    }
+
+
+def registry(revision=3, signal_state="NONE", signal_target=None, attempt_state="ACTIVE", attempt_revision=None):
     return {
         "goals": [
-            {
-                "goal_id": GOAL_A,
-                "revision": revision,
-                "control_signal": {
-                    "state": signal_state,
-                    "signal_id": None if signal_state == "NONE" else "GS-0001",
-                    "target_work_id": signal_target,
-                    "issued_for_revision": revision,
-                },
-            }
+            goal(
+                GOAL_A,
+                WORK_A,
+                revision=revision,
+                signal_state=signal_state,
+                signal_target=signal_target,
+                attempt_state=attempt_state,
+                attempt_revision=attempt_revision,
+            )
         ]
     }
 
 
-def record(revision=3, effect="NONE"):
+def record(revision=3, effect="NONE", *, work_id=WORK_A, goal_id=GOAL_A):
     return {
         "schema_version": 2,
-        "work_id": WORK_A,
-        "goal_id": GOAL_A,
-        "planned_goal_revision": revision,
+        "work_id": work_id,
+        "goal_id": goal_id,
+        "planned_goal_revision": revision if goal_id is not None else None,
         "pending_external_effect_state": effect,
     }
 
@@ -107,6 +127,7 @@ class WorkFenceTests(unittest.TestCase):
         policy = mod.validate_policy()
         self.assertEqual(policy["component_stale_after_seconds"], 1800)
         self.assertEqual(policy["canonical_selector_entrypoint"], "scripts/select_work.py")
+        self.assertEqual(policy["goal_execution_attempt_mismatch_result"], "REPLAN_REQUIRED")
         self.assertEqual(
             policy["legacy_v1_component_effective_expiry_rule"],
             "AFTER_V4_MAIN_INTEGRATION_EFFECTIVE_EXPIRY_IS_MIN_STORED_EXPIRES_AT_AND_HEARTBEAT_PLUS_COMPONENT_STALE_AFTER_SECONDS",
@@ -132,12 +153,42 @@ class WorkFenceTests(unittest.TestCase):
         self.assertEqual(mod.effective_component_expiry(value), mod.parse_utc(value["expires_at"]))
 
     def test_revision_mismatch_returns_replan_required_before_generation_checks(self):
-        result = mod.evaluate_record_claim(record(revision=2), claim(generation=999), lock_v2(generation=2), registry(revision=3), NOW)
+        result = mod.evaluate_record_claim(record(revision=3), claim(generation=999), lock_v2(generation=2), registry(revision=4, attempt_revision=3), NOW)
         self.assertEqual(result, {"result": "REPLAN_REQUIRED", "reason": "GOAL_REVISION_MISMATCH"})
 
-    def test_unresolved_external_effect_outranks_revision_mismatch(self):
-        result = mod.evaluate_record_claim(record(revision=2, effect="TIMEOUT"), claim(), lock_v2(), registry(revision=3), NOW)
+    def test_unresolved_external_effect_outranks_attempt_binding_mismatch(self):
+        value = record(revision=3, effect="TIMEOUT")
+        value["goal_id"] = None
+        value["planned_goal_revision"] = None
+        result = mod.evaluate_record_claim(value, claim(), lock_v2(), registry(revision=3), NOW)
         self.assertEqual(result, {"result": "EXTERNAL_EFFECT_RECONCILIATION_REQUIRED", "reason": "EXTERNAL_EFFECT_UNRESOLVED"})
+
+    def test_registered_work_with_null_goal_cannot_bypass_goal_fence(self):
+        value = record()
+        value["goal_id"] = None
+        value["planned_goal_revision"] = None
+        result = mod.evaluate_record_claim(value, claim(), lock_v2(), registry(), NOW)
+        self.assertEqual(result, {"result": "REPLAN_REQUIRED", "reason": "GOAL_EXECUTION_ATTEMPT_MISMATCH"})
+
+    def test_registered_work_with_wrong_goal_cannot_bypass_owner_goal(self):
+        value = record(goal_id=GOAL_B)
+        evidence = registry()
+        evidence["goals"].append(goal(GOAL_B, WORK_B))
+        result = mod.evaluate_record_claim(value, claim(), lock_v2(), evidence, NOW)
+        self.assertEqual(result, {"result": "REPLAN_REQUIRED", "reason": "GOAL_EXECUTION_ATTEMPT_MISMATCH"})
+
+    def test_registered_nonactive_attempt_cannot_pass(self):
+        result = mod.evaluate_record_claim(record(), claim(), lock_v2(), registry(attempt_state="SUPERSEDED"), NOW)
+        self.assertEqual(result, {"result": "REPLAN_REQUIRED", "reason": "GOAL_EXECUTION_ATTEMPT_MISMATCH"})
+
+    def test_unregistered_work_must_not_claim_a_goal(self):
+        result = mod.evaluate_record_claim(record(work_id=WORK_B), claim(), lock_v2(work_id=WORK_B), registry(), NOW)
+        self.assertEqual(result, {"result": "REPLAN_REQUIRED", "reason": "GOAL_EXECUTION_ATTEMPT_MISMATCH"})
+
+    def test_unregistered_non_goal_work_can_pass_with_null_goal(self):
+        value = record(work_id=WORK_B, goal_id=None)
+        result = mod.evaluate_record_claim(value, claim(), lock_v2(work_id=WORK_B), registry(), NOW)
+        self.assertEqual(result, {"result": "PASS", "reason": "PASS"})
 
     def test_yield_signal_targets_only_named_work(self):
         result = mod.evaluate_record_claim(record(), claim(), lock_v2(), registry(signal_state="YIELD_OR_REPLAN_REQUESTED", signal_target=WORK_A), NOW)
