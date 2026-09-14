@@ -22,7 +22,6 @@
     "contracts/semantic-firewall-v1/predicate-registry.json",
     "contracts/semantic-firewall-v1/predicate-registry.schema.json",
     "contracts/semantic-firewall-v1/spec.json",
-    "coordination/work/4264779b-70c5-4381-b619-f2c3204dc4f3.json",
     "scripts/evaluate_semantic_firewall.py",
     "scripts/validate_semantic_firewall.py",
     "scripts/validate_semantic_firewall_conformance.py",
