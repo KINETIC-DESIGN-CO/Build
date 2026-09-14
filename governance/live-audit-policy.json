@@ -77,7 +77,7 @@
     "work_selection": "governance/work-selection-policy.json",
     "goal_identity": "governance/goal-policy.json",
     "source_coordination": "coordination/protocol.json",
-    "research_depth": "governance/policies/research-policy.json",
+    "research_depth": "governance/research-policy.json",
     "effect_execution": "scripts/evaluate_selected_operation_execution.py"
   }
 }
