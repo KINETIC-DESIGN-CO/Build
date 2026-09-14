@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import validate_continuity as vc
+import validate_semantic_firewall_conformance as sfc
 
 ROOT = Path(__file__).resolve().parents[1]
 SF = ROOT / "contracts" / "semantic-firewall-v1"
@@ -113,14 +114,16 @@ def main() -> int:
         "CONTRACT_SOURCE_WHITELIST_CANNOT_ELEVATE_MODEL_PROSE_ISSUE_REVIEW_LABEL_OR_SEMANTIC_SIMILARITY_TO_AUTHORITATIVE_EVIDENCE",
         "SOURCE_EVALUATOR_CONTROL_AND_EFFECT_ELIGIBILITY_RESULTS_HAVE_ZERO_RUNTIME_CONTROL_AUTHORITY",
         "TRUSTED_RECEIPT_FIELDS_AND_SELF_HASH_ALONE_DO_NOT_ESTABLISH_TRUSTED_ISSUANCE_WITHOUT_AUTHORITATIVE_PERSISTENCE_READBACK",
+        "BUILD_TIME_CONFORMANCE_PROFILE_AND_RULE_REGISTRY_HAVE_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY",
+        "EVERY_DISCOVERED_GOVERNED_RULE_SURFACE_MUST_BE_REGISTERED_OR_REQUIRED_CI_FAILS",
     }
     if not required_invariants.issubset(set(spec.get("invariants", []))):
-        fail("SF006_KINDS", "source-only trust-boundary invariants are missing")
+        fail("SF006_KINDS", "source-only trust-boundary or conformance invariants are missing")
 
     for rel in spec.get("schema_paths", []):
         if not (ROOT / rel).is_file():
             fail("SF007_SOURCE_LINK", f"schema path missing: {rel}")
-    for field in ("evaluator_path", "validator_path", "test_path"):
+    for field in ("evaluator_path", "validator_path", "test_path", "conformance_profile_path", "rule_registry_path", "conformance_validator_path", "conformance_test_path"):
         rel = spec.get(field)
         if not isinstance(rel, str) or not (ROOT / rel).is_file():
             fail("SF007_SOURCE_LINK", f"{field} missing: {rel}")
@@ -153,6 +156,8 @@ def main() -> int:
         fail("SF009_RELIABILITY", "unsupported Reliability Semantic Firewall link state")
     if sf_compat.get("state") == "ACTIVE":
         fail("SF009_RELIABILITY", "source-only Semantic Firewall v1 cannot make Reliability declare runtime activation")
+    if sf_compat.get("current_contract_path") != "contracts/semantic-firewall-v1":
+        fail("SF009_RELIABILITY", "Reliability must reference the Build-native Semantic Firewall v1 path")
     if "RELIABILITY" not in sf_compat.get("rule", ""):
         fail("SF009_RELIABILITY", "Reliability compatibility rule must remain explicit")
 
@@ -176,6 +181,9 @@ def main() -> int:
             probe = result_builder("PASS", ["SOURCE_VALIDATOR_PROBE"])
             if probe.get("runtime_control_authority") != "NONE":
                 fail("SF010_EVALUATOR", "every source evaluator result must explicitly carry runtime_control_authority NONE")
+
+    for entry in sfc.validate():
+        fail("SF011_CONFORMANCE", entry)
 
     if ERRORS:
         for error in ERRORS:
