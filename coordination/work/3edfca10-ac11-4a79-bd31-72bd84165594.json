@@ -4,15 +4,24 @@
   "title": "Unify stable goal identity with terminal thread handoff",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "5767665c-b405-45f0-b8ae-8bc272ed973d"
+    "session_id": "64a815a5-d3fe-4570-abf7-63cd7c643c1d"
   },
   "implementation_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
   "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
   "component_id": "goal_lifecycle_identity",
   "repo_paths": [
+    "continuity/bootstrap.json",
     "continuity/response-contract.json",
     "continuity/schema/response-contract.schema.json",
+    "governance/live-audit-policy.json",
+    "governance/policies/research-policy.json",
+    "governance/schema/live-audit-policy.schema.json",
+    "governance/schema/research-policy.schema.json",
+    "scripts/evaluate_live_audit.py",
+    "scripts/validate_research_policy.py",
     "tests/test_continuity.py",
+    "tests/test_live_audit.py",
+    "tests/test_research_policy.py",
     "tests/test_response_contract_presentation.py"
   ],
   "external_targets": [],
@@ -20,8 +29,8 @@
     {
       "resource_key": "component:goal_lifecycle_identity",
       "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
-      "lease_id": "274e4043-c7ed-4c88-a7bb-62ec920674be",
-      "generation": 5
+      "lease_id": "3757175a-5721-43d9-b35e-6ff85b30c91d",
+      "generation": 6
     }
   ],
   "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
