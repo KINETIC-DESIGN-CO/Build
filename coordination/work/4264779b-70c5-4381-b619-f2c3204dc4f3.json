@@ -13,6 +13,7 @@
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000013-daf49e42.json",
     "continuity/checkpoints/CP-000014-6f3b4334.json",
+    "continuity/checkpoints/CP-000015-6c7e05bd.json",
     "continuity/decision-rationale.jsonl",
     "continuity/directive-ledger.jsonl",
     "contracts/semantic-firewall-v1/control-path-registry.json",
