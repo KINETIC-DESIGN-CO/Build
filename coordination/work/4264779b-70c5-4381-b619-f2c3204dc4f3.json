@@ -1,10 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
-  "title": "Semantic Firewall Phase B: Trusted evidence provenance boundary",
+  "title": "Semantic Firewall Phase B: Predicate-level deterministic conformance",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "e9361d13-3396-4b8e-b3d4-4a1cfbd38975"
+    "session_id": "edfc29a8-6113-4f2e-a4c0-fe37751e4ab5"
   },
   "implementation_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
   "base_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
@@ -12,21 +12,20 @@
   "repo_paths": [
     "architecture/semantic-firewall-v1.md",
     "continuity/bootstrap.json",
-    "continuity/checkpoints/CP-000005-6c5f0a21.json",
-    "continuity/checkpoints/CP-000006-4c95292a.json",
+    "continuity/checkpoints/CP-000007-75d17604.json",
+    "continuity/checkpoints/CP-000008-41b7c2e9.json",
+    "continuity/checkpoints/CP-000009-2fd4f512.json",
     "contracts/semantic-firewall-v1/conformance-profile.json",
-    "contracts/semantic-firewall-v1/rule-registry.json",
+    "contracts/semantic-firewall-v1/control-contract.schema.json",
+    "contracts/semantic-firewall-v1/control-receipt.schema.json",
+    "contracts/semantic-firewall-v1/control-request.schema.json",
+    "contracts/semantic-firewall-v1/input-snapshot.schema.json",
+    "contracts/semantic-firewall-v1/predicate-registry.json",
+    "contracts/semantic-firewall-v1/predicate-registry.schema.json",
     "contracts/semantic-firewall-v1/spec.json",
-    "governance/root-cause-repairs.json",
-    "reliability/compatibility-map.json",
-    "reliability/schema/compatibility-map.schema.json",
-    "reliability/schema/spec.schema.json",
-    "reliability/spec.json",
     "scripts/evaluate_semantic_firewall.py",
-    "scripts/validate_reliability.py",
     "scripts/validate_semantic_firewall.py",
     "scripts/validate_semantic_firewall_conformance.py",
-    "tests/test_reliability.py",
     "tests/test_semantic_firewall_conformance.py",
     "tests/test_semantic_firewall_v1.py"
   ],
@@ -35,9 +34,12 @@
     {
       "resource_key": "component:issue_57",
       "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
-      "lease_id": "9dc6091c-ef67-4eac-b391-129db073735c",
-      "generation": 2
+      "lease_id": "decde849-aebc-4557-8b3b-daa811a6c580",
+      "generation": 4
     }
   ],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
   "runtime_control_authority": "NONE"
 }

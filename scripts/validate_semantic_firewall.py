@@ -18,6 +18,7 @@ SCHEMA_FILES = [
     "control-request.schema.json",
     "effect-request.schema.json",
     "input-snapshot.schema.json",
+    "predicate-registry.schema.json",
     "reliability-verification.schema.json",
 ]
 
@@ -69,6 +70,7 @@ def load_evaluator():
 
 def main() -> int:
     spec = load_json(SF / "spec.json")
+    predicate_registry = load_json(SF / "predicate-registry.json")
     placement = load_json(ROOT / "governance" / "placement-policy.json")
     reliability = load_json(ROOT / "reliability" / "spec.json")
     compatibility = load_json(ROOT / "reliability" / "compatibility-map.json")
@@ -83,12 +85,13 @@ def main() -> int:
             if vc.ERRORS:
                 ERRORS.extend(f"SF004_SCHEMA: {entry}" for entry in vc.ERRORS)
 
-    if any(value is None for value in (spec, placement, reliability, compatibility, provenance)):
+    if any(value is None for value in (spec, predicate_registry, placement, reliability, compatibility, provenance)):
         for error in ERRORS:
             print(error, file=sys.stderr)
         return 1
 
     validate_authority_none(spec)
+    validate_authority_none(predicate_registry)
     validate_authority_none(reliability)
     validate_authority_none(compatibility)
     validate_authority_none(provenance)
@@ -103,6 +106,10 @@ def main() -> int:
         fail("SF005_SPEC", "evidence states must preserve KNOWN/UNKNOWN/UNVERIFIED/NOT_RUN")
     if spec.get("evidence_trust_boundary") != EXPECTED_EVIDENCE_TRUST_BOUNDARY:
         fail("SF005_SPEC", "evidence trust boundary must keep source metadata nonauthoritative and trusted evidence adapters NOT_IMPLEMENTED")
+    if spec.get("predicate_registry_path") != "contracts/semantic-firewall-v1/predicate-registry.json":
+        fail("SF005_SPEC", "Semantic Firewall must bind the canonical predicate registry")
+    if predicate_registry.get("registry_authority") != "SOURCE_VALIDATION_ONLY":
+        fail("SF005_SPEC", "predicate registry authority must remain SOURCE_VALIDATION_ONLY")
 
     expected_kinds = placement.get("control_decision_kinds")
     if spec.get("control_decision_kinds") != expected_kinds:
@@ -112,18 +119,23 @@ def main() -> int:
         "SOURCE_TYPE_SOURCE_REF_AND_SOURCE_VERSION_FIELDS_ARE_STRUCTURAL_LABELS_ONLY_AND_CANNOT_PROVE_TRUSTED_EVIDENCE_ISSUANCE",
         "RUNTIME_ACTIVATION_REQUIRES_VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION",
         "CONTRACT_SOURCE_WHITELIST_CANNOT_ELEVATE_MODEL_PROSE_ISSUE_REVIEW_LABEL_OR_SEMANTIC_SIMILARITY_TO_AUTHORITATIVE_EVIDENCE",
+        "NO_CONTROL_TRANSITION_FROM_OPEN_ENDED_NATURAL_LANGUAGE_PREDICATE",
+        "CONTROL_CONTRACT_PREDICATE_ID_RESOLVES_TO_CANONICAL_DETERMINISTIC_DEFINITION",
+        "UNDEFINED_CONTROL_PREDICATE_FAILS_CLOSED_AS_PREDICATE_DEFINITION_MISSING",
+        "DETERMINISTIC_CONSUMER_DOES_NOT_MAKE_UNDEFINED_UPSTREAM_PREDICATE_DETERMINISTIC",
+        "TYPED_REPRESENTATION_DOES_NOT_UPGRADE_UNCONTROLLED_MODEL_JUDGMENT_TO_TRUSTED_CONTROL_INPUT",
         "SOURCE_EVALUATOR_CONTROL_AND_EFFECT_ELIGIBILITY_RESULTS_HAVE_ZERO_RUNTIME_CONTROL_AUTHORITY",
         "TRUSTED_RECEIPT_FIELDS_AND_SELF_HASH_ALONE_DO_NOT_ESTABLISH_TRUSTED_ISSUANCE_WITHOUT_AUTHORITATIVE_PERSISTENCE_READBACK",
         "BUILD_TIME_CONFORMANCE_PROFILE_AND_RULE_REGISTRY_HAVE_ZERO_LIFE_RUNTIME_CONTROL_AUTHORITY",
         "EVERY_DISCOVERED_GOVERNED_RULE_SURFACE_MUST_BE_REGISTERED_OR_REQUIRED_CI_FAILS",
     }
     if not required_invariants.issubset(set(spec.get("invariants", []))):
-        fail("SF006_KINDS", "source-only trust-boundary or conformance invariants are missing")
+        fail("SF006_KINDS", "source-only trust-boundary or predicate-conformance invariants are missing")
 
     for rel in spec.get("schema_paths", []):
         if not (ROOT / rel).is_file():
             fail("SF007_SOURCE_LINK", f"schema path missing: {rel}")
-    for field in ("evaluator_path", "validator_path", "test_path", "conformance_profile_path", "rule_registry_path", "conformance_validator_path", "conformance_test_path"):
+    for field in ("evaluator_path", "validator_path", "test_path", "conformance_profile_path", "rule_registry_path", "predicate_registry_path", "conformance_validator_path", "conformance_test_path"):
         rel = spec.get(field)
         if not isinstance(rel, str) or not (ROOT / rel).is_file():
             fail("SF007_SOURCE_LINK", f"{field} missing: {rel}")
