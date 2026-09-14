@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
   "title": "Semantic Firewall Phase B: Predicate-level deterministic conformance",
   "worker": {
@@ -36,9 +36,12 @@
     {
       "resource_key": "component:issue_57",
       "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
-      "lease_id": "d76ac25a-570b-4103-8cf2-498ba2b4e7ce",
-      "generation": 3
+      "lease_id": "decde849-aebc-4557-8b3b-daa811a6c580",
+      "generation": 4
     }
   ],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
   "runtime_control_authority": "NONE"
 }
