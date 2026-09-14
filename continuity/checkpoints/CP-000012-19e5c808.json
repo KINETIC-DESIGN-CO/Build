@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000012-19e5c808",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-14T11:35:50Z",
+  "source_main_sha": "1d18d9e3839140f532148974dbad9fcc4fe732d5",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "19e5c808f8ec33c0ece5ee8a15066d9435d5b432",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "OPEN_BLOCKER_SET_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000011-05d67e48.json",
+    "blob_sha": "7cd46f2a00d976c350e2484b16187f1588fd4b0c"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-14T11:35:50Z",
+    "evidence_ref": "Fresh main keeps github-issue-57 ADMITTED; live component:issue_57 generation 5 is ACTIVE for this work_id; PR #93 exact-head validation succeeded after the work record was repaired to the exact changed-path set. Required Merge Queue integration is blocked only because the connected GitHub action surface exposes direct merge but not enqueuePullRequest or merge-async merge_action=merge_queue.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_STALE_VS_LIVE_MAIN_1D18D9E"
+    ],
+    "open_blocker_ids": [
+      "B-0004",
+      "MERGE_QUEUE_ENQUEUE_ACTION_NOT_EXPOSED"
+    ],
+    "observed_at": "2026-09-14T11:35:50Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-14T11:35:50Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "ef2a5979-aaf3-410d-a331-58aaacac1027",
+      "generation": 5,
+      "expires_at": "2026-09-14T11:59:05Z",
+      "observed_at": "2026-09-14T11:35:50Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "coordination/work/4264779b-70c5-4381-b619-f2c3204dc4f3.json",
+      "operation": "REPAIR_EXACT_CHANGED_PATH_FENCE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "COMMIT:19e5c808f8ec33c0ece5ee8a15066d9435d5b432",
+        "WORK_RECORD_REPO_PATHS:EXACT_PR_DIFF_EXCEPT_WORK_RECORD"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "GITHUB_PR:93:Enforce universal non-bypass Semantic Firewall control paths@19e5c808f8ec33c0ece5ee8a15066d9435d5b432",
+      "operation": "RUN_REQUIRED_EXACT_HEAD_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_ACTION_RUN:34838383091:SUCCESS",
+        "SEMANTIC_FIREWALL_CONTROL_PATHS:SUCCESS",
+        "SOURCE_COORDINATION:SUCCESS",
+        "REPOSITORY_TESTS:SUCCESS",
+        "SUPABASE_DATABASE_TESTS:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "component:issue_57",
+      "operation": "RENEW_GENERATION_5_CLAIM_AFTER_PROTECTED_MUTATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "LOCK_COMMIT:5e3b7b2852a7e393a96a1039f4545f228465e2c1",
+        "LEASE_ID:ef2a5979-aaf3-410d-a331-58aaacac1027",
+        "EXPIRES_AT:2026-09-14T11:59:05Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "GITHUB_PR:93:Enforce universal non-bypass Semantic Firewall control paths",
+      "operation": "DIRECT_MERGE_WRAPPER_ATTEMPT",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_HTTP_405:CHANGES_MUST_BE_MADE_THROUGH_THE_MERGE_QUEUE",
+        "GITHUB_RULESET:22998982:MERGE_QUEUE_REQUIRED:NO_BYPASS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "CONNECTED_GITHUB_ACTION_SURFACE",
+      "operation": "DISCOVER_EXACT_MERGE_QUEUE_ENQUEUE_ACTION",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "NO_ENQUEUE_PULL_REQUEST_ACTION_EXPOSED",
+        "NO_GENERIC_AUTHENTICATED_GRAPHQL_OR_REST_MUTATION_EXPOSED",
+        "DIRECT_MERGE_ACTION_REJECTED_BY_REQUIRED_MERGE_QUEUE"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "READ_CANONICAL_INVOCATION_RUNTIME_SURFACE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "project_status=ACTIVE_HEALTHY",
+        "edge_function_count=0",
+        "database_function_life.invoke=absent",
+        "database_function_life.record_invocation_v1=present",
+        "canonical_invocation=NOT_RUN"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0006",
+    "VD-0008",
+    "VD-0010",
+    "VD-0011",
+    "VD-0020"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0009"
+  ],
+  "research_refs": [
+    "https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/merging-a-pull-request-with-a-merge-queue",
+    "https://docs.github.com/en/graphql/reference/pulls",
+    "https://docs.github.com/en/rest/pulls/pulls",
+    "https://arxiv.org/abs/2608.23282"
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=1d18d9e3839140f532148974dbad9fcc4fe732d5",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:93",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt:canonical_invocation_readiness",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "FRESH_VERIFY_MAIN_PR_93_AND_GENERATION_5_CLAIM; ENQUEUE PR_93 USING AN EXACT GITHUB MERGE_QUEUE ACTION SUCH AS enqueuePullRequest OR merge-async merge_action=merge_queue WHEN AN AUTHORIZED ACTION SURFACE IS AVAILABLE; VERIFY merge_group SUCCESS, MERGED-MAIN READBACK, AND POST-MERGE VALIDATION; KEEP github-issue-57 ADMITTED BECAUSE RUNTIME_EFFECT AND CI_TRUST_ROOT COMPLETION STATES ARE STILL UNSATISFIED.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57:Migrate legacy Semantic Firewall and make the work deterministically dispatchable",
+    "GITHUB_PR:93:Enforce universal non-bypass Semantic Firewall control paths",
+    "GITHUB_ACTION_RUN:34838383091:SUCCESS",
+    "GITHUB_RULESET:22998982",
+    "contracts/semantic-firewall-v1/control-path-registry.json",
+    "GITHUB_ISSUE:96:Make CI verification independent of candidate-controlled verifier changes",
+    "governance/work-admissions.json:github-issue-57=ADMITTED",
+    "continuity/current.json:A-0014:Terminal Redispatch & Issue Lifecycle Closure"
+  ]
+}

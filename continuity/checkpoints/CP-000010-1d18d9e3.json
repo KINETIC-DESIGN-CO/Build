@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000010-1d18d9e3",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-14T10:24:34Z",
+  "source_main_sha": "1d18d9e3839140f532148974dbad9fcc4fe732d5",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "b3b9a19bc158b55acf3c365c3ca9aaa6249d1a40",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000009-2fd4f512.json",
+    "blob_sha": "c0d87f10aebccd216d46ae668c83a97907b30c10"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-14T10:24:34Z",
+    "evidence_ref": "main governance/work-admissions.json:github-issue-57=ADMITTED; terminal cleanup branch stages github-issue-57=COMPLETE after verified PR #92 merge-group, merged-main, and post-merge validation; live component:issue_57 generation 4 remains ACTIVE under this work_id",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_STALE_VS_LIVE_MAIN_1D18D9E"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-14T10:24:34Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-14T10:24:34Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "decde849-aebc-4557-8b3b-daa811a6c580",
+      "generation": 4,
+      "expires_at": "2026-09-14T10:39:39Z",
+      "observed_at": "2026-09-14T10:24:34Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "GITHUB_PR:92:Close predicate-level ambiguity in Semantic Firewall",
+      "operation": "VERIFY_PROTECTED_INTEGRATION_AND_POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_MERGE_GROUP_RUN:34832000975:SUCCESS",
+        "GITHUB_MAIN:1d18d9e3839140f532148974dbad9fcc4fe732d5",
+        "GITHUB_POST_MERGE_RUN:34832213918:SUCCESS",
+        "GITHUB_ISSUE_LIFECYCLE_RUN:34832213928:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "governance/work-admissions.json:github-issue-57",
+      "operation": "STAGE_TERMINAL_ADMISSION_TRANSITION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "BRANCH_COMMIT:b3b9a19bc158b55acf3c365c3ca9aaa6249d1a40",
+        "BRANCH_STATE:COMPLETE",
+        "MAIN_STATE:ADMITTED_PENDING_PROTECTED_INTEGRATION"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "READ_CANONICAL_INVOCATION_RUNTIME_SURFACE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "project_status=ACTIVE_HEALTHY",
+        "edge_function_count=0",
+        "database_function_life.invoke=absent",
+        "canonical_invocation=NOT_RUN"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0002",
+    "VD-0011"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=1d18d9e3839140f532148974dbad9fcc4fe732d5",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3@b3b9a19bc158b55acf3c365c3ca9aaa6249d1a40",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:92",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_ISSUE:57",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "READ_BACK_THIS_CHECKPOINT; RENEW THE CURRENT GENERATION-4 CLAIM; VERIFY THE TERMINAL-CLEANUP BRANCH DIFF AND EXACT-HEAD CI; OPEN A TERMINAL-CLEANUP PR; REQUIRE MERGE_GROUP SUCCESS; VERIFY MERGED-MAIN ADMISSION COMPLETE AND POST-MERGE VALIDATION; VERIFY ISSUE #57 CLOSED/COMPLETED BY THE ISSUE-LIFECYCLE WORKFLOW; THEN WRITE ANY REQUIRED FINAL CHECKPOINT AND RELEASE THE COMPONENT CLAIM.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57:Migrate legacy Semantic Firewall and make the work deterministically dispatchable",
+    "GITHUB_PR:92:Close predicate-level ambiguity in Semantic Firewall",
+    "GITHUB_MAIN:1d18d9e3839140f532148974dbad9fcc4fe732d5",
+    "GITHUB_MERGE_GROUP_RUN:34832000975:SUCCESS",
+    "GITHUB_POST_MERGE_RUN:34832213918:SUCCESS",
+    "governance/work-admissions.json:github-issue-57",
+    "governance/goal-registry.json:2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "continuity/current.json:A-0014:Terminal Redispatch & Issue Lifecycle Closure"
+  ]
+}
