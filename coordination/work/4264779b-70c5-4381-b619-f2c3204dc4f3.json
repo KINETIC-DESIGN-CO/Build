@@ -10,24 +10,8 @@
   "base_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
   "component_id": "issue_57",
   "repo_paths": [
-    "architecture/semantic-firewall-v1.md",
-    "continuity/bootstrap.json",
-    "continuity/checkpoints/CP-000007-75d17604.json",
-    "continuity/checkpoints/CP-000008-41b7c2e9.json",
-    "continuity/checkpoints/CP-000009-2fd4f512.json",
-    "contracts/semantic-firewall-v1/conformance-profile.json",
-    "contracts/semantic-firewall-v1/control-contract.schema.json",
-    "contracts/semantic-firewall-v1/control-receipt.schema.json",
-    "contracts/semantic-firewall-v1/control-request.schema.json",
-    "contracts/semantic-firewall-v1/input-snapshot.schema.json",
-    "contracts/semantic-firewall-v1/predicate-registry.json",
-    "contracts/semantic-firewall-v1/predicate-registry.schema.json",
-    "contracts/semantic-firewall-v1/spec.json",
-    "scripts/evaluate_semantic_firewall.py",
-    "scripts/validate_semantic_firewall.py",
-    "scripts/validate_semantic_firewall_conformance.py",
-    "tests/test_semantic_firewall_conformance.py",
-    "tests/test_semantic_firewall_v1.py"
+    "continuity/checkpoints/CP-000010-1d18d9e3.json",
+    "governance/work-admissions.json"
   ],
   "external_targets": [],
   "claims": [
