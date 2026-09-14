@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000013-daf49e42",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-14T11:58:07Z",
+  "source_main_sha": "17589465a8aa9337df46ecddebd2145ca725ba11",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "daf49e42b9fc9b9b49a104bca1c6bde34328a41f",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "BOOTSTRAP_CONTINUITY_EVENT_OCCURRED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL",
+    "OPEN_BLOCKER_SET_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000012-19e5c808.json",
+    "blob_sha": "f60de757572c5bdb2adbbdcd9dc217c1cd6e47d2"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-14T11:58:07Z",
+    "evidence_ref": "Current main keeps github-issue-57 ADMITTED and Issue #57 open. Generation-5 component:issue_57 remains ACTIVE for this work_id. PR #93 merged through required Merge Queue and post-merge validation passed. The next source-only Phase B slice binds every KNOWN trusted-control input to an internal persisted trusted-evidence receipt while leaving runtime trusted-adapter activation explicitly NOT_IMPLEMENTED.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_STALE_VS_LIVE_MAIN_17589465"
+    ],
+    "open_blocker_ids": [
+      "B-0004",
+      "SEMANTIC_FIREWALL_RUNTIME_TRUSTED_EVIDENCE_ADAPTER_NOT_IMPLEMENTED",
+      "SEMANTIC_FIREWALL_CI_TRUST_ROOT_NOT_INDEPENDENT"
+    ],
+    "observed_at": "2026-09-14T11:58:07Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-14T11:58:07Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "ef2a5979-aaf3-410d-a331-58aaacac1027",
+      "generation": 5,
+      "expires_at": "2026-09-14T12:20:35Z",
+      "observed_at": "2026-09-14T11:58:07Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "GITHUB_PR:93:Enforce universal non-bypass Semantic Firewall control paths",
+      "operation": "REQUIRED_MERGE_QUEUE_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "MERGE_GROUP_RUN:34839824769:SUCCESS",
+        "MERGE_COMMIT:17589465a8aa9337df46ecddebd2145ca725ba11",
+        "PR_93:MERGED_AT:2026-09-14T11:47:54Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main@17589465a8aa9337df46ecddebd2145ca725ba11",
+      "operation": "POST_MERGE_VALIDATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_ACTION_RUN:34840030090:SUCCESS",
+        "SEMANTIC_FIREWALL_CONTROL_PATHS:SUCCESS",
+        "SOURCE_COORDINATION:SUCCESS",
+        "REPOSITORY_TESTS:SUCCESS",
+        "SUPABASE_DATABASE_TESTS:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "component:issue_57",
+      "operation": "RENEW_GENERATION_5_CLAIM_AFTER_PROTECTED_INTEGRATION",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "LOCK_COMMIT:a04849bb0f5e3763eee8011aff7a787421415696",
+        "LEASE_ID:ef2a5979-aaf3-410d-a331-58aaacac1027",
+        "EXPIRES_AT:2026-09-14T12:20:35Z"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "operation": "WORK_BRANCH_RECONCILIATION_ATTEMPT",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "UNINTENDED_NOOP_HISTORY_ONLY:c197337ebc794b177af0013b603185ce08b14623",
+        "UNINTENDED_EMPTY_FILE_ADD_DELETE_HISTORY_ONLY:noop-do-not-create",
+        "UNINTENDED_EMPTY_FILE_ADD_DELETE_HISTORY_ONLY:noop-do-not-create-2",
+        "FINAL_COMPARE_TO_MAIN:FILES_EMPTY"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "SEMANTIC_FIREWALL_TRUSTED_EVIDENCE_BINDING_SOURCE",
+      "operation": "VERSION_SOURCE_CONTRACT_AND_FALSIFICATION_TESTS",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "contracts/semantic-firewall-v1/trusted-evidence-receipt.schema.json",
+        "scripts/evaluate_semantic_firewall_trusted_evidence.py",
+        "tests/test_semantic_firewall_trusted_evidence.py",
+        "contracts/semantic-firewall-v1/spec.json:evidence_trust_boundary",
+        "contracts/semantic-firewall-v1/control-path-registry.json:RUNTIME_EFFECT"
+      ]
+    },
+    {
+      "system": "SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt",
+      "operation": "READ_CANONICAL_INVOCATION_RUNTIME_SURFACE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "project_status=ACTIVE_HEALTHY",
+        "edge_function_count=0",
+        "database_function_life.invoke=absent",
+        "database_function_life.record_invocation_v1=present",
+        "canonical_invocation=NOT_RUN"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0006",
+    "VD-0008",
+    "VD-0010",
+    "VD-0011",
+    "VD-0020"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0009"
+  ],
+  "research_refs": [
+    "https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/merging-a-pull-request-with-a-merge-queue",
+    "https://arxiv.org/abs/2608.22868",
+    "https://arxiv.org/abs/2606.10749"
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=17589465a8aa9337df46ecddebd2145ca725ba11",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:93",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "jnenguxodtgwbskhdsxt:canonical_invocation_readiness",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_VERCEL",
+      "target": "NO_AUTHORIZED_TARGET",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "FRESH_VERIFY_MAIN_AND_GENERATION_5_CLAIM; VALIDATE THE TRUSTED-EVIDENCE SOURCE BINDING ON THE EXACT WORK-BRANCH HEAD; REPAIR ANY FAILURES WITHOUT WEAKENING THE TRUST BOUNDARY; OPEN THE NEXT ISSUE-57 PR; REQUIRE PR-HEAD VALIDATE, MERGE_QUEUE MERGE_GROUP VALIDATE, MERGED-MAIN READBACK, AND POST-MERGE VALIDATE. DO NOT MARK TRUSTED_EVIDENCE_ADAPTER_IMPLEMENTED OR RUNTIME_EFFECT=RUNTIME_ACTIVE UNTIL AN AUTHORITATIVE RUNTIME ADAPTER, PERSISTENCE READBACK, NON-BYPASS ROUTING, POST-EFFECT READBACK, AND EXACT life.invoke ARE LIVE AND VERIFIED.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57:Migrate legacy Semantic Firewall and make the work deterministically dispatchable",
+    "GITHUB_PR:93:Enforce universal non-bypass Semantic Firewall control paths",
+    "GITHUB_ACTION_RUN:34839824769:SUCCESS",
+    "GITHUB_ACTION_RUN:34840030090:SUCCESS",
+    "GITHUB_RULESET:22998982",
+    "contracts/semantic-firewall-v1/control-path-registry.json",
+    "GITHUB_ISSUE:96:Make CI verification independent of candidate-controlled verifier changes",
+    "governance/work-admissions.json:github-issue-57=ADMITTED",
+    "continuity/current.json:A-0014:Terminal Redispatch & Issue Lifecycle Closure"
+  ]
+}

@@ -20,16 +20,19 @@ SCHEMA_FILES = [
     "input-snapshot.schema.json",
     "predicate-registry.schema.json",
     "reliability-verification.schema.json",
+    "trusted-evidence-receipt.schema.json",
 ]
 
 EXPECTED_DECISION_STATES = ["PASS", "FAIL", "NOT_RUN"]
 EXPECTED_EVIDENCE_STATES = ["KNOWN", "UNKNOWN", "UNVERIFIED", "NOT_RUN"]
 EXPECTED_EVIDENCE_TRUST_BOUNDARY = {
     "source_metadata_authority": "STRUCTURAL_LABELS_ONLY_ZERO_RUNTIME_CONTROL_AUTHORITY",
+    "trusted_evidence_binding_contract_state": "SOURCE_IMPLEMENTED_RUNTIME_ADAPTER_NOT_IMPLEMENTED",
     "trusted_evidence_adapter_state": "NOT_IMPLEMENTED",
-    "runtime_activation_dependency": "VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION_REQUIRED",
+    "runtime_activation_dependency": "VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_PERSISTENCE_READBACK_AND_INTERNAL_BINDING_REQUIRED",
     "contract_source_whitelist_effect": "SOURCE_LEVEL_COMPATIBILITY_ONLY_ZERO_PROVENANCE_AUTHORITY",
     "caller_supplied_source_metadata_effect": "CANNOT_ESTABLISH_TRUSTED_PROVENANCE",
+    "caller_supplied_evidence_receipt_effect": "CANNOT_ESTABLISH_TRUSTED_ISSUANCE_OR_AUTHORITATIVE_PERSISTENCE",
     "model_prose_review_issue_metadata_runtime_control_authority": "NONE",
 }
 
@@ -105,7 +108,7 @@ def main() -> int:
     if spec.get("evidence_states") != EXPECTED_EVIDENCE_STATES:
         fail("SF005_SPEC", "evidence states must preserve KNOWN/UNKNOWN/UNVERIFIED/NOT_RUN")
     if spec.get("evidence_trust_boundary") != EXPECTED_EVIDENCE_TRUST_BOUNDARY:
-        fail("SF005_SPEC", "evidence trust boundary must keep source metadata nonauthoritative and trusted evidence adapters NOT_IMPLEMENTED")
+        fail("SF005_SPEC", "evidence trust boundary must keep source binding nonauthoritative and runtime trusted evidence adapters NOT_IMPLEMENTED")
     if spec.get("predicate_registry_path") != "contracts/semantic-firewall-v1/predicate-registry.json":
         fail("SF005_SPEC", "Semantic Firewall must bind the canonical predicate registry")
     if predicate_registry.get("registry_authority") != "SOURCE_VALIDATION_ONLY":
@@ -117,6 +120,9 @@ def main() -> int:
 
     required_invariants = {
         "SOURCE_TYPE_SOURCE_REF_AND_SOURCE_VERSION_FIELDS_ARE_STRUCTURAL_LABELS_ONLY_AND_CANNOT_PROVE_TRUSTED_EVIDENCE_ISSUANCE",
+        "TRUSTED_CONTROL_PASS_REQUIRES_INTERNAL_PERSISTED_TRUSTED_EVIDENCE_RECEIPT_FOR_EVERY_KNOWN_INPUT",
+        "TRUSTED_EVIDENCE_RECEIPT_BINDS_INPUT_NAME_SOURCE_IDENTITY_OBSERVATION_VALUE_DIGEST_AND_VALIDITY_WINDOW",
+        "SELF_HASHED_OR_CALLER_SUPPLIED_EVIDENCE_RECEIPT_CANNOT_ESTABLISH_TRUSTED_ISSUANCE_WITHOUT_RUNTIME_ADAPTER_AND_AUTHORITATIVE_PERSISTENCE_READBACK",
         "RUNTIME_ACTIVATION_REQUIRES_VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION",
         "CONTRACT_SOURCE_WHITELIST_CANNOT_ELEVATE_MODEL_PROSE_ISSUE_REVIEW_LABEL_OR_SEMANTIC_SIMILARITY_TO_AUTHORITATIVE_EVIDENCE",
         "NO_CONTROL_TRANSITION_FROM_OPEN_ENDED_NATURAL_LANGUAGE_PREDICATE",
@@ -135,7 +141,18 @@ def main() -> int:
     for rel in spec.get("schema_paths", []):
         if not (ROOT / rel).is_file():
             fail("SF007_SOURCE_LINK", f"schema path missing: {rel}")
-    for field in ("evaluator_path", "validator_path", "test_path", "conformance_profile_path", "rule_registry_path", "predicate_registry_path", "conformance_validator_path", "conformance_test_path"):
+    for field in (
+        "evaluator_path",
+        "validator_path",
+        "test_path",
+        "conformance_profile_path",
+        "rule_registry_path",
+        "predicate_registry_path",
+        "conformance_validator_path",
+        "conformance_test_path",
+        "trusted_evidence_evaluator_path",
+        "trusted_evidence_test_path",
+    ):
         rel = spec.get(field)
         if not isinstance(rel, str) or not (ROOT / rel).is_file():
             fail("SF007_SOURCE_LINK", f"{field} missing: {rel}")

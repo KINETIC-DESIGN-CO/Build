@@ -11,6 +11,8 @@
   "control_path_validator_path": "scripts/validate_semantic_firewall_control_paths.py",
   "conformance_test_path": "tests/test_semantic_firewall_conformance.py",
   "control_path_test_path": "tests/test_semantic_firewall_control_paths.py",
+  "trusted_evidence_evaluator_path": "scripts/evaluate_semantic_firewall_trusted_evidence.py",
+  "trusted_evidence_test_path": "tests/test_semantic_firewall_trusted_evidence.py",
   "conformance_enforcement_state": "CI_ENFORCED_BOOTSTRAP_REQUIRED",
   "control_decision_kinds": [
     "AUTHORIZATION",
@@ -29,10 +31,12 @@
   "receipt_persistence_states": ["CANDIDATE", "PERSISTED_TRUSTED", "REVOKED"],
   "evidence_trust_boundary": {
     "source_metadata_authority": "STRUCTURAL_LABELS_ONLY_ZERO_RUNTIME_CONTROL_AUTHORITY",
+    "trusted_evidence_binding_contract_state": "SOURCE_IMPLEMENTED_RUNTIME_ADAPTER_NOT_IMPLEMENTED",
     "trusted_evidence_adapter_state": "NOT_IMPLEMENTED",
-    "runtime_activation_dependency": "VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION_REQUIRED",
+    "runtime_activation_dependency": "VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_PERSISTENCE_READBACK_AND_INTERNAL_BINDING_REQUIRED",
     "contract_source_whitelist_effect": "SOURCE_LEVEL_COMPATIBILITY_ONLY_ZERO_PROVENANCE_AUTHORITY",
     "caller_supplied_source_metadata_effect": "CANNOT_ESTABLISH_TRUSTED_PROVENANCE",
+    "caller_supplied_evidence_receipt_effect": "CANNOT_ESTABLISH_TRUSTED_ISSUANCE_OR_AUTHORITATIVE_PERSISTENCE",
     "model_prose_review_issue_metadata_runtime_control_authority": "NONE"
   },
   "imported_legacy_path": "contracts/semantic-firewall",
@@ -45,7 +49,8 @@
     "contracts/semantic-firewall-v1/effect-request.schema.json",
     "contracts/semantic-firewall-v1/input-snapshot.schema.json",
     "contracts/semantic-firewall-v1/predicate-registry.schema.json",
-    "contracts/semantic-firewall-v1/reliability-verification.schema.json"
+    "contracts/semantic-firewall-v1/reliability-verification.schema.json",
+    "contracts/semantic-firewall-v1/trusted-evidence-receipt.schema.json"
   ],
   "evaluator_path": "scripts/evaluate_semantic_firewall.py",
   "validator_path": "scripts/validate_semantic_firewall.py",
@@ -63,6 +68,9 @@
     "REQUIRED_INPUT_UNKNOWN_UNVERIFIED_NOT_RUN_MISSING_OR_STALE_CANNOT_PASS",
     "WRONG_SOURCE_TYPE_FUTURE_OBSERVATION_HASH_MISMATCH_TYPE_MISMATCH_OR_IDENTITY_MISMATCH_FAILS",
     "SOURCE_TYPE_SOURCE_REF_AND_SOURCE_VERSION_FIELDS_ARE_STRUCTURAL_LABELS_ONLY_AND_CANNOT_PROVE_TRUSTED_EVIDENCE_ISSUANCE",
+    "TRUSTED_CONTROL_PASS_REQUIRES_INTERNAL_PERSISTED_TRUSTED_EVIDENCE_RECEIPT_FOR_EVERY_KNOWN_INPUT",
+    "TRUSTED_EVIDENCE_RECEIPT_BINDS_INPUT_NAME_SOURCE_IDENTITY_OBSERVATION_VALUE_DIGEST_AND_VALIDITY_WINDOW",
+    "SELF_HASHED_OR_CALLER_SUPPLIED_EVIDENCE_RECEIPT_CANNOT_ESTABLISH_TRUSTED_ISSUANCE_WITHOUT_RUNTIME_ADAPTER_AND_AUTHORITATIVE_PERSISTENCE_READBACK",
     "RUNTIME_ACTIVATION_REQUIRES_VERSIONED_TRUSTED_EVIDENCE_ADAPTER_ISSUANCE_AND_VERIFICATION",
     "CONTRACT_SOURCE_WHITELIST_CANNOT_ELEVATE_MODEL_PROSE_ISSUE_REVIEW_LABEL_OR_SEMANTIC_SIMILARITY_TO_AUTHORITATIVE_EVIDENCE",
     "NO_CONTROL_TRANSITION_FROM_OPEN_ENDED_NATURAL_LANGUAGE_PREDICATE",
