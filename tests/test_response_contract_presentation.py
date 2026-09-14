@@ -12,13 +12,15 @@ class ResponseContractPresentationTests(unittest.TestCase):
         self.contract = json.loads((ROOT / "continuity/response-contract.json").read_text())
         self.orientation = self.contract["architecture_thread_orientation"]
 
-    def test_goal_description_is_standalone_and_never_blockquoted(self):
+    def test_goal_description_is_bounded_blockquote_and_content_isolated(self):
         self.assertEqual(
             self.orientation["start_description_rule"],
-            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_STANDALONE_TEXT_PARAGRAPH_WITHOUT_MARKDOWN_BLOCKQUOTE_WITH_SENTENCE_COUNT_IN:1,2",
+            "IMMEDIATELY_AFTER_FIRST_HEADING_RENDER_ACTIVE_ROOT_GOAL_DESCRIPTION_FROM_GOAL_REGISTRY_AS_ITS_OWN_BOUNDED_MARKDOWN_BLOCKQUOTE_WITH_SENTENCE_COUNT_IN:1,2",
         )
-        self.assertIn("WITHOUT_MARKDOWN_BLOCKQUOTE", self.orientation["child_rule"])
-        self.assertNotIn("QUOTE_BLOCK", self.orientation["start_description_rule"])
+        self.assertIn("OWN_SEPARATELY_BOUNDED_MARKDOWN_BLOCKQUOTE", self.orientation["child_rule"])
+        self.assertIn("CONTAINS_ONLY_GOAL_DESCRIPTION", self.orientation["description_boundary_rule"])
+        self.assertIn("TERMINATES_BEFORE_OPENING_VINCE_ACTION", self.orientation["description_boundary_rule"])
+        self.assertNotIn("WITHOUT_MARKDOWN_BLOCKQUOTE", self.orientation["start_description_rule"])
 
     def test_required_regions_are_closed_and_compositional(self):
         self.assertEqual(
@@ -26,6 +28,7 @@ class ResponseContractPresentationTests(unittest.TestCase):
             [
                 "PARENT_GOAL_HEADING",
                 "STANDALONE_GOAL_DESCRIPTION",
+                "OPENING_VINCE_ACTION",
                 "OPENING_TRACKED_WORK_CHECKLIST",
                 "RESPONSE_BODY",
                 "COMPACT_PARENT_GOAL_NAME",
@@ -41,6 +44,23 @@ class ResponseContractPresentationTests(unittest.TestCase):
             "ZERO_IMPLIED_DELETION_EFFECT",
             self.orientation["composition_rule"],
         )
+
+    def test_opening_vince_action_is_unquoted_exact_state(self):
+        self.assertEqual(
+            self.orientation["opening_action_states"],
+            [
+                "CONTINUE_THIS_THREAD",
+                "CLOSE_THIS_THREAD",
+                "WAIT_AND_RETURN",
+                "ACTION_REQUIRED",
+                "YOUR_ACTION_UNKNOWN",
+            ],
+        )
+        rule = self.orientation["opening_action_rule"]
+        self.assertIn("IMMEDIATELY_AFTER_OPENING_ORIENTATION", rule)
+        self.assertIn("UNQUOTED", rule)
+        self.assertIn("🏁_YOUR_ACTION", rule)
+        self.assertIn("MUST_NOT_APPEAR_INSIDE_ANY_GOAL_BLOCKQUOTE", rule)
 
     def test_tracked_work_requires_opening_two_column_table(self):
         self.assertEqual(
