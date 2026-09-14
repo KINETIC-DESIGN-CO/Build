@@ -18,6 +18,7 @@
     "contracts/semantic-firewall-v1/trusted-evidence-receipt.schema.json",
     "scripts/evaluate_semantic_firewall_trusted_evidence.py",
     "scripts/validate_semantic_firewall.py",
+    "scripts/validate_semantic_firewall_control_paths.py",
     "tests/test_semantic_firewall_trusted_evidence.py"
   ],
   "external_targets": [],
