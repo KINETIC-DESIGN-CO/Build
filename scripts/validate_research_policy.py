@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-POLICY_PATH = ROOT / "governance" / "policies" / "research-policy.json"
+POLICY_PATH = ROOT / "governance" / "research-policy.json"
 
 REQUIRED_LANES = [
     "WHOLE_SOURCE_CONTEXT",
