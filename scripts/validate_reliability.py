@@ -20,6 +20,7 @@ SOURCE_SCHEMA_PAIRS = {
 }
 
 FAIL_CLOSED_DISPOSITIONS = {"QUARANTINE", "ESCALATE", "ABORT"}
+CANONICAL_GOAL_OWNER_PATH = "governance/goal-registry.json"
 
 
 def fail(code: str, message: str) -> None:
@@ -105,12 +106,16 @@ def validate_source_links(spec):
             fail("R004_SOURCE_LINK", "pending Semantic Firewall activation requires contracts/semantic-firewall-v1 directory")
     if links["semantic_firewall_link_state"] == "ACTIVE":
         fail("R004_SOURCE_LINK", "source-only Reliability cannot declare Semantic Firewall runtime ACTIVE")
-    if links["goal_root_identity_link_state"] != "ACTIVE":
-        fail("R004_SOURCE_LINK", "Reliability must bind the active canonical goal owner")
-    if links["goal_root_identity_owner_path"] != "governance/goal-registry.json":
-        fail("R004_SOURCE_LINK", "active goal identity must bind governance/goal-registry.json")
-    if not (ROOT / "governance/goal-registry.json").is_file():
-        fail("R004_SOURCE_LINK", "canonical goal registry is missing")
+
+    goal_state = links["goal_root_identity_link_state"]
+    goal_owner = links["goal_root_identity_owner_path"]
+    if goal_state == "PENDING_IMPLEMENTATION" and goal_owner is not None:
+        fail("R004_SOURCE_LINK", "pending goal identity must not claim an active owner path")
+    if goal_state == "ACTIVE":
+        if goal_owner != CANONICAL_GOAL_OWNER_PATH:
+            fail("R004_SOURCE_LINK", f"active goal identity owner must be {CANONICAL_GOAL_OWNER_PATH}")
+        elif not (ROOT / goal_owner).is_file():
+            fail("R004_SOURCE_LINK", f"active goal identity owner missing: {goal_owner}")
 
 
 def validate_postconditions(spec, catalog):
@@ -227,11 +232,23 @@ def validate_compatibility(spec, compatibility):
         fail("R009_COMPATIBILITY", "Semantic Firewall states must match across Reliability artifacts")
     if firewall["current_contract_path"] != spec["cross_links"]["semantic_firewall_contract_path"]:
         fail("R009_COMPATIBILITY", "Semantic Firewall paths must match across Reliability artifacts")
+
     goal = compatibility["goal_identity"]
-    if goal["state"] != spec["cross_links"]["goal_root_identity_link_state"]:
+    links = spec["cross_links"]
+    if goal["state"] != links["goal_root_identity_link_state"]:
         fail("R009_COMPATIBILITY", "goal identity states must match across Reliability artifacts")
-    if goal["current_owner_path"] != spec["cross_links"]["goal_root_identity_owner_path"]:
+    if goal["current_owner_path"] != links["goal_root_identity_owner_path"]:
         fail("R009_COMPATIBILITY", "goal identity owner paths must match across Reliability artifacts")
+    if goal["state"] == "PENDING_IMPLEMENTATION":
+        if goal["relationship"] != "COMBINE_PENDING_GOAL_OWNER_IMPLEMENTATION" or goal["current_owner_path"] is not None:
+            fail("R009_COMPATIBILITY", "pending goal identity must use the pending relationship with no owner path")
+    elif goal["state"] == "ACTIVE":
+        if goal["relationship"] != "COMBINE_CANONICAL_GOAL_OWNER":
+            fail("R009_COMPATIBILITY", "active goal identity must combine with the canonical goal owner")
+        if goal["current_owner_path"] != CANONICAL_GOAL_OWNER_PATH:
+            fail("R009_COMPATIBILITY", f"active goal identity owner must be {CANONICAL_GOAL_OWNER_PATH}")
+        elif not (ROOT / goal["current_owner_path"]).is_file():
+            fail("R009_COMPATIBILITY", f"active goal identity owner missing: {goal['current_owner_path']}")
 
 
 def validate_invariants(spec, catalog):
