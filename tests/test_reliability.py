@@ -130,6 +130,29 @@ class ReliabilityTests(unittest.TestCase):
         finally:
             td.cleanup()
 
+    def test_semantic_firewall_link_cannot_regress_to_legacy_contract_path(self):
+        td, dst = self.copy_repo()
+        try:
+            path = dst / "reliability/spec.json"
+            obj = json.loads(path.read_text())
+            obj["cross_links"]["semantic_firewall_contract_path"] = "contracts/semantic-firewall"
+            self.write_json(path, obj)
+            self.assert_rejected(self.run_validator(dst), "R001_SCHEMA")
+        finally:
+            td.cleanup()
+
+    def test_goal_identity_cannot_regress_to_pending_owner(self):
+        td, dst = self.copy_repo()
+        try:
+            path = dst / "reliability/spec.json"
+            obj = json.loads(path.read_text())
+            obj["cross_links"]["goal_root_identity_owner_path"] = None
+            obj["cross_links"]["goal_root_identity_link_state"] = "PENDING_IMPLEMENTATION"
+            self.write_json(path, obj)
+            self.assert_rejected(self.run_validator(dst), "R001_SCHEMA")
+        finally:
+            td.cleanup()
+
     def test_duplicate_invariant_identity_is_rejected(self):
         td, dst = self.copy_repo()
         try:
