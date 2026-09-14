@@ -223,13 +223,13 @@
       "evidence_states": ["KNOWN", "UNKNOWN", "UNVERIFIED", "NOT_RUN", "MISSING", "STALE"],
       "fail_closed_states": ["UNKNOWN", "UNVERIFIED", "NOT_RUN", "MISSING", "STALE"],
       "freshness_mode": "LIVE_READ_REQUIRED_WHEN_VOLATILE",
-      "deterministic_consumer_paths": ["scripts/validate_problem_intake.py"],
+      "deterministic_consumer_paths": [],
       "output_states": ["PROBLEM_CANDIDATE", "VERIFIED_DEFECT", "REPAIR_REQUIRED", "REMOVE_REQUIRED", "KEEP_REQUIRED", "BLOCKED_RESOURCE", "BLOCKED_AUTHORIZATION", "BLOCKED_COST", "BLOCKED_PLATFORM", "BLOCKED_EVIDENCE", "VERIFYING", "VERIFIED_FIXED", "VERIFIED_REMOVED", "REJECTED_NOT_PROBLEM"],
       "output_authority": "NONE",
       "state_change_effect_mode": "NONE",
       "authoritative_readback_requirements": ["CONNECTED_SYSTEM_MUTATION_READBACK_WHEN_APPLICABLE"],
       "fencing_requirements": [],
-      "test_refs": ["tests/test_problem_intake.py"],
+      "test_refs": [],
       "enforcement_state": "SOURCE_ONLY"
     },
     {
@@ -413,13 +413,13 @@
       "evidence_states": ["KNOWN", "UNKNOWN", "UNVERIFIED", "NOT_RUN", "MISSING", "STALE"],
       "fail_closed_states": ["UNKNOWN", "UNVERIFIED", "NOT_RUN", "MISSING", "STALE"],
       "freshness_mode": "LIVE_READ_REQUIRED_WHEN_VOLATILE",
-      "deterministic_consumer_paths": ["tests/test_contract.py"],
+      "deterministic_consumer_paths": ["tests/test_life_invoke_contract.py"],
       "output_states": ["SOURCE_CONTRACT"],
       "output_authority": "NONE",
       "state_change_effect_mode": "RELIABILITY_GATED",
       "authoritative_readback_requirements": ["CANONICAL_INVOCATION_LEDGER_READBACK"],
       "fencing_requirements": ["IDEMPOTENCY_IDENTITY_AUTH_SUBJECT_OAUTH_CLIENT_ID_INVOCATION_KEY"],
-      "test_refs": ["tests/test_contract.py"],
+      "test_refs": ["tests/test_life_invoke_contract.py"],
       "enforcement_state": "CI_ENFORCED"
     },
     {
