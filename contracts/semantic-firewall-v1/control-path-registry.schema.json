@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://life.local/contracts/semantic-firewall-v1/control-path-registry.schema.json",
+  "title": "Life Semantic Firewall control path registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registry_id", "runtime_control_authority", "registry_authority", "required_object_classes", "protected_boundary_source", "semantic_firewall_work_item_id", "completion_gate", "object_classes"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "registry_id": {"const": "life-semantic-firewall-control-path-registry-v1"},
+    "runtime_control_authority": {"const": "NONE"},
+    "registry_authority": {"const": "SOURCE_VALIDATION_ONLY"},
+    "required_object_classes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "protected_boundary_source": {"const": "governance/work-fence-policy.json:protected_boundaries"},
+    "semantic_firewall_work_item_id": {"const": "github-issue-57"},
+    "completion_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["complete_requires_all_required_object_classes", "complete_requires_exact_protected_boundary_coverage", "complete_requires_unsafe_dynamic_sources_direct_control_forbidden", "complete_requires_class_states"],
+      "properties": {
+        "complete_requires_all_required_object_classes": {"const": true},
+        "complete_requires_exact_protected_boundary_coverage": {"const": true},
+        "complete_requires_unsafe_dynamic_sources_direct_control_forbidden": {"const": true},
+        "complete_requires_class_states": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["RUNTIME_EFFECT", "CI_TRUST_ROOT"],
+          "properties": {
+            "RUNTIME_EFFECT": {"const": "RUNTIME_ACTIVE"},
+            "CI_TRUST_ROOT": {"const": "CI_ENFORCED_INDEPENDENT"}
+          }
+        }
+      }
+    },
+    "object_classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["class_id", "source_class", "direct_control_effect", "canonical_bridge_paths", "instance_globs", "schema_path", "deterministic_consumer_paths", "fence_paths", "authoritative_readback_requirements", "decision_kinds", "protected_boundaries", "enforcement_state"],
+        "properties": {
+          "class_id": {"type": "string", "minLength": 1},
+          "source_class": {"type": "string", "minLength": 1},
+          "direct_control_effect": {"enum": ["FORBIDDEN", "DETERMINISTIC_BRIDGE_ONLY", "FORBIDDEN_UNTIL_RUNTIME_ACTIVE", "FORBIDDEN_UNTIL_INDEPENDENT"]},
+          "canonical_bridge_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "instance_globs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "schema_path": {"type": ["string", "null"]},
+          "deterministic_consumer_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "fence_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "authoritative_readback_requirements": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "decision_kinds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "protected_boundaries": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "enforcement_state": {"enum": ["CI_ENFORCED", "BOOTSTRAP_REQUIRED", "SOURCE_ONLY_INACTIVE", "RUNTIME_ACTIVE", "CI_ENFORCED_INDEPENDENT"]},
+          "activation_dependencies": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    }
+  }
+}

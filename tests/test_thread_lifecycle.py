@@ -50,6 +50,29 @@ class ThreadLifecycleTests(unittest.TestCase):
         resources.update(overrides or {})
         return {"observed_at":"2026-09-13T19:00:00Z","interrupted_operation_state":interruption,"resources":resources}
 
+    def ensure_dispatchable_candidate(self):
+        admissions = json.loads(ADMISSIONS.read_text())
+        states = {item["work_item_id"]: item["state"] for item in admissions["items"]}
+        if any(
+            item["state"] == "ADMITTED"
+            and all(states.get(dependency) == "COMPLETE" for dependency in item["depends_on"])
+            for item in admissions["items"]
+        ):
+            return
+        synthetic_number = 900101
+        existing_ids = {item["work_item_id"] for item in admissions["items"]}
+        while f"github-issue-{synthetic_number}" in existing_ids:
+            synthetic_number += 1
+        admissions["items"].append({
+            "work_item_id": f"github-issue-{synthetic_number}",
+            "source_issue_number": synthetic_number,
+            "component_id": f"issue_{synthetic_number}",
+            "dispatch_tier": 1000,
+            "state": "ADMITTED",
+            "depends_on": [],
+        })
+        ADMISSIONS.write_text(json.dumps(admissions, indent=2) + "\n")
+
     def make_terminal_root(self):
         registry = json.loads(GOAL_REGISTRY.read_text())
         root = registry["goals"][0]
@@ -123,6 +146,7 @@ class ThreadLifecycleTests(unittest.TestCase):
         self.assertEqual(result["downstream_work_selection_effect"], "ZERO")
 
     def test_terminal_root_discovers_candidate_but_defaults_to_close(self):
+        self.ensure_dispatchable_candidate()
         self.make_terminal_root()
         result = lifecycle.evaluate(self.snapshot())
         self.assertEqual(result["boundary_state"], "TERMINAL_HANDOFF")

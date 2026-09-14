@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000011-05d67e48",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-14T10:31:28Z",
+  "source_main_sha": "1d18d9e3839140f532148974dbad9fcc4fe732d5",
+  "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
+  "work_head_sha": "d67d9765a0df916028f83e89f815bf121ca67a5c",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "OPEN_BLOCKER_SET_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "NON_CHECKPOINT_TOOL_RESULT_COUNT_GTE_LIMIT"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000010-1d18d9e3.json",
+    "blob_sha": "b2857f45bac552adcf262a232693f654c4399ac8"
+  },
+  "selected_work": {
+    "worker_lane": "PARALLEL_ASSIGNED",
+    "selected_rank": 3,
+    "selected_work_id": "github-issue-57",
+    "evaluated_at": "2026-09-14T10:31:28Z",
+    "evidence_ref": "PR #93 exact-head validation failed only after canonical validators passed because candidate-dependent unit tests indexed the live admissions registry after github-issue-57 was truthfully staged COMPLETE; repair keeps terminal admission COMPLETE and supplies explicit schema-conformant synthetic candidates inside tests",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "goal_lifecycle_identity",
+    "current_status": "ACTIVE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "CURRENT_JSON_LAST_OBSERVED_GITHUB_HEAD_STALE_VS_LIVE_MAIN_1D18D9E"
+    ],
+    "open_blocker_ids": [
+      "B-0004",
+      "PR_93_REQUIRED_REPOSITORY_TEST_FAILURE_34833200263"
+    ],
+    "observed_at": "2026-09-14T10:31:28Z"
+  },
+  "goal_snapshot": {
+    "active_root_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
+    "active_path": [
+      "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+    ],
+    "observed_at": "2026-09-14T10:31:28Z",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:issue_57",
+      "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "state": "ACTIVE",
+      "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
+      "lease_id": "decde849-aebc-4557-8b3b-daa811a6c580",
+      "generation": 4,
+      "expires_at": "2026-09-14T10:55:43Z",
+      "observed_at": "2026-09-14T10:31:28Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "GITHUB_PR:93:Complete Issue 57 terminal lifecycle after Semantic Firewall integration@05d67e48e108e18bcf3b5e4ff7b9eb28cadef491",
+      "operation": "RUN_REQUIRED_EXACT_HEAD_VALIDATE",
+      "result": "FAILURE",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "GITHUB_ACTION_RUN:34833200263:FAILURE",
+        "CANONICAL_VALIDATORS:SUCCESS",
+        "REPOSITORY_TESTS:FAILURE_1_FAILURE_7_ERRORS",
+        "FAILURE_CLASS:LIVE_ADMISSIONS_CARDINALITY_TEST_FIXTURE_COUPLING"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "tests/test_work_selection.py",
+      "operation": "REPAIR_CANDIDATE_FIXTURES_FOR_ZERO_LIVE_ADMISSIONS_STATE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "COMMIT:66c19452d8eab1c70d38e6a98153434c75a982bf",
+        "SYNTHETIC_ADMISSIONS:SCHEMA_CONFORMANT_TEST_ONLY",
+        "ZERO_ADMITTED_NO_ELIGIBLE_WORK_CASE:ADDED"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "tests/test_thread_lifecycle.py",
+      "operation": "REPAIR_TERMINAL_HANDOFF_CANDIDATE_FIXTURE",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "COMMIT:d67d9765a0df916028f83e89f815bf121ca67a5c",
+        "SYNTHETIC_TERMINAL_CANDIDATE:TEST_ONLY"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0001",
+    "VD-0002",
+    "VD-0011"
+  ],
+  "decision_rationale_refs": [
+    "DR-0001",
+    "DR-0002"
+  ],
+  "research_refs": [],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "repository:1366835183/main=1d18d9e3839140f532148974dbad9fcc4fe732d5",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "GITHUB_PR:93",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "READ_BACK_THIS CHECKPOINT; RENEW THE CURRENT GENERATION-4 CLAIM; RUN PR #93 EXACT-HEAD VALIDATION; IF GREEN, VERIFY CURRENT MAIN/CLAIM AND ENTER THE REQUIRED GITHUB MERGE QUEUE; VERIFY MERGE_GROUP, MERGED-MAIN, POST-MERGE VALIDATION, ISSUE #57 CLOSED/COMPLETED READBACK, THEN RELEASE THE CLAIM.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_ISSUE:57:Migrate legacy Semantic Firewall and make the work deterministically dispatchable",
+    "GITHUB_PR:93:Complete Issue 57 terminal lifecycle after Semantic Firewall integration",
+    "GITHUB_ACTION_RUN:34833200263:FAILURE",
+    "governance/work-admissions.json:github-issue-57=COMPLETE_ON_WORK_BRANCH",
+    "tests/test_work_selection.py",
+    "tests/test_thread_lifecycle.py"
+  ]
+}

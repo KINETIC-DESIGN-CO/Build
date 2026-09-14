@@ -1,41 +1,35 @@
 {
   "schema_version": 2,
   "work_id": "4264779b-70c5-4381-b619-f2c3204dc4f3",
-  "title": "Semantic Firewall Phase B: Predicate-level deterministic conformance",
+  "title": "Semantic Firewall Phase B: Universal non-bypass control-path conformance",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "edfc29a8-6113-4f2e-a4c0-fe37751e4ab5"
+    "session_id": "e135be4e-73a1-48e0-a390-7ebce061af4e"
   },
   "implementation_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
   "base_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
   "component_id": "issue_57",
   "repo_paths": [
-    "architecture/semantic-firewall-v1.md",
+    ".github/workflows/continuity.yml",
     "continuity/bootstrap.json",
-    "continuity/checkpoints/CP-000007-75d17604.json",
-    "continuity/checkpoints/CP-000008-41b7c2e9.json",
-    "continuity/checkpoints/CP-000009-2fd4f512.json",
-    "contracts/semantic-firewall-v1/conformance-profile.json",
-    "contracts/semantic-firewall-v1/control-contract.schema.json",
-    "contracts/semantic-firewall-v1/control-receipt.schema.json",
-    "contracts/semantic-firewall-v1/control-request.schema.json",
-    "contracts/semantic-firewall-v1/input-snapshot.schema.json",
-    "contracts/semantic-firewall-v1/predicate-registry.json",
-    "contracts/semantic-firewall-v1/predicate-registry.schema.json",
+    "continuity/checkpoints/CP-000010-1d18d9e3.json",
+    "continuity/checkpoints/CP-000011-05d67e48.json",
+    "continuity/checkpoints/CP-000012-19e5c808.json",
+    "contracts/semantic-firewall-v1/control-path-registry.json",
+    "contracts/semantic-firewall-v1/control-path-registry.schema.json",
     "contracts/semantic-firewall-v1/spec.json",
-    "scripts/evaluate_semantic_firewall.py",
-    "scripts/validate_semantic_firewall.py",
-    "scripts/validate_semantic_firewall_conformance.py",
-    "tests/test_semantic_firewall_conformance.py",
-    "tests/test_semantic_firewall_v1.py"
+    "scripts/validate_semantic_firewall_control_paths.py",
+    "tests/test_semantic_firewall_control_paths.py",
+    "tests/test_thread_lifecycle.py",
+    "tests/test_work_selection.py"
   ],
   "external_targets": [],
   "claims": [
     {
       "resource_key": "component:issue_57",
       "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
-      "lease_id": "decde849-aebc-4557-8b3b-daa811a6c580",
-      "generation": 4
+      "lease_id": "ef2a5979-aaf3-410d-a331-58aaacac1027",
+      "generation": 5
     }
   ],
   "goal_id": null,

@@ -63,6 +63,42 @@ class WorkSelectionTests(unittest.TestCase):
             key=lambda item: (item["dispatch_tier"], item["source_issue_number"], item["work_item_id"]),
         )
 
+    def ensure_dispatchable_admitted_items(self, count=1):
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
+        existing_ids = {item["work_item_id"] for item in admissions["items"]}
+        states = {item["work_item_id"]: item["state"] for item in admissions["items"]}
+        dispatchable = [
+            item
+            for item in admissions["items"]
+            if item["state"] == "ADMITTED"
+            and all(states.get(dependency) == "COMPLETE" for dependency in item["depends_on"])
+        ]
+        synthetic_number = 900001
+        while len(dispatchable) < count:
+            while f"github-issue-{synthetic_number}" in existing_ids:
+                synthetic_number += 1
+            item = {
+                "work_item_id": f"github-issue-{synthetic_number}",
+                "source_issue_number": synthetic_number,
+                "component_id": f"issue_{synthetic_number}",
+                "dispatch_tier": 1000,
+                "state": "ADMITTED",
+                "depends_on": [],
+            }
+            admissions["items"].append(item)
+            existing_ids.add(item["work_item_id"])
+            states[item["work_item_id"]] = item["state"]
+            dispatchable.append(item)
+            synthetic_number += 1
+        ADMISSIONS_PATH.write_text(json.dumps(admissions, indent=2) + "\n", encoding="utf-8")
+
+    def clear_admitted_items(self):
+        admissions = json.loads(ADMISSIONS_PATH.read_text())
+        for item in admissions["items"]:
+            if item["state"] == "ADMITTED":
+                item["state"] = "COMPLETE"
+        ADMISSIONS_PATH.write_text(json.dumps(admissions, indent=2) + "\n", encoding="utf-8")
+
     def make_issue_18_dispatchable(self):
         admissions = json.loads(ADMISSIONS_PATH.read_text())
         for item in admissions["items"]:
@@ -159,6 +195,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["continuity_evidence_effect"], "ZERO_WORK_SELECTION_PREEMPTION_EFFECT")
 
     def test_canonical_live_mismatch_does_not_preempt_disjoint_parallel_work(self):
+        self.ensure_dispatchable_admitted_items(1)
         evidence = self.parallel_evidence()
         evidence["canonical_live_mismatch_ids"] = ["GITHUB_MAIN_HEAD_SHA"]
         result = self.evaluate(evidence)
@@ -198,6 +235,7 @@ class WorkSelectionTests(unittest.TestCase):
         current = json.loads(CURRENT_PATH.read_text())
         current["current_status"] = "COMPLETE"
         CURRENT_PATH.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
+        self.ensure_dispatchable_admitted_items(1)
         first = self.dispatchable_admitted_items()[0]
         result = self.dispatch(self.snapshot())
         self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
@@ -206,6 +244,7 @@ class WorkSelectionTests(unittest.TestCase):
 
     def test_fresh_thread_becomes_parallel_when_foreground_component_is_owned(self):
         key = self.current_component_key()
+        self.ensure_dispatchable_admitted_items(1)
         first = self.dispatchable_admitted_items()[0]
         result = self.dispatch(self.snapshot({key: self.lock(key)}))
         self.assertEqual(result["worker_lane"], "PARALLEL_ASSIGNED")
@@ -214,6 +253,7 @@ class WorkSelectionTests(unittest.TestCase):
     def test_parallel_auto_selection_skips_owned_component(self):
         self.make_issue_21_admitted()
         self.make_issue_18_dispatchable()
+        self.ensure_dispatchable_admitted_items(2)
         current_key = self.current_component_key()
         first = self.dispatchable_admitted_items()[0]
         second = self.dispatchable_admitted_items()[1]
@@ -224,6 +264,7 @@ class WorkSelectionTests(unittest.TestCase):
 
     def test_expired_component_claim_is_available(self):
         current_key = self.current_component_key()
+        self.ensure_dispatchable_admitted_items(1)
         first = self.dispatchable_admitted_items()[0]
         first_key = f"component:{first['component_id']}"
         result = self.dispatch(self.snapshot({current_key: self.lock(current_key), first_key: self.lock(first_key, expires="2026-09-12T13:59:59Z")}))
@@ -241,6 +282,7 @@ class WorkSelectionTests(unittest.TestCase):
         self.assertEqual(result["decision"], "NO_ELIGIBLE_WORK")
 
     def test_snapshot_must_cover_every_required_component_resource(self):
+        self.ensure_dispatchable_admitted_items(1)
         snap = self.snapshot()
         first = self.admitted_item()
         del snap["resources"][f"component:{first['component_id']}"]
@@ -250,6 +292,12 @@ class WorkSelectionTests(unittest.TestCase):
             proc = self.run_selector(["--dispatch-snapshot", str(path)])
         self.assertNotEqual(proc.returncode, 0)
         self.assertIn("resource coverage mismatch", proc.stderr)
+
+    def test_no_admitted_items_returns_no_eligible_work_when_foreground_is_owned(self):
+        self.clear_admitted_items()
+        key = self.current_component_key()
+        result = self.dispatch(self.snapshot({key: self.lock(key)}))
+        self.assertEqual(result["decision"], "NO_ELIGIBLE_WORK")
 
     def test_malformed_live_lock_fails_closed(self):
         key = self.current_component_key()
@@ -269,6 +317,7 @@ class WorkSelectionTests(unittest.TestCase):
     def test_manual_selector_tie_break_remains_deterministic(self):
         self.make_issue_21_admitted()
         self.make_issue_18_dispatchable()
+        self.ensure_dispatchable_admitted_items(2)
         first = self.dispatchable_admitted_items()[0]
         second = self.dispatchable_admitted_items()[1]
         proc = self.run_selector(["--select-parallel"])
