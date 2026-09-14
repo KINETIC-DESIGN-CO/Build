@@ -23,6 +23,8 @@
           "value_type": {"type": "string", "enum": ["STRING", "INTEGER", "BOOLEAN", "STRING_SET", "SHA256", "OBJECT"]},
           "value_json": {"type": ["string", "null"]},
           "value_json_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+          "evidence_receipt_id": {"type": ["string", "null"], "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+          "evidence_receipt_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
           "derivation_predicate_id": {"type": ["string", "null"], "pattern": "^SF-PRED-[A-Z0-9][A-Z0-9_-]*$"}
         }
       }
