@@ -1,20 +1,20 @@
 {
   "schema_version": 2,
   "resource_key": "component:goal_lifecycle_identity",
-  "generation": 4,
+  "generation": 5,
   "state": "ACTIVE",
   "work_id": "3edfca10-ac11-4a79-bd31-72bd84165594",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "60801ef0-6ee1-4cd4-9803-3a594bddfe99"
+    "session_id": "5767665c-b405-45f0-b8ae-8bc272ed973d"
   },
   "implementation_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
-  "lease_id": "70eccc39-af95-4bd6-8edd-adef1e67a2de",
-  "base_sha": "e5380bb795a4cd18421063d31189a2f17a16e065",
-  "acquired_at": "2026-09-14T08:52:59Z",
-  "heartbeat_at": "2026-09-14T09:49:44Z",
-  "expires_at": "2026-09-14T10:19:44Z",
+  "lease_id": "274e4043-c7ed-4c88-a7bb-62ec920674be",
+  "base_sha": "1d18d9e3839140f532148974dbad9fcc4fe732d5",
+  "acquired_at": "2026-09-14T10:30:42Z",
+  "heartbeat_at": "2026-09-14T10:30:42Z",
+  "expires_at": "2026-09-14T11:00:42Z",
   "lease_contract": "COMPONENT_1800",
-  "lease_event_type": "RENEW_PROTECTED_MUTATION",
+  "lease_event_type": "TAKEOVER",
   "runtime_control_authority": "NONE"
 }
