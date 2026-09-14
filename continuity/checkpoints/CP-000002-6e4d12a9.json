@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "checkpoint_id": "CP-000002-6e4d12a9",
+  "authority": "EVIDENCE_ONLY",
+  "runtime_control_authority": "NONE",
+  "created_at": "2026-09-13T08:41:52Z",
+  "source_main_sha": "05decb8bd49e21214ff98ab26bc85d654a2a7cf7",
+  "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+  "work_branch": "work/8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+  "work_head_sha": "bbe477db47b25288eef3429ee1393fe7cb16a307",
+  "trigger_ids": [
+    "MUTATION_RESULT_TERMINAL",
+    "CANONICAL_LIVE_MISMATCH_SET_CHANGED",
+    "LIVE_MAIN_SHA_CHANGED",
+    "TRACKED_PR_STATE_CHANGED",
+    "MERGE_GROUP_TERMINAL",
+    "POST_MERGE_VALIDATE_TERMINAL"
+  ],
+  "previous_checkpoint": {
+    "path": "continuity/checkpoints/CP-000001-c4a1d8e7.json",
+    "blob_sha": "f20b0deb8421efa5a0b65815d2a0b8294f75ecb4"
+  },
+  "selected_work": {
+    "worker_lane": "NOT_EVALUATED",
+    "selected_rank": null,
+    "selected_work_id": "continuity/current.json:A-0014",
+    "evaluated_at": "2026-09-13T08:41:52Z",
+    "evidence_ref": "Work selection was not rerun at checkpoint creation. The existing work identity remains supported only by the fresh ACTIVE component:auto_issue_dispatch claim; future selection requires fresh deterministic evaluation.",
+    "authority": "HISTORICAL_OBSERVATION_ONLY"
+  },
+  "canonical_snapshot": {
+    "current_component": "multi_thread_coordination_hardening",
+    "current_status": "COMPLETE",
+    "current_next_action_id": "A-0014",
+    "canonical_live_mismatch_ids": [
+      "GITHUB_MAIN_HEAD_SHA"
+    ],
+    "open_blocker_ids": [
+      "B-0004"
+    ],
+    "observed_at": "2026-09-13T08:41:52Z"
+  },
+  "claim_observations": [
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "state": "ACTIVE",
+      "work_id": "8e4f34e7-7044-4241-8ab3-2c2b9209eff9",
+      "lease_id": "0ca72a15-ce6b-4098-b484-3dcc20fa961d",
+      "generation": 1,
+      "expires_at": "2026-09-13T10:25:48Z",
+      "observed_at": "2026-09-13T08:41:52Z",
+      "live_verify_required": true
+    }
+  ],
+  "operation_results": [
+    {
+      "system": "GITHUB",
+      "target": "PR:56",
+      "operation": "Protected integration through required Merge Queue after current-head pull-request validation",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "PR_HEAD:bbe477db47b25288eef3429ee1393fe7cb16a307",
+        "PR_VALIDATE_RUN:34747986901:SUCCESS",
+        "MERGE_GROUP_RUN:34748075379:SUCCESS",
+        "MERGED_MAIN_SHA:05decb8bd49e21214ff98ab26bc85d654a2a7cf7"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "main:05decb8bd49e21214ff98ab26bc85d654a2a7cf7",
+      "operation": "Post-merge required validation",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "POST_MERGE_VALIDATE_RUN:34748171754:SUCCESS"
+      ]
+    },
+    {
+      "system": "GITHUB",
+      "target": "issue-lifecycle:main:05decb8bd49e21214ff98ab26bc85d654a2a7cf7",
+      "operation": "Reconcile terminal admissions to GitHub Issue closed states and reread authoritative Issue state",
+      "result": "SUCCESS",
+      "readback_state": "VERIFIED",
+      "evidence_refs": [
+        "ISSUE_LIFECYCLE_RUN:34748171756:SUCCESS",
+        "GITHUB_ISSUE:2:CLOSED_COMPLETED",
+        "GITHUB_ISSUE:12:CLOSED_COMPLETED",
+        "GITHUB_ISSUE:16:CLOSED_NOT_PLANNED",
+        "GITHUB_ISSUE:17:CLOSED_COMPLETED"
+      ]
+    }
+  ],
+  "directive_refs": [
+    "VD-0017",
+    "VD-0018"
+  ],
+  "decision_rationale_refs": [
+    "DR-0006"
+  ],
+  "research_refs": [
+    {
+      "source_kind": "ACADEMIC",
+      "title": "Turning Interaction History into Execution State: A Runtime Layer for Long-Horizon Coding Agents",
+      "url": "https://arxiv.org/abs/2608.00808",
+      "observed_date": "2026-09-13",
+      "supported_claim": "Explicit durable execution state supports long-horizon software-agent reliability and reduces dependence on conversation-history inference."
+    }
+  ],
+  "live_verify": [
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:main",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "component:auto_issue_dispatch",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_GITHUB",
+      "target": "github:issues:2,12,16,17",
+      "required": true
+    },
+    {
+      "evidence_class": "LIVE_SUPABASE",
+      "target": "supabase:jnenguxodtgwbskhdsxt",
+      "required": true
+    }
+  ],
+  "resume_candidate": {
+    "operation_state": "PENDING",
+    "candidate_next_operation": "Persist RCA-0001 as VERIFIED_FIXED using the verified PR 56 integration, post-merge validation, and Issue-lifecycle readback evidence; integrate that evidence update through protected main, then create/read back the final pre-release checkpoint, release component:auto_issue_dispatch, and rerun deterministic work selection without creating a competing parent-goal selector implementation.",
+    "authority": "NONE"
+  },
+  "context_refs": [
+    "GITHUB_PR:56",
+    "GITHUB_PR:63",
+    "GITHUB_PR:64",
+    "GITHUB_ISSUE:59",
+    "governance/root-cause-repair-policy.json",
+    "governance/root-cause-repairs.json",
+    "governance/issue-lifecycle-policy.json",
+    ".github/workflows/issue-lifecycle.yml"
+  ]
+}
