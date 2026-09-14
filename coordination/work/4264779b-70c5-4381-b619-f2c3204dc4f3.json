@@ -12,6 +12,9 @@
   "repo_paths": [
     "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000013-daf49e42.json",
+    "continuity/checkpoints/CP-000014-6f3b4334.json",
+    "continuity/decision-rationale.jsonl",
+    "continuity/directive-ledger.jsonl",
     "contracts/semantic-firewall-v1/control-path-registry.json",
     "contracts/semantic-firewall-v1/input-snapshot.schema.json",
     "contracts/semantic-firewall-v1/spec.json",
