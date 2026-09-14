@@ -17,6 +17,7 @@
     "continuity/response-contract.json",
     "continuity/schema/bootstrap.schema.json",
     "continuity/schema/response-contract.schema.json",
+    "contracts/semantic-firewall-v1/rule-registry.json",
     "coordination/protocol.json",
     "coordination/schema/lock.schema.json",
     "coordination/schema/work-record.schema.json",
