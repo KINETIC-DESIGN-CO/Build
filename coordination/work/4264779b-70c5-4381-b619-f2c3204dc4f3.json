@@ -11,11 +11,17 @@
   "component_id": "issue_57",
   "repo_paths": [
     "architecture/semantic-firewall-v1.md",
+    "continuity/bootstrap.json",
     "continuity/checkpoints/CP-000005-6c5f0a21.json",
+    "contracts/semantic-firewall-v1/conformance-profile.json",
+    "contracts/semantic-firewall-v1/rule-registry.json",
     "contracts/semantic-firewall-v1/spec.json",
     "governance/root-cause-repairs.json",
+    "reliability/compatibility-map.json",
     "scripts/evaluate_semantic_firewall.py",
     "scripts/validate_semantic_firewall.py",
+    "scripts/validate_semantic_firewall_conformance.py",
+    "tests/test_semantic_firewall_conformance.py",
     "tests/test_semantic_firewall_v1.py"
   ],
   "external_targets": [],
