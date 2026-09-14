@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Life Semantic Firewall v1 Trusted Evidence Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence_receipt_id",
+    "issuer_type",
+    "persistence_state",
+    "input_name",
+    "source_type",
+    "source_ref",
+    "source_version",
+    "observed_at",
+    "value_type",
+    "value_json_sha256",
+    "issued_at",
+    "expires_at",
+    "evidence_receipt_sha256"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "evidence_receipt_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "issuer_type": {"type": "string", "const": "TRUSTED_EVIDENCE_ADAPTER"},
+    "persistence_state": {"type": "string", "const": "PERSISTED_TRUSTED"},
+    "input_name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+    "source_type": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "source_ref": {"type": "string", "minLength": 1},
+    "source_version": {"type": "string", "minLength": 1},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "value_type": {"type": "string", "enum": ["STRING", "INTEGER", "BOOLEAN", "STRING_SET", "SHA256", "OBJECT"]},
+    "value_json_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "evidence_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
