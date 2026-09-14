@@ -31,12 +31,19 @@ def validate_trusted_evidence_bindings(
     *,
     evaluated_at: str,
 ) -> dict:
+    """Validate source-level receipt bindings without asserting trusted issuance.
+
+    The caller-provided mapping is a source-validation fixture/candidate store only.
+    A PASS here proves exact structural, identity, digest, and time binding. It does
+    not prove that a runtime trusted adapter issued or authoritatively persisted
+    any receipt.
+    """
     fail: list[str] = []
     not_run: list[str] = []
     if trusted_evidence_receipts is None:
-        return _result("NOT_RUN", ["TRUSTED_EVIDENCE_ADAPTER_NOT_BOUND"])
+        return _result("NOT_RUN", ["TRUSTED_EVIDENCE_BINDING_CANDIDATES_NOT_BOUND"])
     if not isinstance(trusted_evidence_receipts, dict):
-        return _result("FAIL", ["TRUSTED_EVIDENCE_STORE_INVALID"])
+        return _result("FAIL", ["TRUSTED_EVIDENCE_BINDING_CANDIDATE_STORE_INVALID"])
 
     try:
         now = _parse_time(evaluated_at)
@@ -72,9 +79,9 @@ def validate_trusted_evidence_bindings(
         if receipt.get("evidence_receipt_sha256") != recompute_evidence_receipt_sha(receipt):
             fail.append("TRUSTED_EVIDENCE_RECEIPT_HASH_MISMATCH")
         if receipt.get("issuer_type") != "TRUSTED_EVIDENCE_ADAPTER":
-            fail.append("TRUSTED_EVIDENCE_ISSUER_NOT_TRUSTED")
+            fail.append("TRUSTED_EVIDENCE_ISSUER_LABEL_MISMATCH")
         if receipt.get("persistence_state") != "PERSISTED_TRUSTED":
-            fail.append("TRUSTED_EVIDENCE_NOT_PERSISTED_TRUSTED")
+            fail.append("TRUSTED_EVIDENCE_PERSISTENCE_LABEL_MISMATCH")
 
         mapping = (
             ("input_name", "name", "TRUSTED_EVIDENCE_INPUT_NAME_MISMATCH"),
@@ -108,7 +115,7 @@ def validate_trusted_evidence_bindings(
         return _result("FAIL", fail)
     if not_run:
         return _result("NOT_RUN", not_run)
-    return _result("PASS", ["ALL_KNOWN_INPUTS_BOUND_TO_PERSISTED_TRUSTED_EVIDENCE"])
+    return _result("PASS", ["ALL_KNOWN_INPUTS_MATCH_EVIDENCE_RECEIPT_BINDING_CANDIDATES"])
 
 
 def evaluate_trusted_control(
@@ -120,6 +127,13 @@ def evaluate_trusted_control(
     evaluated_at: str,
     predicate_registry: dict[str, Any] | None = None,
 ) -> dict:
+    """Fail closed until an authoritative runtime trusted-evidence adapter exists.
+
+    Source fixtures may validate candidate receipt bindings, but source code cannot
+    prove authoritative issuance or persistence readback. The runtime adapter must
+    be implemented as a separate trusted boundary before this path may return a
+    trusted-control PASS.
+    """
     base_result = sf.evaluate_control(
         contract,
         request,
@@ -139,6 +153,7 @@ def evaluate_trusted_control(
         return binding_result
 
     return _result(
-        "PASS",
-        list(base_result.get("reason_codes", [])) + list(binding_result.get("reason_codes", [])),
+        "NOT_RUN",
+        list(binding_result.get("reason_codes", []))
+        + ["TRUSTED_EVIDENCE_ADAPTER_NOT_IMPLEMENTED", "AUTHORITATIVE_PERSISTENCE_READBACK_NOT_IMPLEMENTED"],
     )
