@@ -4,7 +4,7 @@
   "title": "Unify stable goal identity with terminal thread handoff",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "50b09f9b-6e7c-40ad-a3cd-6ef15e4528f5"
+    "session_id": "60801ef0-6ee1-4cd4-9803-3a594bddfe99"
   },
   "implementation_branch": "work/3edfca10-ac11-4a79-bd31-72bd84165594",
   "base_sha": "f5bc28938a6a1ca554def7887bd7f62d8ef004b6",
@@ -48,26 +48,26 @@
     {
       "resource_key": "component:auto_issue_dispatch",
       "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
-      "lease_id": "cddbe36c-7023-44f8-a9a1-700fc9932972",
-      "generation": 2
+      "lease_id": "f22d842b-056d-4d63-8a47-fe569719fd04",
+      "generation": 3
     },
     {
       "resource_key": "component:goal_lifecycle_identity",
       "lock_branch": "lock/44e6462593dcdcc36d21932cb333fbd25b2af0bffa3c81d2eadf5072ee4f30c9",
-      "lease_id": "758da349-56de-4d1f-92e6-0563bc9a277e",
-      "generation": 2
+      "lease_id": "f0d73907-af83-412b-842e-6340254c38e2",
+      "generation": 3
     },
     {
       "resource_key": "component:multi_thread_coordination_hardening",
       "lock_branch": "lock/59cb0115181bd2c23a385594018248f94c140e7c29c394c3def5d23c0dfa90d8",
-      "lease_id": "a6b70436-4fca-4dbc-8434-4e7a311e150c",
-      "generation": 4
+      "lease_id": "81e1588f-58ec-40cf-b7d8-27249cbf74ab",
+      "generation": 5
     },
     {
       "resource_key": "component:watchdog",
       "lock_branch": "lock/26555f0ea7b1ec2ba6331615932a7abdf07f13a82a2418eb25b5194e83e4ca83",
-      "lease_id": "c867da58-1c37-40dc-8af7-6405533c0384",
-      "generation": 1
+      "lease_id": "cf3d504f-1a5c-41f3-abf6-5d23f5bdd333",
+      "generation": 2
     }
   ],
   "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
