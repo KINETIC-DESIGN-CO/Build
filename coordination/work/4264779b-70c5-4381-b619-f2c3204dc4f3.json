@@ -4,7 +4,7 @@
   "title": "Semantic Firewall Phase B: Trusted evidence provenance boundary",
   "worker": {
     "kind": "chatgpt",
-    "session_id": "8a245f96-a61b-4269-8abd-df583d4b0235"
+    "session_id": "e9361d13-3396-4b8e-b3d4-4a1cfbd38975"
   },
   "implementation_branch": "work/4264779b-70c5-4381-b619-f2c3204dc4f3",
   "base_sha": "29a42101a32a11c3eefe0b9e7bcb6a755e9fa78b",
@@ -23,8 +23,8 @@
     {
       "resource_key": "component:issue_57",
       "lock_branch": "lock/39f64bd9d0ea39ae54c0417742d6c38cf0eccf0fdb7b2a4b7867a7662ae48c33",
-      "lease_id": "efaad927-c5ea-43dc-9154-53aa339c307a",
-      "generation": 1
+      "lease_id": "9dc6091c-ef67-4eac-b391-129db073735c",
+      "generation": 2
     }
   ],
   "runtime_control_authority": "NONE"
