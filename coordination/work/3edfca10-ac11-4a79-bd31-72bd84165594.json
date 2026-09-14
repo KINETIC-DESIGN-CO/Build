@@ -13,6 +13,8 @@
     "continuity/bootstrap.json",
     "continuity/response-contract.json",
     "continuity/schema/response-contract.schema.json",
+    "contracts/semantic-firewall-v1/predicate-registry.json",
+    "contracts/semantic-firewall-v1/rule-registry.json",
     "governance/live-audit-policy.json",
     "governance/research-policy.json",
     "governance/schema/live-audit-policy.schema.json",
