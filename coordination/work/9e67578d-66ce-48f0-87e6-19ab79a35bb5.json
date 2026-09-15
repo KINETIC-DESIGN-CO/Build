@@ -21,8 +21,8 @@
       "generation": 5
     }
   ],
-  "goal_id": "2910e7b9-87d8-4a82-b0ff-330b47037bf6",
-  "planned_goal_revision": 1,
+  "goal_id": null,
+  "planned_goal_revision": null,
   "pending_external_effect_state": "NONE",
   "runtime_control_authority": "NONE"
 }
