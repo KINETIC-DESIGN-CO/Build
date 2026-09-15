@@ -6,7 +6,7 @@
     {
       "repair_id": "RCA-0001",
       "root_goal_ref": "continuity/current.json:A-0014",
-      "state": "VERIFYING",
+      "state": "VERIFIED_FIXED",
       "failure_refs": [
         "github-actions:34745411071:test_issue_lifecycle.IssueLifecycleTests.test_terminal_operations_are_derived_from_canonical_admissions",
         "github-actions:34745411071:test_watchdog.WatchdogValidationTests.test_canonical_package_validates"
@@ -57,7 +57,7 @@
         "WATCHDOG_AUTHORITY_OR_IDENTITY_DRIFT_FAILS_STRUCTURAL_COMPATIBILITY",
         "ROOT_CAUSE_POLICY_FORBIDS_PATCH_ONLY_TERMINAL_SHORTCUT"
       ],
-      "verification_state": "SOURCE_CI_SUCCESS_RUN_34747883131_PROTECTED_INTEGRATION_AND_POST_MERGE_READBACK_PENDING"
+      "verification_state": "VERIFIED_REQUIRED_CI_PROTECTED_INTEGRATION_AND_LIVE_READBACK"
     },
     {
       "repair_id": "RCA-0002",
@@ -81,7 +81,7 @@
       ],
       "origin_commit_refs": [
         "97b3c9d8f9a5ebda5b28752caebb2078935101c2",
-        "c19aa46023c8e5ffe5f523f800868335674587c2",
+        "c19aa46023c4597ca10e2f2de95721e0f26bd29d8",
         "634e20f875b83d502c42625226263e619aa4a929"
       ],
       "history_evidence_refs": [
