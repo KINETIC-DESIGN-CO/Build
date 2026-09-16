@@ -12,7 +12,11 @@
   "repo_paths": [
     "architecture/reference/life-successor-v1/acceptance.md",
     "architecture/reference/life-successor-v1/cp015-readback-validation-rejection-quarantine-basis-closure.md",
-    "architecture/reference/life-successor-v1/source-specification-d14.md"
+    "architecture/reference/life-successor-v1/source-specification-d14-archive/README.md",
+    "architecture/reference/life-successor-v1/source-specification-d14-archive/source-specification-d14.md.xz.b64.part00",
+    "architecture/reference/life-successor-v1/source-specification-d14-archive/source-specification-d14.md.xz.b64.part01",
+    "architecture/reference/life-successor-v1/source-specification-d14-archive/source-specification-d14.md.xz.b64.part02",
+    "architecture/reference/life-successor-v1/source-specification-d14-archive/source-specification-d14.md.xz.b64.part03"
   ],
   "external_targets": [],
   "claims": [
