@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "resource_key": "component:life_successor_v1_source_spec",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "f55a4a0e-dfdb-42a0-a135-7150efe987d1",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "0e460741-63b1-4796-9aa8-d2afd65d1f3c"
+  },
+  "implementation_branch": "work/f55a4a0e-dfdb-42a0-a135-7150efe987d1",
+  "lease_id": "ea013019-3385-44e3-a1e9-dfc04b5f283f",
+  "base_sha": "365ee17946572ef0867da6da178bea94e9cecf6f",
+  "acquired_at": "2026-09-16T01:05:08Z",
+  "heartbeat_at": "2026-09-16T01:05:08Z",
+  "expires_at": "2026-09-16T01:35:08Z",
+  "lease_contract": "COMPONENT_1800",
+  "lease_event_type": "ACQUIRE",
+  "runtime_control_authority": "NONE"
+}
