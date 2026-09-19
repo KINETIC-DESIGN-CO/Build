@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "work_id": "a2bd58f4-e2d2-4627-8609-2618194d36ee",
+  "title": "Test GitHub commit notification delivery to Slack",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "02438886-7be4-4ec8-a085-720c15a63350"
+  },
+  "implementation_branch": "work/a2bd58f4-e2d2-4627-8609-2618194d36ee",
+  "base_sha": "365ee17946572ef0867da6da178bea94e9cecf6f",
+  "component_id": "slack_commit_notification_test",
+  "repo_paths": [
+    "SLACK_COMMIT_NOTIFICATION_TEST.md"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:slack_commit_notification_test",
+      "lock_branch": "lock/1c64b80264b88cdbda4a45f07c7aff3f8b55a1c56f3e92dff2dcdfccc491a4ac",
+      "lease_id": "8d5af119-75a2-4a41-9094-0a0ad3961000",
+      "generation": 1
+    }
+  ],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
+  "runtime_control_authority": "NONE"
+}
