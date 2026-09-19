@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "work_id": "9e67578d-66ce-48f0-87e6-19ab79a35bb5",
+  "title": "Finalize RCA-0001 verification evidence on current main",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "e239a9f2-1726-4d35-8540-aadf30504b68"
+  },
+  "implementation_branch": "work/9e67578d-66ce-48f0-87e6-19ab79a35bb5",
+  "base_sha": "365ee17946572ef0867da6da178bea94e9cecf6f",
+  "component_id": "auto_issue_dispatch",
+  "repo_paths": [
+    "governance/root-cause-repairs.json"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:auto_issue_dispatch",
+      "lock_branch": "lock/75469188961c5dfe89c760bf3e46f0b521f3e2d55d62d553eec19de5bb4a0f3a",
+      "lease_id": "b81fcd46-2a4e-4bd9-b2cd-213dbaa6b4f1",
+      "generation": 5
+    }
+  ],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
+  "runtime_control_authority": "NONE"
+}
