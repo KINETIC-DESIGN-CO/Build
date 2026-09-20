@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "work_id": "0b6a6127-5e73-4f2b-9d3e-53efb8a64411",
+  "title": "Disposable V0.5B pre-PR validation harness",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "2521b00b-9ede-421b-a84a-018d388941be"
+  },
+  "implementation_branch": "work/0b6a6127-5e73-4f2b-9d3e-53efb8a64411",
+  "base_sha": "f3e43780f3333843e11c77686fa84d4c5d5ca682",
+  "component_id": "v05b_prepr_validation_harness",
+  "repo_paths": [
+    ".github/workflows/v05b-prepr-validation.yml"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:v05b_prepr_validation_harness",
+      "lock_branch": "lock/7fd7e2506dda44e9d9386e1f433fdab7d67371d1d61d93001cf093453ce4822a",
+      "lease_id": "05684b2d-078e-4a52-9db0-8b57cae40b12",
+      "generation": 2
+    }
+  ],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
+  "runtime_control_authority": "NONE"
+}
