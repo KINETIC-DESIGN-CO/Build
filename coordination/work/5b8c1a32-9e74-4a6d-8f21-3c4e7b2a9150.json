@@ -10,8 +10,8 @@
   "base_sha": "f563cbb9065673570f661546e464ea3adabc803b",
   "component_id": "checkpoint_validation_baseline_bridge",
   "repo_paths": [
-    "continuity/tools/validate_checkpoints.py",
-    "continuity/tests/test_checkpoints.py"
+    "continuity/tests/test_checkpoints.py",
+    "continuity/tools/validate_checkpoints.py"
   ],
   "external_targets": [],
   "claims": [
