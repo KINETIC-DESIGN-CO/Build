@@ -2,7 +2,7 @@
   "schema_version": 2,
   "resource_key": "component:checkpoint_validation_baseline_bridge",
   "generation": 2,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "5b8c1a32-9e74-4a6d-8f21-3c4e7b2a9150",
   "worker": {
     "kind": "chatgpt",
