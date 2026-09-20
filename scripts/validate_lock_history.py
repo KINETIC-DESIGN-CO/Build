@@ -5,7 +5,7 @@ import json
 import re
 import subprocess
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -148,6 +148,35 @@ def effective_expiry(lock: dict, protocol: dict, *, v4_rules_active: bool | None
     if v4_rules_active and is_component(lock) and lock["schema_version"] == 1:
         return min(stored, parse_utc(lock["heartbeat_at"]) + timedelta(seconds=component_duration(protocol)))
     return stored
+
+
+def branch_history_is_nonblocking_legacy(
+    entries: list[dict],
+    protocol: dict,
+    *,
+    now: datetime | None = None,
+) -> bool:
+    if not entries:
+        return False
+    latest = entries[-1].get("lock")
+    if not isinstance(latest, dict):
+        return False
+
+    state = latest.get("state")
+    if state == "RELEASED":
+        return True
+    if state != "ACTIVE":
+        return False
+
+    if now is None:
+        now = datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        fail("legacy-branch classification timestamp must be timezone-aware")
+
+    try:
+        return effective_expiry(latest, protocol) <= now
+    except (ValidationError, KeyError, TypeError):
+        return False
 
 
 def immutable_release_fields(lock: dict) -> tuple:
@@ -375,6 +404,9 @@ def main() -> int:
                 if not entries:
                     remote_ref = f"refs/remotes/origin/{branch}"
                     validate_empty_branch_tip(parse_git_time(run_git("show", "-s", "--format=%cI", remote_ref)), protocol)
+                    continue
+                if branch_history_is_nonblocking_legacy(entries, protocol):
+                    print(f"LOCK_HISTORY_LEGACY_NONBLOCKING: {branch}")
                     continue
                 validate_versioned_history(entries, protocol)
             except ValidationError as exc:
