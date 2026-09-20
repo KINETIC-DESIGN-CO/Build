@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "work_id": "d46cf24f-397f-4b11-a5db-59b9cf4fd639",
+  "title": "Version V0.5B-D4 Transference runtime source and tests",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "2521b00b-9ede-421b-a84a-018d388941be"
+  },
+  "implementation_branch": "work/d46cf24f-397f-4b11-a5db-59b9cf4fd639",
+  "base_sha": "f3e43780f3333843e11c77686fa84d4c5d5ca682",
+  "component_id": "transference_runtime_v05b",
+  "repo_paths": [
+    "danger-room/v05b/drill-manifest.json",
+    "danger-room/v05b/sql/dr25_audit_corruption_fixture.sql",
+    "danger-room/v05b/sql/dr28_audit_flag_resolution_fixture.sql",
+    "danger-room/v05b/sql/dr32_session_replication_role_canary.sql",
+    "danger-room/v05b/sql/dr33_enable_always_operation_receipt_guard.sql",
+    "danger-room/v05b/sql/dr33_enable_always_work_audit.sql",
+    "danger-room/v05b/sql/dr35_deadlock_race_session_a.sql",
+    "danger-room/v05b/sql/dr35_deadlock_race_session_b.sql",
+    "danger-room/v05b/sql/dr36_active_root_cardinality.sql",
+    "scripts/validate_v05b_package.py",
+    "supabase/migrations/20260920093001_v05b_m01_runtime_schema.sql",
+    "supabase/migrations/20260920093002_v05b_m02_core_state.sql",
+    "supabase/migrations/20260920093003_v05b_m03_operation_evidence.sql",
+    "supabase/migrations/20260920093004_v05b_m04_audit_evidence.sql",
+    "supabase/migrations/20260920093005_v05b_m05_internal_functions.sql",
+    "supabase/migrations/20260920093006_v05b_m06_runtime_operations.sql",
+    "supabase/migrations/20260920093007_v05b_m07_row_and_evidence_triggers.sql",
+    "supabase/migrations/20260920093008_v05b_m08_ddl_detection.sql",
+    "supabase/migrations/20260920093009_v05b_m09_seed_runtime_state.sql",
+    "supabase/migrations/20260920093010_v05b_m10_post_migration_assertions.sql",
+    "supabase/rollback/v05b_rollback.sql",
+    "supabase/rollback/v05b_rollback_manifest.json",
+    "supabase/tests/database/v05b/01_catalog.test.sql",
+    "supabase/tests/database/v05b/02_work_invariants.test.sql",
+    "supabase/tests/database/v05b/03_replay_and_cas.test.sql",
+    "supabase/tests/database/v05b/04_maintenance_locking.test.sql",
+    "supabase/tests/database/v05b/05_audit_receipts.test.sql",
+    "supabase/tests/database/v05b/06_audit_flag_resolution.test.sql",
+    "supabase/tests/database/v05b/07_kick_ancestry.test.sql",
+    "supabase/tests/database/v05b/08_replica_mode_contract.test.sql",
+    "supabase/tests/database/v05b/09_legacy_non_regression.test.sql",
+    "supabase/tests/database/v05b/10_rollback_contract.test.sql",
+    "supabase/v05b/package-manifest.json",
+    "tests/test_v05b_package.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:transference_runtime_v05b",
+      "lock_branch": "lock/d8d8d2f8d844fe826acff403218fa6fcfbf184c7e8337120e7c0c35ceb50712e",
+      "lease_id": "17b8835b-2711-41d1-8697-e15b8ca9785b",
+      "generation": 2
+    }
+  ],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
+  "runtime_control_authority": "NONE"
+}

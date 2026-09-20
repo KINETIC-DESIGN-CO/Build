@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "package_id": "TRANSFERENCE_RUNTIME_CONTRACT_V0.5B-D4",
+  "authority": "SOURCE_ONLY_ROLLBACK",
+  "execution_state": "NOT_RUN",
+  "preconditions": [
+    "SEPARATE_ROLLBACK_AUTHORIZATION_REQUIRED",
+    "MAINTENANCE_OR_RUNTIME_UNAVAILABLE_REQUIRED",
+    "NO_CURRENT_EXTERNAL_RUNTIME_AUTHORITY_MAY_POINT_TO_LIFE_RUNTIME"
+  ],
+  "order": [
+    "DROP_EVENT_TRIGGER_life_runtime_v05b_sql_drop",
+    "DROP_EVENT_TRIGGER_life_runtime_v05b_ddl_command_end",
+    "DROP_SCHEMA_life_runtime_CASCADE",
+    "VERIFY_LEGACY_life_SLICE_UNCHANGED"
+  ],
+  "forbidden": [
+    "NO_FORTRESS_MUTATION",
+    "NO_SLACK_AUTHORITY_MUTATION",
+    "NO_NOTION_PLANNING_MUTATION"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "package_id": "TRANSFERENCE_RUNTIME_CONTRACT_V0.5B-D4",
+  "authority": "SOURCE_ONLY_NON_LIVE",
+  "execution_state": "NOT_RUN",
+  "remote_target": "jnenguxodtgwbskhdsxt",
+  "scripts": [
+    {
+      "drill": "DR25-D",
+      "path": "danger-room/v05b/sql/dr25_audit_corruption_fixture.sql",
+      "state": "NOT_RUN"
+    },
+    {
+      "drill": "DR28-D",
+      "path": "danger-room/v05b/sql/dr28_audit_flag_resolution_fixture.sql",
+      "state": "NOT_RUN"
+    },
+    {
+      "drill": "DR32-D",
+      "path": "danger-room/v05b/sql/dr32_session_replication_role_canary.sql",
+      "state": "NOT_RUN"
+    },
+    {
+      "drill": "DR33-D-WORK",
+      "path": "danger-room/v05b/sql/dr33_enable_always_work_audit.sql",
+      "state": "NOT_RUN"
+    },
+    {
+      "drill": "DR33-D-RECEIPT",
+      "path": "danger-room/v05b/sql/dr33_enable_always_operation_receipt_guard.sql",
+      "state": "NOT_RUN"
+    },
+    {
+      "drill": "DR35-D-A",
+      "path": "danger-room/v05b/sql/dr35_deadlock_race_session_a.sql",
+      "state": "NOT_RUN"
+    },
+    {
+      "drill": "DR35-D-B",
+      "path": "danger-room/v05b/sql/dr35_deadlock_race_session_b.sql",
+      "state": "NOT_RUN"
+    },
+    {
+      "drill": "DR36-D",
+      "path": "danger-room/v05b/sql/dr36_active_root_cardinality.sql",
+      "state": "NOT_RUN"
+    }
+  ],
+  "exclusions": [
+    "NO_REMOTE_EXECUTION",
+    "NO_PRODUCTION_CUTOVER",
+    "NO_FORTRESS_MUTATION"
+  ]
+}
