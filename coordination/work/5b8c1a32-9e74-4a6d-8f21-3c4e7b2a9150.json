@@ -18,8 +18,8 @@
     {
       "resource_key": "component:checkpoint_validation_baseline_bridge",
       "lock_branch": "lock/b02e0c8c5a96418d69626b2d11bdedd8ed234497c8f006f43f720c0fdba7371b",
-      "lease_id": "a99815aa-fb4c-4f62-9509-14d2f593c402",
-      "generation": 1
+      "lease_id": "c8b73491-4b2a-4c77-9d61-eac871b49f20",
+      "generation": 2
     }
   ],
   "goal_id": null,
