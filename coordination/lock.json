@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "resource_key": "component:checkpoint_validation_support_b2",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "8f5f29c4-7c46-4a5b-8d12-0d1e4f6a9c20",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "7e61c2b8-39a4-4d57-9b01-5f8a2c6e3d44"
+  },
+  "implementation_branch": "work/8f5f29c4-7c46-4a5b-8d12-0d1e4f6a9c20",
+  "lease_id": "6a0f3d2e-8c41-4b79-a652-1e9f7d3c5b20",
+  "base_sha": "f563cbb9065673570f661546e464ea3adabc803b",
+  "acquired_at": "2026-09-20T19:37:40Z",
+  "heartbeat_at": "2026-09-20T19:37:40Z",
+  "expires_at": "2026-09-20T20:07:40Z",
+  "lease_contract": "COMPONENT_1800",
+  "lease_event_type": "ACQUIRE",
+  "runtime_control_authority": "NONE"
+}
