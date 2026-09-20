@@ -1,0 +1,10 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+set local search_path=extensions,pg_catalog,public;
+select plan(4);
+select ok(pg_catalog.to_regnamespace('life') is not null,'legacy life schema remains');
+select ok(pg_catalog.to_regclass('life.oauth_callers_v1') is not null,'legacy oauth caller table remains');
+select ok(pg_catalog.to_regclass('life.invocations') is not null,'legacy invocation ledger remains');
+select ok(pg_catalog.to_regprocedure('life.record_invocation_v1(text,text,text,text,uuid,text,text,text)') is not null,'legacy aligned invocation function remains');
+select * from finish();
+rollback;

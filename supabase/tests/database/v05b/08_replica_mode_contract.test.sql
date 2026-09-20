@@ -1,0 +1,11 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+set local search_path=extensions,pg_catalog,public;
+select plan(4);
+select is((select tgenabled::text from pg_catalog.pg_trigger where tgname='work_v05b_audit_trg'),'O','work audit trigger remains ordinary before DR33');
+select is((select tgenabled::text from pg_catalog.pg_trigger where tgname='operation_receipt_v05b_immutable_trg'),'O','receipt guard remains ordinary before DR33');
+select is(pg_catalog.current_setting('session_replication_role'),'origin','replication role starts origin');
+set local session_replication_role=replica;
+select is(pg_catalog.current_setting('session_replication_role'),'replica','transaction-local replica canary reaches replica');
+select * from finish();
+rollback;

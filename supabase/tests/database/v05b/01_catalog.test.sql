@@ -1,0 +1,14 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+set local search_path=extensions,pg_catalog,public;
+select plan(8);
+select ok(pg_catalog.to_regnamespace('life_runtime') is not null,'life_runtime schema exists');
+select is((select pg_catalog.count(*)::integer from information_schema.tables where table_schema='life_runtime'),12,'12 V0.5B tables exist');
+select is((select pg_catalog.count(*)::integer from life_runtime.runtime_catalog_manifest_v05b where active),11,'catalog manifest has 11 active objects');
+select ok(life_runtime.runtime_catalog_guard_v05b(),'catalog guard passes immediately after migration');
+select is((select status from life_runtime.audit_status_v05b where singleton_id=1),'PASS','audit starts PASS');
+select is((select state from life_runtime.maintenance_state_v05b where singleton_id=1),'OFF','maintenance starts OFF');
+select ok(exists(select 1 from pg_catalog.pg_event_trigger where evtname='life_runtime_v05b_ddl_command_end'),'ddl_command_end trigger exists');
+select ok(exists(select 1 from pg_catalog.pg_event_trigger where evtname='life_runtime_v05b_sql_drop'),'sql_drop trigger exists');
+select * from finish();
+rollback;

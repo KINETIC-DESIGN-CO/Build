@@ -1,0 +1,10 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+set local search_path=extensions,pg_catalog,public;
+select plan(4);
+select ok(not pg_catalog.has_schema_privilege('anon','life_runtime','USAGE'),'anon has no life_runtime usage');
+select ok(not pg_catalog.has_schema_privilege('authenticated','life_runtime','USAGE'),'authenticated has no life_runtime usage');
+select ok(not pg_catalog.has_schema_privilege('service_role','life_runtime','USAGE'),'service_role has no life_runtime usage');
+select is((select pg_catalog.count(*)::integer from life_runtime.work_v05b),0,'candidate runtime starts with no work rows');
+select * from finish();
+rollback;
