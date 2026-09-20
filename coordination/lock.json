@@ -15,6 +15,6 @@
   "heartbeat_at": "2026-09-20T17:26:20Z",
   "expires_at": "2026-09-20T17:56:20Z",
   "lease_contract": "COMPONENT_1800",
-  "lease_event_type": "TAKEOVER_AFTER_EXPIRY",
+  "lease_event_type": "TAKEOVER",
   "runtime_control_authority": "NONE"
 }
