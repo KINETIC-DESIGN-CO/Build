@@ -12,18 +12,18 @@ jobs:
   validate_v05b_prepr:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out immutable V0.5B parent commit
+      - name: Check out immutable current Build main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: 71bce80ce58e1ee8f11bc596ed6ccf350a5df17d
+          ref: f563cbb9065673570f661546e464ea3adabc803b
           fetch-depth: 0
 
-      - name: Overlay current canonical legacy-lock validator bridge
+      - name: Build synthetic integration with immutable V0.5B parent
         run: |
-          git fetch --no-tags origin f563cbb9065673570f661546e464ea3adabc803b
-          test "$(git rev-parse FETCH_HEAD)" = "f563cbb9065673570f661546e464ea3adabc803b"
-          git checkout FETCH_HEAD -- scripts/validate_lock_history.py tests/test_lock_history.py
-          test "$(git diff --cached --name-only | sort)" = "$(printf '%s\n%s' 'scripts/validate_lock_history.py' 'tests/test_lock_history.py')"
+          test "$(git rev-parse HEAD)" = "f563cbb9065673570f661546e464ea3adabc803b"
+          git cat-file -e 71bce80ce58e1ee8f11bc596ed6ccf350a5df17d^{commit}
+          git merge --no-commit --no-ff 71bce80ce58e1ee8f11bc596ed6ccf350a5df17d
+          test "$(git rev-parse MERGE_HEAD)" = "71bce80ce58e1ee8f11bc596ed6ccf350a5df17d"
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
