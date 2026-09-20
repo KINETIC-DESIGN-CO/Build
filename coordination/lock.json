@@ -12,9 +12,9 @@
   "lease_id": "05684b2d-078e-4a52-9db0-8b57cae40b12",
   "base_sha": "f3e43780f3333843e11c77686fa84d4c5d5ca682",
   "acquired_at": "2026-09-20T16:08:33Z",
-  "heartbeat_at": "2026-09-20T16:08:33Z",
-  "expires_at": "2026-09-20T16:38:33Z",
+  "heartbeat_at": "2026-09-20T16:11:22Z",
+  "expires_at": "2026-09-20T16:41:22Z",
   "lease_contract": "COMPONENT_1800",
-  "lease_event_type": "REACQUIRE",
+  "lease_event_type": "RENEW_PROTECTED_MUTATION",
   "runtime_control_authority": "NONE"
 }
