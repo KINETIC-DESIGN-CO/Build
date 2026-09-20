@@ -43,7 +43,7 @@ LEGACY_CHECKPOINT_BLOBS = {
     "continuity/checkpoints/CP-000010-f63c26bb.json": "dd4e225bc8eaa60701ff769495ba09ada4d47e12",
     "continuity/checkpoints/CP-000011-05d67e48.json": "7cd46f2a00d976c350e2484b16187f1588fd4b0c",
     "continuity/checkpoints/CP-000011-5d12caaa.json": "58254fcecb6fb62178eedeff786d7b5f283ff4b4",
-    "continuity/checkpoints/CP-000012-19e5c808.json": "f60de757572c5bdbd2adbbdcd9dc217c1cd6e47d2",
+    "continuity/checkpoints/CP-000012-19e5c808.json": "f60de757572c5bdb2adbbdcd9dc217c1cd6e47d2",
     "continuity/checkpoints/CP-000012-ef5f7857.json": "3cc113f8d74eeb05ccb88dda24afb532f1cfac74",
     "continuity/checkpoints/CP-000013-c2f3ad18.json": "86120ee5d5a91df8182377de1101611c61da5829",
     "continuity/checkpoints/CP-000013-daf49e42.json": "2c160e77b818f7eccb591952b21dd5e4c2434daf",
