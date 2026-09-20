@@ -43,7 +43,7 @@ returns jsonb
 language plpgsql
 security definer
 set search_path = ''
-as $$
+as $
 declare
   v_request jsonb;
   v_hash text;
@@ -55,7 +55,15 @@ declare
   v_transfer_hash text;
   v_result jsonb;
   v_event bigint;
+  v_evidence_refs text[];
+  v_open_finding_refs text[];
 begin
+  select pg_catalog.coalesce(pg_catalog.array_agg(x order by x),array[]::text[])
+    into v_evidence_refs
+  from pg_catalog.unnest(v_evidence_refs) as u(x);
+  select pg_catalog.coalesce(pg_catalog.array_agg(x order by x),array[]::text[])
+    into v_open_finding_refs
+  from pg_catalog.unnest(v_open_finding_refs) as u(x);
   v_request := pg_catalog.jsonb_build_object(
     'operation_kind', p_operation_kind,
     'request_id', p_request_id,
@@ -69,8 +77,8 @@ begin
     'source_ref', p_source_ref,
     'claimed_actor', p_claimed_actor,
     'contract_generation', p_contract_generation,
-    'evidence_refs', pg_catalog.coalesce(p_evidence_refs,array[]::text[]),
-    'open_finding_refs', pg_catalog.coalesce(p_open_finding_refs,array[]::text[])
+    'evidence_refs', v_evidence_refs,
+    'open_finding_refs', v_open_finding_refs
   );
   v_hash := life_runtime.json_hash_v05b(v_request);
 
@@ -261,8 +269,8 @@ begin
       'branch_depth',v_work.branch_depth,
       'branch_kind',v_work.branch_kind,
       'resulting_work_state',p_target_state,
-      'evidence_refs',pg_catalog.coalesce(p_evidence_refs,array[]::text[]),
-      'open_finding_refs',pg_catalog.coalesce(p_open_finding_refs,array[]::text[]),
+      'evidence_refs',v_evidence_refs,
+      'open_finding_refs',v_open_finding_refs,
       'next_actor',p_next_actor,
       'next_action_ref',p_next_action_ref,
       'reactivation_condition_kind',
@@ -311,8 +319,8 @@ begin
     v_work.revision + 1,v_work.last_transfer_id,v_work.root_goal_id,
     v_work.root_goal_revision_at_transfer,v_work.parent_work_id,v_work.return_work_id,
     v_work.branch_depth,v_work.branch_kind,p_target_state,
-    pg_catalog.coalesce(p_evidence_refs,array[]::text[]),
-    pg_catalog.coalesce(p_open_finding_refs,array[]::text[]),
+    v_evidence_refs,
+    v_open_finding_refs,
     p_next_actor,p_next_action_ref,
     case when p_operation_kind='REACTIVATE_WORK' then 'NONE' else p_reactivation_kind end,
     case when p_operation_kind='REACTIVATE_WORK' then null else p_reactivation_ref end,
@@ -337,7 +345,7 @@ begin
 
   return v_result;
 end
-$$;
+$;
 
 create function life_runtime.apply_transference_v05b(
   p_request_id uuid,
@@ -532,7 +540,7 @@ returns jsonb
 language plpgsql
 security definer
 set search_path = ''
-as $$
+as $
 declare
   v_m life_runtime.maintenance_state_v05b%rowtype;
   v_a life_runtime.audit_status_v05b%rowtype;
@@ -544,6 +552,9 @@ declare
   v_result jsonb;
   v_index_ok boolean;
   v_count integer;
+  v_transfer uuid;
+  v_transfer_hash text;
+  v_event bigint;
 begin
   v_request := pg_catalog.jsonb_build_object(
     'operation_kind','KICK_RETURN','request_id',p_request_id,'work_id',p_work_id,
@@ -563,8 +574,15 @@ begin
     );
   end if;
 
-  select * into v_m from life_runtime.maintenance_state_v05b where singleton_id=1 for update;
-  select * into v_origin from life_runtime.work_v05b where work_id=p_work_id for update;
+  select * into v_m
+  from life_runtime.maintenance_state_v05b
+  where singleton_id=1
+  for update;
+
+  select * into v_origin
+  from life_runtime.work_v05b
+  where work_id=p_work_id
+  for update;
   if not found then
     return pg_catalog.jsonb_build_object('code','VALIDATION_REJECTED','replayed',false);
   end if;
@@ -576,18 +594,26 @@ begin
     where work_id=v_candidate_id
     for update;
     if not found then
-      return pg_catalog.jsonb_build_object('code','VALIDATION_REJECTED','reason','CORRUPT_ANCESTRY','replayed',false);
+      return pg_catalog.jsonb_build_object(
+        'code','VALIDATION_REJECTED','reason','CORRUPT_ANCESTRY','replayed',false
+      );
     end if;
+
     if v_candidate.work_state='ACTIVE'
-       or (v_candidate.work_state='DEFERRED'
-           and life_runtime.evaluate_reactivation_v05b(
-             v_candidate.reactivation_condition_kind,v_candidate.reactivation_condition_ref
-           )) then
+       or (
+         v_candidate.work_state='DEFERRED'
+         and life_runtime.evaluate_reactivation_v05b(
+           v_candidate.reactivation_condition_kind,
+           v_candidate.reactivation_condition_ref
+         )
+       ) then
       exit;
     end if;
+
     v_candidate_id := v_candidate.return_work_id;
   end loop;
 
+  v_count := null;
   if v_candidate_id is null then
     select exists (
       select 1
@@ -596,8 +622,11 @@ begin
       join pg_catalog.pg_namespace n on n.oid=idx.relnamespace
       where n.nspname='life_runtime'
         and idx.relname='work_v05b_one_active_root_per_goal_uq'
-        and i.indisunique and i.indisvalid and i.indisready
+        and i.indisunique
+        and i.indisvalid
+        and i.indisready
         and pg_catalog.pg_get_indexdef(i.indexrelid) like '%(root_goal_id)%'
+        and pg_catalog.pg_get_indexdef(i.indexrelid) not like '%root_goal_revision_at_transfer%'
         and pg_catalog.pg_get_expr(i.indpred,i.indrelid)
           = '((branch_kind = ''ROOT''::text) AND (work_state = ''ACTIVE''::text))'
     ) into v_index_ok;
@@ -623,36 +652,93 @@ begin
     end if;
   end if;
 
-  select * into v_a from life_runtime.audit_status_v05b where singleton_id=1 for update;
+  select * into v_a
+  from life_runtime.audit_status_v05b
+  where singleton_id=1
+  for update;
 
   if v_m.state='ON' then
     v_result := pg_catalog.jsonb_build_object('code','MAINTENANCE_BLOCKED','replayed',false);
   elsif v_a.status<>'PASS' then
     v_result := pg_catalog.jsonb_build_object('code','AUDIT_HOLD','replayed',false);
-  elsif not life_runtime.runtime_catalog_guard_v05b() or v_count=-1 then
-    v_result := pg_catalog.jsonb_build_object('code','AUDIT_HOLD','reason','CATALOG_MISMATCH','replayed',false);
-  elsif v_origin.revision<>p_expected_revision then
-    v_result := pg_catalog.jsonb_build_object('code','STALE_REVISION','current_revision',v_origin.revision,'replayed',false);
-  elsif v_candidate_id is null then
-    v_result := pg_catalog.jsonb_build_object('code','BLOCKED_NO_RESUMABLE_RETURN','replayed',false);
-  else
+  elsif not life_runtime.runtime_catalog_guard_v05b()
+        or v_count=-1
+        or v_count>1 then
+    v_event := life_runtime.append_audit_event_v05b(
+      'DDL_CHANGE','KICK_CATALOG_GUARD','life_runtime.work_v05b_one_active_root_per_goal_uq',
+      null,null,null,p_claimed_actor,null,'KICK_RETURN',p_source_ref,
+      p_contract_generation,'OUT_OF_PATH',null,null,'CATALOG',
+      'life_runtime.work_v05b_one_active_root_per_goal_uq',
+      pg_catalog.jsonb_build_object(
+        'fallback_cardinality',v_count,
+        'index_ok',pg_catalog.coalesce(v_index_ok,false)
+      )
+    );
+    if v_event is not null then
+      perform life_runtime.open_blocking_flag_v05b(
+        v_event,'CATALOG_MISMATCH',null,
+        array['work_v05b_one_active_root_per_goal_uq']
+      );
+    end if;
     v_result := pg_catalog.jsonb_build_object(
-      'code','APPLIED','candidate_work_id',v_candidate_id,
-      'candidate_revision',v_candidate.revision + 1,'replayed',false
+      'code','AUDIT_HOLD','reason','CATALOG_MISMATCH','replayed',false
+    );
+  elsif v_origin.revision<>p_expected_revision then
+    v_result := pg_catalog.jsonb_build_object(
+      'code','STALE_REVISION','current_revision',v_origin.revision,'replayed',false
+    );
+  elsif v_candidate_id is null then
+    v_result := pg_catalog.jsonb_build_object(
+      'code','BLOCKED_NO_RESUMABLE_RETURN','replayed',false
+    );
+  else
+    v_transfer := pg_catalog.gen_random_uuid();
+    v_transfer_hash := life_runtime.json_hash_v05b(
+      pg_catalog.jsonb_build_object(
+        'work_id',v_candidate.work_id,
+        'expected_revision',v_candidate.revision,
+        'resulting_revision',v_candidate.revision+1,
+        'root_goal_id',v_candidate.root_goal_id,
+        'root_goal_revision_at_transfer',v_candidate.root_goal_revision_at_transfer,
+        'parent_work_id',v_candidate.parent_work_id,
+        'return_work_id',v_candidate.return_work_id,
+        'branch_depth',v_candidate.branch_depth,
+        'branch_kind',v_candidate.branch_kind,
+        'resulting_work_state','ACTIVE',
+        'evidence_refs',array['KICK_RETURN']::text[],
+        'open_finding_refs',array[]::text[],
+        'next_actor',v_candidate.next_actor,
+        'next_action_ref',v_candidate.next_action_ref,
+        'reactivation_condition_kind','NONE',
+        'reactivation_condition_ref',null,
+        'source_generation',v_candidate.source_generation,
+        'contract_generation',p_contract_generation
+      )
+    );
+
+    v_result := pg_catalog.jsonb_build_object(
+      'code','APPLIED',
+      'candidate_work_id',v_candidate_id,
+      'candidate_revision',v_candidate.revision+1,
+      'transfer_id',v_transfer,
+      'replayed',false
     );
   end if;
 
   insert into life_runtime.operation_receipt_v05b(
     request_id,operation_kind,work_id,expected_revision,canonical_request,
     canonical_request_hash,claimed_actor,source_ref,contract_generation,
-    exact_result_code,exact_result_payload,committed_work_revision,
+    exact_result_code,exact_result_payload,committed_work_revision,transfer_id,
     expected_audit_event_count
   ) values (
     p_request_id,'KICK_RETURN',p_work_id,p_expected_revision,v_request,v_hash,
     p_claimed_actor,p_source_ref,p_contract_generation,
-    case when v_result->>'code'='AUDIT_HOLD' then 'AUDIT_HOLD' else v_result->>'code' end,
+    v_result->>'code',
     v_result,
-    case when v_result->>'code'='APPLIED' then v_candidate.revision+1 else v_origin.revision end,
+    case when v_result->>'code'='APPLIED'
+         then v_candidate.revision+1
+         else v_origin.revision end,
+    case when v_result->>'code'='APPLIED' then v_transfer else null end,
     case when v_result->>'code'='APPLIED' then 1 else 0 end
   );
 
@@ -663,18 +749,37 @@ begin
     perform pg_catalog.set_config('life_runtime.source_ref',p_source_ref,true);
     perform pg_catalog.set_config('life_runtime.contract_generation',p_contract_generation,true);
 
+    insert into life_runtime.transference_event_v05b(
+      transfer_id,request_id,transfer_state_id,work_id,expected_revision,
+      resulting_revision,predecessor_transfer_id,root_goal_id,
+      root_goal_revision_at_transfer,parent_work_id,return_work_id,branch_depth,
+      branch_kind,resulting_work_state,evidence_refs,open_finding_refs,next_actor,
+      next_action_ref,reactivation_condition_kind,reactivation_condition_ref,
+      source_generation,contract_generation
+    ) values (
+      v_transfer,p_request_id,v_transfer_hash,v_candidate.work_id,v_candidate.revision,
+      v_candidate.revision+1,v_candidate.last_transfer_id,v_candidate.root_goal_id,
+      v_candidate.root_goal_revision_at_transfer,v_candidate.parent_work_id,
+      v_candidate.return_work_id,v_candidate.branch_depth,v_candidate.branch_kind,
+      'ACTIVE',array['KICK_RETURN']::text[],array[]::text[],
+      v_candidate.next_actor,v_candidate.next_action_ref,'NONE',null,
+      v_candidate.source_generation,p_contract_generation
+    );
+
     update life_runtime.work_v05b
     set revision=revision+1,
         work_state='ACTIVE',
+        last_transfer_id=v_transfer,
         reactivation_condition_kind='NONE',
         reactivation_condition_ref=null,
+        contract_generation=p_contract_generation,
         updated_at=pg_catalog.clock_timestamp()
     where work_id=v_candidate_id;
   end if;
 
   return v_result;
 end
-$$;
+$;
 
 create function life_runtime.enter_maintenance_v05b(
   p_change_id text,
@@ -720,7 +825,7 @@ returns jsonb
 language plpgsql
 security definer
 set search_path = ''
-as $$
+as $
 declare
   v_m life_runtime.maintenance_state_v05b%rowtype;
   v_a life_runtime.audit_status_v05b%rowtype;
@@ -737,89 +842,330 @@ declare
   v_epoch bigint;
   v_bad integer;
 begin
-  select * into v_m from life_runtime.maintenance_state_v05b where singleton_id=1 for update;
-  select * into v_a from life_runtime.audit_status_v05b where singleton_id=1 for update;
+  select * into v_m
+  from life_runtime.maintenance_state_v05b
+  where singleton_id=1
+  for update;
+
+  select * into v_a
+  from life_runtime.audit_status_v05b
+  where singleton_id=1
+  for update;
 
   if not found or v_m.state<>'ON' then
-    return pg_catalog.jsonb_build_object('result','UNVERIFIED','reason','MAINTENANCE_REQUIRED');
+    return pg_catalog.jsonb_build_object(
+      'result','UNVERIFIED','reason','MAINTENANCE_REQUIRED'
+    );
   end if;
 
   v_prev:=v_a.last_full_verified_hash;
   v_from_id:=v_a.last_full_verified_event_id;
 
+  if v_a.audit_head_event_id is null then
+    if v_a.audit_head_hash is distinct from life_runtime.audit_genesis_hash_v05b() then
+      v_mismatch:=pg_catalog.array_append(v_mismatch,'AUDIT_HEAD_GENESIS_MISMATCH');
+    end if;
+  elsif not exists (
+    select 1
+    from life_runtime.audit_event_v05b e
+    where e.audit_event_id=v_a.audit_head_event_id
+      and e.audit_event_hash=v_a.audit_head_hash
+  ) then
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'AUDIT_HEAD_REF_MISMATCH');
+  end if;
+
   for r in
-    select * from life_runtime.audit_event_v05b
-    where audit_event_id > coalesce(v_from_id,0)
+    select *
+    from life_runtime.audit_event_v05b
+    where audit_event_id > pg_catalog.coalesce(v_from_id,0)
       and (v_a.audit_head_event_id is null or audit_event_id <= v_a.audit_head_event_id)
     order by audit_event_id
   loop
     v_events:=v_events+1;
     v_payload:=pg_catalog.jsonb_build_object(
-      'event_kind',r.event_kind,'transaction_id',r.transaction_id,
-      'operation_kind',r.operation_kind,'object_identity',r.object_identity,
-      'primary_key',r.primary_key,'old_state_hash',r.old_state_hash,
-      'new_state_hash',r.new_state_hash,'database_principal',r.database_principal,
-      'claimed_life_actor',r.claimed_life_actor,'request_id',r.request_id,
-      'runtime_function_context',r.runtime_function_context,'source_ref',r.source_ref,
-      'contract_generation',r.contract_generation,'path_class',r.path_class,
-      'maintenance_change_id',r.maintenance_change_id,'command_tag',r.command_tag,
-      'ddl_object_type',r.ddl_object_type,'ddl_object_identity',r.ddl_object_identity,
-      'event_payload',r.event_payload,'occurred_at',r.occurred_at,
+      'event_kind',r.event_kind,
+      'transaction_id',r.transaction_id,
+      'operation_kind',r.operation_kind,
+      'object_identity',r.object_identity,
+      'primary_key',r.primary_key,
+      'old_state_hash',r.old_state_hash,
+      'new_state_hash',r.new_state_hash,
+      'database_principal',r.database_principal,
+      'claimed_life_actor',r.claimed_life_actor,
+      'request_id',r.request_id,
+      'runtime_function_context',r.runtime_function_context,
+      'source_ref',r.source_ref,
+      'contract_generation',r.contract_generation,
+      'path_class',r.path_class,
+      'maintenance_change_id',r.maintenance_change_id,
+      'command_tag',r.command_tag,
+      'ddl_object_type',r.ddl_object_type,
+      'ddl_object_identity',r.ddl_object_identity,
+      'event_payload',r.event_payload,
+      'occurred_at',r.occurred_at,
       'previous_audit_hash',r.previous_audit_hash
     );
     v_calc:=life_runtime.json_hash_v05b(v_payload);
+
     if r.previous_audit_hash is distinct from v_prev
        or r.audit_event_hash is distinct from v_calc then
-      v_mismatch:=pg_catalog.array_append(v_mismatch,'AUDIT_HASH:'||r.audit_event_id::text);
+      v_mismatch:=pg_catalog.array_append(
+        v_mismatch,'AUDIT_HASH:'||r.audit_event_id::text
+      );
     end if;
+
     if r.path_class='APPROVED_RUNTIME_PATH' then
       if r.request_id is null
          or not exists (
-           select 1 from life_runtime.operation_receipt_v05b o
+           select 1
+           from life_runtime.operation_receipt_v05b o
            where o.request_id=r.request_id
          ) then
-        v_mismatch:=pg_catalog.array_append(v_mismatch,'RECEIPT_MISSING:'||r.audit_event_id::text);
+        v_mismatch:=pg_catalog.array_append(
+          v_mismatch,'RECEIPT_MISSING:'||r.audit_event_id::text
+        );
       else
         v_receipts:=v_receipts+1;
       end if;
     end if;
+
     v_prev:=r.audit_event_hash;
   end loop;
 
   select pg_catalog.count(*)::integer into v_bad
   from life_runtime.work_v05b w
   where
-    (w.branch_kind='ROOT' and not (w.branch_depth=0 and w.parent_work_id is null and w.return_work_id is null))
+    (w.branch_kind='ROOT'
+      and not (
+        w.branch_depth=0
+        and w.parent_work_id is null
+        and w.return_work_id is null
+      ))
     or
-    (w.branch_kind='SPLINTER' and not (
-      w.branch_depth>0 and w.parent_work_id is not null and w.return_work_id=w.parent_work_id
-      and exists (select 1 from life_runtime.work_v05b p where p.work_id=w.parent_work_id)
-    ))
+    (w.branch_kind='SPLINTER'
+      and not (
+        w.branch_depth>0
+        and w.parent_work_id is not null
+        and w.return_work_id=w.parent_work_id
+        and exists (
+          select 1 from life_runtime.work_v05b p
+          where p.work_id=w.parent_work_id
+        )
+      ))
     or
     (w.parent_work_id is not null and not exists (
-      select 1 from life_runtime.work_v05b p where p.work_id=w.parent_work_id
+      select 1 from life_runtime.work_v05b p
+      where p.work_id=w.parent_work_id
     ))
     or
     (w.return_work_id is not null and not exists (
-      select 1 from life_runtime.work_v05b p where p.work_id=w.return_work_id
+      select 1 from life_runtime.work_v05b p
+      where p.work_id=w.return_work_id
+    ))
+    or
+    (w.last_transfer_id is not null and not exists (
+      select 1 from life_runtime.transference_event_v05b t
+      where t.transfer_id=w.last_transfer_id
+        and t.work_id=w.work_id
+        and t.resulting_revision=w.revision
     ));
   if v_bad>0 then
-    v_mismatch:=pg_catalog.array_append(v_mismatch,'WORK_ANCESTRY:'||v_bad::text);
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'WORK_ANCESTRY_OR_TRANSFER:'||v_bad::text);
   end if;
 
   select pg_catalog.count(*)::integer into v_bad
   from life_runtime.operation_receipt_v05b o
-  where not exists (select 1 from life_runtime.work_v05b w where w.work_id=o.work_id);
+  where not exists (
+    select 1 from life_runtime.work_v05b w where w.work_id=o.work_id
+  )
+  or o.canonical_request_hash is distinct from life_runtime.json_hash_v05b(o.canonical_request)
+  or (
+    o.transfer_id is not null
+    and not exists (
+      select 1
+      from life_runtime.transference_event_v05b t
+      where t.transfer_id=o.transfer_id
+        and t.request_id=o.request_id
+    )
+  )
+  or (
+    o.exact_result_code='APPLIED'
+    and o.operation_kind in (
+      'APPLY_TRANSFERENCE','DEFER_WORK','REACTIVATE_WORK','CLOSE_WORK','KICK_RETURN'
+    )
+    and o.transfer_id is null
+  );
   if v_bad>0 then
-    v_mismatch:=pg_catalog.array_append(v_mismatch,'OP_WORK_REF:'||v_bad::text);
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'OP_RECEIPT_REF_OR_HASH:'||v_bad::text);
   end if;
 
   select pg_catalog.count(*)::integer into v_bad
   from life_runtime.transference_event_v05b t
-  where not exists (select 1 from life_runtime.operation_receipt_v05b o where o.request_id=t.request_id)
-     or not exists (select 1 from life_runtime.work_v05b w where w.work_id=t.work_id);
+  where not exists (
+    select 1
+    from life_runtime.operation_receipt_v05b o
+    where o.request_id=t.request_id
+      and o.transfer_id=t.transfer_id
+  )
+  or not exists (
+    select 1 from life_runtime.work_v05b w where w.work_id=t.work_id
+  )
+  or (
+    t.predecessor_transfer_id is not null
+    and not exists (
+      select 1
+      from life_runtime.transference_event_v05b p
+      where p.transfer_id=t.predecessor_transfer_id
+        and p.work_id=t.work_id
+    )
+  )
+  or (
+    t.parent_work_id is not null
+    and not exists (
+      select 1 from life_runtime.work_v05b w where w.work_id=t.parent_work_id
+    )
+  )
+  or (
+    t.return_work_id is not null
+    and not exists (
+      select 1 from life_runtime.work_v05b w where w.work_id=t.return_work_id
+    )
+  )
+  or t.transfer_state_id is distinct from life_runtime.json_hash_v05b(
+    pg_catalog.jsonb_build_object(
+      'work_id',t.work_id,
+      'expected_revision',t.expected_revision,
+      'resulting_revision',t.resulting_revision,
+      'root_goal_id',t.root_goal_id,
+      'root_goal_revision_at_transfer',t.root_goal_revision_at_transfer,
+      'parent_work_id',t.parent_work_id,
+      'return_work_id',t.return_work_id,
+      'branch_depth',t.branch_depth,
+      'branch_kind',t.branch_kind,
+      'resulting_work_state',t.resulting_work_state,
+      'evidence_refs',t.evidence_refs,
+      'open_finding_refs',t.open_finding_refs,
+      'next_actor',t.next_actor,
+      'next_action_ref',t.next_action_ref,
+      'reactivation_condition_kind',t.reactivation_condition_kind,
+      'reactivation_condition_ref',t.reactivation_condition_ref,
+      'source_generation',t.source_generation,
+      'contract_generation',t.contract_generation
+    )
+  );
   if v_bad>0 then
-    v_mismatch:=pg_catalog.array_append(v_mismatch,'TRANSFER_REF:'||v_bad::text);
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'TRANSFER_REF_OR_HASH:'||v_bad::text);
+  end if;
+
+  select pg_catalog.count(*)::integer into v_bad
+  from life_runtime.audit_flag_v05b f
+  where not exists (
+    select 1
+    from life_runtime.audit_event_v05b e
+    where e.audit_event_id=f.opening_audit_event_id
+  );
+  if v_bad>0 then
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'FLAG_OPEN_EVENT_REF:'||v_bad::text);
+  end if;
+
+  select pg_catalog.count(*)::integer into v_bad
+  from life_runtime.audit_clear_receipt_v05b c
+  where not exists (
+    select 1 from life_runtime.audit_flag_v05b f where f.flag_id=c.flag_id
+  )
+  or (
+    c.audit_head_event_id is not null
+    and not exists (
+      select 1
+      from life_runtime.audit_event_v05b e
+      where e.audit_event_id=c.audit_head_event_id
+        and e.audit_event_hash=c.audit_head_hash
+    )
+  )
+  or (
+    c.audit_head_event_id is null
+    and c.audit_head_hash is distinct from life_runtime.audit_genesis_hash_v05b()
+  )
+  or (
+    c.disposition='OWNER_RESOLVED'
+    and not exists (
+      select 1
+      from life_runtime.owner_ingress_audit_v05b oi
+      where oi.owner_ingress_id=c.owner_ingress_id
+        and oi.claimed_owner='Vince'
+        and oi.canonical_action->>'operation'='RESOLVE_ESCALATED_FLAG'
+        and oi.canonical_action->>'flag_id'=c.flag_id::text
+        and oi.canonical_action->>'disposition'='OWNER_CLEAR'
+    )
+  );
+  if v_bad>0 then
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'AUDIT_CLEAR_REF:'||v_bad::text);
+  end if;
+
+  select pg_catalog.count(*)::integer into v_bad
+  from life_runtime.audit_verification_receipt_v05b v
+  where (
+    v.from_event_id is not null
+    and not exists (
+      select 1
+      from life_runtime.audit_event_v05b e
+      where e.audit_event_id=v.from_event_id
+        and e.audit_event_hash=v.from_hash
+    )
+  )
+  or (
+    v.from_event_id is null
+    and v.from_hash is distinct from life_runtime.audit_genesis_hash_v05b()
+  )
+  or (
+    v.fixed_target_head_event_id is not null
+    and not exists (
+      select 1
+      from life_runtime.audit_event_v05b e
+      where e.audit_event_id=v.fixed_target_head_event_id
+        and e.audit_event_hash=v.fixed_target_head_hash
+    )
+  )
+  or (
+    v.fixed_target_head_event_id is null
+    and v.fixed_target_head_hash is distinct from life_runtime.audit_genesis_hash_v05b()
+  );
+  if v_bad>0 then
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'AUDIT_VERIFY_REF:'||v_bad::text);
+  end if;
+
+  select pg_catalog.count(*)::integer into v_bad
+  from life_runtime.maintenance_receipt_v05b mr
+  where pg_catalog.coalesce(mr.change_id,'')=''
+  or (
+    mr.audit_head_event_id_before is not null
+    and not exists (
+      select 1 from life_runtime.audit_event_v05b e
+      where e.audit_event_id=mr.audit_head_event_id_before
+    )
+  )
+  or (
+    mr.audit_head_event_id_after is not null
+    and not exists (
+      select 1 from life_runtime.audit_event_v05b e
+      where e.audit_event_id=mr.audit_head_event_id_after
+    )
+  );
+  if v_bad>0 then
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'MAINTENANCE_REF:'||v_bad::text);
+  end if;
+
+  select pg_catalog.count(*)::integer into v_bad
+  from life_runtime.owner_ingress_audit_v05b oi
+  where not exists (
+    select 1
+    from life_runtime.operation_receipt_v05b o
+    where o.request_id=oi.consuming_request_id
+      and o.operation_kind='APPLY_OWNER_DECISION'
+  )
+  or oi.canonical_action_hash is distinct from life_runtime.json_hash_v05b(oi.canonical_action);
+  if v_bad>0 then
+    v_mismatch:=pg_catalog.array_append(v_mismatch,'OWNER_INGRESS_REF_OR_HASH:'||v_bad::text);
   end if;
 
   select pg_catalog.count(*)::integer into v_bad
@@ -848,9 +1194,15 @@ begin
   update life_runtime.audit_status_v05b
   set status=v_result,
       open_flag_count=v_blocking,
-      last_full_verified_event_id=case when v_result='PASS' then v_a.audit_head_event_id else last_full_verified_event_id end,
-      last_full_verified_hash=case when v_result='PASS' then v_a.audit_head_hash else last_full_verified_hash end,
-      last_full_verification_at=case when v_result='PASS' then pg_catalog.clock_timestamp() else last_full_verification_at end,
+      last_full_verified_event_id=
+        case when v_result='PASS' then v_a.audit_head_event_id
+             else last_full_verified_event_id end,
+      last_full_verified_hash=
+        case when v_result='PASS' then v_a.audit_head_hash
+             else last_full_verified_hash end,
+      last_full_verification_at=
+        case when v_result='PASS' then pg_catalog.clock_timestamp()
+             else last_full_verification_at end,
       status_epoch=status_epoch+1
   where singleton_id=1
   returning status_epoch into v_epoch;
@@ -860,16 +1212,20 @@ begin
     result,events_checked,receipts_checked,flags_open_or_escalated,
     mismatch_refs,resulting_status_epoch
   ) values (
-    v_from_id,v_a.last_full_verified_hash,v_a.audit_head_event_id,v_a.audit_head_hash,
+    v_from_id,v_a.last_full_verified_hash,
+    v_a.audit_head_event_id,v_a.audit_head_hash,
     v_result,v_events,v_receipts,v_blocking,v_mismatch,v_epoch
   );
 
   return pg_catalog.jsonb_build_object(
-    'result',v_result,'events_checked',v_events,'receipts_checked',v_receipts,
-    'flags_open_or_escalated',v_blocking,'mismatch_refs',v_mismatch
+    'result',v_result,
+    'events_checked',v_events,
+    'receipts_checked',v_receipts,
+    'flags_open_or_escalated',v_blocking,
+    'mismatch_refs',v_mismatch
   );
 end
-$$;
+$;
 
 create function life_runtime.exit_maintenance_v05b(
   p_change_id text,
