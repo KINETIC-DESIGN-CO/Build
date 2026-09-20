@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "resource_key": "component:legacy_lock_validator_bridge",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "e340d7de-3995-43d6-b024-217e12609a83",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "2521b00b-9ede-421b-a84a-018d388941be"
+  },
+  "implementation_branch": "work/e340d7de-3995-43d6-b024-217e12609a83",
+  "lease_id": "078239fd-1260-4aa4-a815-7d2cd26badc7",
+  "base_sha": "f3e43780f3333843e11c77686fa84d4c5d5ca682",
+  "acquired_at": "2026-09-20T15:55:19Z",
+  "heartbeat_at": "2026-09-20T15:55:19Z",
+  "expires_at": "2026-09-20T16:25:19Z",
+  "lease_contract": "COMPONENT_1800",
+  "lease_event_type": "ACQUIRE",
+  "runtime_control_authority": "NONE"
+}
