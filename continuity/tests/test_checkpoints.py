@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import shutil
 import subprocess
@@ -8,6 +9,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 ENFORCEMENT = "2026-09-13T19:38:19Z"
 ROOT_GOAL = "2910e7b9-87d8-4a82-b0ff-330b47037bf6"
+
+VALIDATOR_PATH = ROOT / "continuity/tools/validate_checkpoints.py"
+VALIDATOR_SPEC = importlib.util.spec_from_file_location("life_checkpoint_validator", VALIDATOR_PATH)
+assert VALIDATOR_SPEC is not None and VALIDATOR_SPEC.loader is not None
+checkpoint_validator = importlib.util.module_from_spec(VALIDATOR_SPEC)
+VALIDATOR_SPEC.loader.exec_module(checkpoint_validator)
 
 
 class CheckpointTests(unittest.TestCase):
@@ -40,6 +47,83 @@ class CheckpointTests(unittest.TestCase):
         matches = sorted((root / "continuity/checkpoints").glob("CP-*.json"))
         self.assertTrue(matches)
         return matches[-1]
+
+    def non_legacy_checkpoint_path(self, root):
+        for path in sorted((root / "continuity/checkpoints").glob("CP-*.json")):
+            rel = path.relative_to(root).as_posix()
+            if rel not in checkpoint_validator.LEGACY_CHECKPOINT_BLOBS:
+                return path
+        self.fail("expected at least one non-legacy checkpoint")
+
+    def test_legacy_checkpoint_baseline_identity_is_exactly_31_entries(self):
+        baseline = checkpoint_validator.LEGACY_CHECKPOINT_BLOBS
+        self.assertEqual(len(baseline), 31)
+        self.assertEqual(len(set(baseline.items())), 31)
+        self.assertEqual(
+            checkpoint_validator.LEGACY_CHECKPOINT_ALLOWED_MISMATCH_CODES,
+            frozenset({"C011_SCHEMA_INSTANCE", "C010_FORMAT", "CP010_GOAL", "CP007_READBACK"}),
+        )
+        for rel, expected_sha in baseline.items():
+            path = ROOT / rel
+            self.assertTrue(path.is_file(), rel)
+            self.assertEqual(checkpoint_validator.git_blob_sha(path), expected_sha, rel)
+            self.assertTrue(checkpoint_validator.is_legacy_checkpoint_compatible(path), rel)
+
+    def test_one_byte_mutation_loses_legacy_compatibility(self):
+        td, dst = self.copy_repo()
+        try:
+            rel = next(iter(checkpoint_validator.LEGACY_CHECKPOINT_BLOBS))
+            path = dst / rel
+            path.write_bytes(path.read_bytes() + b" ")
+            self.assertFalse(checkpoint_validator.is_legacy_checkpoint_compatible(path, dst))
+            result = self.run_validator(dst)
+            self.assertNotEqual(result.returncode, 0)
+        finally:
+            td.cleanup()
+
+    def test_path_copy_loses_legacy_compatibility(self):
+        td, dst = self.copy_repo()
+        try:
+            rel = next(iter(checkpoint_validator.LEGACY_CHECKPOINT_BLOBS))
+            source = dst / rel
+            copied = dst / "continuity/checkpoints/CP-999999-deadbeef.json"
+            copied.write_bytes(source.read_bytes())
+            self.assertFalse(checkpoint_validator.is_legacy_checkpoint_compatible(copied, dst))
+            result = self.run_validator(dst)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("checkpoint_id must equal filename stem", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_new_checkpoint_receives_current_validation(self):
+        td, dst = self.copy_repo()
+        try:
+            source = self.non_legacy_checkpoint_path(dst)
+            obj = json.loads(source.read_text())
+            path = dst / "continuity/checkpoints/CP-999999-deadbeef.json"
+            obj["checkpoint_id"] = path.stem
+            obj["model_judgment"] = "not allowed"
+            self.write_json(path, obj)
+            self.assertFalse(checkpoint_validator.is_legacy_checkpoint_compatible(path, dst))
+            result = self.run_validator(dst)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("unknown properties", result.stderr)
+        finally:
+            td.cleanup()
+
+    def test_non_allowlisted_historical_checkpoint_receives_current_validation(self):
+        td, dst = self.copy_repo()
+        try:
+            path = self.non_legacy_checkpoint_path(dst)
+            obj = json.loads(path.read_text())
+            obj["model_judgment"] = "not allowed"
+            self.write_json(path, obj)
+            self.assertFalse(checkpoint_validator.is_legacy_checkpoint_compatible(path, dst))
+            result = self.run_validator(dst)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("unknown properties", result.stderr)
+        finally:
+            td.cleanup()
 
     def test_current_checkpoint_bundle_is_valid(self):
         result = self.run_validator(ROOT)
