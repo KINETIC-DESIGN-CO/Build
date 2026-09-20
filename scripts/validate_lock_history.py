@@ -164,7 +164,18 @@ def branch_history_is_nonblocking_legacy(
 
     state = latest.get("state")
     if state == "RELEASED":
-        return True
+        if len(entries) < 2:
+            return False
+        previous = entries[-2].get("lock")
+        if not isinstance(previous, dict) or previous.get("state") != "ACTIVE":
+            return False
+        try:
+            return (
+                previous.get("resource_key") == latest.get("resource_key")
+                and immutable_release_fields(previous) == immutable_release_fields(latest)
+            )
+        except (KeyError, TypeError):
+            return False
     if state != "ACTIVE":
         return False
 
