@@ -23,7 +23,7 @@ jobs:
           git fetch --no-tags origin f563cbb9065673570f661546e464ea3adabc803b
           test "$(git rev-parse FETCH_HEAD)" = "f563cbb9065673570f661546e464ea3adabc803b"
           git checkout FETCH_HEAD -- scripts/validate_lock_history.py tests/test_lock_history.py
-          test "$(git diff --name-only | sort)" = "$(printf '%s\n%s' 'scripts/validate_lock_history.py' 'tests/test_lock_history.py')"
+          test "$(git diff --cached --name-only | sort)" = "$(printf '%s\n%s' 'scripts/validate_lock_history.py' 'tests/test_lock_history.py')"
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
