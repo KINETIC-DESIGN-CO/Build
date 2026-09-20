@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "resource_key": "component:transference_runtime_v05b",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "d46cf24f-397f-4b11-a5db-59b9cf4fd639",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "2521b00b-9ede-421b-a84a-018d388941be"
+  },
+  "implementation_branch": "work/d46cf24f-397f-4b11-a5db-59b9cf4fd639",
+  "lease_id": "84578c90-bcf2-4d79-abe6-66db9febca06",
+  "base_sha": "f3e43780f3333843e11c77686fa84d4c5d5ca682",
+  "acquired_at": "2026-09-20T10:01:27Z",
+  "heartbeat_at": "2026-09-20T10:01:27Z",
+  "expires_at": "2026-09-20T10:31:27Z",
+  "lease_contract": "COMPONENT_1800",
+  "lease_event_type": "ACQUIRE",
+  "runtime_control_authority": "NONE"
+}
