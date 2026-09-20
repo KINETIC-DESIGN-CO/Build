@@ -1,0 +1,44 @@
+name: V0.5B pre-PR validation
+
+on:
+  push:
+    branches:
+      - 'work/0b6a6127-5e73-4f2b-9d3e-53efb8a64411'
+
+permissions:
+  contents: read
+
+jobs:
+  validate_v05b_prepr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out immutable V0.5B parent commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: 71bce80ce58e1ee8f11bc596ed6ccf350a5df17d
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Validate V0.5B package
+        run: python scripts/validate_v05b_package.py
+
+      - name: Run exact Build validation command
+        run: python scripts/validate_continuity.py && python scripts/validate_coordination.py && python scripts/validate_lock_history.py && python scripts/validate_goal_graph.py && python scripts/evaluate_resume_reconciliation.py && python scripts/evaluate_work_fence.py --validate-policy && python scripts/evaluate_thread_lifecycle.py --validate-policy && python continuity/tools/validate_checkpoints.py && python continuity/tests/test_checkpoints.py && python scripts/select_work.py --validate-policy && python scripts/evaluate_selected_operation_execution.py --validate-contract && python scripts/evaluate_live_audit.py --validate-policy && python scripts/validate_research_policy.py && python scripts/validate_issue_lifecycle.py --validate-policy && python scripts/evaluate_user_observation.py && python scripts/validate_root_cause_repair.py && python scripts/validate_watchdog.py && python scripts/validate_reliability.py && python scripts/validate_semantic_firewall.py && python scripts/validate_semantic_firewall_control_paths.py && python -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Set up Supabase CLI
+        uses: supabase/setup-cli@46f7f98c7f948ad727d22c1e67fab04c223a0520 # v3.0.0
+        with:
+          version: 2.117.0
+
+      - name: Start local Supabase database
+        run: supabase db start
+
+      - name: Reset local Supabase database
+        run: supabase db reset
+
+      - name: Run Supabase database tests
+        run: supabase test db
