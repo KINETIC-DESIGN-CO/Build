@@ -15,12 +15,12 @@ jobs:
       - name: Check out immutable corrected target
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: 3d4ec41e05427a4dda909e33a4dfc1b8c96462cd
+          ref: 4c2efe7511a0f00e08574fb1f48ce15bf2e782d1
           fetch-depth: 0
           persist-credentials: false
 
       - name: Verify immutable target identity
-        run: test "$(git rev-parse HEAD)" = "3d4ec41e05427a4dda909e33a4dfc1b8c96462cd"
+        run: test "$(git rev-parse HEAD)" = "4c2efe7511a0f00e08574fb1f48ce15bf2e782d1"
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
