@@ -52,6 +52,10 @@ def main() -> None:
         "TRANSFER_REF_OR_HASH",
         "OWNER_INGRESS_REF_OR_HASH",
         "v_evidence_refs",
+        "V05B_TABLE_SET_MISMATCH",
+        "V05B_FUNCTION_SET_MISMATCH",
+        "V05B_ROW_TRIGGER_SET_MISMATCH",
+        "V05B_EVENT_TRIGGER_SET_MISMATCH",
     ):
         if token not in joined:
             fail(f"required migration token missing: {token}")
