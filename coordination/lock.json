@@ -2,7 +2,7 @@
   "schema_version": 2,
   "resource_key": "component:v05b_prepr_validation_harness",
   "generation": 4,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "0b6a6127-5e73-4f2b-9d3e-53efb8a64411",
   "worker": {
     "kind": "chatgpt",
