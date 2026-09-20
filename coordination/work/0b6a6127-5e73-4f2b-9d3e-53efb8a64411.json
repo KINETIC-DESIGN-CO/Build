@@ -17,8 +17,8 @@
     {
       "resource_key": "component:v05b_prepr_validation_harness",
       "lock_branch": "lock/7fd7e2506dda44e9d9386e1f433fdab7d67371d1d61d93001cf093453ce4822a",
-      "lease_id": "bc1762c6-1794-43dc-946d-b5670e34a4b5",
-      "generation": 3
+      "lease_id": "8105ea85-1379-4579-944f-b2161a404692",
+      "generation": 4
     }
   ],
   "goal_id": null,
