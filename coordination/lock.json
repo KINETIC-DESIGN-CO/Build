@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "resource_key": "component:v05b_prepr_validation_harness",
+  "generation": 1,
+  "state": "ACTIVE",
+  "work_id": "0b6a6127-5e73-4f2b-9d3e-53efb8a64411",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "2521b00b-9ede-421b-a84a-018d388941be"
+  },
+  "implementation_branch": "work/0b6a6127-5e73-4f2b-9d3e-53efb8a64411",
+  "lease_id": "9e67d2d8-d2a1-46dc-95f7-b623709f5514",
+  "base_sha": "f3e43780f3333843e11c77686fa84d4c5d5ca682",
+  "acquired_at": "2026-09-20T15:41:33Z",
+  "heartbeat_at": "2026-09-20T15:41:33Z",
+  "expires_at": "2026-09-20T16:11:33Z",
+  "lease_contract": "COMPONENT_1800",
+  "lease_event_type": "ACQUIRE",
+  "runtime_control_authority": "NONE"
+}
