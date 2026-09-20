@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "work_id": "e340d7de-3995-43d6-b024-217e12609a83",
+  "title": "Legacy lock validator bridge",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "2521b00b-9ede-421b-a84a-018d388941be"
+  },
+  "implementation_branch": "work/e340d7de-3995-43d6-b024-217e12609a83",
+  "base_sha": "f3e43780f3333843e11c77686fa84d4c5d5ca682",
+  "component_id": "legacy_lock_validator_bridge",
+  "repo_paths": [
+    "scripts/validate_lock_history.py",
+    "tests/test_lock_history.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:legacy_lock_validator_bridge",
+      "lock_branch": "lock/9af9a07cfe674256ec8451b5629bfa5d562d4eaf682f48cc0164d5c764509e30",
+      "lease_id": "078239fd-1260-4aa4-a815-7d2cd26badc7",
+      "generation": 1
+    }
+  ],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
+  "runtime_control_authority": "NONE"
+}
