@@ -372,9 +372,42 @@ class LockHistoryTests(unittest.TestCase):
 
 
     def test_released_latest_branch_is_nonblocking_legacy(self):
+        active = lock()
+        released = dict(active)
+        released["state"] = "RELEASED"
+        entries = [
+            entry(active, datetime(2026, 9, 12, 22, 57, tzinfo=timezone.utc), "a"),
+            entry(released, datetime(2026, 9, 12, 23, 0, tzinfo=timezone.utc), "b"),
+        ]
+        self.assertTrue(
+            mod.branch_history_is_nonblocking_legacy(
+                entries,
+                PROTOCOL,
+                now=datetime(2026, 9, 20, 16, 0, tzinfo=timezone.utc),
+            )
+        )
+
+    def test_initial_released_latest_branch_does_not_bypass(self):
         released = lock(state="RELEASED")
         entries = [entry(released, datetime(2026, 9, 12, 22, 57, tzinfo=timezone.utc), "a")]
-        self.assertTrue(
+        self.assertFalse(
+            mod.branch_history_is_nonblocking_legacy(
+                entries,
+                PROTOCOL,
+                now=datetime(2026, 9, 20, 16, 0, tzinfo=timezone.utc),
+            )
+        )
+
+    def test_mutated_release_latest_branch_does_not_bypass(self):
+        active = lock()
+        released = dict(active)
+        released["state"] = "RELEASED"
+        released["lease_id"] = LEASE_B
+        entries = [
+            entry(active, datetime(2026, 9, 12, 22, 57, tzinfo=timezone.utc), "a"),
+            entry(released, datetime(2026, 9, 12, 23, 0, tzinfo=timezone.utc), "b"),
+        ]
+        self.assertFalse(
             mod.branch_history_is_nonblocking_legacy(
                 entries,
                 PROTOCOL,
