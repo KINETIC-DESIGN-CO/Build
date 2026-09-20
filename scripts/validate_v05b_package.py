@@ -48,6 +48,10 @@ def main() -> None:
         "life_runtime_v05b_ddl_command_end",
         "life_runtime_v05b_sql_drop",
         "V05B_ACTIVE_RUNTIME_CALLER_SET_NOT_EMPTY",
+        "KICK_RETURN",
+        "TRANSFER_REF_OR_HASH",
+        "OWNER_INGRESS_REF_OR_HASH",
+        "v_evidence_refs",
     ):
         if token not in joined:
             fail(f"required migration token missing: {token}")
