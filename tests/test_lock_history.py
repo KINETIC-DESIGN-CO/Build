@@ -371,5 +371,62 @@ class LockHistoryTests(unittest.TestCase):
             )
 
 
+    def test_released_latest_branch_is_nonblocking_legacy(self):
+        released = lock(state="RELEASED")
+        entries = [entry(released, datetime(2026, 9, 12, 22, 57, tzinfo=timezone.utc), "a")]
+        self.assertTrue(
+            mod.branch_history_is_nonblocking_legacy(
+                entries,
+                PROTOCOL,
+                now=datetime(2026, 9, 20, 16, 0, tzinfo=timezone.utc),
+            )
+        )
+
+    def test_expired_active_latest_branch_is_nonblocking_legacy(self):
+        acquired = datetime(2026, 9, 20, 8, 0, tzinfo=timezone.utc)
+        expired = lock(
+            acquired=acquired,
+            heartbeat=acquired,
+            expires=acquired + timedelta(seconds=PROTOCOL["lease_duration_seconds"]),
+        )
+        entries = [entry(expired, acquired, "a")]
+        self.assertTrue(
+            mod.branch_history_is_nonblocking_legacy(
+                entries,
+                PROTOCOL,
+                now=acquired + timedelta(seconds=PROTOCOL["lease_duration_seconds"] + 1),
+            )
+        )
+
+    def test_unexpired_active_latest_branch_requires_full_validation(self):
+        acquired = datetime(2026, 9, 20, 8, 0, tzinfo=timezone.utc)
+        active = lock(
+            acquired=acquired,
+            heartbeat=acquired,
+            expires=acquired + timedelta(seconds=PROTOCOL["lease_duration_seconds"]),
+        )
+        entries = [entry(active, acquired, "a")]
+        self.assertFalse(
+            mod.branch_history_is_nonblocking_legacy(
+                entries,
+                PROTOCOL,
+                now=acquired + timedelta(seconds=60),
+            )
+        )
+
+    def test_malformed_active_latest_branch_does_not_bypass(self):
+        active = lock(acquired=datetime(2026, 9, 20, 8, 0, tzinfo=timezone.utc))
+        active["expires_at"] = "not-a-timestamp"
+        entries = [entry(active, datetime(2026, 9, 20, 8, 0, tzinfo=timezone.utc), "a")]
+        self.assertFalse(
+            mod.branch_history_is_nonblocking_legacy(
+                entries,
+                PROTOCOL,
+                now=datetime(2026, 9, 20, 16, 0, tzinfo=timezone.utc),
+            )
+        )
+
+
+
 if __name__ == "__main__":
     unittest.main()
