@@ -2,7 +2,7 @@
   "schema_version": 2,
   "resource_key": "component:legacy_lock_validator_bridge",
   "generation": 1,
-  "state": "ACTIVE",
+  "state": "RELEASED",
   "work_id": "e340d7de-3995-43d6-b024-217e12609a83",
   "worker": {
     "kind": "chatgpt",
