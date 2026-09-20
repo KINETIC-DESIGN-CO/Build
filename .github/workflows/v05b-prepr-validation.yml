@@ -22,7 +22,7 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "f563cbb9065673570f661546e464ea3adabc803b"
           git cat-file -e 71bce80ce58e1ee8f11bc596ed6ccf350a5df17d^{commit}
-          git merge --no-commit --no-ff 71bce80ce58e1ee8f11bc596ed6ccf350a5df17d
+          git -c user.name=Caden -c user.email=caden@life.invalid merge --no-commit --no-ff 71bce80ce58e1ee8f11bc596ed6ccf350a5df17d
           test "$(git rev-parse MERGE_HEAD)" = "71bce80ce58e1ee8f11bc596ed6ccf350a5df17d"
 
       - name: Set up Python
