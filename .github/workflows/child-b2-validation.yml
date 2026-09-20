@@ -27,6 +27,23 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Diagnose remaining legacy blob identity
+        run: |
+          git hash-object continuity/checkpoints/CP-000012-19e5c808.json
+          python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          validator = Path("continuity/tools/validate_checkpoints.py")
+          spec = importlib.util.spec_from_file_location("checkpoint_validator_debug", validator)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          path = Path("continuity/checkpoints/CP-000012-19e5c808.json")
+          rel = path.as_posix()
+          print("HELPER_SHA=" + module.git_blob_sha(path))
+          print("EXPECTED_SHA=" + module.LEGACY_CHECKPOINT_BLOBS[rel])
+          print("COMPAT=" + str(module.is_legacy_checkpoint_compatible(path)))
+          PY
+
       - name: Validate immutable CI pins
         run: python scripts/validate_ci_pins.py
 
