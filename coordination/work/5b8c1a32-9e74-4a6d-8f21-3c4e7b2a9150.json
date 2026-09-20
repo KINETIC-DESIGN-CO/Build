@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "work_id": "5b8c1a32-9e74-4a6d-8f21-3c4e7b2a9150",
+  "title": "Checkpoint validator baseline bridge",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "8cb7dc72-6bee-4479-8079-f8cf32645c9b"
+  },
+  "implementation_branch": "work/5b8c1a32-9e74-4a6d-8f21-3c4e7b2a9150",
+  "base_sha": "f563cbb9065673570f661546e464ea3adabc803b",
+  "component_id": "checkpoint_validation_baseline_bridge",
+  "repo_paths": [
+    "continuity/tools/validate_checkpoints.py",
+    "continuity/tests/test_checkpoints.py"
+  ],
+  "external_targets": [],
+  "claims": [
+    {
+      "resource_key": "component:checkpoint_validation_baseline_bridge",
+      "lock_branch": "lock/b02e0c8c5a96418d69626b2d11bdedd8ed234497c8f006f43f720c0fdba7371b",
+      "lease_id": "a99815aa-fb4c-4f62-9509-14d2f593c402",
+      "generation": 1
+    }
+  ],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
+  "runtime_control_authority": "NONE"
+}
