@@ -13,7 +13,14 @@
     "architecture/reviews/life-successor-provisional-transference-v1.md"
   ],
   "external_targets": [],
-  "claims": [],
+  "claims": [
+    {
+      "resource_key": "component:life_successor_provisional_transference_v1",
+      "lock_branch": "lock/a40d07c082c400d4166b9911d33ccd468ce7d59f52da4505f8b6a56ed0a54f5a",
+      "lease_id": "50bf128c-8490-44ae-8e6c-a051c5d31dc7",
+      "generation": 1
+    }
+  ],
   "goal_id": null,
   "planned_goal_revision": null,
   "pending_external_effect_state": "NONE",
