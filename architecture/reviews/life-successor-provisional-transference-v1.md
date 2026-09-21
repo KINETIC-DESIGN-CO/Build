@@ -282,11 +282,16 @@ Review requirements:
 
 No successor mechanism may be selected for implementation from this artifact while a governing review state is UNKNOWN, NOT_RUN, or OPEN.
 
-## 9. Initial Transference wave
+## 9. Sequential Transference chain
 
-Maximum active wave = coordinator + three child chats.
+Owner correction: reviews run strictly one at a time so each later reviewer consumes the prior posted result and Caden's integration checkpoint before its packet is created.
 
-### Alexander packet
+Only one specialist review obligation may be runnable at a time.
+
+### Stage 1 — Alexander
+
+ACTIVE packet:
+LSPT-2026-09-20-ALEXANDER
 
 Primary lane:
 architecture / requirements / alternatives / anti-incumbency reconstruction.
@@ -300,7 +305,30 @@ Must challenge:
 - whether current role/interface architecture should survive;
 - whether a simpler native mechanism satisfies the same outcomes.
 
-### Connor packet
+Connor, Claude, and Clea are not runnable during Stage 1.
+
+### Stage 2 — Caden integration checkpoint
+
+Trigger:
+AFTER_ALEXANDER_RESULT_POSTED_AND_READ_BACK
+
+Caden must:
+- fresh-read Alexander's result from the canonical #build return thread;
+- fresh-read every current authoritative state needed to evaluate it;
+- preserve disagreements and unresolved states;
+- post/read back one integration checkpoint to the canonical #build thread.
+
+Only after that checkpoint may Caden create a NEW Connor Transference packet.
+
+### Stage 3 — Connor
+
+No Connor packet is pre-created for execution.
+
+The new Connor packet must require as current sources:
+- Alexander's posted/read-back result;
+- Caden's Alexander integration checkpoint;
+- the current review artifact revision;
+- every other source required by the reliability/security slice.
 
 Primary lane:
 preventive reliability / failure forecasting / recurrence / security / canaries.
@@ -316,7 +344,23 @@ Must challenge:
 - DETECT vs PREVENT implications;
 - exact canary/falsification set.
 
-### Claude packet
+### Stage 4 — Caden integration checkpoint
+
+Trigger:
+AFTER_CONNOR_RESULT_POSTED_AND_READ_BACK
+
+Caden must integrate Connor's result against Alexander's result, prior checkpoint, and fresh current authority before creating any Claude packet.
+
+### Stage 5 — Claude
+
+No Claude packet is pre-created for execution.
+
+The new Claude packet must require as current sources:
+- Alexander's current result;
+- Connor's current result;
+- both Caden integration checkpoints;
+- the current review artifact revision;
+- every other source required by the whole-system challenge.
 
 Primary lane:
 independent cross-model challenger.
@@ -333,25 +377,43 @@ Must challenge the entire provisional compilation, including:
 - authority boundaries;
 - migration/rebuild cost.
 
-### Clea reconciliation
+### Stage 6 — Caden integration checkpoint
 
-Clea is not a fourth child in the initial wave because MAX_CONCURRENT_LIFE_CHATS = 4 includes the coordinator.
+Trigger:
+AFTER_CLAUDE_RESULT_POSTED_AND_READ_BACK
 
-After Alexander, Connor, and Claude return:
-- Clea receives one reconciliation/completeness Transference;
-- Clea checks that all required review dimensions were covered and conflicts preserved;
-- Clea does not replace specialist findings or create architecture truth.
+Caden must fresh-read and integrate all three specialist results before reconciliation.
 
-## 10. Initial-wave dependency barrier
+### Stage 7 — Clea reconciliation
 
-No successor implementation package, live Supabase migration, Fortress cutover, Project Instruction edit, kernel source mutation, adapter deployment, or final architecture selection may be treated as authorized merely by creation of this review artifact or the Transference packets.
+No Clea reconciliation packet is created before Stage 6 completes.
 
-The next selection step occurs only after:
-1. all three initial reviewers return typed results;
-2. Caden fresh-reads their source results and current authoritative state;
-3. Clea performs reconciliation/completeness;
-4. any exact unresolved owner decision is routed to Vince;
-5. governing anti-incumbency/review states permit selection.
+Clea then receives one reconciliation/completeness Transference requiring:
+- Alexander result;
+- Connor result;
+- Claude result;
+- all Caden integration checkpoints;
+- the current authoritative sources required by reconciliation.
+
+Clea checks that all required review dimensions were covered and conflicts preserved. Clea does not replace specialist findings or create architecture truth.
+
+## 10. Sequential dependency barrier
+
+No successor implementation package, live Supabase migration, Fortress cutover, Project Instruction edit, kernel source mutation, adapter deployment, or final architecture selection may be treated as authorized by creation of this review artifact or any review packet.
+
+Sequential execution is mandatory:
+1. Alexander only.
+2. Caden integration checkpoint.
+3. new Connor packet, then Connor only.
+4. Caden integration checkpoint.
+5. new Claude packet, then Claude only.
+6. Caden integration checkpoint.
+7. new Clea reconciliation packet, then Clea only.
+8. Caden final synthesis and any exact owner decision required by unresolved conflicts.
+
+A later-stage packet created before its predecessor result and Caden integration checkpoint exist is invalid and must not execute.
+
+The previously issued LSPT-2026-09-20-CONNOR and LSPT-2026-09-20-CLAUDE packets are superseded and must not be resumed.
 
 ## 11. Required source set for reviewers
 
