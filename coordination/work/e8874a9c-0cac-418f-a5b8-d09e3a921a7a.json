@@ -1,0 +1,21 @@
+{
+  "schema_version": 2,
+  "work_id": "e8874a9c-0cac-418f-a5b8-d09e3a921a7a",
+  "title": "Life successor provisional transference review",
+  "worker": {
+    "kind": "chatgpt",
+    "session_id": "4807c19b-0356-4442-98ef-19936b7ca688"
+  },
+  "implementation_branch": "work/e8874a9c-0cac-418f-a5b8-d09e3a921a7a",
+  "base_sha": "d320e84db1ff86ed943d315eb6e9da955804c685",
+  "component_id": "life_successor_provisional_transference_v1",
+  "repo_paths": [
+    "architecture/reviews/life-successor-provisional-transference-v1.md"
+  ],
+  "external_targets": [],
+  "claims": [],
+  "goal_id": null,
+  "planned_goal_revision": null,
+  "pending_external_effect_state": "NONE",
+  "runtime_control_authority": "NONE"
+}
